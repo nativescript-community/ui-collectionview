@@ -1,0 +1,17 @@
+{
+    "version": "1.5.0",
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs",
+        "declaration": false,
+        "noImplicitAny": false,
+        "removeComments": true,
+        "noLib": true,
+        "outDir": "dist",
+        "isolatedModules": true
+    },
+    "files": [
+        "./grid-view-common.ts", 
+        "./grid-view.ios.ts"
+    ]
+}

@@ -1,0 +1,19 @@
+{
+   "name": "nativescript-grid-view",
+   "version": "0.1.1",
+   "description": "A NativeScript plugin representing a GridView",
+   "main": "grid-view.js",
+   "nativescript": {
+       "platforms": {
+           "ios": "1.2.0",
+           "android": "1.2.0"
+       }
+   },
+
+   "keywords": [
+   		"NativeScript", 
+   		"GridView"
+   ],
+   "author": "Peter Staev <peter@tangrasoft.com>",
+   "license": "MIT"
+}
