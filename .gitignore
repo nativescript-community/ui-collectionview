@@ -42,4 +42,10 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-dist
+bin
+obj
+.vs
+*.user
+*.js
+!gruntfile.js
+node_modules

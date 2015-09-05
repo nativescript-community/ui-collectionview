@@ -1,19 +1,28 @@
 {
-   "name": "nativescript-grid-view",
-   "version": "0.1.1",
-   "description": "A NativeScript plugin representing a GridView",
-   "main": "grid-view.js",
-   "nativescript": {
-       "platforms": {
-           "ios": "1.2.0",
-           "android": "1.2.0"
-       }
-   },
+  "name": "nativescript-grid-view",
+  "version": "0.1.3",
+  "description": "A NativeScript plugin representing a GridView",
+  "main": "grid-view.js",
+  "nativescript": {
+    "platforms": {
+      "ios": "1.2.0",
+      "android": "1.2.0"
+    }
+  },
 
-   "keywords": [
-   		"NativeScript", 
-   		"GridView"
-   ],
-   "author": "Peter Staev <peter@tangrasoft.com>",
-   "license": "MIT"
+  "keywords": [
+    "NativeScript",
+    "GridView", 
+    "UICollectionView"
+  ],
+  "author": "Peter Staev <peter@tangrasoft.com>",
+  "license": "Apache-2.0",
+
+  "devDependencies": {
+    "typescript": "1.5.3",
+    "grunt-contrib-copy": "0.8.1",
+    "grunt-contrib-clean": "0.6.0",
+    "grunt-ts": "5.0.0-beta.4"
+  }
+
 }
