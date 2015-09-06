@@ -35,6 +35,7 @@ declare module "nativescript-grid-view"
 
         items: any;
         itemTemplate: string;
+        rowHeight: number
         colWidth: number
         ios: UICollectionView;
 

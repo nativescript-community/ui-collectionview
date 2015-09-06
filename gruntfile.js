@@ -57,6 +57,10 @@ module.exports = function (grunt) {
                         return JSON.stringify(contentAsObject, null, "\t");
                     }
                 }
+            },
+            readme: {
+                src: "README.md",
+                dest: localConfig.outDir
             }
         }
     });
