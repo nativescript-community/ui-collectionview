@@ -46,8 +46,6 @@ declare module "nativescript-grid-view"
         public refresh();
     }
 
-    export function registerGridViewStylers();
-
     export interface GridItemEventData extends observable.EventData 
     {
         eventName: string;
