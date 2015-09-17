@@ -86,5 +86,4 @@
 /// <reference path="node_modules/tns-core-modules/ui/html-view/html-view.d.ts" />
 /// <reference path="node_modules/tns-core-modules/ui/styling/background.d.ts" />
 /// <reference path="node_modules/tns-core-modules/ui/styling/font.d.ts" />
-/// <reference path="node_modules/tns-core-modules/ui/animation/animation.d.ts" />
-/// <reference path="node_modules/tns-core-modules/css/reworkcss.d.ts" />
+/// <reference path="node_modules/tns-core-modules/js-libs/reworkcss/reworkcss.d.ts" />

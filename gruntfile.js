@@ -60,7 +60,12 @@ module.exports = function (grunt) {
             },
             readme: {
                 src: "README.md",
-                dest: localConfig.outDir
+                dest: localConfig.outDir,
+                options: {
+                    process: function (content, srcPath) {
+                        return content.substring(content.indexOf("\n") + 1)
+                    }
+                }
             }
         }
     });

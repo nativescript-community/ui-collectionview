@@ -37,7 +37,11 @@ declare module "nativescript-grid-view"
         itemTemplate: string;
         rowHeight: number
         colWidth: number
+        verticalSpacing: number;
+        horizontalSpacing: number;
+
         ios: UICollectionView;
+        android: android.widget.GridView;
 
         public refresh();
     }

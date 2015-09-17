@@ -50,6 +50,7 @@
   </PropertyGroup>
   <ItemGroup>
     <TypeScriptCompile Include="grid-view-common.ts" />
+    <TypeScriptCompile Include="grid-view.android.ts" />
     <TypeScriptCompile Include="grid-view.d.ts" />
     <TypeScriptCompile Include="grid-view.ios.ts" />
     <TypeScriptCompile Include="_references.ts" />

@@ -15,12 +15,10 @@ limitations under the License.
 ***************************************************************************** */
 
 import observable = require("data/observable");
-import listView = require("ui/list-view");
 import definition = require("nativescript-grid-view");
 import common = require("./grid-view-common");
 import utils = require("utils/utils");
 import view = require("ui/core/view");
-import dependencyObservable = require("ui/core/dependency-observable");
 import style = require("ui/styling");
 import stylingStyle = require("ui/styling/style");
 

@@ -49,3 +49,4 @@ obj
 *.js
 !gruntfile.js
 node_modules
+*.tmp.*
