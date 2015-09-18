@@ -20,6 +20,7 @@ import common = require("./grid-view-common");
 import utils = require("utils/utils");
 import layout = require("ui/layouts/layout");
 import stackLayout = require("ui/layouts/stack-layout");
+import view = require("ui/core/view");
 import style = require("ui/styling");
 import stylingStyle = require("ui/styling/style");
 
@@ -131,6 +132,26 @@ export class GridView extends common.GridView
         }
 
         (<GridViewAdapter>this.android.getAdapter()).notifyDataSetChanged();
+    }
+
+    public _onDetached(force?: boolean)
+    {
+        super._onDetached(force);
+
+        // clear the cache
+        var keys = Object.keys(this._realizedItems);
+        var i;
+        var length = keys.length;
+        var view: view.View;
+        var key;
+
+        for (i = 0; i < length; i++)
+        {
+            key = keys[i];
+            view = this._realizedItems[key];
+            view.parent._removeView(view);
+            delete this._realizedItems[key];
+        }
     }
 
     public _getRealizedView(convertView: android.view.View)
