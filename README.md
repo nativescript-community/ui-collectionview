@@ -7,7 +7,7 @@ Run the following command from the root of your project:
 
 `tns plugin add nativescript-grid-view`
 
-This command automatically installs the necessary files, as well as stores nativescript-flashlight as a dependency in your project's package.json file.
+This command automatically installs the necessary files, as well as stores nativescript-grid-view as a dependency in your project's package.json file.
 
 ## Usage
 You need to add `xmlns:gv="nativescript-grid-view"` to your page tag, and then simply use `<gv:GridView/>` in order to add the widget to your page. Use `<gv:Gridview.itemTemplate/>` to specify the template for each cell:
