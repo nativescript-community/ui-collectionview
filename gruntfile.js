@@ -78,5 +78,5 @@ module.exports = function (grunt) {
         "clean:build",
         "ts:build",
         "copy"
-    ])
+    ]);
 };

@@ -2,6 +2,9 @@
 
 A NativeScript GridView widget. The GridView displays data in separate cells, each cell representing one data item. For iOS wraps up [UICollectionView](https://developer.apple.com/library/ios/documentation/UIKit/Reference/UICollectionView_class/) and for Android wraps up [GridView](http://developer.android.com/guide/topics/ui/layout/gridview.html)
 
+## Screenshot
+![Screenshot of Android](https://raw.githubusercontent.com/PeterStaev/NativeScript-Grid-View/master/docs/screenshot.png)
+
 ## Instalation
 Run the following command from the root of your project:
 
