@@ -27,9 +27,7 @@ var ITEMLOADING = common.GridView.itemLoadingEvent;
 var LOADMOREITEMS = common.GridView.loadMoreItemsEvent;
 var ITEMTAP = common.GridView.itemTapEvent;
 
-// merge the exports of the common file with the exports of this file
-declare var exports;
-require("utils/module-merge").merge(common, exports);
+global.moduleMerge(common, exports);
 
 class GridViewCell extends UICollectionViewCell
 {

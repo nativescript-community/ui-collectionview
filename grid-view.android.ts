@@ -29,10 +29,7 @@ var LOADMOREITEMS = common.GridView.loadMoreItemsEvent;
 var ITEMTAP = common.GridView.itemTapEvent;
 var REALIZED_INDEX = "realizedIndex";
 
-// merge the exports of the common file with the exports of this file
-declare var exports;
-require("utils/module-merge").merge(common, exports);
-
+global.moduleMerge(common, exports);
 
 function notifyForItemAtIndex(gridView: definition.GridView, view: any, eventName: string, index: number)
 {
@@ -97,11 +94,6 @@ export class GridView extends common.GridView
                     {
                         owner.notify(<observable.EventData>{ eventName: LOADMOREITEMS, object: owner });
                     }
-                },
-
-                get owner()
-                {
-                    return that.get();
                 }
             }));
 
