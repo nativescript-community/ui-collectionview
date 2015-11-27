@@ -8,11 +8,13 @@ module.exports = function (grunt) {
         typeScriptSrc: [
             "**/*.ts",
             "!node_modules/**/*.*",
+            "!sample/**/*.*",
             "!bin/**/*.*",
             "!_references.ts"
         ], 
         typeScriptDeclarations:[
             "**/*.d.ts",
+            "!sample/**/*.*",
             "!node_modules/**/*.*",
             "!bin/**/*.*"
         ],

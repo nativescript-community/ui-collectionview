@@ -1,6 +1,6 @@
 {
   "name": "nativescript-grid-view",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A NativeScript GridView widget.",
   "main": "grid-view.js",
   "nativescript": {
