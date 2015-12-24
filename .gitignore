@@ -48,6 +48,7 @@ obj
 *.user
 *.js
 !gruntfile.js
+!sample/GridViewSample/*.*
 node_modules
 *.tmp.*
 platforms
