@@ -46,9 +46,8 @@ bin
 obj
 .vs
 *.user
-*.js
+#*.js
 !gruntfile.js
-!sample/GridViewSample/app/*.js
 node_modules
 *.tmp.*
 platforms
