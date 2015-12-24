@@ -50,3 +50,4 @@ obj
 !gruntfile.js
 node_modules
 *.tmp.*
+platforms
