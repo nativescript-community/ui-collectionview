@@ -4,14 +4,14 @@ import observableArray = require("data/observable-array");
 import pages = require("ui/page");
 import gridView = require("nativescript-grid-view");
 
-var viewModel: observable.Observable;
+let viewModel: observable.Observable;
 
 export function pageLoaded(args: observable.EventData) 
 {
-    var page = <pages.Page>args.object;
-    var items = new observableArray.ObservableArray();
+    let page = <pages.Page>args.object;
+    let items = new observableArray.ObservableArray();
 
-    for (var loop = 0; loop < 200; loop++)
+    for (let loop = 0; loop < 200; loop++)
     {
         items.push({ value: "test " + loop.toString() });
     }

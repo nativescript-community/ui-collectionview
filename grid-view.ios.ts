@@ -22,10 +22,10 @@ import view = require("ui/core/view");
 import style = require("ui/styling");
 import stylingStyle = require("ui/styling/style");
 
-var CELLIDENTIFIER = "gridcell";
-var ITEMLOADING = common.GridView.itemLoadingEvent;
-var LOADMOREITEMS = common.GridView.loadMoreItemsEvent;
-var ITEMTAP = common.GridView.itemTapEvent;
+const CELLIDENTIFIER = "gridcell";
+const ITEMLOADING = common.GridView.itemLoadingEvent;
+const LOADMOREITEMS = common.GridView.loadMoreItemsEvent;
+const ITEMTAP = common.GridView.itemTapEvent;
 
 global.moduleMerge(common, exports);
 
@@ -43,7 +43,7 @@ class GridViewCell extends UICollectionViewCell
 
 function notifyForItemAtIndex(gridView: definition.GridView, cell: any, eventName: string, indexPath: NSIndexPath)
 {
-    var args =
+    let args =
         <definition.GridItemEventData>
         {
             eventName: eventName
@@ -84,10 +84,10 @@ class GridViewDataSource extends NSObject implements UICollectionViewDataSource
 
     public collectionViewCellForItemAtIndexPath(collectionView: UICollectionView, indexPath: NSIndexPath): UICollectionViewCell
     {
-        var cell = collectionView.dequeueReusableCellWithReuseIdentifierForIndexPath(CELLIDENTIFIER, indexPath) || GridViewCell.new();
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifierForIndexPath(CELLIDENTIFIER, indexPath) || GridViewCell.new();
         this._owner._prepareCell(cell, indexPath);
         
-        var cellView: view.View = cell.view;
+        let cellView: view.View = cell.view;
         if (cellView)
         {
             view.View.layoutChild(this._owner, cellView, 0, 0, this._owner.colWidth, this._owner.rowHeight);
@@ -134,7 +134,7 @@ class UICollectionViewDelegateImpl extends NSObject implements UICollectionViewD
 
     public collectionViewDidSelectItemAtIndexPath(collectionView: UICollectionView, indexPath: NSIndexPath)
     {
-        var cell = collectionView.cellForItemAtIndexPath(indexPath);
+        let cell = collectionView.cellForItemAtIndexPath(indexPath);
         notifyForItemAtIndex(this._owner, cell, ITEMTAP, indexPath);
         cell.highlighted = false;
         return indexPath;
@@ -208,7 +208,7 @@ export class GridView extends common.GridView
 
     public measure(widthMeasureSpec: number, heightMeasureSpec: number): void
     {
-        var changed = this._setCurrentMeasureSpecs(widthMeasureSpec, heightMeasureSpec);
+        let changed = this._setCurrentMeasureSpecs(widthMeasureSpec, heightMeasureSpec);
         super.measure(widthMeasureSpec, heightMeasureSpec);
         if (changed)
         {
@@ -221,7 +221,7 @@ export class GridView extends common.GridView
 
         if (cellView)
         {
-            var widthMeasureSpec = utils.layout.makeMeasureSpec(this.colWidth, utils.layout.EXACTLY)
+            let widthMeasureSpec = utils.layout.makeMeasureSpec(this.colWidth, utils.layout.EXACTLY)
                 , heightMeasureSpec = utils.layout.makeMeasureSpec(this.rowHeight, utils.layout.EXACTLY)
 
             view.View.measureChild(this, cellView, widthMeasureSpec, heightMeasureSpec);
@@ -230,7 +230,7 @@ export class GridView extends common.GridView
 
     public _prepareCell(tableCell: UICollectionViewCell, indexPath: NSIndexPath)
     {
-        var cell: any = tableCell;
+        let cell: any = tableCell;
 
         try
         {
@@ -240,8 +240,8 @@ export class GridView extends common.GridView
                 cell.view = this._getItemTemplateContent();
             }
 
-            var args = notifyForItemAtIndex(this, cell, ITEMLOADING, indexPath);
-            var view = cell.view;
+            let args = notifyForItemAtIndex(this, cell, ITEMLOADING, indexPath);
+            let view = cell.view;
 
             if (view && !view.parent && view.ios)
             {
@@ -262,7 +262,7 @@ export class GridView extends common.GridView
 //#region Styling
 function setSectionInset(gridView: GridView, newInset: UIEdgeInsets)
 {
-    var flowLayout = <UICollectionViewFlowLayout>gridView.ios.collectionViewLayout
+    let flowLayout = <UICollectionViewFlowLayout>gridView.ios.collectionViewLayout
         , sectionInset = flowLayout.sectionInset;
 
     flowLayout.sectionInset =
@@ -287,7 +287,7 @@ function getNativePaddingTopValue(gridView: GridView): any
 {
     return (<UICollectionViewFlowLayout>gridView.ios.collectionViewLayout).sectionInset.top;
 }
-var paddingTopChangedHandler = new style.stylers.StylePropertyChangedHandler(setPaddingTop, resetPaddingTop, getNativePaddingTopValue);
+let paddingTopChangedHandler = new style.stylers.StylePropertyChangedHandler(setPaddingTop, resetPaddingTop, getNativePaddingTopValue);
 style.stylers.registerHandler(stylingStyle.paddingTopProperty, paddingTopChangedHandler, "GridView");
 //#endregion
 
@@ -304,7 +304,7 @@ function getNativePaddingRightValue(gridView: GridView): any
 {
     return (<UICollectionViewFlowLayout>gridView.ios.collectionViewLayout).sectionInset.right;
 }
-var paddingRightChangedHandler = new style.stylers.StylePropertyChangedHandler(setPaddingRight, resetPaddingRight, getNativePaddingRightValue);
+let paddingRightChangedHandler = new style.stylers.StylePropertyChangedHandler(setPaddingRight, resetPaddingRight, getNativePaddingRightValue);
 style.stylers.registerHandler(stylingStyle.paddingRightProperty, paddingRightChangedHandler, "GridView");
 //#endregion
 
@@ -321,7 +321,7 @@ function getNativePaddingBottomValue(gridView: GridView): any
 {
     return (<UICollectionViewFlowLayout>gridView.ios.collectionViewLayout).sectionInset.bottom;
 }
-var paddingBottomChangedHandler = new style.stylers.StylePropertyChangedHandler(setPaddingBottom, resetPaddingBottom, getNativePaddingBottomValue);
+let paddingBottomChangedHandler = new style.stylers.StylePropertyChangedHandler(setPaddingBottom, resetPaddingBottom, getNativePaddingBottomValue);
 style.stylers.registerHandler(stylingStyle.paddingBottomProperty, paddingBottomChangedHandler, "GridView");
 //#endregion
 
@@ -338,7 +338,7 @@ function getNativePaddingLeftValue(gridView: GridView): any
 {
     return (<UICollectionViewFlowLayout>gridView.ios.collectionViewLayout).sectionInset.left;
 }
-var paddingLeftChangedHandler = new style.stylers.StylePropertyChangedHandler(setPaddingLeft, resetPaddingLeft, getNativePaddingLeftValue);
+let paddingLeftChangedHandler = new style.stylers.StylePropertyChangedHandler(setPaddingLeft, resetPaddingLeft, getNativePaddingLeftValue);
 style.stylers.registerHandler(stylingStyle.paddingLeftProperty, paddingLeftChangedHandler, "GridView");
 //#endregion
 

@@ -45,6 +45,7 @@ Temporary Items
 bin
 obj
 .vs
+.tscache
 *.user
 *.js
 !gruntfile.js

@@ -30,15 +30,19 @@
   <ItemGroup>
     <Content Include=".abignore" />
     <Content Include=".abproject" />
+    <Content Include="app\app.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="app\main-page.js">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="package.json" />
     <Content Include="app\app.css" />
-    <Content Include="app\app.js" />
     <Content Include="typings\tns-core-modules-schemas\tns.xsd" />
     <Content Include="typings\tns-core-modules\LICENSE" />
     <Content Include="typings\tns-core-modules\package.json" />
     <TypeScriptCompile Include="app\app.ts" />
     <Content Include="app\LICENSE" />
-    <Content Include="app\main-page.js" />
     <TypeScriptCompile Include="app\main-page.ts" />
     <Content Include="app\main-page.xml" />
     <Content Include="app\package.json" />
@@ -85,6 +89,7 @@
     <TypeScriptCompile Include="typings\tns-core-modules\declarations.ios.d.ts" />
     <TypeScriptCompile Include="typings\tns-core-modules\es-collections.d.ts" />
     <TypeScriptCompile Include="typings\tns-core-modules\es6-promise.d.ts" />
+    <TypeScriptCompile Include="typings\tns-core-modules\es6.d.ts" />
     <TypeScriptCompile Include="typings\tns-core-modules\file-system\file-name-resolver.d.ts" />
     <TypeScriptCompile Include="typings\tns-core-modules\file-system\file-system-access.d.ts" />
     <TypeScriptCompile Include="typings\tns-core-modules\file-system\file-system.d.ts" />
@@ -101,6 +106,7 @@
     <TypeScriptCompile Include="typings\tns-core-modules\text\span.d.ts" />
     <TypeScriptCompile Include="typings\tns-core-modules\text\text.d.ts" />
     <TypeScriptCompile Include="typings\tns-core-modules\timer\timer.d.ts" />
+    <TypeScriptCompile Include="typings\tns-core-modules\tns-core-modules.d.ts" />
     <TypeScriptCompile Include="typings\tns-core-modules\trace\trace.d.ts" />
     <TypeScriptCompile Include="typings\tns-core-modules\ui\action-bar\action-bar.d.ts" />
     <TypeScriptCompile Include="typings\tns-core-modules\ui\activity-indicator\activity-indicator.d.ts" />
@@ -160,8 +166,10 @@
     <TypeScriptCompile Include="typings\tns-core-modules\ui\ui.d.ts" />
     <TypeScriptCompile Include="typings\tns-core-modules\ui\utils.d.ts" />
     <TypeScriptCompile Include="typings\tns-core-modules\ui\web-view\web-view.d.ts" />
+    <TypeScriptCompile Include="typings\tns-core-modules\utils\debug.d.ts" />
     <TypeScriptCompile Include="typings\tns-core-modules\utils\types.d.ts" />
     <TypeScriptCompile Include="typings\tns-core-modules\utils\utils.d.ts" />
+    <TypeScriptCompile Include="typings\tns-core-modules\weakmap.d.ts" />
     <TypeScriptCompile Include="typings\tns-core-modules\xml\xml.d.ts" />
   </ItemGroup>
   <ItemGroup>

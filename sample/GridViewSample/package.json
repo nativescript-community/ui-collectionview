@@ -1,16 +1,9 @@
 {
-	"nativescript": {
-		"id": "net.tangrainc.GridViewSample",
-		"tns-ios": {
-			"version": "1.4.1"
-		},
-		"tns-android": {
-			"version": "1.4.0"
-		}
-	},
-	"dependencies": {
-		"tns-core-modules": "1.4.0", 
-		"nativescript-grid-view": "1.1.0"
-	},
-	"devDependencies": {}
+  "nativescript": {},
+  "dependencies": {
+    "tns-core-modules": "1.5.1",
+    "nativescript-grid-view": "1.2.0"
+  },
+  "devDependencies": {
+  }
 }

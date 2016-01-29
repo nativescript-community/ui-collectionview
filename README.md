@@ -15,7 +15,7 @@ This command automatically installs the necessary files, as well as stores nativ
 ## Usage
 You need to add `xmlns:gv="nativescript-grid-view"` to your page tag, and then simply use `<gv:GridView/>` in order to add the widget to your page. Use `<gv:Gridview.itemTemplate/>` to specify the template for each cell:
 ```XML
-<Page xmlns="http://www.nativescript.org/tns.xsd" 
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" 
       xmlns:gv="nativescript-grid-view">
   <GridLayout>
     <gv:GridView>
@@ -97,7 +97,7 @@ Forces the GridView to reload all its items.
 ## Example
 ```XML
 <!-- test-page.xml -->
-<Page xmlns="http://www.nativescript.org/tns.xsd" xmlns:gv="nativescript-grid-view" loaded="pageLoaded">
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" xmlns:gv="nativescript-grid-view" loaded="pageLoaded">
   <GridLayout>
     <gv:GridView items="{{ items }}"  verticalSpacing="5" horizontalSpacing="5" colWidth="100" rowHeight="75" padding="5"
                  itemTap="gridViewItemTap" itemLoading="gridViewItemLoading" loadMoreItems="gridViewLoadMoreItems">

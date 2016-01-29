@@ -24,16 +24,16 @@ import view = require("ui/core/view");
 import style = require("ui/styling");
 import stylingStyle = require("ui/styling/style");
 
-var ITEMLOADING = common.GridView.itemLoadingEvent;
-var LOADMOREITEMS = common.GridView.loadMoreItemsEvent;
-var ITEMTAP = common.GridView.itemTapEvent;
-var REALIZED_INDEX = "realizedIndex";
+const ITEMLOADING = common.GridView.itemLoadingEvent;
+const LOADMOREITEMS = common.GridView.loadMoreItemsEvent;
+const ITEMTAP = common.GridView.itemTapEvent;
+const REALIZED_INDEX = "realizedIndex";
 
 global.moduleMerge(common, exports);
 
 function notifyForItemAtIndex(gridView: definition.GridView, view: any, eventName: string, index: number)
 {
-    var args =
+    let args =
         <definition.GridItemEventData>
         {
             eventName: eventName
@@ -71,7 +71,7 @@ export class GridView extends common.GridView
         this.android.setHorizontalSpacing(this.horizontalSpacing * utils.layout.getDisplayDensity());
         this.android.setStretchMode(android.widget.GridView.STRETCH_SPACING);
 
-        var that = new WeakRef(this);
+        let that = new WeakRef(this);
 
         this.android.setOnScrollListener(new android.widget.AbsListView.OnScrollListener(
             {
@@ -82,7 +82,7 @@ export class GridView extends common.GridView
                 onScroll:
                 function (view: android.widget.AbsListView, firstVisibleItem: number, visibleItemCount: number, totalItemCount: number)
                 {
-                    var owner: GridView = this.owner;
+                    let owner: GridView = this.owner;
                     if (!owner)
                     {
                         return;
@@ -131,11 +131,11 @@ export class GridView extends common.GridView
         super._onDetached(force);
 
         // clear the cache
-        var keys = Object.keys(this._realizedItems);
-        var i;
-        var length = keys.length;
-        var view: view.View;
-        var key;
+        let keys = Object.keys(this._realizedItems);
+        let i;
+        let length = keys.length;
+        let view: view.View;
+        let key;
 
         for (i = 0; i < length; i++)
         {
@@ -205,7 +205,7 @@ class GridViewAdapter extends android.widget.BaseAdapter
             return null;
         }
 
-        var view = this._gridView._getRealizedView(convertView);
+        let view = this._gridView._getRealizedView(convertView);
 
         notifyForItemAtIndex(this._gridView, view, ITEMLOADING, index);
 
@@ -221,7 +221,7 @@ class GridViewAdapter extends android.widget.BaseAdapter
                 }
                 else
                 {
-                    var sp = new stackLayout.StackLayout();
+                    let sp = new stackLayout.StackLayout();
                     sp.height = this._gridView.rowHeight;
                     sp.addChild(view);
                     this._gridView._addView(sp);
@@ -252,7 +252,7 @@ interface Padding
 }
 function setPadding(gridView: GridView, padding: Padding)
 {
-    var finalPadding: Padding =
+    let finalPadding: Padding =
         {
             top: padding.top !== undefined ? padding.top * utils.layout.getDisplayDensity() : gridView.android.getPaddingTop()
             , right: padding.right !== undefined ? padding.right * utils.layout.getDisplayDensity() : gridView.android.getPaddingRight()
@@ -276,7 +276,7 @@ function getNativePaddingTopValue(gridView: GridView): any
 {
     return gridView.android.getPaddingTop();
 }
-var paddingTopChangedHandler = new style.stylers.StylePropertyChangedHandler(setPaddingTop, resetPaddingTop, getNativePaddingTopValue);
+let paddingTopChangedHandler = new style.stylers.StylePropertyChangedHandler(setPaddingTop, resetPaddingTop, getNativePaddingTopValue);
 style.stylers.registerHandler(stylingStyle.paddingTopProperty, paddingTopChangedHandler, "GridView");
 //#endregion
 
@@ -293,7 +293,7 @@ function getNativePaddingRightValue(gridView: GridView): any
 {
     return gridView.android.getPaddingRight();
 }
-var paddingRightChangedHandler = new style.stylers.StylePropertyChangedHandler(setPaddingRight, resetPaddingRight, getNativePaddingRightValue);
+let paddingRightChangedHandler = new style.stylers.StylePropertyChangedHandler(setPaddingRight, resetPaddingRight, getNativePaddingRightValue);
 style.stylers.registerHandler(stylingStyle.paddingRightProperty, paddingRightChangedHandler, "GridView");
 //#endregion
 
@@ -310,7 +310,7 @@ function getNativePaddingBottomValue(gridView: GridView): any
 {
     return gridView.android.getPaddingBottom();
 }
-var paddingBottomChangedHandler = new style.stylers.StylePropertyChangedHandler(setPaddingBottom, resetPaddingBottom, getNativePaddingBottomValue);
+let paddingBottomChangedHandler = new style.stylers.StylePropertyChangedHandler(setPaddingBottom, resetPaddingBottom, getNativePaddingBottomValue);
 style.stylers.registerHandler(stylingStyle.paddingBottomProperty, paddingBottomChangedHandler, "GridView");
 //#endregion
 
@@ -327,7 +327,7 @@ function getNativePaddingLeftValue(gridView: GridView): any
 {
     return gridView.android.getPaddingLeft();
 }
-var paddingLeftChangedHandler = new style.stylers.StylePropertyChangedHandler(setPaddingLeft, resetPaddingLeft, getNativePaddingLeftValue);
+let paddingLeftChangedHandler = new style.stylers.StylePropertyChangedHandler(setPaddingLeft, resetPaddingLeft, getNativePaddingLeftValue);
 style.stylers.registerHandler(stylingStyle.paddingLeftProperty, paddingLeftChangedHandler, "GridView");
 //#endregion
 

@@ -21,9 +21,9 @@ import dependencyObservable = require("ui/core/dependency-observable");
 import builder = require("ui/builder");
 import view = require("ui/core/view");
 
-var ITEMSCHANGED = "_itemsChanged";
-var GRIDVIEW = "GridView";
-var CHANGE = "change";
+const ITEMSCHANGED = "_itemsChanged";
+const GRIDVIEW = "GridView";
+const CHANGE = "change";
 
 export module knownTemplates
 {
@@ -32,8 +32,8 @@ export module knownTemplates
 
 function onItemsPropertyChanged(data: dependencyObservable.PropertyChangeData)
 {
-    var gridView = <definition.GridView>data.object;
-    var itemsChanged = gridView[ITEMSCHANGED];
+    let gridView = <definition.GridView>data.object;
+    let itemsChanged = gridView[ITEMSCHANGED];
 
     if (data.oldValue instanceof observable.Observable)
     {
@@ -50,31 +50,31 @@ function onItemsPropertyChanged(data: dependencyObservable.PropertyChangeData)
 
 function onItemTemplatePropertyChanged(data: dependencyObservable.PropertyChangeData)
 {
-    var gridView = <definition.GridView>data.object;
+    let gridView = <definition.GridView>data.object;
     gridView.refresh();
 }
 
 function onColWidthPropertyChanged(data: dependencyObservable.PropertyChangeData)
 {
-    var gridView = <definition.GridView>data.object;
+    let gridView = <definition.GridView>data.object;
     gridView.refresh();
 }
 
 function onRowHeightPropertyChanged(data: dependencyObservable.PropertyChangeData)
 {
-    var gridView = <definition.GridView>data.object;
+    let gridView = <definition.GridView>data.object;
     gridView.refresh();
 }
 
 function onSpacingPropertyChanged(data: dependencyObservable.PropertyChangeData)
 {
-    var gridView = <definition.GridView>data.object;
+    let gridView = <definition.GridView>data.object;
     gridView.refresh();
 }
 
 function getExports(instance: view.View): any
 {
-    var parent = instance.parent;
+    let parent = instance.parent;
 
     while (parent && (<any>parent).exports === undefined)
     {
@@ -216,7 +216,7 @@ export class GridView extends view.View implements definition.GridView
 
     public _getItemTemplateContent(): view.View
     {
-        var v;
+        let v;
 
         if (this.itemTemplate && this.items)
         {
