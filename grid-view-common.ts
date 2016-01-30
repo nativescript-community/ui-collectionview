@@ -84,7 +84,7 @@ function getExports(instance: view.View): any
     return parent ? (<any>parent).exports : undefined;
 }
 
-export class GridView extends view.View implements definition.GridView
+export abstract class GridView extends view.View implements definition.GridView
 {
     public static itemLoadingEvent = "itemLoading";
     public static itemTapEvent = "itemTap";
@@ -212,7 +212,7 @@ export class GridView extends view.View implements definition.GridView
         this._setValue(GridView.horizontalSpacingProperty, value);
     }
 
-    public refresh() { }
+    public abstract refresh()
 
     public _getItemTemplateContent(): view.View
     {

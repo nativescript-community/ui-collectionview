@@ -65,53 +65,56 @@ export class GridView extends common.GridView
         this._android.setId(this._androidViewId);
 
         this.android.setAdapter(new GridViewAdapter(this));
-        this.android.setColumnWidth(this.colWidth * utils.layout.getDisplayDensity());
         this.android.setNumColumns(android.widget.GridView.AUTO_FIT);
-        this.android.setVerticalSpacing(this.verticalSpacing * utils.layout.getDisplayDensity());
-        this.android.setHorizontalSpacing(this.horizontalSpacing * utils.layout.getDisplayDensity());
         this.android.setStretchMode(android.widget.GridView.STRETCH_SPACING);
+        this._resetNativeColumnAndSpacingSettings();
 
         let that = new WeakRef(this);
 
-        this.android.setOnScrollListener(new android.widget.AbsListView.OnScrollListener(
+        this.android.setOnScrollListener(new android.widget.AbsListView.OnScrollListener({
+            onScrollStateChanged:
+            function (view: android.widget.AbsListView, scrollState: number)
             {
-                onScrollStateChanged:
-                function (view: android.widget.AbsListView, scrollState: number)
-                {
-                },
-                onScroll:
-                function (view: android.widget.AbsListView, firstVisibleItem: number, visibleItemCount: number, totalItemCount: number)
-                {
-                    let owner: GridView = this.owner;
-                    if (!owner)
-                    {
-                        return;
-                    }
-
-                    if (totalItemCount > 0
-                        && firstVisibleItem + visibleItemCount === totalItemCount
-                        )
-                    {
-                        owner.notify(<observable.EventData>{ eventName: LOADMOREITEMS, object: owner });
-                    }
-                }
-            }));
-
-        this.android.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener(
+            },
+            onScroll:
+            function (view: android.widget.AbsListView, firstVisibleItem: number, visibleItemCount: number, totalItemCount: number)
             {
-                onItemClick:
-                function (parent: any, convertView: android.view.View, index: number, id: number)
+                let owner: GridView = this.owner;
+                if (!owner)
                 {
-                    var owner = that.get();
-
-                    notifyForItemAtIndex(owner, owner._getRealizedView(convertView), ITEMTAP, index);
+                    return;
                 }
-            }));
+
+                if (totalItemCount > 0
+                    && firstVisibleItem + visibleItemCount === totalItemCount
+                )
+                {
+                    owner.notify(<observable.EventData>{ eventName: LOADMOREITEMS, object: owner });
+                }
+            }
+        }));
+
+        this.android.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener({
+            onItemClick:
+            function (parent: any, convertView: android.view.View, index: number, id: number)
+            {
+                var owner = that.get();
+
+                notifyForItemAtIndex(owner, owner._getRealizedView(convertView), ITEMTAP, index);
+            }
+        }));
     }
 
     get android(): android.widget.GridView
     {
         return this._android;
+    }
+
+    private _resetNativeColumnAndSpacingSettings()
+    {
+        this.android.setColumnWidth(this.colWidth * utils.layout.getDisplayDensity());
+        this.android.setVerticalSpacing(this.verticalSpacing * utils.layout.getDisplayDensity());
+        this.android.setHorizontalSpacing(this.horizontalSpacing * utils.layout.getDisplayDensity());
     }
 
     public refresh()
@@ -123,6 +126,7 @@ export class GridView extends common.GridView
             return;
         }
 
+        this._resetNativeColumnAndSpacingSettings();
         (<GridViewAdapter>this.android.getAdapter()).notifyDataSetChanged();
     }
 
@@ -229,8 +233,9 @@ class GridViewAdapter extends android.widget.BaseAdapter
                     convertView = sp.android;
                 }
 
-                convertView.setLayoutParams(new android.widget.GridView.LayoutParams(this._gridView.colWidth * utils.layout.getDisplayDensity(), this._gridView.rowHeight * utils.layout.getDisplayDensity()));
             }
+
+            convertView.setLayoutParams(new android.widget.GridView.LayoutParams(this._gridView.colWidth * utils.layout.getDisplayDensity(), this._gridView.rowHeight * utils.layout.getDisplayDensity()));
 
             this._gridView._realizedItems[convertView.hashCode()] = view;
             view[REALIZED_INDEX] = index;
