@@ -59,12 +59,12 @@ class GridViewDataSource extends NSObject implements UICollectionViewDataSource
 {
     public static ObjCProtocols = [UICollectionViewDataSource];
 
+    private _owner: GridView;
+
     static new(): GridViewDataSource
     {
         return <GridViewDataSource>super.new();
     }
-
-    private _owner: GridView;
 
     public initWithOwner(owner: GridView): GridViewDataSource
     {
@@ -86,7 +86,7 @@ class GridViewDataSource extends NSObject implements UICollectionViewDataSource
     {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifierForIndexPath(CELLIDENTIFIER, indexPath) || GridViewCell.new();
         this._owner._prepareCell(cell, indexPath);
-        
+
         let cellView: view.View = cell.view;
         if (cellView)
         {
@@ -101,13 +101,13 @@ class UICollectionViewDelegateImpl extends NSObject implements UICollectionViewD
 {
     public static ObjCProtocols = [UICollectionViewDelegate, UICollectionViewDelegateFlowLayout];
 
+    private _owner: GridView;
+
     static new(): UICollectionViewDelegateImpl
     {
         return <UICollectionViewDelegateImpl>super.new();
     }
 
-    private _owner: GridView;
-    private _measureCell: UICollectionViewCell;
     public initWithOwner(owner: GridView): UICollectionViewDelegateImpl
     {
         this._owner = owner;
@@ -222,7 +222,7 @@ export class GridView extends common.GridView
         if (cellView)
         {
             let widthMeasureSpec = utils.layout.makeMeasureSpec(this.colWidth, utils.layout.EXACTLY)
-                , heightMeasureSpec = utils.layout.makeMeasureSpec(this.rowHeight, utils.layout.EXACTLY)
+                , heightMeasureSpec = utils.layout.makeMeasureSpec(this.rowHeight, utils.layout.EXACTLY);
 
             view.View.measureChild(this, cellView, widthMeasureSpec, heightMeasureSpec);
         }
@@ -240,9 +240,9 @@ export class GridView extends common.GridView
                 cell.view = this._getItemTemplateContent();
             }
 
-            let args = notifyForItemAtIndex(this, cell, ITEMLOADING, indexPath);
-            let view = cell.view;
+            notifyForItemAtIndex(this, cell, ITEMLOADING, indexPath);
 
+            let view = cell.view;
             if (view && !view.parent && view.ios)
             {
                 cell.contentView.addSubview(view.ios);

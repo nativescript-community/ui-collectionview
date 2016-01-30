@@ -20,7 +20,7 @@ declare module "nativescript-grid-view"
     import dependencyObservable = require("ui/core/dependency-observable");
     import observable = require("data/observable");
 
-    export class GridView extends view.View 
+    export class GridView extends view.View
     {
         public static itemLoadingEvent: string;
         public static itemTapEvent: string;
@@ -35,8 +35,8 @@ declare module "nativescript-grid-view"
 
         items: any;
         itemTemplate: string;
-        rowHeight: number
-        colWidth: number
+        rowHeight: number;
+        colWidth: number;
         verticalSpacing: number;
         horizontalSpacing: number;
 
@@ -46,7 +46,7 @@ declare module "nativescript-grid-view"
         public refresh();
     }
 
-    export interface GridItemEventData extends observable.EventData 
+    export interface GridItemEventData extends observable.EventData
     {
         eventName: string;
         object: GridView;

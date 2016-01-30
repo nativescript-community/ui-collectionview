@@ -75,6 +75,7 @@ export class GridView extends common.GridView
             onScrollStateChanged:
             function (view: android.widget.AbsListView, scrollState: number)
             {
+                // Empty
             },
             onScroll:
             function (view: android.widget.AbsListView, firstVisibleItem: number, visibleItemCount: number, totalItemCount: number)
@@ -98,7 +99,7 @@ export class GridView extends common.GridView
             onItemClick:
             function (parent: any, convertView: android.view.View, index: number, id: number)
             {
-                var owner = that.get();
+                let owner = that.get();
 
                 notifyForItemAtIndex(owner, owner._getRealizedView(convertView), ITEMTAP, index);
             }
@@ -250,10 +251,10 @@ class GridViewAdapter extends android.widget.BaseAdapter
 //#region Styling
 interface Padding
 {
-    top?: number
-    right?: number
-    bottom?: number
-    left?: number
+    top?: number;
+    right?: number;
+    bottom?: number;
+    left?: number;
 }
 function setPadding(gridView: GridView, padding: Padding)
 {
@@ -263,7 +264,7 @@ function setPadding(gridView: GridView, padding: Padding)
             , right: padding.right !== undefined ? padding.right * utils.layout.getDisplayDensity() : gridView.android.getPaddingRight()
             , bottom: padding.bottom !== undefined ? padding.bottom * utils.layout.getDisplayDensity() : gridView.android.getPaddingBottom()
             , left: padding.left !== undefined ? padding.left * utils.layout.getDisplayDensity() : gridView.android.getPaddingLeft()
-        }
+        };
 
     gridView.android.setPadding(finalPadding.left, finalPadding.top, finalPadding.right, finalPadding.bottom);
 }
