@@ -19,8 +19,7 @@ import definition = require("nativescript-grid-view");
 import common = require("./grid-view-common");
 import utils = require("utils/utils");
 import view = require("ui/core/view");
-import style = require("ui/styling");
-import stylingStyle = require("ui/styling/style");
+import style = require("ui/styling/style");
 
 const CELLIDENTIFIER = "gridcell";
 const ITEMLOADING = common.GridView.itemLoadingEvent;
@@ -61,15 +60,11 @@ class GridViewDataSource extends NSObject implements UICollectionViewDataSource
 
     private _owner: GridView;
 
-    static new(): GridViewDataSource
+    public static initWithOwner(owner: GridView): GridViewDataSource
     {
-        return <GridViewDataSource>super.new();
-    }
-
-    public initWithOwner(owner: GridView): GridViewDataSource
-    {
-        this._owner = owner;
-        return this;
+        let dataSource = <GridViewDataSource>GridViewDataSource.new();
+        dataSource._owner = owner;
+        return dataSource;
     }
 
     public numberOfSectionsInCollectionView(collectionView: UICollectionView)
@@ -103,15 +98,11 @@ class UICollectionViewDelegateImpl extends NSObject implements UICollectionViewD
 
     private _owner: GridView;
 
-    static new(): UICollectionViewDelegateImpl
+    public static initWithOwner(owner: GridView): UICollectionViewDelegateImpl
     {
-        return <UICollectionViewDelegateImpl>super.new();
-    }
-
-    public initWithOwner(owner: GridView): UICollectionViewDelegateImpl
-    {
-        this._owner = owner;
-        return this;
+        let delegate = <UICollectionViewDelegateImpl>UICollectionViewDelegateImpl.new();
+        delegate._owner = owner;
+        return delegate;
     }
 
     public collectionViewWillDisplayCellForItemAtIndexPath(collectionView: UICollectionView, cell: UICollectionViewCell, indexPath: NSIndexPath)
@@ -165,10 +156,10 @@ export class GridView extends common.GridView
         this._ios.autoresizesSubviews = false;
         this._ios.autoresizingMask = UIViewAutoresizing.UIViewAutoresizingNone;
 
-        this._dataSource = GridViewDataSource.new().initWithOwner(this);
+        this._dataSource = GridViewDataSource.initWithOwner(this);
         this._ios.dataSource = this._dataSource;
 
-        this._delegate = UICollectionViewDelegateImpl.new().initWithOwner(this);
+        this._delegate = UICollectionViewDelegateImpl.initWithOwner(this);
     }
 
     public onLoaded()
@@ -260,86 +251,108 @@ export class GridView extends common.GridView
 }
 
 //#region Styling
-function setSectionInset(gridView: GridView, newInset: UIEdgeInsets)
+export class GridViewStyler implements style.Styler
 {
-    let flowLayout = <UICollectionViewFlowLayout>gridView.ios.collectionViewLayout
-        , sectionInset = flowLayout.sectionInset;
-
-    flowLayout.sectionInset =
+    private static setSectionInset(gridView: GridView, padding: common.Padding)
     {
-        top: newInset.top || sectionInset.top
-        , right: newInset.right || sectionInset.right
-        , bottom: newInset.bottom || sectionInset.bottom
-        , left: newInset.left || sectionInset.left
-    };
-}
+        let flowLayout = <UICollectionViewFlowLayout>gridView.ios.collectionViewLayout;
+        let currentInset = flowLayout.sectionInset;
 
-//#region Padding Top Property
-function setPaddingTop(gridView: GridView, newValue: number)
-{
-    setSectionInset(gridView, { top: newValue, right: undefined, bottom: undefined, left: undefined });
-}
-function resetPaddingTop(gridView: GridView, nativeValue: number)
-{
-    setPaddingTop(gridView, nativeValue);
-}
-function getNativePaddingTopValue(gridView: GridView): any
-{
-    return (<UICollectionViewFlowLayout>gridView.ios.collectionViewLayout).sectionInset.top;
-}
-let paddingTopChangedHandler = new style.stylers.StylePropertyChangedHandler(setPaddingTop, resetPaddingTop, getNativePaddingTopValue);
-style.stylers.registerHandler(stylingStyle.paddingTopProperty, paddingTopChangedHandler, "GridView");
-//#endregion
+        flowLayout.sectionInset = {
+            top: padding.top !== undefined ? padding.top : currentInset.top
+            , right: padding.right !== undefined ? padding.right : currentInset.right
+            , bottom: padding.bottom !== undefined ? padding.bottom : currentInset.bottom
+            , left: padding.left !== undefined ? padding.left : currentInset.left
+        };
+    }
 
-//#region Padding Right Property
-function setPaddingRight(gridView: GridView, newValue: number)
-{
-    setSectionInset(gridView, { top: undefined, right: newValue, bottom: undefined, left: undefined });
-}
-function resetPaddingRight(gridView: GridView, nativeValue: number)
-{
-    setPaddingRight(gridView, nativeValue);
-}
-function getNativePaddingRightValue(gridView: GridView): any
-{
-    return (<UICollectionViewFlowLayout>gridView.ios.collectionViewLayout).sectionInset.right;
-}
-let paddingRightChangedHandler = new style.stylers.StylePropertyChangedHandler(setPaddingRight, resetPaddingRight, getNativePaddingRightValue);
-style.stylers.registerHandler(stylingStyle.paddingRightProperty, paddingRightChangedHandler, "GridView");
-//#endregion
+    //#region Padding Top Property
+    private static setPaddingTop(gridView: GridView, newValue: number)
+    {
+        GridViewStyler.setSectionInset(gridView, { top: newValue });
+    }
+    private static resetPaddingTop(gridView: GridView, nativeValue: number)
+    {
+        GridViewStyler.setPaddingTop(gridView, nativeValue);
+    }
+    private static getNativePaddingTopValue(gridView: GridView): any
+    {
+        return (<UICollectionViewFlowLayout>gridView.ios.collectionViewLayout).sectionInset.top;
+    }
+    //#endregion
 
-//#region Padding Bottom Property
-function setPaddingBottom(gridView: GridView, newValue: number)
-{
-    setSectionInset(gridView, { top: undefined, right: undefined, bottom: newValue, left: undefined });
-}
-function resetPaddingBottom(gridView: GridView, nativeValue: number)
-{
-    setPaddingBottom(gridView, nativeValue);
-}
-function getNativePaddingBottomValue(gridView: GridView): any
-{
-    return (<UICollectionViewFlowLayout>gridView.ios.collectionViewLayout).sectionInset.bottom;
-}
-let paddingBottomChangedHandler = new style.stylers.StylePropertyChangedHandler(setPaddingBottom, resetPaddingBottom, getNativePaddingBottomValue);
-style.stylers.registerHandler(stylingStyle.paddingBottomProperty, paddingBottomChangedHandler, "GridView");
-//#endregion
+    //#region Padding Right Property
+    private static setPaddingRight(gridView: GridView, newValue: number)
+    {
+        GridViewStyler.setSectionInset(gridView, { right: newValue });
+    }
+    private static resetPaddingRight(gridView: GridView, nativeValue: number)
+    {
+        GridViewStyler.setPaddingRight(gridView, nativeValue);
+    }
+    private static getNativePaddingRightValue(gridView: GridView): any
+    {
+        return (<UICollectionViewFlowLayout>gridView.ios.collectionViewLayout).sectionInset.right;
+    }
+    //#endregion
 
-//#region Padding Left Property
-function setPaddingLeft(gridView: GridView, newValue: number)
-{
-    setSectionInset(gridView, { top: undefined, right: undefined, bottom: undefined, left: newValue });
-}
-function resetPaddingLeft(gridView: GridView, nativeValue: number)
-{
-    setPaddingLeft(gridView, nativeValue);
-}
-function getNativePaddingLeftValue(gridView: GridView): any
-{
-    return (<UICollectionViewFlowLayout>gridView.ios.collectionViewLayout).sectionInset.left;
-}
-let paddingLeftChangedHandler = new style.stylers.StylePropertyChangedHandler(setPaddingLeft, resetPaddingLeft, getNativePaddingLeftValue);
-style.stylers.registerHandler(stylingStyle.paddingLeftProperty, paddingLeftChangedHandler, "GridView");
-//#endregion
+    //#region Padding Bottom Property
+    private static setPaddingBottom(gridView: GridView, newValue: number)
+    {
+        GridViewStyler.setSectionInset(gridView, { bottom: newValue });
+    }
+    private static resetPaddingBottom(gridView: GridView, nativeValue: number)
+    {
+        GridViewStyler.setPaddingBottom(gridView, nativeValue);
+    }
+    private static getNativePaddingBottomValue(gridView: GridView): any
+    {
+        return (<UICollectionViewFlowLayout>gridView.ios.collectionViewLayout).sectionInset.bottom;
+    }
+    //#endregion
 
+    //#region Padding Left Property
+    private static setPaddingLeft(gridView: GridView, newValue: number)
+    {
+        GridViewStyler.setSectionInset(gridView, { left: newValue });
+    }
+    private static resetPaddingLeft(gridView: GridView, nativeValue: number)
+    {
+        GridViewStyler.setPaddingLeft(gridView, nativeValue);
+    }
+    private static getNativePaddingLeftValue(gridView: GridView): any
+    {
+        return (<UICollectionViewFlowLayout>gridView.ios.collectionViewLayout).sectionInset.left;
+    }
+    //#endregion
+
+    public static registerHandlers()
+    {
+        style.registerHandler(style.paddingTopProperty
+            , new style.StylePropertyChangedHandler(GridViewStyler.setPaddingTop
+                , GridViewStyler.resetPaddingTop
+                , GridViewStyler.getNativePaddingTopValue)
+            , "GridView");
+
+        style.registerHandler(style.paddingRightProperty
+            , new style.StylePropertyChangedHandler(GridViewStyler.setPaddingRight
+                , GridViewStyler.resetPaddingRight
+                , GridViewStyler.getNativePaddingRightValue)
+            , "GridView");
+
+        style.registerHandler(style.paddingBottomProperty
+            , new style.StylePropertyChangedHandler(GridViewStyler.setPaddingBottom
+                , GridViewStyler.resetPaddingBottom
+                , GridViewStyler.getNativePaddingBottomValue)
+            , "GridView");
+
+        style.registerHandler(style.paddingLeftProperty
+            , new style.StylePropertyChangedHandler(GridViewStyler.setPaddingLeft
+                , GridViewStyler.resetPaddingLeft
+                , GridViewStyler.getNativePaddingLeftValue)
+            , "GridView");
+    }
+
+}
+GridViewStyler.registerHandlers();
 //#endregion

@@ -34,7 +34,7 @@ declare module "nativescript-grid-view"
         public static horizontalSpacingProperty: dependencyObservable.Property;
 
         items: any;
-        itemTemplate: string;
+        itemTemplate: string | view.Template;
         rowHeight: number;
         colWidth: number;
         verticalSpacing: number;

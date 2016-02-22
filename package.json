@@ -1,6 +1,6 @@
 {
   "name": "nativescript-grid-view",
-  "version": "1.2.1",
+  "version": "1.3.0",
   "description": "A NativeScript GridView widget.",
   "main": "grid-view.js",
   "nativescript": {
@@ -27,7 +27,7 @@
   "devDependencies": {
     "typescript": "1.7.3",
     "tslint": "3.3.0",
-    "tns-core-modules": "git+https://github.com/NativeScript/NativeScript.git#70728c4442d9bc78a88c43493e8b3522d0cbb141", 
+    "tns-core-modules": "git+https://github.com/NativeScript/NativeScript.git#v1.6.0", 
 
     "grunt-tslint": "3.0.1",
     "grunt-contrib-copy": "0.8.1",

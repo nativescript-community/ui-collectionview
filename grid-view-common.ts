@@ -72,18 +72,6 @@ function onSpacingPropertyChanged(data: dependencyObservable.PropertyChangeData)
     gridView.refresh();
 }
 
-function getExports(instance: view.View): any
-{
-    let parent = instance.parent;
-
-    while (parent && (<any>parent).exports === undefined)
-    {
-        parent = parent.parent;
-    }
-
-    return parent ? (<any>parent).exports : undefined;
-}
-
 export abstract class GridView extends view.View implements definition.GridView
 {
     public static itemLoadingEvent = "itemLoading";
@@ -167,11 +155,11 @@ export abstract class GridView extends view.View implements definition.GridView
         this._setValue(GridView.itemsProperty, value);
     }
 
-    get itemTemplate(): string
+    get itemTemplate(): string | view.Template
     {
         return this._getValue(GridView.itemTemplateProperty);
     }
-    set itemTemplate(value: string)
+    set itemTemplate(value: string | view.Template)
     {
         this._setValue(GridView.itemTemplateProperty, value);
     }
@@ -220,7 +208,7 @@ export abstract class GridView extends view.View implements definition.GridView
 
         if (this.itemTemplate && this.items)
         {
-            v = builder.parse(this.itemTemplate, getExports(this));
+            v = builder.parse(this.itemTemplate, this);
         }
 
         return v;
@@ -230,7 +218,13 @@ export abstract class GridView extends view.View implements definition.GridView
     {
         if (item)
         {
-            item.bindingContext = this._getDataItem(index);
+            let dataItem = this._getDataItem(index);
+            if (!(dataItem instanceof observable.Observable))
+            {
+                item.bindingContext = null;
+            }
+            item.bindingContext = dataItem;
+            item._inheritProperties(this);
         }
     }
 
@@ -238,4 +232,12 @@ export abstract class GridView extends view.View implements definition.GridView
     {
         return this.items.getItem ? this.items.getItem(index) : this.items[index];
     }
+}
+
+export interface Padding
+{
+    top?: number;
+    right?: number;
+    bottom?: number;
+    left?: number;
 }
