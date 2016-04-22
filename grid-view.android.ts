@@ -217,27 +217,28 @@ class GridViewAdapter extends android.widget.BaseAdapter
         if (view)
         {
             this._gridView._prepareItem(view, index);
+            
+            view.height = this._gridView.rowHeight;
+            view.width = this._gridView.colWidth;
+            
             if (!view.parent)
             {
                 if (view instanceof layoutBase.LayoutBase)
                 {
-                    view.height = this._gridView.rowHeight;
-                    view.width = this._gridView.colWidth;
                     this._gridView._addView(view);
                     convertView = view.android;
                 }
                 else
                 {
                     let sp = new stackLayout.StackLayout();
-                    sp.height = this._gridView.rowHeight;
+                    
                     sp.addChild(view);
                     this._gridView._addView(sp);
-
                     convertView = sp.android;
                 }
 
             }
-
+            
             this._gridView._realizedItems[convertView.hashCode()] = view;
             view[REALIZED_INDEX] = index;
         }
