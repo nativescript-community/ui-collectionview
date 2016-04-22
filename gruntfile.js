@@ -1,9 +1,4 @@
-﻿/// <binding BeforeBuild='build' />
-/*
-This file in the main entry point for defining grunt tasks and using grunt plugins.
-Click here to learn more. http://go.microsoft.com/fwlink/?LinkID=513275&clcid=0x409
-*/
-module.exports = function (grunt) {
+﻿module.exports = function (grunt) {
     var localConfig = {
         typeScriptSrc: [
             "**/*.ts",
@@ -29,19 +24,7 @@ module.exports = function (grunt) {
         },
         ts: {
             build: {
-                src: localConfig.typeScriptSrc,
-                outDir: localConfig.outDir,
-                options: {
-                    target: "es5",
-                    module: "commonjs",
-                    declaration: false,
-                    noImplicitAny: false,
-                    removeComments: true,
-                    sourceMap: false,
-                    noLib: false,
-                    outDir: "dist",
-                    isolatedModules: true
-                }
+                tsconfig: true
             }
         },
         tslint:
