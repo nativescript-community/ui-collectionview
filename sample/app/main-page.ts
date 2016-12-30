@@ -6,13 +6,11 @@ import gridView = require("nativescript-grid-view");
 
 let viewModel: observable.Observable;
 
-export function pageLoaded(args: observable.EventData) 
-{
+export function pageLoaded(args: observable.EventData) {
     let page = <pages.Page>args.object;
     let items = new observableArray.ObservableArray();
 
-    for (let loop = 0; loop < 200; loop++)
-    {
+    for (let loop = 0; loop < 200; loop++) {
         items.push({ value: "test " + loop.toString() });
     }
     viewModel = new observable.Observable();
@@ -21,17 +19,14 @@ export function pageLoaded(args: observable.EventData)
     page.bindingContext = viewModel;
 }
 
-export function gridViewItemTap(args: gridView.GridItemEventData)
-{
+export function gridViewItemTap(args: gridView.GridItemEventData) {
     console.log("tap index " + args.index.toString());
 }
 
-export function gridViewItemLoading(args: gridView.GridItemEventData)
-{
+export function gridViewItemLoading(args: gridView.GridItemEventData) {
     console.log("item loading " + args.index.toString())
 }
 
-export function gridViewLoadMoreItems(args: observable.EventData)
-{
+export function gridViewLoadMoreItems(args: observable.EventData) {
     console.log("load more items");
 }

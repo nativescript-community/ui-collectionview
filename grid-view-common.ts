@@ -27,7 +27,7 @@ const CHANGE = "change";
 
 export module knownTemplates
 {
-    export var itemTemplate = "itemTemplate";
+    export let itemTemplate = "itemTemplate";
 }
 
 function onItemsPropertyChanged(data: dependencyObservable.PropertyChangeData)

@@ -8,7 +8,7 @@
         ], 
         typeScriptDeclarations:[
             "**/*.d.ts",
-            "!_references.d.ts",
+            "!references.d.ts",
             "!sample/**/*.*",
             "!node_modules/**/*.*",
             "!bin/**/*.*"
@@ -31,9 +31,8 @@
         {
             build:
             {
-                src: localConfig.typeScriptSrc
-                , options:
-                {
+                src: localConfig.typeScriptSrc,
+                options: {
                     configuration: grunt.file.readJSON("./tslint.json")
                 }
             }
