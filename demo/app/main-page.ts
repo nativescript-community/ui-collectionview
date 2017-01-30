@@ -24,7 +24,7 @@ export function gridViewItemTap(args: gridView.GridItemEventData) {
 }
 
 export function gridViewItemLoading(args: gridView.GridItemEventData) {
-    console.log("item loading " + args.index.toString())
+    console.log("item loading " + args.index.toString());
 }
 
 export function gridViewLoadMoreItems(args: observable.EventData) {

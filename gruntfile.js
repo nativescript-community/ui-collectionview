@@ -3,13 +3,13 @@
         typeScriptSrc: [
             "**/*.ts",
             "!node_modules/**/*.*",
-            "!sample/**/*.*",
+            "!demo/**/*.*",
             "!bin/**/*.*"
         ], 
         typeScriptDeclarations:[
             "**/*.d.ts",
             "!references.d.ts",
-            "!sample/**/*.*",
+            "!demo/**/*.*",
             "!node_modules/**/*.*",
             "!bin/**/*.*"
         ],
