@@ -1,6 +1,6 @@
 <Page xmlns="http://schemas.nativescript.org/tns.xsd" xmlns:gv="nativescript-grid-view" loaded="pageLoaded">
   <GridLayout>
-    <gv:GridView items="{{ items }}"  verticalSpacing="5" horizontalSpacing="5" colWidth="100" rowHeight="75" padding="5"
+    <gv:GridView items="{{ items }}"  verticalSpacing="5" horizontalSpacing="5" colWidth="100" rowHeight="75" style="padding: 5;"
                  itemTap="gridViewItemTap" itemLoading="gridViewItemLoading" loadMoreItems="gridViewLoadMoreItems">
       <gv:GridView.itemTemplate>
         <GridLayout backgroundColor="#33ffff">

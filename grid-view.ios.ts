@@ -217,89 +217,19 @@ export class GridView extends common.GridView {
 
 //#region Styling
 export class GridViewStyler implements style.Styler {
-    private static setSectionInset(gridView: GridView, padding: common.Padding) {
-        let flowLayout = <UICollectionViewFlowLayout>gridView.ios.collectionViewLayout;
-        let currentInset = flowLayout.sectionInset;
-
-        flowLayout.sectionInset = {
-            top: padding.top !== undefined ? padding.top : currentInset.top,
-            right: padding.right !== undefined ? padding.right : currentInset.right,
-            bottom: padding.bottom !== undefined ? padding.bottom : currentInset.bottom,
-            left: padding.left !== undefined ? padding.left : currentInset.left
-        };
+    private static setNativePaddingsProperty(view: GridView, newValue: any) {
+        (<UICollectionViewFlowLayout>view.ios.collectionViewLayout).sectionInset =
+            UIEdgeInsetsFromString(`{${newValue.top},${newValue.left},${newValue.bottom},${newValue.right}}`);
     }
 
-    //#region Padding Top Property
-    private static setPaddingTop(gridView: GridView, newValue: number) {
-        GridViewStyler.setSectionInset(gridView, { top: newValue });
+    private static resetNativePaddingsProperty(view: GridView, nativeValue: any) {
+        (<UICollectionViewFlowLayout>view.ios.collectionViewLayout).sectionInset = UIEdgeInsetsFromString("{0,0,0,0}");
     }
-    private static resetPaddingTop(gridView: GridView, nativeValue: number) {
-        GridViewStyler.setPaddingTop(gridView, nativeValue);
-    }
-    private static getNativePaddingTopValue(gridView: GridView): any {
-        return (<UICollectionViewFlowLayout>gridView.ios.collectionViewLayout).sectionInset.top;
-    }
-    //#endregion
-
-    //#region Padding Right Property
-    private static setPaddingRight(gridView: GridView, newValue: number) {
-        GridViewStyler.setSectionInset(gridView, { right: newValue });
-    }
-    private static resetPaddingRight(gridView: GridView, nativeValue: number) {
-        GridViewStyler.setPaddingRight(gridView, nativeValue);
-    }
-    private static getNativePaddingRightValue(gridView: GridView): any {
-        return (<UICollectionViewFlowLayout>gridView.ios.collectionViewLayout).sectionInset.right;
-    }
-    //#endregion
-
-    //#region Padding Bottom Property
-    private static setPaddingBottom(gridView: GridView, newValue: number) {
-        GridViewStyler.setSectionInset(gridView, { bottom: newValue });
-    }
-    private static resetPaddingBottom(gridView: GridView, nativeValue: number) {
-        GridViewStyler.setPaddingBottom(gridView, nativeValue);
-    }
-    private static getNativePaddingBottomValue(gridView: GridView): any {
-        return (<UICollectionViewFlowLayout>gridView.ios.collectionViewLayout).sectionInset.bottom;
-    }
-    //#endregion
-
-    //#region Padding Left Property
-    private static setPaddingLeft(gridView: GridView, newValue: number) {
-        GridViewStyler.setSectionInset(gridView, { left: newValue });
-    }
-    private static resetPaddingLeft(gridView: GridView, nativeValue: number) {
-        GridViewStyler.setPaddingLeft(gridView, nativeValue);
-    }
-    private static getNativePaddingLeftValue(gridView: GridView): any {
-        return (<UICollectionViewFlowLayout>gridView.ios.collectionViewLayout).sectionInset.left;
-    }
-    //#endregion
 
     public static registerHandlers() {
-        style.registerHandler(style.paddingTopProperty,
-            new style.StylePropertyChangedHandler(GridViewStyler.setPaddingTop,
-                GridViewStyler.resetPaddingTop,
-                GridViewStyler.getNativePaddingTopValue),
-            "GridView");
-
-        style.registerHandler(style.paddingRightProperty,
-            new style.StylePropertyChangedHandler(GridViewStyler.setPaddingRight,
-                GridViewStyler.resetPaddingRight,
-                GridViewStyler.getNativePaddingRightValue),
-            "GridView");
-
-        style.registerHandler(style.paddingBottomProperty,
-            new style.StylePropertyChangedHandler(GridViewStyler.setPaddingBottom,
-                GridViewStyler.resetPaddingBottom,
-                GridViewStyler.getNativePaddingBottomValue),
-            "GridView");
-
-        style.registerHandler(style.paddingLeftProperty,
-            new style.StylePropertyChangedHandler(GridViewStyler.setPaddingLeft,
-                GridViewStyler.resetPaddingLeft,
-                GridViewStyler.getNativePaddingLeftValue),
+        style.registerHandler(style.nativePaddingsProperty,
+            new style.StylePropertyChangedHandler(GridViewStyler.setNativePaddingsProperty,
+                GridViewStyler.resetNativePaddingsProperty),
             "GridView");
     }
 

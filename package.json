@@ -1,13 +1,13 @@
 {
   "name": "nativescript-grid-view",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "A NativeScript GridView widget.",
   "main": "grid-view",
   "typings": "grid-view.d.ts",
   "nativescript": {
     "platforms": {
-      "ios": "2.3.0",
-      "android": "2.3.0"
+      "ios": "2.5.0",
+      "android": "2.5.0"
     }
   },
 
@@ -28,8 +28,8 @@
   "devDependencies": {
     "typescript": "2.1.4",
     "tslint": "4.2.0",
-    "tns-core-modules-declarations": "2.3.1",
-    "tns-platform-declarations": "2.3.0",
+    "tns-core-modules-declarations": "2.5.0",
+    "tns-platform-declarations": "2.5.2",
 
     "grunt": "0.4.5",
     "grunt-tslint": "4.0.0",

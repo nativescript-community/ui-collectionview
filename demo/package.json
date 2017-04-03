@@ -2,19 +2,19 @@
   "nativescript": {
     "id": "net.tangrainc.gridviewsample",
     "tns-ios": {
-      "version": "2.4.0"
+      "version": "2.5.0"
     },
     "tns-android": {
-      "version": "2.4.1"
+      "version": "2.5.0"
     }
   },
   "scripts": {
-    "android": "npm uninstall nativescript-grid-view && tns deploy android",
-    "ios": "npm uninstall nativescript-grid-view && tns deploy ios"
+    "android": "npm uninstall nativescript-grid-view && tns run android",
+    "ios": "npm uninstall nativescript-grid-view && tns run ios --emulator"
   },
   "dependencies": {
-    "tns-core-modules": "2.4.4",
-    "nativescript-grid-view": "file:../bin/dist"
+    "nativescript-grid-view": "file:../bin/dist",
+    "tns-core-modules": "^2.5.0"
   },
   "devDependencies": {
     "babel-traverse": "6.21.0",

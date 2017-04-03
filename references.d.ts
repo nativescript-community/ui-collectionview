@@ -7,5 +7,5 @@
 /// <reference path="node_modules/tns-core-modules-declarations/tns-core-modules.d.ts" />
 /// <reference path="node_modules/tns-core-modules-declarations/lib.dom.d.ts" />
 
-/// <reference path="node_modules/tns-platform-declarations/tns-core-modules/android17.d.ts" />
-/// <reference path="node_modules/tns-platform-declarations/tns-core-modules/ios/ios.d.ts" />
+/// <reference path="node_modules/tns-platform-declarations/android/android17.d.ts" />
+/// <reference path="node_modules/tns-platform-declarations/ios/ios.d.ts" />
