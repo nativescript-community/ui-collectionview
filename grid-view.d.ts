@@ -1,5 +1,5 @@
 /*! *****************************************************************************
-Copyright (c) 2015 Tangra Inc.
+Copyright (c) 2017 Tangra Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -14,43 +14,31 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ***************************************************************************** */
 
-declare module "nativescript-grid-view"
-{
-    import view = require("ui/core/view");
-    import dependencyObservable = require("ui/core/dependency-observable");
-    import observable = require("data/observable");
+import { Length, Template, View } from "ui/core/view";
+import { ItemsSource } from "ui/list-view";
+import { EventData } from "data/observable";
 
-    export class GridView extends view.View
-    {
-        public static itemLoadingEvent: string;
-        public static itemTapEvent: string;
-        public static loadMoreItemsEvent: string;
+export class GridView extends View {
+    public static itemLoadingEvent: string;
+    public static itemTapEvent: string;
+    public static loadMoreItemsEvent: string;
 
-        public static itemsProperty: dependencyObservable.Property;
-        public static itemTemplateProperty: dependencyObservable.Property;
-        public static colWidthProperty: dependencyObservable.Property;
-        public static rowHeightProperty: dependencyObservable.Property;
-        public static verticalSpacingProperty: dependencyObservable.Property;
-        public static horizontalSpacingProperty: dependencyObservable.Property;
+    public items: any[] | ItemsSource;
+    public itemTemplate: string | Template;
+    public rowHeight: Length;
+    public colWidth: Length;
+    public verticalSpacing: Length;
+    public horizontalSpacing: Length;
 
-        items: any;
-        itemTemplate: string | view.Template;
-        rowHeight: number;
-        colWidth: number;
-        verticalSpacing: number;
-        horizontalSpacing: number;
+    public ios: any; /* UICollectionView */
+    public android: any; /* android.widget.GridView */
 
-        ios: UICollectionView;
-        android: android.widget.GridView;
+    public refresh();
+}
 
-        public refresh();
-    }
-
-    export interface GridItemEventData extends observable.EventData
-    {
-        eventName: string;
-        object: GridView;
-        index: number;
-        view: view.View;
-    }
+export interface GridItemEventData extends EventData {
+    eventName: string;
+    object: GridView;
+    index: number;
+    view: View;
 }

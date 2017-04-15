@@ -1,5 +1,5 @@
 /*! *****************************************************************************
-Copyright (c) 2015 Tangra Inc.
+Copyright (c) 2017 Tangra Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -14,230 +14,147 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ***************************************************************************** */
 
-import observable = require("data/observable");
-import proxy = require("ui/core/proxy");
-import definition = require("nativescript-grid-view");
-import dependencyObservable = require("ui/core/dependency-observable");
-import builder = require("ui/builder");
-import view = require("ui/core/view");
+import { Observable } from "data/observable";
+import { parse } from "ui/builder";
+import { CoercibleProperty, Length, Property, Template, View } from "ui/core/view";
+import { ItemsSource } from "ui/list-view";
+import { GridView as GridViewDefinition } from ".";
 
-const ITEMSCHANGED = "_itemsChanged";
 const GRIDVIEW = "GridView";
 const CHANGE = "change";
 
-export module knownTemplates
-{
-    export let itemTemplate = "itemTemplate";
+const autoEffectiveRowHeight = 100;
+const autoEffectiveColWidth = 100;
+const autoEffectiveSpacing = 10;
+
+export * from "ui/core/view";
+
+export module knownTemplates {
+    export const itemTemplate = "itemTemplate";
 }
 
-function onItemsPropertyChanged(data: dependencyObservable.PropertyChangeData)
-{
-    let gridView = <definition.GridView>data.object;
-    let itemsChanged = gridView[ITEMSCHANGED];
-
-    if (data.oldValue instanceof observable.Observable)
-    {
-        (<observable.Observable>data.oldValue).off(CHANGE, itemsChanged);
-    }
-
-    if (data.newValue instanceof observable.Observable)
-    {
-        (<observable.Observable>data.newValue).on(CHANGE, itemsChanged);
-    }
-
-    gridView.refresh();
-}
-
-function onItemTemplatePropertyChanged(data: dependencyObservable.PropertyChangeData)
-{
-    let gridView = <definition.GridView>data.object;
-    gridView.refresh();
-}
-
-function onColWidthPropertyChanged(data: dependencyObservable.PropertyChangeData)
-{
-    let gridView = <definition.GridView>data.object;
-    gridView.refresh();
-}
-
-function onRowHeightPropertyChanged(data: dependencyObservable.PropertyChangeData)
-{
-    let gridView = <definition.GridView>data.object;
-    gridView.refresh();
-}
-
-function onSpacingPropertyChanged(data: dependencyObservable.PropertyChangeData)
-{
-    let gridView = <definition.GridView>data.object;
-    gridView.refresh();
-}
-
-export abstract class GridView extends view.View implements definition.GridView
-{
+export abstract class GridViewBase extends View implements GridViewDefinition {
     public static itemLoadingEvent = "itemLoading";
     public static itemTapEvent = "itemTap";
     public static loadMoreItemsEvent = "loadMoreItems";
 
-    public static itemsProperty = new dependencyObservable.Property(
-        "items"
-        , GRIDVIEW
-        , new proxy.PropertyMetadata(
-            undefined,
-            dependencyObservable.PropertyMetadataSettings.AffectsLayout,
-            onItemsPropertyChanged
-            )
-        );
+    public itemTemplate: string | Template;
+    public items: any[] | ItemsSource;
+    public isItemsSourceIn: boolean;
+    public rowHeight: Length;
+    public colWidth: Length;
+    public verticalSpacing: Length;
+    public horizontalSpacing: Length;
+    public _effectiveRowHeight: number;
+    public _effectiveColWidth: number;
+    public _effectiveVerticalSpacing: number;
+    public _effectiveHorizontalSpacing: number;
 
-    public static itemTemplateProperty = new dependencyObservable.Property(
-        "itemTemplate"
-        , GRIDVIEW
-        , new proxy.PropertyMetadata(
-            undefined,
-            dependencyObservable.PropertyMetadataSettings.AffectsLayout,
-            onItemTemplatePropertyChanged
-            )
-        );
+    public abstract refresh();
 
-    public static colWidthProperty = new dependencyObservable.Property(
-        "colWidth"
-        , GRIDVIEW
-        , new proxy.PropertyMetadata(
-            100,
-            dependencyObservable.PropertyMetadataSettings.AffectsLayout,
-            onColWidthPropertyChanged
-            )
-        );
+    public _getItemTemplateContent(): View {
+        let view;
 
-    public static rowHeightProperty = new dependencyObservable.Property(
-        "rowHeight"
-        , GRIDVIEW
-        , new proxy.PropertyMetadata(
-            100,
-            dependencyObservable.PropertyMetadataSettings.AffectsLayout,
-            onRowHeightPropertyChanged
-            )
-        );
-
-    public static verticalSpacingProperty = new dependencyObservable.Property(
-        "verticalSpacing"
-        , GRIDVIEW
-        , new proxy.PropertyMetadata(
-            10,
-            dependencyObservable.PropertyMetadataSettings.AffectsLayout,
-            onSpacingPropertyChanged
-            )
-        );
-
-    public static horizontalSpacingProperty = new dependencyObservable.Property(
-        "horizontalSpacing"
-        , GRIDVIEW
-        , new proxy.PropertyMetadata(
-            10,
-            dependencyObservable.PropertyMetadataSettings.AffectsLayout,
-            onSpacingPropertyChanged
-            )
-        );
-
-    private _itemsChanged: (args: observable.EventData) => void;
-
-    constructor()
-    {
-        super();
-        this._itemsChanged = (args: observable.EventData) => { this.refresh(); };
-    }
-
-    get items(): any
-    {
-        return this._getValue(GridView.itemsProperty);
-    }
-    set items(value: any)
-    {
-        this._setValue(GridView.itemsProperty, value);
-    }
-
-    get itemTemplate(): string | view.Template
-    {
-        return this._getValue(GridView.itemTemplateProperty);
-    }
-    set itemTemplate(value: string | view.Template)
-    {
-        this._setValue(GridView.itemTemplateProperty, value);
-    }
-
-    get colWidth(): number
-    {
-        return this._getValue(GridView.colWidthProperty);
-    }
-    set colWidth(value: number)
-    {
-        this._setValue(GridView.colWidthProperty, value);
-    }
-
-    get rowHeight(): number
-    {
-        return this._getValue(GridView.rowHeightProperty);
-    }
-    set rowHeight(value: number)
-    {
-        this._setValue(GridView.rowHeightProperty, value);
-    }
-
-    get verticalSpacing(): number
-    {
-        return this._getValue(GridView.verticalSpacingProperty);
-    }
-    set verticalSpacing(value: number)
-    {
-        this._setValue(GridView.verticalSpacingProperty, value);
-    }
-
-    get horizontalSpacing(): number
-    {
-        return this._getValue(GridView.horizontalSpacingProperty);
-    }
-    set horizontalSpacing(value: number)
-    {
-        this._setValue(GridView.horizontalSpacingProperty, value);
-    }
-
-    public abstract refresh()
-
-    public _getItemTemplateContent(): view.View
-    {
-        let v;
-
-        if (this.itemTemplate && this.items)
-        {
-            v = builder.parse(this.itemTemplate, this);
+        if (this.itemTemplate) {
+            view = parse(this.itemTemplate, this);
         }
 
-        return v;
+        return view;
     }
 
-    public _prepareItem(item: view.View, index: number)
-    {
-        if (item)
-        {
-            let dataItem = this._getDataItem(index);
-            if (!(dataItem instanceof observable.Observable))
-            {
-                item.bindingContext = null;
-            }
-            item.bindingContext = dataItem;
-            item._inheritProperties(this);
+    public _prepareItem(item: View, index: number) {
+        if (item) {
+            item.bindingContext = this._getDataItem(index);
         }
     }
 
-    private _getDataItem(index: number): any
-    {
-        return this.items.getItem ? this.items.getItem(index) : this.items[index];
+    private _getDataItem(index: number): any {
+        return this.isItemsSourceIn ? (this.items as ItemsSource).getItem(index) : this.items[index];
     }
 }
 
-export interface Padding
-{
-    top?: number;
-    right?: number;
-    bottom?: number;
-    left?: number;
-}
+export const itemsProperty = new Property<GridViewBase, any[] | ItemsSource>({
+    name: "items",
+    valueChanged: (target, oldValue, newValue) => {
+        const getItem = newValue && (newValue as ItemsSource).getItem;
+
+        target.isItemsSourceIn = typeof getItem === "function";
+        target.refresh();
+    }
+});
+itemsProperty.register(GridViewBase);
+
+export const itemTemplateProperty = new Property<GridViewBase, string | Template>({
+    name: "itemTemplate",
+    valueChanged: (target) => {
+        target.refresh();
+    }
+});
+itemTemplateProperty.register(GridViewBase);
+
+const defaultRowHeight: Length = "auto";
+export const rowHeightProperty = new CoercibleProperty<GridViewBase, Length>({
+    name: "rowHeight",
+    defaultValue: defaultRowHeight,
+    equalityComparer: Length.equals,
+    valueConverter: Length.parse,
+    coerceValue: (target, value) => {
+        // We coerce to default value if we don't have display density.
+        return target.nativeView ? value : defaultRowHeight;
+    },
+    valueChanged: (target, oldValue, newValue) => {
+        target._effectiveRowHeight = Length.toDevicePixels(newValue, autoEffectiveRowHeight);
+        target.refresh();
+    }
+});
+rowHeightProperty.register(GridViewBase);
+
+const defaultColWidth: Length = "auto";
+export const colWidthProperty = new CoercibleProperty<GridViewBase, Length>({
+    name: "colWidth",
+    defaultValue: defaultColWidth,
+    equalityComparer: Length.equals,
+    valueConverter: Length.parse,
+    coerceValue: (target, value) => {
+        // We coerce to default value if we don't have display density.
+        return target.nativeView ? value : defaultColWidth;
+    },
+    valueChanged: (target, oldValue, newValue) => {
+        target._effectiveColWidth = Length.toDevicePixels(newValue, autoEffectiveColWidth);
+        target.refresh();
+    }
+});
+colWidthProperty.register(GridViewBase);
+
+const defaultSpacing: Length = "auto";
+export const verticalSpacingProperty = new CoercibleProperty<GridViewBase, Length>({
+    name: "verticalSpacing",
+    defaultValue: defaultColWidth,
+    equalityComparer: Length.equals,
+    valueConverter: Length.parse,
+    coerceValue: (target, value) => {
+        // We coerce to default value if we don't have display density.
+        return target.nativeView ? value : defaultSpacing;
+    },
+    valueChanged: (target, oldValue, newValue) => {
+        target._effectiveVerticalSpacing = Length.toDevicePixels(newValue, autoEffectiveSpacing);
+        target.refresh();
+    }
+});
+verticalSpacingProperty.register(GridViewBase);
+
+export const horizontalSpacingProperty = new CoercibleProperty<GridViewBase, Length>({
+    name: "horizontalSpacing",
+    defaultValue: defaultSpacing,
+    equalityComparer: Length.equals,
+    valueConverter: Length.parse,
+    coerceValue: (target, value) => {
+        // We coerce to default value if we don't have display density.
+        return target.nativeView ? value : defaultSpacing;
+    },
+    valueChanged: (target, oldValue, newValue) => {
+        target._effectiveHorizontalSpacing = Length.toDevicePixels(newValue, autoEffectiveSpacing);
+        target.refresh();
+    }
+});
+horizontalSpacingProperty.register(GridViewBase);

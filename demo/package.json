@@ -1,11 +1,11 @@
 {
   "nativescript": {
-    "id": "net.tangrainc.gridviewsample",
-    "tns-ios": {
-      "version": "2.5.0"
-    },
+    "id": "com.tangrainc.gridviewsample",
     "tns-android": {
       "version": "2.5.0"
+    },
+    "tns-ios": {
+      "version": "3.0.0-rc.1"
     }
   },
   "scripts": {
@@ -14,14 +14,14 @@
   },
   "dependencies": {
     "nativescript-grid-view": "file:../bin/dist",
-    "tns-core-modules": "^2.5.0"
+    "tns-core-modules": "rc"
   },
   "devDependencies": {
     "babel-traverse": "6.21.0",
     "babel-types": "6.21.0",
     "babylon": "6.14.1",
     "lazy": "1.0.11",
-    "nativescript-dev-typescript": "0.3.5",
-    "typescript": "2.1.4"
+    "nativescript-dev-typescript": "0.4.2",
+    "typescript": "2.2.2"
   }
 }

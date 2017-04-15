@@ -1,13 +1,19 @@
 {
   "name": "nativescript-grid-view",
-  "version": "1.4.2",
+  "version": "3.0.0-rc.1",
   "description": "A NativeScript GridView widget.",
   "main": "grid-view",
   "typings": "grid-view.d.ts",
   "nativescript": {
     "platforms": {
-      "ios": "2.5.0",
-      "android": "2.5.0"
+      "ios": "3.0.0-rc.1",
+      "android": "3.0.0-rc.1"
+    },
+    "plugin": {
+      "nan": "false",
+      "pan": "true",
+      "core3": "true",
+      "category": "Interface"
     }
   },
 
@@ -26,17 +32,15 @@
   "license": "Apache-2.0",
 
   "devDependencies": {
-    "typescript": "2.1.4",
-    "tslint": "4.2.0",
-    "tns-core-modules-declarations": "2.5.0",
-    "tns-platform-declarations": "2.5.2",
+    "typescript": "~2.2.0",
+    "tslint": "^5.1.0",
+    "tns-core-modules": "rc",
+    "tns-platform-declarations": "rc",
 
-    "grunt": "0.4.5",
-    "grunt-tslint": "4.0.0",
-    "grunt-contrib-copy": "0.8.1",
-    "grunt-contrib-clean": "0.6.0",
-    "grunt-ts": "6.0.0-beta.3",
-    "grunt-exec": "0.4.6"
+    "grunt": "1.0.1",
+    "grunt-contrib-copy": "1.0.0",
+    "grunt-contrib-clean": "1.1.0",
+    "grunt-exec": "2.0.0"
   }
 
 }
