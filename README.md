@@ -55,26 +55,6 @@ String value used when hooking to itemTapEvent event.
 * **loadMoreItemsEvent** - *String*  
 String value used when hooking to itemTapEvent event.
 
-* **itemsProperty** - *[Property](http://docs.nativescript.org/ApiReference/ui/core/dependency-observable/Property.html)*  
-Represents the observable property backing the items property of each GridView instance.
-
-* **itemTemplateProperty** - *[Property](http://docs.nativescript.org/ApiReference/ui/core/dependency-observable/Property.html)*  
-Represents the item template property of each GridView instance.
-
-* **colWidthProperty** - *[Property](http://docs.nativescript.org/ApiReference/ui/core/dependency-observable/Property.html)*  
-Represents the column width property for each column in the GridView instance.
-
-* **rowHeightProperty** - *[Property](http://docs.nativescript.org/ApiReference/ui/core/dependency-observable/Property.html)*  
-Represents the row height property for each row in the GridView instance.
- 
-* **verticalSpacingProperty** - *[Property](http://docs.nativescript.org/ApiReference/ui/core/dependency-observable/Property.html)*  
-Represents the vertical spacing property between each item in the GridView instance. 
-
-* **horizontalSpacingProperty** - *[Property](http://docs.nativescript.org/ApiReference/ui/core/dependency-observable/Property.html)*  
-Represents the horizontal spacing property between each item in the GridView instance.   
-Note that this is the minimum space to be left horizontally between items. It might grow depending on screen and item size. 
-
-
 ### Instance Properties
 * **ios** - *[UICollectionView](https://developer.apple.com/library/ios/documentation/UIKit/Reference/UICollectionView_class/)*  
 Gets the native iOS view that represents the user interface for this component. Valid only when running on iOS.
