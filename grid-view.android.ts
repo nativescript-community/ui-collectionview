@@ -132,7 +132,7 @@ export class GridView extends GridViewBase {
         }
 
         const layoutManager = this.nativeView.getLayoutManager() as android.support.v7.widget.GridLayoutManager;
-        const spanCount = Math.max(Math.floor(this._innerWidth / this._effectiveColWidth), 1);
+        const spanCount = Math.max(Math.floor(this._innerWidth / this._effectiveColWidth), 1) || 1;
 
         layoutManager.setSpanCount(spanCount);
         this.nativeView.getAdapter().notifyDataSetChanged();

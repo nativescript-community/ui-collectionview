@@ -103,7 +103,7 @@ Forces the GridView to reload all its items.
 <!-- test-page.xml -->
 <Page xmlns="http://schemas.nativescript.org/tns.xsd" xmlns:gv="nativescript-grid-view" loaded="pageLoaded">
   <GridLayout>
-    <gv:GridView items="{{ items }}" colWidth="25%" rowHeight="15%" padding="5" itemTap="gridViewItemTap" itemLoading="gridViewItemLoading" loadMoreItems="gridViewLoadMoreItems">
+    <gv:GridView items="{{ items }}" colWidth="24%" rowHeight="15%" padding="5" itemTap="gridViewItemTap" itemLoading="gridViewItemLoading" loadMoreItems="gridViewLoadMoreItems">
       <gv:GridView.itemTemplate>
         <GridLayout backgroundColor="#33ffff" style="margin: 5">
           <Label text="{{ value }}" verticalAlignment="center"/>
