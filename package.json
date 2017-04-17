@@ -25,6 +25,7 @@
   "keywords": [
     "NativeScript",
     "GridView",
+    "RecyclerView",
     "UICollectionView", 
     "tangra"
   ],
