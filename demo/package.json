@@ -1,15 +1,15 @@
 {
   "nativescript": {
     "id": "com.tangrainc.gridviewsample",
-    "tns-android": {
-      "version": "2.5.0"
-    },
     "tns-ios": {
+      "version": "3.0.0-rc.1"
+    },
+    "tns-android": {
       "version": "3.0.0-rc.1"
     }
   },
   "scripts": {
-    "android": "npm uninstall nativescript-grid-view && tns run android",
+    "android": "npm uninstall nativescript-grid-view && tns platform remove android && tns platform add android@rc && tns run android --emulator",
     "ios": "npm uninstall nativescript-grid-view && tns run ios --emulator"
   },
   "dependencies": {

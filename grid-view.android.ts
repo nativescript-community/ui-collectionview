@@ -1,354 +1,276 @@
-﻿// /*! *****************************************************************************
-// Copyright (c) 2015 Tangra Inc.
+﻿/*! *****************************************************************************
+Copyright (c) 2017 Tangra Inc.
 
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-//     http://www.apache.org/licenses/LICENSE-2.0
+    http://www.apache.org/licenses/LICENSE-2.0
 
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-// ***************************************************************************** */
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+***************************************************************************** */
 
-// import observable = require("data/observable");
-// import definition = require("nativescript-grid-view");
-// import common = require("./grid-view-common");
-// import utils = require("utils/utils");
-// import layoutBase = require("ui/layouts/layout-base");
-// import stackLayout = require("ui/layouts/stack-layout");
-// import view = require("ui/core/view");
-// import style = require("ui/styling/style");
+import { Length, View } from "ui/core/view";
+import * as utils from "utils/utils";
 
-// const ITEMLOADING = common.GridView.itemLoadingEvent;
-// const LOADMOREITEMS = common.GridView.loadMoreItemsEvent;
-// const ITEMTAP = common.GridView.itemTapEvent;
-// const REALIZED_INDEX = "realizedIndex";
+import {
+    GridViewBase,
+    paddingBottomProperty,
+    paddingLeftProperty,   
+    paddingRightProperty,
+    paddingTopProperty
+} from "./grid-view-common";
 
-// global.moduleMerge(common, exports);
+import { GridItemEventData } from ".";
 
-// function notifyForItemAtIndex(gridView: definition.GridView, view: any, eventName: string, index: number)
-// {
-//     let args =
-//         <definition.GridItemEventData>
-//         {
-//             eventName: eventName
-//             , object: gridView
-//             , index: index
-//             , view: view
-//         };
-//     gridView.notify(args);
-//     return args;
-// }
+export * from "./grid-view-common";
 
-// export class GridView extends common.GridView
-// {
-//     private _android: android.widget.GridView;
-//     private _androidViewId: number;
-//     public _realizedItems = {};
+export class GridView extends GridViewBase {
+    public nativeView: android.support.v7.widget.RecyclerView;
+    public _realizedItems = new Map<android.view.View, View>();
 
-//     public _createUI()
-//     {
-//         this._android = new android.widget.GridView(this._context);
-//         this._android.setBackgroundColor(android.graphics.Color.TRANSPARENT);
-//         // Fixes issue with black random black items when scrolling
-//         this._android.setCacheColorHint(android.graphics.Color.TRANSPARENT);
+    public createNativeView() {
+        const recyclerView = new GridViewRecyclerView(this._context, new WeakRef(this));
 
-//         if (!this._androidViewId)
-//         {
-//             this._androidViewId = android.view.View.generateViewId();
-//         }
-//         this._android.setId(this._androidViewId);
+        const adapter = new GridViewAdapter(new WeakRef(this));
+        adapter.setHasStableIds(true);
+        recyclerView.setAdapter(adapter);
+        (recyclerView as any).adapter = adapter;
 
-//         this.android.setAdapter(new GridViewAdapter(this));
-//         this.android.setNumColumns(android.widget.GridView.AUTO_FIT);
-//         this.android.setStretchMode(android.widget.GridView.STRETCH_SPACING);
-//         this._resetNativeColumnAndSpacingSettings();
+        const layoutManager = new android.support.v7.widget.GridLayoutManager(this._context, 1);
+        recyclerView.setLayoutManager(layoutManager);
+        (recyclerView as any).layoutManager = layoutManager;
 
-//         let that = new WeakRef(this);
+        const scrollListener = new GridViewScrollListener(new WeakRef(this));
+        recyclerView.addOnScrollListener(scrollListener);
+        (recyclerView as any).scrollListener = scrollListener;
 
-//         this.android.setOnScrollListener(new android.widget.AbsListView.OnScrollListener(<utils.Owned & android.widget.AbsListView.IOnScrollListener>{
-//             onScrollStateChanged:
-//             function (view: android.widget.AbsListView, scrollState: number)
-//             {
-//                 // Empty
-//             },
-//             onScroll:
-//             function (view: android.widget.AbsListView, firstVisibleItem: number, visibleItemCount: number, totalItemCount: number)
-//             {
-//                 let owner: GridView = this.owner;
-//                 if (!owner)
-//                 {
-//                     return;
-//                 }
+        return recyclerView;
+    }
 
-//                 if (totalItemCount > 0
-//                     && firstVisibleItem + visibleItemCount === totalItemCount
-//                 )
-//                 {
-//                     owner.notify(<observable.EventData>{ eventName: LOADMOREITEMS, object: owner });
-//                 }
-//             },
-//             get owner() { return that.get(); }
-//         }));
+    public initNativeView() {
+        super.initNativeView();
 
-//         this.android.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener({
-//             onItemClick:
-//             function (parent: any, convertView: android.view.View, index: number, id: number)
-//             {
-//                 let owner = that.get();
+        const nativeView = this.nativeView as any;
+        nativeView.adapter.owner = new WeakRef(this);
+        nativeView.scrollListener.owner = new WeakRef(this);
+        nativeView.owner = new WeakRef(this);
+    }
 
-//                 notifyForItemAtIndex(owner, owner._getRealizedView(convertView), ITEMTAP, index);
-//             }
-//         }));
-//     }
+    public disposeNativeView() {
+        // clear the cache
+        this.eachChildView((view) => {
+            view.parent._removeView(view);
+            return true;
+        });
+        this._realizedItems.clear();
 
-//     get android(): android.widget.GridView
-//     {
-//         return this._android;
-//     }
+        const nativeView = this.nativeView as any;        
+        this.nativeView.removeOnScrollListener(nativeView.scrollListener);
 
-//     private _resetNativeColumnAndSpacingSettings()
-//     {
-//         this.android.setColumnWidth(this.colWidth * utils.layout.getDisplayDensity());
-//         this.android.setVerticalSpacing(this.verticalSpacing * utils.layout.getDisplayDensity());
-//         this.android.setHorizontalSpacing(this.horizontalSpacing * utils.layout.getDisplayDensity());
-//     }
+        nativeView.scrollListener = null;
+        nativeView.adapter = null;
+        nativeView.layoutManager = null;
 
-//     public refresh()
-//     {
-//         if (!this._android
-//             || !this._android.getAdapter()
-//             )
-//         {
-//             return;
-//         }
+        super.disposeNativeView();
+    }
 
-//         this._resetNativeColumnAndSpacingSettings();
-//         (<GridViewAdapter>this.android.getAdapter()).notifyDataSetChanged();
-//     }
+    get android(): android.support.v7.widget.RecyclerView {
+        return this.nativeView;
+    }
 
-//     public _onDetached(force?: boolean)
-//     {
-//         super._onDetached(force);
+    get _childrenCount(): number {
+        return this._realizedItems.size;
+    }
 
-//         // clear the cache
-//         let keys = Object.keys(this._realizedItems);
-//         let i;
-//         let length = keys.length;
-//         let view: view.View;
-//         let key;
+    public [paddingTopProperty.getDefault](): number {
+        return ((this.nativeView as any) as android.view.View).getPaddingTop();
+    }
+    public [paddingTopProperty.setNative](value: Length) {
+        this._setPadding({ top: this.effectivePaddingTop });
+    }
 
-//         for (i = 0; i < length; i++)
-//         {
-//             key = keys[i];
-//             view = this._realizedItems[key];
-//             view.parent._removeView(view);
-//             delete this._realizedItems[key];
-//         }
-//     }
+    public [paddingRightProperty.getDefault](): number {
+        return ((this.nativeView as any) as android.view.View).getPaddingRight();
+    }
+    public [paddingRightProperty.setNative](value: Length) {
+        this._setPadding({ right: this.effectivePaddingRight });
+    }
 
-//     public _getRealizedView(convertView: android.view.View)
-//     {
-//         if (!convertView)
-//         {
-//             return this._getItemTemplateContent();
-//         }
+    public [paddingBottomProperty.getDefault](): number {
+        return ((this.nativeView as any) as android.view.View).getPaddingBottom();
+    }
+    public [paddingBottomProperty.setNative](value: Length) {
+        this._setPadding({ bottom: this.effectivePaddingBottom });
+    }
 
-//         return this._realizedItems[convertView.hashCode()];
-//     }
-// }
+    public [paddingLeftProperty.getDefault](): number {
+        return ((this.nativeView as any) as android.view.View).getPaddingLeft();
+    }
+    public [paddingLeftProperty.setNative](value: Length) {
+        this._setPadding({ left: this.effectivePaddingLeft });
+    }
 
-// class GridViewAdapter extends android.widget.BaseAdapter
-// {
-//     private _gridView: GridView;
+    public eachChildView(callback: (child: View) => boolean): void {
+        this._realizedItems.forEach((view, key) => {
+            callback(view);
+        });
+    }
 
-//     constructor(gridView: GridView)
-//     {
-//         super();
+    public onLayout(left: number, top: number, right: number, bottom: number) {
+        super.onLayout(left, top, right, bottom);
+        this.refresh();
+    }
 
-//         this._gridView = gridView;
+    public refresh() {
+        if (!this.nativeView || !this.nativeView.getAdapter()) {
+            return;
+        }
 
-//         return global.__native(this);
-//     }
+        const layoutManager = this.nativeView.getLayoutManager() as android.support.v7.widget.GridLayoutManager;
+        const spanCount = Math.max(Math.floor(this._innerWidth / this._effectiveColWidth), 1);
 
-//     public getCount()
-//     {
-//         return this._gridView && this._gridView.items ? this._gridView.items.length : 0;
-//     }
+        layoutManager.setSpanCount(spanCount);
+        this.nativeView.getAdapter().notifyDataSetChanged();
+    }
 
-//     public getItem(i: number)
-//     {
-//         if (this._gridView
-//             && this._gridView.items
-//             && i < this._gridView.items.length
-//             )
-//         {
-//             return this._gridView.items.getItem ? this._gridView.items.getItem(i) : this._gridView.items[i];
-//         }
+    public _getRealizedView(convertView: android.view.View) {
+        if (!convertView) {
+            return this._getItemTemplateContent();
+        }
 
-//         return null;
-//     }
+        return this._realizedItems.get(convertView);
+    }
+    
+    private _setPadding(newPadding: { top?: number, right?: number, bottom?: number, left?: number }) {
+        const nativeView: android.view.View = this.nativeView as any;
+        const padding = {
+            top: nativeView.getPaddingTop(),
+            right: nativeView.getPaddingRight(), 
+            bottom: nativeView.getPaddingBottom(),
+            left: nativeView.getPaddingLeft()
+        };
+        const newValue = Object.assign(padding, newPadding);
+        nativeView.setPadding(newValue.left, newValue.top, newValue.right, newValue.bottom);
+    }
+}
 
-//     public getItemId(i: number)
-//     {
-//         return long(i);
-//     }
+class GridViewScrollListener extends android.support.v7.widget.RecyclerView.OnScrollListener {
+    constructor(private owner: WeakRef<GridView>) {
+        super();
 
-//     public hasStableIds(): boolean
-//     {
-//         return true;
-//     }
+        return global.__native(this);
+    }
 
-//     public getView(index: number, convertView: android.view.View, parent: android.view.ViewGroup): android.view.View
-//     {
-//         if (!this._gridView)
-//         {
-//             return null;
-//         }
+    public onScrolled(view: android.support.v7.widget.RecyclerView, dx: number, dy: number) {
+        const owner: GridView = this.owner.get();
+        if (!owner) {
+            return;
+        }
 
-//         let view = this._gridView._getRealizedView(convertView);
+        const lastVisibleItemPos = (view.getLayoutManager() as android.support.v7.widget.GridLayoutManager).findLastCompletelyVisibleItemPosition();
+        const itemCount = owner.items.length;
+        if (lastVisibleItemPos === itemCount) {
+            owner.notify({
+                eventName: GridViewBase.loadMoreItemsEvent,
+                object: owner
+            });
+        }
+    }
 
-//         notifyForItemAtIndex(this._gridView, view, ITEMLOADING, index);
+    public onScrollStateChanged(view: android.support.v7.widget.RecyclerView, newState: number) {
+        // Not Needed
+    }
+}
 
-//         if (view)
-//         {
-//             this._gridView._prepareItem(view, index);
-            
-//             view.height = this._gridView.rowHeight;
-//             view.width = this._gridView.colWidth;
-            
-//             if (!view.parent)
-//             {
-//                 if (view instanceof layoutBase.LayoutBase)
-//                 {
-//                     this._gridView._addView(view);
-//                     convertView = view.android;
-//                 }
-//                 else
-//                 {
-//                     let sp = new stackLayout.StackLayout();
-                    
-//                     sp.addChild(view);
-//                     this._gridView._addView(sp);
-//                     convertView = sp.android;
-//                 }
+@Interfaces([android.view.View.OnClickListener])
+class GridViewCellHolder extends android.support.v7.widget.RecyclerView.ViewHolder implements android.view.View.OnClickListener {
+    constructor(private owner: WeakRef<View>, private gridView: WeakRef<GridView>) {       
+        super(owner.get().android);
 
-//             }
-            
-//             this._gridView._realizedItems[convertView.hashCode()] = view;
-//             view[REALIZED_INDEX] = index;
-//         }
+        const nativeThis = global.__native(this);
+        const nativeView = owner.get().android as android.view.View;
+        nativeView.setOnClickListener(nativeThis);
 
-//         return convertView;
-//     }
-// }
+        return nativeThis;
+    }
 
-// //#region Styling
-// export class GridViewStyler implements style.Styler
-// {
-//     private static setPadding(gridView: GridView, padding: common.Padding)
-//     {
-//         let finalPadding: common.Padding = {
-//             top: padding.top !== undefined ? padding.top * utils.layout.getDisplayDensity() : gridView.android.getPaddingTop()
-//             , right: padding.right !== undefined ? padding.right * utils.layout.getDisplayDensity() : gridView.android.getPaddingRight()
-//             , bottom: padding.bottom !== undefined ? padding.bottom * utils.layout.getDisplayDensity() : gridView.android.getPaddingBottom()
-//             , left: padding.left !== undefined ? padding.left * utils.layout.getDisplayDensity() : gridView.android.getPaddingLeft()
-//         };
+    get view(): View {
+        return this.owner ? this.owner.get() : null;
+    }
 
-//         gridView.android.setPadding(finalPadding.left, finalPadding.top, finalPadding.right, finalPadding.bottom);
-//     }
+    public onClick(v: android.view.View) {
+        const gridView = this.gridView.get();
+        gridView.notify({
+            eventName: GridViewBase.itemTapEvent,
+            object: gridView,
+            index: this.getAdapterPosition(),
+            view: this.view
+        } as GridItemEventData);            
+    }
+    
+}
 
-//     //#region Padding Top Property
-//     private static setPaddingTop(gridView: GridView, newValue: number)
-//     {
-//         GridViewStyler.setPadding(gridView, { top: newValue });
-//     }
-//     private static resetPaddingTop(gridView: GridView, nativeValue: number)
-//     {
-//         GridViewStyler.setPaddingTop(gridView, nativeValue);
-//     }
-//     private static getNativePaddingTopValue(gridView: GridView): any
-//     {
-//         return gridView.android.getPaddingTop();
-//     }
-//     //#endregion
+class GridViewAdapter extends android.support.v7.widget.RecyclerView.Adapter {
+    constructor(private owner: WeakRef<GridView>) {
+        super();
+        
+        return global.__native(this);
+    }
 
-//     //#region Padding Right Property
-//     private static setPaddingRight(gridView: GridView, newValue: number)
-//     {
-//         GridViewStyler.setPadding(gridView, { right: newValue });
-//     }
-//     private static resetPaddingRight(gridView: GridView, nativeValue: number)
-//     {
-//         GridViewStyler.setPaddingRight(gridView, nativeValue);
-//     }
-//     private static getNativePaddingRightValue(gridView: GridView): any
-//     {
-//         return gridView.android.getPaddingRight();
-//     }
-//     //#endregion
+    public getItemCount() {
+        const owner = this.owner.get();
+        return owner.items ? owner.items.length : 0;
+    }
 
-//     //#region Padding Bottom Property
-//     private static setPaddingBottom(gridView: GridView, newValue: number)
-//     {
-//         GridViewStyler.setPadding(gridView, { bottom: newValue });
-//     }
-//     private static resetPaddingBottom(gridView: GridView, nativeValue: number)
-//     {
-//         GridViewStyler.setPaddingBottom(gridView, nativeValue);
-//     }
-//     private static getNativePaddingBottomValue(gridView: GridView): any
-//     {
-//         return gridView.android.getPaddingBottom();
-//     }
-//     //#endregion
+    public getItemId(i: number) {
+        return long(i);
+    }
 
-//     //#region Padding Left Property
-//     private static setPaddingLeft(gridView: GridView, newValue: number)
-//     {
-//         GridViewStyler.setPadding(gridView, { left: newValue });
-//     }
-//     private static resetPaddingLeft(gridView: GridView, nativeValue: number)
-//     {
-//         GridViewStyler.setPaddingLeft(gridView, nativeValue);
-//     }
-//     private static getNativePaddingLeftValue(gridView: GridView): any
-//     {
-//         return gridView.android.getPaddingLeft();
-//     }
-//     //#endregion
+    public onCreateViewHolder(parent: android.view.ViewGroup, viewType: number): android.support.v7.widget.RecyclerView.ViewHolder{
+        const owner = this.owner.get();
+        const view = owner._getItemTemplateContent();
 
-//     public static registerHandlers()
-//     {
-//         style.registerHandler(style.paddingTopProperty
-//             , new style.StylePropertyChangedHandler(GridViewStyler.setPaddingTop
-//                 , GridViewStyler.resetPaddingTop
-//                 , GridViewStyler.getNativePaddingTopValue)
-//             , "GridView");
+        owner._addView(view);
 
-//         style.registerHandler(style.paddingRightProperty
-//             , new style.StylePropertyChangedHandler(GridViewStyler.setPaddingRight
-//                 , GridViewStyler.resetPaddingRight
-//                 , GridViewStyler.getNativePaddingRightValue)
-//             , "GridView");
+        owner._realizedItems.set(view.android, view);
 
-//         style.registerHandler(style.paddingBottomProperty
-//             , new style.StylePropertyChangedHandler(GridViewStyler.setPaddingBottom
-//                 , GridViewStyler.resetPaddingBottom
-//                 , GridViewStyler.getNativePaddingBottomValue)
-//             , "GridView");
+        return new GridViewCellHolder(new WeakRef(view), new WeakRef(owner));
+    }
 
-//         style.registerHandler(style.paddingLeftProperty
-//             , new style.StylePropertyChangedHandler(GridViewStyler.setPaddingLeft
-//                 , GridViewStyler.resetPaddingLeft
-//                 , GridViewStyler.getNativePaddingLeftValue)
-//             , "GridView");
-//     }
-// }
+    public onBindViewHolder(vh: GridViewCellHolder, index: number) {
+        const owner = this.owner.get();
 
-// GridViewStyler.registerHandlers();
-// //#endregion
+        owner.notify({
+            eventName: GridViewBase.itemLoadingEvent,
+            object: owner,
+            index,
+            view: vh.view
+        } as GridItemEventData);
+        
+        vh.view.height = utils.layout.toDeviceIndependentPixels(owner._effectiveRowHeight);
+        
+        owner._prepareItem(vh.view, index);
+    }    
+}
+
+class GridViewRecyclerView extends android.support.v7.widget.RecyclerView {
+    constructor(context: android.content.Context, private owner: WeakRef<GridView>) {
+        super(context);
+
+        return global.__native(this);
+    }
+
+    public onLayout(changed: boolean, l: number, t: number, r: number, b: number) {
+        super.onLayout(changed, l, t, r, b);
+        if (changed) {
+            const owner = this.owner.get();
+            owner.onLayout(l, t, r, b);
+        }    
+    }
+    
+}

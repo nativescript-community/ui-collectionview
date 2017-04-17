@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ***************************************************************************** */
 
-import { Length, Template, View } from "ui/core/view";
+import { PercentLength, Template, View } from "ui/core/view";
 import { ItemsSource } from "ui/list-view";
 import { EventData } from "data/observable";
 
@@ -25,13 +25,11 @@ export class GridView extends View {
 
     public items: any[] | ItemsSource;
     public itemTemplate: string | Template;
-    public rowHeight: Length;
-    public colWidth: Length;
-    public verticalSpacing: Length;
-    public horizontalSpacing: Length;
+    public rowHeight: PercentLength;
+    public colWidth: PercentLength;
 
     public ios: any; /* UICollectionView */
-    public android: any; /* android.widget.GridView */
+    public android: any; /* android.support.v7.widget.RecyclerView */
 
     public refresh();
 }

@@ -4,5 +4,11 @@ export default [
     // iOS
     "GridViewCell",
     "GridViewDataSource",
-    "UICollectionViewDelegateImpl"
+    "UICollectionViewDelegateImpl",
+
+    // Android
+    "GridViewRecyclerView",
+    "GridViewScrollListener", 
+    "GridViewCellHolder",
+    "GridViewAdapter"
 ];

@@ -21,6 +21,9 @@
                 src: localConfig.typeScriptDeclarations,
                 dest: localConfig.outDir
             },
+            platforms: {
+                files: [{ expand: true, src: ["platforms/**"], dest: localConfig.outDir }]
+            },            
             packageConfig: {
                 src: "package.json",
                 dest: localConfig.outDir,
@@ -47,7 +50,7 @@
                 cmd: "node ./node_modules/typescript/bin/tsc --project tsconfig.json --outDir " + localConfig.outDir
             },
             tslint: {
-                cmd: "node ./node_modules/tslint/bin/tslint --project tsconfig.json"
+                cmd: "node ./node_modules/tslint/bin/tslint --project tsconfig.json --type-check"
             },
             npm_publish: {
                 cmd: "npm publish", 
@@ -61,7 +64,7 @@
     grunt.loadNpmTasks("grunt-exec");
 
     grunt.registerTask("build", [
-       // "exec:tslint",
+        "exec:tslint",
         "clean:build",
         "exec:tsCompile",
         "copy"

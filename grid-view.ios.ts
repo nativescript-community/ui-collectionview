@@ -15,31 +15,28 @@ limitations under the License.
 ***************************************************************************** */
 
 import { EventData, Observable } from "data/observable";
-// import definition = require("nativescript-grid-view");
+import { Length, View } from "ui/core/view";
+import * as utils from "utils/utils";
+
 import {
     GridViewBase,
-    paddingTopProperty,
-    paddingRightProperty,
     paddingBottomProperty,
-    paddingLeftProperty
+    paddingLeftProperty,
+    paddingRightProperty,
+    paddingTopProperty
 } from "./grid-view-common";
-import * as utils from "utils/utils";
-import { Length, PercentLength, View } from "ui/core/view";
-import { GridItemEventData } from ".";
-// import style = require("ui/styling/style");
 
-const CELLIDENTIFIER = "gridcell";
-// const ITEMLOADING = common.GridView.itemLoadingEvent;
-// const LOADMOREITEMS = common.GridView.loadMoreItemsEvent;
-// const ITEMTAP = common.GridView.itemTapEvent;
+import { GridItemEventData } from ".";
 
 export * from "./grid-view-common";
 
+const CELLIDENTIFIER = "gridcell";
+
 class GridViewCell extends UICollectionViewCell {
-    static new(): GridViewCell {
-        return <GridViewCell>super.new();
+    public static new(): GridViewCell {
+        return super.new() as GridViewCell;
     }
-    static class(): any {
+    public static class(): any {
         return GridViewCell;
     }
 
@@ -53,13 +50,13 @@ class GridViewCell extends UICollectionViewCell {
 class GridViewDataSource extends NSObject implements UICollectionViewDataSource {
     public static ObjCProtocols = [UICollectionViewDataSource];
 
-    private _owner: WeakRef<GridView>;
-
     public static initWithOwner(owner: WeakRef<GridView>): GridViewDataSource {
-        const dataSource = <GridViewDataSource>GridViewDataSource.new();
+        const dataSource = GridViewDataSource.new() as GridViewDataSource;
         dataSource._owner = owner;
         return dataSource;
     }
+
+    private _owner: WeakRef<GridView>;
 
     public numberOfSectionsInCollectionView(collectionView: UICollectionView) {
         return 1;
@@ -88,13 +85,13 @@ class GridViewDataSource extends NSObject implements UICollectionViewDataSource 
 class UICollectionViewDelegateImpl extends NSObject implements UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     public static ObjCProtocols = [UICollectionViewDelegate, UICollectionViewDelegateFlowLayout];
 
-    private _owner: WeakRef<GridView>;
-
     public static initWithOwner(owner: WeakRef<GridView>): UICollectionViewDelegateImpl {
         const delegate = UICollectionViewDelegateImpl.new() as UICollectionViewDelegateImpl;
         delegate._owner = owner;
         return delegate;
     }
+
+    private _owner: WeakRef<GridView>;
 
     public collectionViewWillDisplayCellForItemAtIndexPath(collectionView: UICollectionView, cell: UICollectionViewCell, indexPath: NSIndexPath) {
         const owner = this._owner.get();
@@ -123,18 +120,13 @@ class UICollectionViewDelegateImpl extends NSObject implements UICollectionViewD
             eventName: GridViewBase.itemTapEvent,
             object: owner,
             index: indexPath.row,
-            view: (cell as GridViewCell).view,
+            view: (cell as GridViewCell).view
         } as GridItemEventData);
 
         cell.highlighted = false;
 
         return indexPath;
     }
-
-    // public collectionViewLayoutSizeForItemAtIndexPath(collectionView: UICollectionView, collectionViewLayout: UICollectionViewLayout, indexPath: NSIndexPath) {
-    //     const owner = this._owner.get();
-    //     return CGSizeMake(owner._effectiveColWidth, owner._effectiveRowHeight);
-    // }
 }
 
 export class GridView extends GridViewBase {
@@ -148,6 +140,9 @@ export class GridView extends GridViewBase {
         super();
 
         this._layout = UICollectionViewFlowLayout.alloc().init();
+        this._layout.minimumLineSpacing = 0;
+        this._layout.minimumInteritemSpacing = 0;
+
         this.nativeView = UICollectionView.alloc().initWithFrameCollectionViewLayout(CGRectMake(0, 0, 0, 0), this._layout);
         this.nativeView.backgroundColor = utils.ios.getter(UIColor, UIColor.clearColor);
         this.nativeView.registerClassForCellWithReuseIdentifier(GridViewCell.class(), CELLIDENTIFIER);
@@ -218,7 +213,13 @@ export class GridView extends GridViewBase {
             callback(view);
         });
     }
+    public onLayout(left: number, top: number, right: number, bottom: number) {
+        super.onLayout(left, top, right, bottom);
 
+        const layout = this.ios.collectionViewLayout as UICollectionViewFlowLayout;
+        layout.itemSize = CGSizeMake(utils.layout.toDeviceIndependentPixels(this._effectiveColWidth), utils.layout.toDeviceIndependentPixels(this._effectiveRowHeight));
+
+    }
     public refresh() {
         // clear bindingContext when it is not observable because otherwise bindings to items won't reevaluate
         this.eachChildView((view) => {
@@ -229,15 +230,7 @@ export class GridView extends GridViewBase {
             return true;
         });
         
-        const layout = this.ios.collectionViewLayout as UICollectionViewFlowLayout;
-
-        // Note we need to divide by the density as the effective values are in DIPs
-        layout.minimumLineSpacing = utils.layout.toDeviceIndependentPixels(this._effectiveVerticalSpacing);
-        layout.minimumInteritemSpacing = utils.layout.toDeviceIndependentPixels(this._effectiveHorizontalSpacing);
-        layout.itemSize = CGSizeMake(utils.layout.toDeviceIndependentPixels(this._effectiveColWidth), utils.layout.toDeviceIndependentPixels(this._effectiveRowHeight));
-
         this.ios.reloadData();
-        this.requestLayout();
     }
 
     public requestLayout(): void {
@@ -258,14 +251,6 @@ export class GridView extends GridViewBase {
     public _setNativeClipToBounds() {
         this.nativeView.clipsToBounds = true;
     }    
-    private _layoutCell(cellView: View, index: NSIndexPath) {
-        if (cellView) {
-            const widthMeasureSpec = utils.layout.makeMeasureSpec(this._effectiveColWidth, utils.layout.EXACTLY);
-            const heightMeasureSpec = utils.layout.makeMeasureSpec(this._effectiveRowHeight, utils.layout.EXACTLY);
-
-            View.measureChild(this, cellView, widthMeasureSpec, heightMeasureSpec);
-        }
-    }
 
     public _prepareCell(cell: GridViewCell, indexPath: NSIndexPath) {
         try {
@@ -280,7 +265,7 @@ export class GridView extends GridViewBase {
                 eventName: GridViewBase.itemLoadingEvent,
                 object: this,
                 index: indexPath.row,
-                view,
+                view
             } as GridItemEventData);
 
             // If cell is reused it have old content - remove it first.
@@ -308,6 +293,15 @@ export class GridView extends GridViewBase {
         }
     }
 
+    private _layoutCell(cellView: View, index: NSIndexPath) {
+        if (cellView) {
+            const widthMeasureSpec = utils.layout.makeMeasureSpec(this._effectiveColWidth, utils.layout.EXACTLY);
+            const heightMeasureSpec = utils.layout.makeMeasureSpec(this._effectiveRowHeight, utils.layout.EXACTLY);
+
+            View.measureChild(this, cellView, widthMeasureSpec, heightMeasureSpec);
+        }
+    }
+
     private _removeContainer(cell: GridViewCell): void {
         const view = cell.view;
 
@@ -327,25 +321,3 @@ export class GridView extends GridViewBase {
             UIEdgeInsetsFromString(`{${newValue.top},${newValue.left},${newValue.bottom},${newValue.right}}`);
     }
 }
-
-// //#region Styling
-// export class GridViewStyler implements style.Styler {
-//     private static setNativePaddingsProperty(view: GridView, newValue: any) {
-//         (<UICollectionViewFlowLayout>view.ios.collectionViewLayout).sectionInset =
-//             UIEdgeInsetsFromString(`{${newValue.top},${newValue.left},${newValue.bottom},${newValue.right}}`);
-//     }
-
-//     private static resetNativePaddingsProperty(view: GridView, nativeValue: any) {
-//         (<UICollectionViewFlowLayout>view.ios.collectionViewLayout).sectionInset = UIEdgeInsetsFromString("{0,0,0,0}");
-//     }
-
-//     public static registerHandlers() {
-//         style.registerHandler(style.nativePaddingsProperty,
-//             new style.StylePropertyChangedHandler(GridViewStyler.setNativePaddingsProperty,
-//                 GridViewStyler.resetNativePaddingsProperty),
-//             "GridView");
-//     }
-
-// }
-// GridViewStyler.registerHandlers();
-// //#endregion

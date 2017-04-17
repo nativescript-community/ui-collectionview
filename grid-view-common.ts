@@ -14,21 +14,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ***************************************************************************** */
 
-import { Observable } from "data/observable";
 import { parse } from "ui/builder";
-import { CoercibleProperty, Length, Property, Template, View } from "ui/core/view";
+import { CoercibleProperty, Length, PercentLength, Property, Template, View } from "ui/core/view";
 import { ItemsSource } from "ui/list-view";
 import { GridView as GridViewDefinition } from ".";
 
-const GRIDVIEW = "GridView";
-const CHANGE = "change";
-
 const autoEffectiveRowHeight = 100;
 const autoEffectiveColWidth = 100;
-const autoEffectiveSpacing = 10;
 
 export * from "ui/core/view";
 
+// tslint:disable-next-line
 export module knownTemplates {
     export const itemTemplate = "itemTemplate";
 }
@@ -45,13 +41,23 @@ export abstract class GridViewBase extends View implements GridViewDefinition {
     public colWidth: Length;
     public verticalSpacing: Length;
     public horizontalSpacing: Length;
+    public _innerWidth: number = 0;
+    public _innerHeight: number = 0;
     public _effectiveRowHeight: number;
     public _effectiveColWidth: number;
-    public _effectiveVerticalSpacing: number;
-    public _effectiveHorizontalSpacing: number;
 
     public abstract refresh();
 
+    public onLayout(left: number, top: number, right: number, bottom: number) {
+        super.onLayout(left, top, right, bottom);
+
+        this._innerWidth = right - this.effectivePaddingLeft - this.effectivePaddingRight;
+        this._effectiveColWidth = PercentLength.toDevicePixels(this.colWidth, 0, this._innerWidth);
+
+        this._innerHeight = bottom - this.effectivePaddingTop - this.effectivePaddingBottom;
+        this._effectiveRowHeight = PercentLength.toDevicePixels(this.rowHeight, 0, this._innerHeight);
+    }
+    
     public _getItemTemplateContent(): View {
         let view;
 
@@ -68,7 +74,7 @@ export abstract class GridViewBase extends View implements GridViewDefinition {
         }
     }
 
-    private _getDataItem(index: number): any {
+    public _getDataItem(index: number): any {
         return this.isItemsSourceIn ? (this.items as ItemsSource).getItem(index) : this.items[index];
     }
 }
@@ -92,69 +98,36 @@ export const itemTemplateProperty = new Property<GridViewBase, string | Template
 });
 itemTemplateProperty.register(GridViewBase);
 
-const defaultRowHeight: Length = "auto";
-export const rowHeightProperty = new CoercibleProperty<GridViewBase, Length>({
+const defaultRowHeight: PercentLength = "auto";
+export const rowHeightProperty = new CoercibleProperty<GridViewBase, PercentLength>({
     name: "rowHeight",
     defaultValue: defaultRowHeight,
-    equalityComparer: Length.equals,
-    valueConverter: Length.parse,
+    equalityComparer: PercentLength.equals,
+    valueConverter: PercentLength.parse,
     coerceValue: (target, value) => {
         // We coerce to default value if we don't have display density.
         return target.nativeView ? value : defaultRowHeight;
     },
     valueChanged: (target, oldValue, newValue) => {
-        target._effectiveRowHeight = Length.toDevicePixels(newValue, autoEffectiveRowHeight);
+        target._effectiveRowHeight = PercentLength.toDevicePixels(newValue, autoEffectiveRowHeight, target._innerHeight);
         target.refresh();
     }
 });
 rowHeightProperty.register(GridViewBase);
 
-const defaultColWidth: Length = "auto";
-export const colWidthProperty = new CoercibleProperty<GridViewBase, Length>({
+const defaultColWidth: PercentLength = "auto";
+export const colWidthProperty = new CoercibleProperty<GridViewBase, PercentLength>({
     name: "colWidth",
     defaultValue: defaultColWidth,
-    equalityComparer: Length.equals,
-    valueConverter: Length.parse,
+    equalityComparer: PercentLength.equals,
+    valueConverter: PercentLength.parse,
     coerceValue: (target, value) => {
         // We coerce to default value if we don't have display density.
         return target.nativeView ? value : defaultColWidth;
     },
     valueChanged: (target, oldValue, newValue) => {
-        target._effectiveColWidth = Length.toDevicePixels(newValue, autoEffectiveColWidth);
+        target._effectiveColWidth = PercentLength.toDevicePixels(newValue, autoEffectiveColWidth, target._innerWidth);
         target.refresh();
     }
 });
 colWidthProperty.register(GridViewBase);
-
-const defaultSpacing: Length = "auto";
-export const verticalSpacingProperty = new CoercibleProperty<GridViewBase, Length>({
-    name: "verticalSpacing",
-    defaultValue: defaultColWidth,
-    equalityComparer: Length.equals,
-    valueConverter: Length.parse,
-    coerceValue: (target, value) => {
-        // We coerce to default value if we don't have display density.
-        return target.nativeView ? value : defaultSpacing;
-    },
-    valueChanged: (target, oldValue, newValue) => {
-        target._effectiveVerticalSpacing = Length.toDevicePixels(newValue, autoEffectiveSpacing);
-        target.refresh();
-    }
-});
-verticalSpacingProperty.register(GridViewBase);
-
-export const horizontalSpacingProperty = new CoercibleProperty<GridViewBase, Length>({
-    name: "horizontalSpacing",
-    defaultValue: defaultSpacing,
-    equalityComparer: Length.equals,
-    valueConverter: Length.parse,
-    coerceValue: (target, value) => {
-        // We coerce to default value if we don't have display density.
-        return target.nativeView ? value : defaultSpacing;
-    },
-    valueChanged: (target, oldValue, newValue) => {
-        target._effectiveHorizontalSpacing = Length.toDevicePixels(newValue, autoEffectiveSpacing);
-        target.refresh();
-    }
-});
-horizontalSpacingProperty.register(GridViewBase);

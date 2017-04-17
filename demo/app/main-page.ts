@@ -15,10 +15,8 @@ export function pageLoaded(args: EventData) {
     }
     viewModel = new Observable();
     viewModel.set("items", items);
-    viewModel.set("rowHeight", 75);
-    viewModel.set("colWidth", 100);
-    viewModel.set("verticalSpacing", 5);
-    viewModel.set("horizontalSpacing", 5);
+    viewModel.set("rowHeight", "15%");
+    viewModel.set("colWidth", "24%");
     viewModel.set("cssClass", "default");
 
     page.bindingContext = viewModel;
@@ -38,8 +36,6 @@ export function gridViewLoadMoreItems(args: EventData) {
 
 export function changeStyles() {
     viewModel.set("rowHeight", 100);
-    viewModel.set("colWidth", 125);
-    viewModel.set("verticalSpacing", 10);
-    viewModel.set("horizontalSpacing", 10);
+    viewModel.set("colWidth", 100);
     viewModel.set("cssClass", "changed");
 }
