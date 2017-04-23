@@ -31,7 +31,11 @@
   ],
   "author": "Peter Staev <peter@tangrasoft.com>",
   "license": "Apache-2.0",
-
+  
+  "peerDependencies": {
+     "tns-core-modules": "^3.0.0 || ^3.0.0-rc.1"
+  },
+  
   "devDependencies": {
     "typescript": "~2.2.0",
     "tslint": "^5.1.0",
