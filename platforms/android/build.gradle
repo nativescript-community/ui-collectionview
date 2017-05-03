@@ -1,0 +1,10 @@
+android {
+  productFlavors {
+    "nativescript-grid-view" {
+      dimension "nativescript-grid-view"
+    }
+  }
+}
+dependencies {
+    compile 'com.android.support:recyclerview-v7:+'
+}

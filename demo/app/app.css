@@ -1,16 +1,9 @@
-.title {
-    font-size: 30;
-    horizontal-align: center;
-    margin:20;
+.default {
+    background-color: red;
+    padding: 10;
 }
 
-button {
-    font-size: 42;
-    horizontal-align: center;
-}
-
-.message {
-    font-size: 20;
-    color: #284848;
-    horizontal-align: center;
+.changed {
+    background-color: yellow;
+    padding: 0 15;
 }

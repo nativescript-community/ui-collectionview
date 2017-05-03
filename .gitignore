@@ -52,5 +52,6 @@ obj
 !gruntfile.js
 node_modules
 *.tmp.*
-platforms
+demo/platforms
 demo/lib
+!webpack.*.js

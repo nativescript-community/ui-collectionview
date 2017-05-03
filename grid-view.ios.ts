@@ -1,5 +1,5 @@
 /*! *****************************************************************************
-Copyright (c) 2015 Tangra Inc.
+Copyright (c) 2017 Tangra Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -14,68 +14,68 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ***************************************************************************** */
 
-import observable = require("data/observable");
-import definition = require("nativescript-grid-view");
-import common = require("./grid-view-common");
-import utils = require("utils/utils");
-import view = require("ui/core/view");
-import style = require("ui/styling/style");
+import { EventData, Observable } from "data/observable";
+import { Length, View } from "ui/core/view";
+import * as utils from "utils/utils";
+
+import {
+    GridViewBase,
+    paddingBottomProperty,
+    paddingLeftProperty,
+    paddingRightProperty,
+    paddingTopProperty
+} from "./grid-view-common";
+
+import { GridItemEventData } from ".";
+
+export * from "./grid-view-common";
 
 const CELLIDENTIFIER = "gridcell";
-const ITEMLOADING = common.GridView.itemLoadingEvent;
-const LOADMOREITEMS = common.GridView.loadMoreItemsEvent;
-const ITEMTAP = common.GridView.itemTapEvent;
-
-global.moduleMerge(common, exports);
 
 class GridViewCell extends UICollectionViewCell {
-    static new(): GridViewCell {
-        return <GridViewCell>super.new();
+    public static new(): GridViewCell {
+        return super.new() as GridViewCell;
     }
-    static class(): any {
+    public static class(): any {
         return GridViewCell;
     }
-}
 
-function notifyForItemAtIndex(gridView: definition.GridView, cell: any, eventName: string, indexPath: NSIndexPath) {
-    let args =
-        <definition.GridItemEventData>
-        {
-            eventName: eventName,
-            object: gridView,
-            index: indexPath.row,
-            view: cell.view,
-        };
-    gridView.notify(args);
-    return args;
+    public owner: WeakRef<View>;
+
+    get view(): View {
+        return this.owner ? this.owner.get() : null;
+    }
 }
 
 class GridViewDataSource extends NSObject implements UICollectionViewDataSource {
     public static ObjCProtocols = [UICollectionViewDataSource];
 
-    private _owner: GridView;
-
-    public static initWithOwner(owner: GridView): GridViewDataSource {
-        let dataSource = <GridViewDataSource>GridViewDataSource.new();
+    public static initWithOwner(owner: WeakRef<GridView>): GridViewDataSource {
+        const dataSource = GridViewDataSource.new() as GridViewDataSource;
         dataSource._owner = owner;
         return dataSource;
     }
+
+    private _owner: WeakRef<GridView>;
 
     public numberOfSectionsInCollectionView(collectionView: UICollectionView) {
         return 1;
     }
 
     public collectionViewNumberOfItemsInSection(collectionView: UICollectionView, section: number) {
-        return this._owner.items ? this._owner.items.length : 0;
+        const owner = this._owner.get();
+        return owner.items ? owner.items.length : 0;
     }
 
     public collectionViewCellForItemAtIndexPath(collectionView: UICollectionView, indexPath: NSIndexPath): UICollectionViewCell {
-        let cell: any = collectionView.dequeueReusableCellWithReuseIdentifierForIndexPath(CELLIDENTIFIER, indexPath) || GridViewCell.new();
-        this._owner._prepareCell(cell, indexPath);
+        const owner = this._owner.get();
+        const cell: any = collectionView.dequeueReusableCellWithReuseIdentifierForIndexPath(CELLIDENTIFIER, indexPath) || GridViewCell.new();
+        
+        owner._prepareCell(cell, indexPath);
 
-        let cellView: view.View = cell.view;
+        const cellView: View = cell.view;
         if (cellView) {
-            view.View.layoutChild(this._owner, cellView, 0, 0, this._owner.colWidth, this._owner.rowHeight);
+            View.layoutChild(owner, cellView, 0, 0, owner._effectiveColWidth, owner._effectiveRowHeight);
         }
 
         return cell;
@@ -85,17 +85,22 @@ class GridViewDataSource extends NSObject implements UICollectionViewDataSource 
 class UICollectionViewDelegateImpl extends NSObject implements UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     public static ObjCProtocols = [UICollectionViewDelegate, UICollectionViewDelegateFlowLayout];
 
-    private _owner: GridView;
-
-    public static initWithOwner(owner: GridView): UICollectionViewDelegateImpl {
-        let delegate = <UICollectionViewDelegateImpl>UICollectionViewDelegateImpl.new();
+    public static initWithOwner(owner: WeakRef<GridView>): UICollectionViewDelegateImpl {
+        const delegate = UICollectionViewDelegateImpl.new() as UICollectionViewDelegateImpl;
         delegate._owner = owner;
         return delegate;
     }
 
+    private _owner: WeakRef<GridView>;
+
     public collectionViewWillDisplayCellForItemAtIndexPath(collectionView: UICollectionView, cell: UICollectionViewCell, indexPath: NSIndexPath) {
-        if (indexPath.row === this._owner.items.length - 1) {
-            this._owner.notify(<observable.EventData>{ eventName: LOADMOREITEMS, object: this._owner });
+        const owner = this._owner.get();
+
+        if (indexPath.row === owner.items.length - 1) {
+            owner.notify({
+                eventName: GridViewBase.loadMoreItemsEvent,
+                object: owner
+            } as EventData);
         }
 
         if (cell.preservesSuperviewLayoutMargins) {
@@ -108,60 +113,124 @@ class UICollectionViewDelegateImpl extends NSObject implements UICollectionViewD
     }
 
     public collectionViewDidSelectItemAtIndexPath(collectionView: UICollectionView, indexPath: NSIndexPath) {
-        let cell = collectionView.cellForItemAtIndexPath(indexPath);
-        notifyForItemAtIndex(this._owner, cell, ITEMTAP, indexPath);
-        cell.highlighted = false;
-        return indexPath;
-    }
+        const cell = collectionView.cellForItemAtIndexPath(indexPath);
+        const owner = this._owner.get();
+        
+        owner.notify({
+            eventName: GridViewBase.itemTapEvent,
+            object: owner,
+            index: indexPath.row,
+            view: (cell as GridViewCell).view
+        } as GridItemEventData);
 
-    public collectionViewLayoutSizeForItemAtIndexPath(collectionView: UICollectionView, collectionViewLayout: UICollectionViewLayout, indexPath: NSIndexPath) {
-        return CGSizeMake(this._owner.colWidth, this._owner.rowHeight);
+        cell.highlighted = false;
+
+        return indexPath;
     }
 }
 
-export class GridView extends common.GridView {
-    private _ios: UICollectionView;
+export class GridView extends GridViewBase {
     private _layout: UICollectionViewFlowLayout;
-    private _dataSource;
-    private _delegate;
+    private _dataSource: GridViewDataSource;
+    private _delegate: UICollectionViewDelegateImpl;
     private _preparingCell: boolean = false;
+    private _map: Map<GridViewCell, View>;
 
     constructor() {
         super();
 
         this._layout = UICollectionViewFlowLayout.alloc().init();
-        this._ios = UICollectionView.alloc().initWithFrameCollectionViewLayout(CGRectMake(0, 0, 0, 0), this._layout);
-        this._ios.backgroundColor = utils.ios.getter(UIColor, UIColor.clearColor);
-        this._ios.registerClassForCellWithReuseIdentifier(GridViewCell.class(), CELLIDENTIFIER);
-        this._ios.autoresizesSubviews = false;
-        this._ios.autoresizingMask = UIViewAutoresizing.None;
+        this._layout.minimumLineSpacing = 0;
+        this._layout.minimumInteritemSpacing = 0;
 
-        this._dataSource = GridViewDataSource.initWithOwner(this);
-        this._ios.dataSource = this._dataSource;
+        this.nativeView = UICollectionView.alloc().initWithFrameCollectionViewLayout(CGRectMake(0, 0, 0, 0), this._layout);
+        this.nativeView.backgroundColor = utils.ios.getter(UIColor, UIColor.clearColor);
+        this.nativeView.registerClassForCellWithReuseIdentifier(GridViewCell.class(), CELLIDENTIFIER);
+        this.nativeView.autoresizesSubviews = false;
+        this.nativeView.autoresizingMask = UIViewAutoresizing.None;
 
-        this._delegate = UICollectionViewDelegateImpl.initWithOwner(this);
+        this._dataSource = GridViewDataSource.initWithOwner(new WeakRef(this));
+        this.nativeView.dataSource = this._dataSource;
+
+        this._delegate = UICollectionViewDelegateImpl.initWithOwner(new WeakRef(this));
+
+        this._map = new Map<GridViewCell, View>();
+
+        this._setNativeClipToBounds();
     }
 
     public onLoaded() {
         super.onLoaded();
-        this._ios.delegate = this._delegate;
+        this.nativeView.delegate = this._delegate;
     }
 
     public onUnloaded() {
-        this._ios.delegate = null;
+        this.nativeView.delegate = null;
+        this._layout = null;
+        this._dataSource = null;
+        this._delegate = null;
         super.onUnloaded();
     }
 
     get ios(): UICollectionView {
-        return this._ios;
+        return this.nativeView;
     }
 
-    public refresh() {
-        (<UICollectionViewFlowLayout>this._ios.collectionViewLayout).minimumLineSpacing = this.verticalSpacing;
-        (<UICollectionViewFlowLayout>this._ios.collectionViewLayout).minimumInteritemSpacing = this.horizontalSpacing;
+    get _childrenCount(): number {
+        return this._map.size;
+    }
 
-        this._ios.reloadData();
-        this.requestLayout();
+    public [paddingTopProperty.getDefault](): number {
+        return this._layout.sectionInset.top;
+    }
+    public [paddingTopProperty.setNative](value: Length) {
+        this._setPadding({ top: utils.layout.toDeviceIndependentPixels(this.effectivePaddingTop) });
+    }
+
+    public [paddingRightProperty.getDefault](): number {
+        return this._layout.sectionInset.right;
+    }
+    public [paddingRightProperty.setNative](value: Length) {
+        this._setPadding({ right: utils.layout.toDeviceIndependentPixels(this.effectivePaddingRight) });
+    }
+
+    public [paddingBottomProperty.getDefault](): number {
+        return this._layout.sectionInset.bottom;
+    }
+    public [paddingBottomProperty.setNative](value: Length) {
+        this._setPadding({ bottom: utils.layout.toDeviceIndependentPixels(this.effectivePaddingBottom) });
+    }
+
+    public [paddingLeftProperty.getDefault](): number {
+        return this._layout.sectionInset.left;
+    }
+    public [paddingLeftProperty.setNative](value: Length) {
+        this._setPadding({ left: utils.layout.toDeviceIndependentPixels(this.effectivePaddingLeft) });
+    }
+
+    public eachChildView(callback: (child: View) => boolean): void {
+        this._map.forEach((view, key) => {
+            callback(view);
+        });
+    }
+    public onLayout(left: number, top: number, right: number, bottom: number) {
+        super.onLayout(left, top, right, bottom);
+
+        const layout = this.ios.collectionViewLayout as UICollectionViewFlowLayout;
+        layout.itemSize = CGSizeMake(utils.layout.toDeviceIndependentPixels(this._effectiveColWidth), utils.layout.toDeviceIndependentPixels(this._effectiveRowHeight));
+
+    }
+    public refresh() {
+        // clear bindingContext when it is not observable because otherwise bindings to items won't reevaluate
+        this.eachChildView((view) => {
+            if (!(view.bindingContext instanceof Observable)) {
+                view.bindingContext = null;
+            }
+
+            return true;
+        });
+        
+        this.ios.reloadData();
     }
 
     public requestLayout(): void {
@@ -172,67 +241,83 @@ export class GridView extends common.GridView {
     }
 
     public measure(widthMeasureSpec: number, heightMeasureSpec: number): void {
-        let changed = this._setCurrentMeasureSpecs(widthMeasureSpec, heightMeasureSpec);
+        const changed = (this as any)._setCurrentMeasureSpecs(widthMeasureSpec, heightMeasureSpec);
         super.measure(widthMeasureSpec, heightMeasureSpec);
         if (changed) {
-            this._ios.reloadData();
+            this.ios.reloadData();
         }
     }
 
-    private _layoutCell(cellView: view.View, index: NSIndexPath) {
+    public _setNativeClipToBounds() {
+        this.nativeView.clipsToBounds = true;
+    }    
 
-        if (cellView) {
-            let widthMeasureSpec = utils.layout.makeMeasureSpec(this.colWidth, utils.layout.EXACTLY),
-                heightMeasureSpec = utils.layout.makeMeasureSpec(this.rowHeight, utils.layout.EXACTLY);
-
-            view.View.measureChild(this, cellView, widthMeasureSpec, heightMeasureSpec);
-        }
-    }
-
-    public _prepareCell(tableCell: UICollectionViewCell, indexPath: NSIndexPath) {
-        let cell: any = tableCell;
-
+    public _prepareCell(cell: GridViewCell, indexPath: NSIndexPath) {
         try {
             this._preparingCell = true;
-            if (!cell.view) {
-                cell.view = this._getItemTemplateContent();
-            }
-
-            notifyForItemAtIndex(this, cell, ITEMLOADING, indexPath);
 
             let view = cell.view;
+            if (!view) {
+                view = this._getItemTemplateContent();
+            }
+
+            this.notify({
+                eventName: GridViewBase.itemLoadingEvent,
+                object: this,
+                index: indexPath.row,
+                view
+            } as GridItemEventData);
+
+            // If cell is reused it have old content - remove it first.
+            if (!cell.view) {
+                cell.owner = new WeakRef(view);
+            }
+            else if (cell.view !== view) {
+                this._removeContainer(cell);
+                (cell.view.nativeView as UIView).removeFromSuperview();
+                cell.owner = new WeakRef(view);
+            }
+
+            this._prepareItem(view, indexPath.row);
+            this._map.set(cell, view);
+
             if (view && !view.parent && view.ios) {
                 cell.contentView.addSubview(view.ios);
                 this._addView(view);
             }
 
-            this._prepareItem(view, indexPath.row);
             this._layoutCell(view, indexPath);
         }
         finally {
             this._preparingCell = false;
         }
     }
-}
 
-//#region Styling
-export class GridViewStyler implements style.Styler {
-    private static setNativePaddingsProperty(view: GridView, newValue: any) {
-        (<UICollectionViewFlowLayout>view.ios.collectionViewLayout).sectionInset =
+    private _layoutCell(cellView: View, index: NSIndexPath) {
+        if (cellView) {
+            const widthMeasureSpec = utils.layout.makeMeasureSpec(this._effectiveColWidth, utils.layout.EXACTLY);
+            const heightMeasureSpec = utils.layout.makeMeasureSpec(this._effectiveRowHeight, utils.layout.EXACTLY);
+
+            View.measureChild(this, cellView, widthMeasureSpec, heightMeasureSpec);
+        }
+    }
+
+    private _removeContainer(cell: GridViewCell): void {
+        const view = cell.view;
+
+        view.parent._removeView(view);
+        this._map.delete(cell);
+    }
+    
+    private _setPadding(newPadding: { top?: number, right?: number, bottom?: number, left?: number }) {
+        const padding = {
+            top: this._layout.sectionInset.top,
+            right: this._layout.sectionInset.right, 
+            bottom: this._layout.sectionInset.bottom,
+            left: this._layout.sectionInset.left
+        };
+        const newValue = Object.assign(padding, newPadding);
+        this._layout.sectionInset =
             UIEdgeInsetsFromString(`{${newValue.top},${newValue.left},${newValue.bottom},${newValue.right}}`);
     }
-
-    private static resetNativePaddingsProperty(view: GridView, nativeValue: any) {
-        (<UICollectionViewFlowLayout>view.ios.collectionViewLayout).sectionInset = UIEdgeInsetsFromString("{0,0,0,0}");
-    }
-
-    public static registerHandlers() {
-        style.registerHandler(style.nativePaddingsProperty,
-            new style.StylePropertyChangedHandler(GridViewStyler.setNativePaddingsProperty,
-                GridViewStyler.resetNativePaddingsProperty),
-            "GridView");
-    }
-
 }
-GridViewStyler.registerHandlers();
-//#endregion

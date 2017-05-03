@@ -1,12 +1,14 @@
 <Page xmlns="http://schemas.nativescript.org/tns.xsd" xmlns:gv="nativescript-grid-view" loaded="pageLoaded">
-  <GridLayout>
-    <gv:GridView items="{{ items }}"  verticalSpacing="5" horizontalSpacing="5" colWidth="100" rowHeight="75" style="padding: 5;"
-                 itemTap="gridViewItemTap" itemLoading="gridViewItemLoading" loadMoreItems="gridViewLoadMoreItems">
-      <gv:GridView.itemTemplate>
-        <GridLayout backgroundColor="#33ffff">
-          <Label text="{{ value }}" verticalAlignment="center"/>
-        </GridLayout>
-      </gv:GridView.itemTemplate>
-    </gv:GridView>
-  </GridLayout>
+    <GridLayout rows="*, auto">
+        <gv:GridView row="0" class="{{ cssClass }}" items="{{ items }}" 
+                     colWidth="{{ colWidth }}" rowHeight="{{ rowHeight }}"
+                     itemTap="gridViewItemTap" itemLoading="gridViewItemLoading" loadMoreItems="gridViewLoadMoreItems">
+            <gv:GridView.itemTemplate>
+                <GridLayout backgroundColor="#33ffff" style="margin: 10 10 0 0">
+                    <Label text="{{ value }}" verticalAlignment="center"/>
+                </GridLayout>
+            </gv:GridView.itemTemplate>
+        </gv:GridView>
+        <Button row="1" text="Change Styles" tap="changeStyles" style="font-size: 25;" />
+    </GridLayout>
 </Page>
