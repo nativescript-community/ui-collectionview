@@ -11,10 +11,7 @@
 			"taskName": "build",
 			"args": [], 
 			"isBuildCommand": true, 
-			"problemMatcher": ["$tsc", {
-                "base": "$tslint5",
-                "fileLocation": "relative"
-            }]
+			"problemMatcher": ["$tsc", "$tslint4"]
 		}	
 	]
 }

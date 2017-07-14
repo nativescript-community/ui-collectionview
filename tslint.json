@@ -26,7 +26,6 @@
       true,
       {"named-imports-order": "lowercase-last"}
     ],
-    "no-unused-variable": [true],
     "no-bitwise": false
   }
 }

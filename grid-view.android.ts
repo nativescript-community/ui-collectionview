@@ -159,6 +159,7 @@ export class GridView extends GridViewBase {
             bottom: nativeView.getPaddingBottom(),
             left: nativeView.getPaddingLeft()
         };
+        // tslint:disable-next-line:prefer-object-spread
         const newValue = Object.assign(padding, newPadding);
         nativeView.setPadding(newValue.left, newValue.top, newValue.right, newValue.bottom);
     }
@@ -210,12 +211,13 @@ class GridViewCellHolder extends android.support.v7.widget.RecyclerView.ViewHold
 
     public onClick(v: android.view.View) {
         const gridView = this.gridView.get();
-        gridView.notify({
+
+        gridView.notify<GridItemEventData>({
             eventName: GridViewBase.itemTapEvent,
             object: gridView,
             index: this.getAdapterPosition(),
             view: this.view
-        } as GridItemEventData);            
+        });            
     }
     
 }
@@ -250,12 +252,12 @@ class GridViewAdapter extends android.support.v7.widget.RecyclerView.Adapter {
     public onBindViewHolder(vh: GridViewCellHolder, index: number) {
         const owner = this.owner.get();
 
-        owner.notify({
+        owner.notify<GridItemEventData>({
             eventName: GridViewBase.itemLoadingEvent,
             object: owner,
             index,
             view: vh.view
-        } as GridItemEventData);
+        });
         
         vh.view.height = utils.layout.toDeviceIndependentPixels(owner._effectiveRowHeight);
         

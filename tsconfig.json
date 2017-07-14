@@ -6,6 +6,7 @@
         "removeComments": true,
         "declaration": false,
         "experimentalDecorators": true,
+        "noUnusedLocals": true,
         "target": "es5",
         "module": "commonjs",
         "outDir": "bin/dist",

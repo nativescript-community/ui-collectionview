@@ -164,12 +164,12 @@ export class GridView extends GridViewBase {
                 view = this._getItemTemplateContent();
             }
 
-            this.notify({
+            this.notify<GridItemEventData>({
                 eventName: GridViewBase.itemLoadingEvent,
                 object: this,
                 index: indexPath.row,
                 view
-            } as GridItemEventData);
+            });
 
             // If cell is reused it have old content - remove it first.
             if (!cell.view) {
@@ -219,6 +219,7 @@ export class GridView extends GridViewBase {
             bottom: this._layout.sectionInset.bottom,
             left: this._layout.sectionInset.left
         };
+        // tslint:disable-next-line:prefer-object-spread
         const newValue = Object.assign(padding, newPadding);
         this._layout.sectionInset =
             UIEdgeInsetsFromString(`{${newValue.top},${newValue.left},${newValue.bottom},${newValue.right}}`);
@@ -288,10 +289,10 @@ class UICollectionViewDelegateImpl extends NSObject implements UICollectionViewD
         const owner = this._owner.get();
 
         if (indexPath.row === owner.items.length - 1) {
-            owner.notify({
+            owner.notify<EventData>({
                 eventName: GridViewBase.loadMoreItemsEvent,
                 object: owner
-            } as EventData);
+            });
         }
 
         if (cell.preservesSuperviewLayoutMargins) {
@@ -307,12 +308,12 @@ class UICollectionViewDelegateImpl extends NSObject implements UICollectionViewD
         const cell = collectionView.cellForItemAtIndexPath(indexPath);
         const owner = this._owner.get();
         
-        owner.notify({
+        owner.notify<GridItemEventData>({
             eventName: GridViewBase.itemTapEvent,
             object: owner,
             index: indexPath.row,
             view: (cell as GridViewCell).view
-        } as GridItemEventData);
+        });
 
         cell.highlighted = false;
 
