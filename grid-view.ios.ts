@@ -32,103 +32,6 @@ export * from "./grid-view-common";
 
 const CELLIDENTIFIER = "gridcell";
 
-class GridViewCell extends UICollectionViewCell {
-    public static new(): GridViewCell {
-        return super.new() as GridViewCell;
-    }
-    public static class(): any {
-        return GridViewCell;
-    }
-
-    public owner: WeakRef<View>;
-
-    get view(): View {
-        return this.owner ? this.owner.get() : null;
-    }
-}
-
-class GridViewDataSource extends NSObject implements UICollectionViewDataSource {
-    public static ObjCProtocols = [UICollectionViewDataSource];
-
-    public static initWithOwner(owner: WeakRef<GridView>): GridViewDataSource {
-        const dataSource = GridViewDataSource.new() as GridViewDataSource;
-        dataSource._owner = owner;
-        return dataSource;
-    }
-
-    private _owner: WeakRef<GridView>;
-
-    public numberOfSectionsInCollectionView(collectionView: UICollectionView) {
-        return 1;
-    }
-
-    public collectionViewNumberOfItemsInSection(collectionView: UICollectionView, section: number) {
-        const owner = this._owner.get();
-        return owner.items ? owner.items.length : 0;
-    }
-
-    public collectionViewCellForItemAtIndexPath(collectionView: UICollectionView, indexPath: NSIndexPath): UICollectionViewCell {
-        const owner = this._owner.get();
-        const cell: any = collectionView.dequeueReusableCellWithReuseIdentifierForIndexPath(CELLIDENTIFIER, indexPath) || GridViewCell.new();
-        
-        owner._prepareCell(cell, indexPath);
-
-        const cellView: View = cell.view;
-        if (cellView) {
-            View.layoutChild(owner, cellView, 0, 0, owner._effectiveColWidth, owner._effectiveRowHeight);
-        }
-
-        return cell;
-    }
-}
-
-class UICollectionViewDelegateImpl extends NSObject implements UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-    public static ObjCProtocols = [UICollectionViewDelegate, UICollectionViewDelegateFlowLayout];
-
-    public static initWithOwner(owner: WeakRef<GridView>): UICollectionViewDelegateImpl {
-        const delegate = UICollectionViewDelegateImpl.new() as UICollectionViewDelegateImpl;
-        delegate._owner = owner;
-        return delegate;
-    }
-
-    private _owner: WeakRef<GridView>;
-
-    public collectionViewWillDisplayCellForItemAtIndexPath(collectionView: UICollectionView, cell: UICollectionViewCell, indexPath: NSIndexPath) {
-        const owner = this._owner.get();
-
-        if (indexPath.row === owner.items.length - 1) {
-            owner.notify({
-                eventName: GridViewBase.loadMoreItemsEvent,
-                object: owner
-            } as EventData);
-        }
-
-        if (cell.preservesSuperviewLayoutMargins) {
-            cell.preservesSuperviewLayoutMargins = false;
-        }
-
-        if (cell.layoutMargins) {
-            cell.layoutMargins = UIEdgeInsetsZero;
-        }
-    }
-
-    public collectionViewDidSelectItemAtIndexPath(collectionView: UICollectionView, indexPath: NSIndexPath) {
-        const cell = collectionView.cellForItemAtIndexPath(indexPath);
-        const owner = this._owner.get();
-        
-        owner.notify({
-            eventName: GridViewBase.itemTapEvent,
-            object: owner,
-            index: indexPath.row,
-            view: (cell as GridViewCell).view
-        } as GridItemEventData);
-
-        cell.highlighted = false;
-
-        return indexPath;
-    }
-}
-
 export class GridView extends GridViewBase {
     private _layout: UICollectionViewFlowLayout;
     private _dataSource: GridViewDataSource;
@@ -319,5 +222,100 @@ export class GridView extends GridViewBase {
         const newValue = Object.assign(padding, newPadding);
         this._layout.sectionInset =
             UIEdgeInsetsFromString(`{${newValue.top},${newValue.left},${newValue.bottom},${newValue.right}}`);
+    }
+}
+
+class GridViewCell extends UICollectionViewCell {
+    public static new(): GridViewCell {
+        return super.new() as GridViewCell;
+    }
+    public static class(): any {
+        return GridViewCell;
+    }
+
+    public owner: WeakRef<View>;
+
+    get view(): View {
+        return this.owner ? this.owner.get() : null;
+    }
+}
+
+@ObjCClass(UICollectionViewDataSource)
+class GridViewDataSource extends NSObject implements UICollectionViewDataSource {
+    public static initWithOwner(owner: WeakRef<GridView>): GridViewDataSource {
+        const dataSource = GridViewDataSource.new() as GridViewDataSource;
+        dataSource._owner = owner;
+        return dataSource;
+    }
+
+    private _owner: WeakRef<GridView>;
+
+    public numberOfSectionsInCollectionView(collectionView: UICollectionView) {
+        return 1;
+    }
+
+    public collectionViewNumberOfItemsInSection(collectionView: UICollectionView, section: number) {
+        const owner = this._owner.get();
+        return owner.items ? owner.items.length : 0;
+    }
+
+    public collectionViewCellForItemAtIndexPath(collectionView: UICollectionView, indexPath: NSIndexPath): UICollectionViewCell {
+        const owner = this._owner.get();
+        const cell: any = collectionView.dequeueReusableCellWithReuseIdentifierForIndexPath(CELLIDENTIFIER, indexPath) || GridViewCell.new();
+        
+        owner._prepareCell(cell, indexPath);
+
+        const cellView: View = cell.view;
+        if (cellView) {
+            View.layoutChild(owner, cellView, 0, 0, owner._effectiveColWidth, owner._effectiveRowHeight);
+        }
+
+        return cell;
+    }
+}
+
+@ObjCClass(UICollectionViewDelegate, UICollectionViewDelegateFlowLayout)
+class UICollectionViewDelegateImpl extends NSObject implements UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+    public static initWithOwner(owner: WeakRef<GridView>): UICollectionViewDelegateImpl {
+        const delegate = UICollectionViewDelegateImpl.new() as UICollectionViewDelegateImpl;
+        delegate._owner = owner;
+        return delegate;
+    }
+
+    private _owner: WeakRef<GridView>;
+
+    public collectionViewWillDisplayCellForItemAtIndexPath(collectionView: UICollectionView, cell: UICollectionViewCell, indexPath: NSIndexPath) {
+        const owner = this._owner.get();
+
+        if (indexPath.row === owner.items.length - 1) {
+            owner.notify({
+                eventName: GridViewBase.loadMoreItemsEvent,
+                object: owner
+            } as EventData);
+        }
+
+        if (cell.preservesSuperviewLayoutMargins) {
+            cell.preservesSuperviewLayoutMargins = false;
+        }
+
+        if (cell.layoutMargins) {
+            cell.layoutMargins = UIEdgeInsetsZero;
+        }
+    }
+
+    public collectionViewDidSelectItemAtIndexPath(collectionView: UICollectionView, indexPath: NSIndexPath) {
+        const cell = collectionView.cellForItemAtIndexPath(indexPath);
+        const owner = this._owner.get();
+        
+        owner.notify({
+            eventName: GridViewBase.itemTapEvent,
+            object: owner,
+            index: indexPath.row,
+            view: (cell as GridViewCell).view
+        } as GridItemEventData);
+
+        cell.highlighted = false;
+
+        return indexPath;
     }
 }

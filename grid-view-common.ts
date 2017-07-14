@@ -37,8 +37,8 @@ export abstract class GridViewBase extends View implements GridViewDefinition {
     public itemTemplate: string | Template;
     public items: any[] | ItemsSource;
     public isItemsSourceIn: boolean;
-    public rowHeight: Length;
-    public colWidth: Length;
+    public rowHeight: PercentLength;
+    public colWidth: PercentLength;
     public verticalSpacing: Length;
     public horizontalSpacing: Length;
     public _innerWidth: number = 0;
@@ -52,10 +52,10 @@ export abstract class GridViewBase extends View implements GridViewDefinition {
         super.onLayout(left, top, right, bottom);
 
         this._innerWidth = right - this.effectivePaddingLeft - this.effectivePaddingRight;
-        this._effectiveColWidth = PercentLength.toDevicePixels(this.colWidth, 0, this._innerWidth);
+        this._effectiveColWidth = PercentLength.toDevicePixels(this.colWidth, autoEffectiveColWidth, this._innerWidth); // We cannot use 0 for auto as it throws for android. 
 
         this._innerHeight = bottom - this.effectivePaddingTop - this.effectivePaddingBottom;
-        this._effectiveRowHeight = PercentLength.toDevicePixels(this.rowHeight, 0, this._innerHeight);
+        this._effectiveRowHeight = PercentLength.toDevicePixels(this.rowHeight, autoEffectiveRowHeight, this._innerHeight);
     }
     
     public _getItemTemplateContent(): View {
@@ -118,7 +118,7 @@ rowHeightProperty.register(GridViewBase);
 const defaultColWidth: PercentLength = "auto";
 export const colWidthProperty = new CoercibleProperty<GridViewBase, PercentLength>({
     name: "colWidth",
-    defaultValue: defaultColWidth,
+    defaultValue: PercentLength.parse("100"),
     equalityComparer: PercentLength.equals,
     valueConverter: PercentLength.parse,
     coerceValue: (target, value) => {

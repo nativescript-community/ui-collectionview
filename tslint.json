@@ -13,7 +13,7 @@
     "trailing-comma": [
       true,
       {
-        "multiline": "never",
+        "multiline": "ignore",
         "singleline": "never"
       }
     ],

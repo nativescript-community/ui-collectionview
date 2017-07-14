@@ -19,10 +19,12 @@ import * as utils from "utils/utils";
 
 import {
     GridViewBase,
+    colWidthProperty,
     paddingBottomProperty,
     paddingLeftProperty,   
     paddingRightProperty,
-    paddingTopProperty
+    paddingTopProperty,
+    rowHeightProperty,
 } from "./grid-view-common";
 
 import { GridItemEventData } from ".";
@@ -59,6 +61,9 @@ export class GridView extends GridViewBase {
         nativeView.adapter.owner = new WeakRef(this);
         nativeView.scrollListener.owner = new WeakRef(this);
         nativeView.owner = new WeakRef(this);
+
+        colWidthProperty.coerce(this);
+        rowHeightProperty.coerce(this);
     }
 
     public disposeNativeView() {
