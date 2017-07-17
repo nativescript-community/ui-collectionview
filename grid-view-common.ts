@@ -14,8 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ***************************************************************************** */
 
+import { ObservableArray } from "data/observable-array";
 import { parse } from "ui/builder";
 import { CoercibleProperty, Length, PercentLength, Property, Template, View } from "ui/core/view";
+import { addWeakEventListener, removeWeakEventListener } from "ui/core/weak-event-listener";
 import { ItemsSource } from "ui/list-view";
 import { GridView as GridViewDefinition } from ".";
 
@@ -85,6 +87,15 @@ export const itemsProperty = new Property<GridViewBase, any[] | ItemsSource>({
         const getItem = newValue && (newValue as ItemsSource).getItem;
 
         target.isItemsSourceIn = typeof getItem === "function";
+
+        if (oldValue instanceof ObservableArray) {
+            removeWeakEventListener(oldValue, ObservableArray.changeEvent, target.refresh, target);
+        }
+
+        if (newValue instanceof ObservableArray) {
+            addWeakEventListener(newValue, ObservableArray.changeEvent, target.refresh, target);
+        }
+
         target.refresh();
     }
 });
