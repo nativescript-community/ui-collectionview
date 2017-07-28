@@ -16,7 +16,7 @@ import { ItemDetailComponent } from "./item/item-detail.component";
 import { GridViewModule } from 'nativescript-grid-view/angular';
 import * as trace from 'tns-core-modules/trace';
 trace.setCategories('ns-grid-view');
-trace.enable();
+// trace.enable();
 
 @NgModule({
     bootstrap: [

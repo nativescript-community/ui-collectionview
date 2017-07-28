@@ -8,7 +8,7 @@
 android {  
   defaultConfig {  
     generatedDensities = []
-    applicationId = "org.nativescript.tnsnggridview"  
+    applicationId = "com.tangrainc.nggridviewsample"  
   }  
   aaptOptions {  
     additionalParameters "--no-version-vectors"  
