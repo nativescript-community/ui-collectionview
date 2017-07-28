@@ -1,0 +1,10 @@
+node_modules
+hooks
+*.d.ts
+*.js
+platforms
+app/vendor-platform.android.ts
+app/vendor-platform.ios.ts
+app/vendor.ts
+*.css
+report

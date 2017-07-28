@@ -3,8 +3,9 @@
         typeScriptDeclarations:[
             "**/*.d.ts",
             "!references.d.ts",
-            "!demo/**/*.*",
             "!node_modules/**/*.*",
+            "!demo/**/*.*",
+            "!demo-ng/**/*.*",
             "!bin/**/*.*"
         ],
         outDir: "bin/dist/"
@@ -23,7 +24,7 @@
             },
             platforms: {
                 files: [{ expand: true, src: ["platforms/**"], dest: localConfig.outDir }]
-            },            
+            },
             packageConfig: {
                 src: "package.json",
                 dest: localConfig.outDir,
@@ -49,11 +50,14 @@
             tsCompile: {
                 cmd: "node ./node_modules/typescript/bin/tsc --project tsconfig.json --outDir " + localConfig.outDir
             },
+            ngCompile: {
+                cmd: "node ./node_modules/.bin/ngc --project tsconfig.aot.json --outDir " + localConfig.outDir
+            },
             tslint: {
                 cmd: "node ./node_modules/tslint/bin/tslint --project tsconfig.json --type-check"
             },
             npm_publish: {
-                cmd: "npm publish", 
+                cmd: "npm publish",
                 cwd: localConfig.outDir
             }
         }
@@ -67,6 +71,7 @@
         "exec:tslint",
         "clean:build",
         "exec:tsCompile",
+        "exec:ngCompile",
         "copy"
     ]);
     grunt.registerTask("publish", [

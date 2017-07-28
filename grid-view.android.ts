@@ -273,11 +273,11 @@ class GridViewRecyclerView extends android.support.v7.widget.RecyclerView {
     }
 
     public onLayout(changed: boolean, l: number, t: number, r: number, b: number) {
-        super.onLayout(changed, l, t, r, b);
         if (changed) {
             const owner = this.owner.get();
             owner.onLayout(l, t, r, b);
         }    
+        super.onLayout(changed, l, t, r, b);
     }
     
 }

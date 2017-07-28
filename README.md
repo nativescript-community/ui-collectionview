@@ -33,6 +33,44 @@ You need to add `xmlns:gv="nativescript-grid-view"` to your page tag, and then s
 </Page>
 ```
 
+### In nativescript-angular:
+
+Template:
+```HTML
+  <GridView [items]="items" colWidth="33%" rowHeight="50%" padding="5">
+    <ng-template let-item="item">
+      <StackLayout [nsRouterLink]="['/item', item.id]" borderColor="blue" borderWidth="2" borderRadius="5" verticalAlignment="stretch" class="list-group-item">
+        <Label verticalAlignment="center" [text]="item.name" class="list-group-item-text"></Label>
+      </StackLayout>
+    </ng-template>
+  </GridView>
+```
+
+In your app-module:
+```typescript
+import { GridViewModule } from 'nativescript-grid-view/angular';
+
+@NgModule({
+    bootstrap: [
+        ...
+    ],
+    imports: [
+        ...
+        GridViewModule,
+    ],
+    declarations: [
+        ...
+    ],
+    providers: [
+        ...
+    ],
+    schemas: [
+        NO_ERRORS_SCHEMA
+    ]
+})
+export class AppModule { }
+```
+
 ## API
 
 ### Events
