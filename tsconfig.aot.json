@@ -1,23 +1,12 @@
 {
+    "extends": "./tsconfig",
     "compilerOptions": {
-        "noEmitOnError": true,
-        "noEmitHelpers": true,
-        "sourceMap": false,
-        "removeComments": true,
         "declaration": true,
-        "experimentalDecorators": true,
-        "target": "es5",
-        "module": "commonjs",
-        "outDir": "bin/dist",
-        "lib": ["es6", "dom", "es2015.iterable"],
-        "rootDir": ".",
-        "baseUrl": ".",
-        "paths": {
-            "*": [
-                "./node_modules/tns-core-modules/*",
-                "./node_modules/*"
-            ]
-        },
+        "lib": [
+            "es6",
+            "dom",
+            "es2015.iterable"
+        ],
         "emitDecoratorMetadata": true,
         "moduleResolution": "node"
     },

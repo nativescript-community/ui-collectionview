@@ -12,8 +12,7 @@
         "outDir": "bin/dist",
         "lib": [
             "es6",
-            "dom",
-            "es2015.iterable"
+            "dom"
         ],
         "rootDir": ".",
         "baseUrl": ".",
@@ -29,10 +28,5 @@
         "demo",
         "demo-ng",
         "bin"
-    ],
-    "angularCompilerOptions": {
-        "genDir": "bin/dist",
-        "skipTemplateCodegen": true
-    },
-    "compileOnSave": false
+    ]
 }
