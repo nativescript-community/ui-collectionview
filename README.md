@@ -18,58 +18,6 @@ This command automatically installs the necessary files, as well as stores nativ
 
 ## Usage
 You need to add `xmlns:gv="nativescript-grid-view"` to your page tag, and then simply use `<gv:GridView/>` in order to add the widget to your page. Use `<gv:Gridview.itemTemplate/>` to specify the template for each cell:
-```XML
-<Page xmlns="http://schemas.nativescript.org/tns.xsd" 
-      xmlns:gv="nativescript-grid-view">
-  <GridLayout>
-    <gv:GridView>
-      <gv:GridView.itemTemplate>
-        <GridLayout>
-          <Label text="Text"/>
-        </GridLayout>
-      </gv:GridView.itemTemplate>
-    </gv:GridView>
-  </GridLayout>
-</Page>
-```
-
-### In nativescript-angular:
-
-Template:
-```HTML
-  <GridView [items]="items" colWidth="33%" rowHeight="50%" padding="5">
-    <ng-template let-item="item">
-      <StackLayout [nsRouterLink]="['/item', item.id]" borderColor="blue" borderWidth="2" borderRadius="5" verticalAlignment="stretch" class="list-group-item">
-        <Label verticalAlignment="center" [text]="item.name" class="list-group-item-text"></Label>
-      </StackLayout>
-    </ng-template>
-  </GridView>
-```
-
-In your app-module:
-```typescript
-import { GridViewModule } from 'nativescript-grid-view/angular';
-
-@NgModule({
-    bootstrap: [
-        ...
-    ],
-    imports: [
-        ...
-        GridViewModule,
-    ],
-    declarations: [
-        ...
-    ],
-    providers: [
-        ...
-    ],
-    schemas: [
-        NO_ERRORS_SCHEMA
-    ]
-})
-export class AppModule { }
-```
 
 ## API
 
@@ -117,7 +65,7 @@ Gets or sets the width for every column in the GridView.
 Forces the GridView to reload all its items.
 
 ## Example
-```XML
+```xml
 <!-- test-page.xml -->
 <Page xmlns="http://schemas.nativescript.org/tns.xsd" xmlns:gv="nativescript-grid-view" loaded="pageLoaded">
   <GridLayout>
@@ -132,7 +80,7 @@ Forces the GridView to reload all its items.
 </Page>
 ```
 
-```TypeScript
+```ts
 // test-page.ts
 import { EventData, Observable } from "data/observable";
 import { ObservableArray } from "data/observable-array";
@@ -168,6 +116,66 @@ export function gridViewLoadMoreItems(args: EventData) {
 }
 ```
 
+## Angular:
+
+Import `GridViewModule` in your `NgModule`:
+
+```typescript
+import { GridViewModule } from 'nativescript-grid-view/angular';
+
+@NgModule({
+    //......
+    imports: [
+        //......
+        GridViewModule,
+        //......
+    ],
+    //......
+})
+```
+
+#### Example Usage
+```ts
+// app.module.ts
+import { GridViewModule } from "nativescript-grid-view/angular";
+
+@NgModule({
+    bootstrap: [
+        AppComponent
+    ],
+    imports: [
+        NativeScriptModule,
+        AppRoutingModule,
+        GridViewModule,
+    ],
+    declarations: [
+        AppComponent,
+        ItemsComponent,
+        ItemDetailComponent
+    ],
+    providers: [
+        ItemService
+    ],
+    schemas: [
+        NO_ERRORS_SCHEMA
+    ]
+})
+export class AppModule { }
+```
+
+```html
+<!-- my.component.html -->
+<GridLayout class="page">
+  <GridView [items]="items" colWidth="30%" rowHeight="100">
+    <ng-template let-item="item" let-odd="odd">
+      <StackLayout margin="10" [nsRouterLink]="['/item', item.id]" borderColor="blue" borderWidth="2" borderRadius="5" verticalAlignment="stretch" class="list-group-item" [class.odd]="odd">
+        <Label verticalAlignment="center" [text]="item.name" class="list-group-item-text" textWrap="true"></Label>
+      </StackLayout>
+    </ng-template>
+  </GridView>
+</GridLayout>
+```
+
 ## Working with Webpack+Uglify
 In case you are uing webpack and also are minifying/uglifying your code, there are some specific names that should be excluded from the uglification for the widget to work properly. The GridView widget exports those and you need to add them to the mangle exclude option of the uglifyjs plugin in the `webpack.common.js` file:
 ```js
@@ -192,3 +200,7 @@ module.exports = function (platform, destinationApp) {
    //......
 }
 ```
+
+## Donate
+`bitcoin:14fjysmpwLvSsAskvLASw6ek5XfhTzskHC`
+![Donate](https://www.tangrainc.com/qr.png)
