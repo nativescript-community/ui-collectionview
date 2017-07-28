@@ -1,6 +1,6 @@
 {
   "name": "nativescript-grid-view",
-  "version": "3.0.2",
+  "version": "3.1.0",
   "description": "A NativeScript GridView widget.",
   "main": "grid-view",
   "typings": "grid-view.d.ts",
@@ -10,7 +10,7 @@
       "android": "3.0.0"
     },
     "plugin": {
-      "nan": "false",
+      "nan": "true",
       "pan": "true",
       "core3": "true",
       "category": "Interface"
@@ -28,6 +28,9 @@
     "tangra"
   ],
   "author": "Peter Staev <peter@tangrasoft.com>",
+	"contributors": [
+		"Morten Sjøgren (https://github.com/m-abs)"
+	],
   "license": "Apache-2.0",
   "peerDependencies": {
     "tns-core-modules": "^3.0.0"
