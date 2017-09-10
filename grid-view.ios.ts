@@ -69,9 +69,6 @@ export class GridView extends GridViewBase {
 
     public onUnloaded() {
         this.nativeView.delegate = null;
-        this._layout = null;
-        this._dataSource = null;
-        this._delegate = null;
         super.onUnloaded();
     }
 
