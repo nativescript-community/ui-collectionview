@@ -23,10 +23,17 @@ These components make use of several CSS class names that are part of the Native
 core theme, such as p-20, btn, h2, and list-group. You can view a full list of the
 class names available for styling your app at https://docs.nativescript.org/ui/theme.
 -->
-<GridLayout class="page">
-  <GridView [items]="items" colWidth="30%" rowHeight="100">
+<GridLayout class="page" rows="*, *">
+  <GridView row="0" [items]="items" colWidth="33%" rowHeight="100" orientation="vertical">
     <ng-template let-item="item" let-odd="odd">
-      <StackLayout margin="10" [nsRouterLink]="['/item', item.id]" borderColor="blue" borderWidth="2" borderRadius="5" verticalAlignment="stretch" class="list-group-item" [class.odd]="odd">
+      <StackLayout [nsRouterLink]="['/item', item.id]" borderColor="blue" borderWidth="2" borderRadius="5" verticalAlignment="stretch" class="list-group-item" [class.odd]="odd">
+        <Label verticalAlignment="center" [text]="item.name" class="list-group-item-text" textWrap="true"></Label>
+      </StackLayout>
+    </ng-template>
+  </GridView>
+  <GridView row="1" [items]="items" colWidth="33%" rowHeight="100" orientation="horizontal">
+    <ng-template let-item="item" let-odd="odd">
+      <StackLayout [nsRouterLink]="['/item', item.id]" borderColor="blue" borderWidth="2" borderRadius="5" verticalAlignment="stretch" class="list-group-item" [class.odd]="odd">
         <Label verticalAlignment="center" [text]="item.name" class="list-group-item-text" textWrap="true"></Label>
       </StackLayout>
     </ng-template>

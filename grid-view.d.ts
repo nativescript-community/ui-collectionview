@@ -18,6 +18,8 @@ import { PercentLength, Template, View } from "ui/core/view";
 import { ItemsSource } from "ui/list-view";
 import { EventData } from "data/observable";
 
+export type Orientation = "horizontal" | "vertical"
+
 export class GridView extends View {
     public static itemLoadingEvent: string;
     public static itemTapEvent: string;
@@ -27,6 +29,7 @@ export class GridView extends View {
     public itemTemplate: string | Template;
     public rowHeight: PercentLength;
     public colWidth: PercentLength;
+    public orientation: Orientation;
 
     public ios: any; /* UICollectionView */
     public android: any; /* android.support.v7.widget.RecyclerView */

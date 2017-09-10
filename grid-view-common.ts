@@ -16,10 +16,11 @@ limitations under the License.
 
 import { ObservableArray } from "data/observable-array";
 import { parse } from "ui/builder";
+import { makeParser, makeValidator } from "ui/content-view";
 import { CoercibleProperty, Length, PercentLength, Property, Template, View } from "ui/core/view";
 import { addWeakEventListener, removeWeakEventListener } from "ui/core/weak-event-listener";
 import { ItemsSource } from "ui/list-view";
-import { GridView as GridViewDefinition } from ".";
+import { GridView as GridViewDefinition, Orientation } from ".";
 
 const autoEffectiveRowHeight = 100;
 const autoEffectiveColWidth = 100;
@@ -36,6 +37,7 @@ export abstract class GridViewBase extends View implements GridViewDefinition {
     public static itemTapEvent = "itemTap";
     public static loadMoreItemsEvent = "loadMoreItems";
 
+    public orientation: Orientation;
     public itemTemplate: string | Template;
     public items: any[] | ItemsSource;
     public isItemsSourceIn: boolean;
@@ -53,10 +55,10 @@ export abstract class GridViewBase extends View implements GridViewDefinition {
     public onLayout(left: number, top: number, right: number, bottom: number) {
         super.onLayout(left, top, right, bottom);
 
-        this._innerWidth = right - this.effectivePaddingLeft - this.effectivePaddingRight;
+        this._innerWidth = right - left - this.effectivePaddingLeft - this.effectivePaddingRight;
         this._effectiveColWidth = PercentLength.toDevicePixels(this.colWidth, autoEffectiveColWidth, this._innerWidth); // We cannot use 0 for auto as it throws for android. 
 
-        this._innerHeight = bottom - this.effectivePaddingTop - this.effectivePaddingBottom;
+        this._innerHeight = bottom - top - this.effectivePaddingTop - this.effectivePaddingBottom;
         this._effectiveRowHeight = PercentLength.toDevicePixels(this.rowHeight, autoEffectiveRowHeight, this._innerHeight);
     }
     
@@ -142,3 +144,12 @@ export const colWidthProperty = new CoercibleProperty<GridViewBase, PercentLengt
     }
 });
 colWidthProperty.register(GridViewBase);
+
+const converter = makeParser<Orientation>(makeValidator("horizontal", "vertical"));
+export const orientationProperty = new Property<GridViewBase, Orientation>({
+    name: "orientation", defaultValue: "vertical", affectsLayout: true,
+    valueChanged: (target: GridViewBase, oldValue: Orientation, newValue: Orientation) => {
+        target.refresh();
+    },
+    valueConverter: converter
+});
