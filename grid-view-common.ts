@@ -153,3 +153,4 @@ export const orientationProperty = new Property<GridViewBase, Orientation>({
     },
     valueConverter: converter
 });
+orientationProperty.register(GridViewBase);
