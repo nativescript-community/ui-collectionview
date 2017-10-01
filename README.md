@@ -9,15 +9,15 @@ A NativeScript GridView widget. The GridView displays data in separate cells, ea
 ## Screenshot
 ![Screenshot of Android](https://raw.githubusercontent.com/PeterStaev/NativeScript-Grid-View/master/docs/screenshot.png)
 
-## Instalation
+## Installation
 Run the following command from the root of your project:
 
 `tns plugin add nativescript-grid-view`
 
 This command automatically installs the necessary files, as well as stores nativescript-grid-view as a dependency in your project's package.json file.
 
-## Usage
-You need to add `xmlns:gv="nativescript-grid-view"` to your page tag, and then simply use `<gv:GridView/>` in order to add the widget to your page. Use `<gv:Gridview.itemTemplate/>` to specify the template for each cell:
+## Configuration
+There is no additional configuration needed!
 
 ## API
 
@@ -64,7 +64,9 @@ Gets or sets the width for every column in the GridView.
 * **refresh()**  
 Forces the GridView to reload all its items.
 
-## Example
+## Usage
+You need to add `xmlns:gv="nativescript-grid-view"` to your page tag, and then simply use `<gv:GridView/>` in order to add the widget to your page. Use `<gv:Gridview.itemTemplate/>` to specify the template for each cell:
+
 ```xml
 <!-- test-page.xml -->
 <Page xmlns="http://schemas.nativescript.org/tns.xsd" xmlns:gv="nativescript-grid-view" loaded="pageLoaded">
@@ -116,7 +118,7 @@ export function gridViewLoadMoreItems(args: EventData) {
 }
 ```
 
-## Angular:
+## Usage in Angular
 
 Import `GridViewModule` in your `NgModule`:
 
@@ -200,6 +202,18 @@ module.exports = function (platform, destinationApp) {
    //......
 }
 ```
+
+## Demos
+This repository includes both Angular and plain NativeScript demos. In order to run those execute the following in your shell:
+```shell
+$ git clone https://github.com/peterstaev/nativescript-grid-view
+$ cd nativescript-grid-view
+$ npm install
+$ npm run demo-ios
+```
+This will run the plain NativeScript demo project on iOS. If you want to run it on Android simply use the `-android` instead of the `-ios` sufix. 
+
+If you want to run the Angular demo simply use the `demo-ng-` prefix instead of `demo-`. 
 
 ## Donate
 `bitcoin:14fjysmpwLvSsAskvLASw6ek5XfhTzskHC`

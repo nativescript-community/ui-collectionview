@@ -20,6 +20,12 @@
     "type": "git",
     "url": "https://github.com/PeterStaev/NativeScript-Grid-View"
   },
+  "scripts": {
+    "demo-ios": "grunt build && cd demo && tns run ios",
+    "demo-android": "grunt build && cd demo && tns run android",
+    "demo-ng-ios": "grunt build && cd demo-ng && tns run ios",
+    "demo-ng-android": "grunt build && cd demo-ng && tns run android"
+  },
   "keywords": [
     "NativeScript",
     "GridView",
