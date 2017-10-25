@@ -37,6 +37,7 @@ import {
     TemplateRef,
     ViewChild,
     ViewContainerRef,
+    ɵisListLikeIterable as isListLikeIterable,
 } from "@angular/core";
 import { ObservableArray } from "tns-core-modules/data/observable-array";
 import { profile } from "tns-core-modules/profiling";
@@ -51,7 +52,6 @@ import {
   GridView,
 } from "../grid-view";
 
-import { isListLikeIterable } from "nativescript-angular/collection-facade";
 import {
   getSingleViewRecursive,
   isKnownView,
