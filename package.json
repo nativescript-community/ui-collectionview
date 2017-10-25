@@ -1,6 +1,6 @@
 {
   "name": "nativescript-grid-view",
-  "version": "3.2.1",
+  "version": "3.2.2",
   "description": "A NativeScript GridView widget.",
   "main": "grid-view",
   "typings": "grid-view.d.ts",
@@ -21,6 +21,9 @@
     "url": "https://github.com/PeterStaev/NativeScript-Grid-View"
   },
   "scripts": {
+    "tslint": "tslint --project tsconfig.json",
+    "tsc": "tsc --project tsconfig.json",
+    "ngc": "ngc --project tsconfig.aot.json",
     "demo-ios": "grunt build && cd demo && tns run ios",
     "demo-android": "grunt build && cd demo && tns run android",
     "demo-ng-ios": "grunt build && cd demo-ng && tns run ios",
