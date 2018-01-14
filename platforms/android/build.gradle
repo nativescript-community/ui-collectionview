@@ -6,5 +6,6 @@ android {
   }
 }
 dependencies {
-    compile 'com.android.support:recyclerview-v7:+'
+    def supportVer = project.hasProperty("supportVersion") ? supportVersion : "+";
+    compile 'com.android.support:recyclerview-v7:$supportVer'
 }
