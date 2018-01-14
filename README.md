@@ -216,6 +216,8 @@ This will run the plain NativeScript demo project on iOS. If you want to run it 
 If you want to run the Angular demo simply use the `demo-ng-` prefix instead of `demo-`. 
 
 ## Donate
+[![Donate](https://img.shields.io/badge/paypal-donate-brightgreen.svg)](https://bit.ly/2AS9QKB)
+
 `bitcoin:14fjysmpwLvSsAskvLASw6ek5XfhTzskHC`
 
 ![Donate](https://www.tangrainc.com/qr.png)
