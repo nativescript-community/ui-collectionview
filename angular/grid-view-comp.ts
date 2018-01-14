@@ -21,7 +21,6 @@ import {
     AfterContentInit,
     AfterViewInit,
     ChangeDetectionStrategy,
-    ChangeDetectorRef,
     Component,
     ContentChild,
     DoCheck,
@@ -120,7 +119,7 @@ export class GridViewComponent implements DoCheck, OnDestroy, AfterContentInit, 
         }
         if (needDiffer && !this._differ && isListLikeIterable(value)) {
             this._differ = this._iterableDiffers.find(this._items)
-                .create(this._cdr, (_index, item) => item);
+                .create((_index, item) => item);
         }
 
         this.gridView.items = this._items;
@@ -132,8 +131,7 @@ export class GridViewComponent implements DoCheck, OnDestroy, AfterContentInit, 
     private itemTemplate: TemplateRef<GridItemContext>;
 
     constructor(@Inject(ElementRef) _elementRef: ElementRef,
-                @Inject(IterableDiffers) private _iterableDiffers: IterableDiffers,
-                @Inject(ChangeDetectorRef) private _cdr: ChangeDetectorRef) {
+                @Inject(IterableDiffers) private _iterableDiffers: IterableDiffers) {
         this.gridView = _elementRef.nativeElement;
 
         this.gridView.on(GridView.itemLoadingEvent, this.onItemLoading, this);
