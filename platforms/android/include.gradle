@@ -8,5 +8,4 @@ android {
 dependencies {
     def supportVer = project.hasProperty("supportVersion") ? supportVersion : "+";
     compile "com.android.support:recyclerview-v7:$supportVer"
-    compile "com.android.support:design:$supportVer"
 }
