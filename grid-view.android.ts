@@ -216,13 +216,16 @@ class GridViewScrollListener extends android.support.v7.widget.RecyclerView.OnSc
         }
 
         const lastVisibleItemPos = (view.getLayoutManager() as android.support.v7.widget.GridLayoutManager).findLastCompletelyVisibleItemPosition();
-        const itemCount = owner.items.length - 1;
-        if (lastVisibleItemPos === itemCount) {
-            owner.notify({
-                eventName: GridViewBase.loadMoreItemsEvent,
-                object: owner
-            });
+        if (owner && owner.items) {
+            const itemCount = owner.items.length - 1;
+            if (lastVisibleItemPos === itemCount) {
+                owner.notify({
+                    eventName: GridViewBase.loadMoreItemsEvent,
+                    object: owner
+                });
+            }
         }
+        
     }
 
     public onScrollStateChanged(view: android.support.v7.widget.RecyclerView, newState: number) {
