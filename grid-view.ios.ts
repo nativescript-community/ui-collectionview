@@ -129,6 +129,7 @@ export class GridView extends GridViewBase {
             callback(view);
         });
     }
+    
     public onLayout(left: number, top: number, right: number, bottom: number) {
         super.onLayout(left, top, right, bottom);
 
@@ -136,6 +137,7 @@ export class GridView extends GridViewBase {
         layout.itemSize = CGSizeMake(utils.layout.toDeviceIndependentPixels(this._effectiveColWidth), utils.layout.toDeviceIndependentPixels(this._effectiveRowHeight));
 
     }
+
     public refresh() {
         // clear bindingContext when it is not observable because otherwise bindings to items won't reevaluate
         this.eachChildView((view) => {
@@ -147,6 +149,14 @@ export class GridView extends GridViewBase {
         });
         
         this.ios.reloadData();
+    }
+
+    public scrollToIndex(index: number, animated: boolean = true) {
+        this.ios.scrollToItemAtIndexPathAtScrollPositionAnimated(
+            NSIndexPath.indexPathForItemInSection(index, 0),
+            this.orientation === "vertical" ? UICollectionViewScrollPosition.Top :  UICollectionViewScrollPosition.Left,
+            animated,
+        );
     }
 
     public requestLayout(): void {

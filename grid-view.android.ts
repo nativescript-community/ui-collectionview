@@ -165,13 +165,23 @@ export class GridView extends GridViewBase {
 
         if (this.orientation === "horizontal") {
           spanCount = Math.max(Math.floor(this._innerHeight / this._effectiveRowHeight), 1) || 1;
-        } else {
+        }
+        else {
           spanCount = Math.max(Math.floor(this._innerWidth / this._effectiveColWidth), 1) || 1;
         }
 
         layoutManager.setSpanCount(spanCount);
 
         this.nativeView.getAdapter().notifyDataSetChanged();
+    }
+
+    public scrollToIndex(index: number, animated: boolean = true) {
+        if (animated) {
+            this.nativeView.smoothScrollToPosition(index);
+        }
+        else {
+            this.nativeView.scrollToPosition(index);
+        }
     }
 
     public _getRealizedView(convertView: android.view.View) {

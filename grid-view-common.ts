@@ -51,6 +51,7 @@ export abstract class GridViewBase extends View implements GridViewDefinition {
     public _effectiveColWidth: number;
 
     public abstract refresh();
+    public abstract scrollToIndex(index: number, animated: boolean);
 
     public onLayout(left: number, top: number, right: number, bottom: number) {
         super.onLayout(left, top, right, bottom);

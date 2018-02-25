@@ -64,6 +64,9 @@ Gets or sets the width for every column in the GridView.
 * **refresh()**  
 Forces the GridView to reload all its items.
 
+* **scrollToIndex(index: number, animated: boolean = true)**  
+Scrolls the GridView to the item with the given index. This can be either animated or not. Defaults to animated.
+
 ## Usage
 You need to add `xmlns:gv="nativescript-grid-view"` to your page tag, and then simply use `<gv:GridView/>` in order to add the widget to your page. Use `<gv:Gridview.itemTemplate/>` to specify the template for each cell:
 

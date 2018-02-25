@@ -35,6 +35,7 @@ export class GridView extends View {
     public android: any; /* android.support.v7.widget.RecyclerView */
 
     public refresh();
+    public scrollToIndex(index: number, animated?: boolean);
 }
 
 export interface GridItemEventData extends EventData {

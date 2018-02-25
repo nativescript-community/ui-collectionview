@@ -1,6 +1,6 @@
 <Page xmlns="http://schemas.nativescript.org/tns.xsd" xmlns:gv="nativescript-grid-view" loaded="pageLoaded">
-    <GridLayout rows="*, auto">
-        <gv:GridView row="0" class="{{ cssClass }}" items="{{ items }}" 
+    <GridLayout rows="*, auto, auto">
+        <gv:GridView id="gv" row="0" class="{{ cssClass }}" items="{{ items }}" 
                      colWidth="{{ colWidth }}" rowHeight="{{ rowHeight }}"
                      itemTap="gridViewItemTap" itemLoading="gridViewItemLoading" loadMoreItems="gridViewLoadMoreItems">
             <gv:GridView.itemTemplate>
@@ -10,5 +10,6 @@
             </gv:GridView.itemTemplate>
         </gv:GridView>
         <Button row="1" text="Change Styles" tap="changeStyles" style="font-size: 25;" />
+        <Button row="2" text="Scroll to 25" tap="scrollToIndex" style="font-size: 25;" />
     </GridLayout>
 </Page>
