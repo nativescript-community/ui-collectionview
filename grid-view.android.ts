@@ -14,12 +14,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ***************************************************************************** */
 
-import { Length, View } from "ui/core/view";
+import { KeyedTemplate, Length, View } from "ui/core/view";
 import * as utils from "utils/utils";
 
 import {
     GridViewBase,
     colWidthProperty,
+    itemTemplatesProperty,
     orientationProperty,
     paddingBottomProperty,
     paddingLeftProperty,   
@@ -139,9 +140,23 @@ export class GridView extends GridViewBase {
         const layoutManager = this.nativeView.getLayoutManager() as android.support.v7.widget.GridLayoutManager;
         if (value === "horizontal") {
             layoutManager.setOrientation(android.support.v7.widget.LinearLayoutManager.HORIZONTAL);
-        } else {
+        }
+        else {
             layoutManager.setOrientation(android.support.v7.widget.LinearLayoutManager.VERTICAL);
         }
+    }
+
+    public [itemTemplatesProperty.getDefault](): KeyedTemplate[] {
+        return null;
+    }
+    public [itemTemplatesProperty.setNative](value: KeyedTemplate[]) {
+        this._itemTemplatesInternal = new Array<KeyedTemplate>(this._defaultTemplate);
+        if (value) {
+            this._itemTemplatesInternal = this._itemTemplatesInternal.concat(value);
+        }
+
+        this.nativeViewProtected.setAdapter(new GridViewAdapter(new WeakRef(this)));
+        this.refresh();
     }
 
     public eachChildView(callback: (child: View) => boolean): void {
@@ -182,14 +197,6 @@ export class GridView extends GridViewBase {
         else {
             this.nativeView.scrollToPosition(index);
         }
-    }
-
-    public _getRealizedView(convertView: android.view.View) {
-        if (!convertView) {
-            return this._getItemTemplateContent();
-        }
-
-        return this._realizedItems.get(convertView);
     }
     
     private _setPadding(newPadding: { top?: number, right?: number, bottom?: number, left?: number }) {
@@ -317,13 +324,38 @@ function initGridViewAdapter() {
             return owner.items ? owner.items.length : 0;
         }
 
+        public getItem(i: number) {
+            const owner = this.owner.get();
+            if (owner && owner.items && i < owner.items.length) {
+                return owner._getDataItem(i);
+            }
+
+            return null;
+        }
+
         public getItemId(i: number) {
-            return long(i);
+            const owner = this.owner.get();
+            const item = this.getItem(i);
+            let id = i;
+            if (this.owner && item && owner.items) {
+                id = owner.itemIdGenerator(item, i, owner.items);
+            }
+            return long(id);
+        }
+
+        public getItemViewType(index: number) {
+            const owner = this.owner.get();
+            const template = owner._getItemTemplate(index);
+            const itemViewType = owner._itemTemplatesInternal.indexOf(template);
+            
+            return itemViewType;
         }
 
         public onCreateViewHolder(parent: android.view.ViewGroup, viewType: number): android.support.v7.widget.RecyclerView.ViewHolder {
             const owner = this.owner.get();
-            const view = owner._getItemTemplateContent();
+            const template = owner._itemTemplatesInternal[viewType];
+            const view = template.createView();
+            console.log("CreateViewHolder", viewType, owner._realizedItems.size);
 
             owner._addView(view);
 
@@ -344,7 +376,8 @@ function initGridViewAdapter() {
       
             if (owner.orientation === "horizontal") {
                 vh.view.width = utils.layout.toDeviceIndependentPixels(owner._effectiveColWidth);
-            } else {
+            }
+            else {
                 vh.view.height = utils.layout.toDeviceIndependentPixels(owner._effectiveRowHeight);
             }
         

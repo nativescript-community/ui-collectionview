@@ -125,17 +125,6 @@ export abstract class GridViewBase extends View implements GridViewDefinition {
         return this._itemTemplatesInternal[0];
     }
 
-    // TODO: Remove this
-    public _getItemTemplateContent(): View {
-        let view;
-
-        if (this.itemTemplate) {
-            view = parse(this.itemTemplate, this);
-        }
-
-        return view;
-    }
-
     public _prepareItem(item: View, index: number) {
         if (item) {
             item.bindingContext = this._getDataItem(index);
