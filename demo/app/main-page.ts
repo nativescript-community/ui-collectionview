@@ -46,3 +46,7 @@ export function changeStyles() {
 export function scrollToIndex() {
     gv.scrollToIndex(25);
 }
+
+export function templateSelector(item: any, index: number, items: any) {
+    return index % 2 === 0 ? "even" : "odd";
+}

@@ -1,13 +1,26 @@
 <Page xmlns="http://schemas.nativescript.org/tns.xsd" xmlns:gv="nativescript-grid-view" loaded="pageLoaded">
     <GridLayout rows="*, auto, auto">
         <gv:GridView id="gv" row="0" class="{{ cssClass }}" items="{{ items }}" 
-                     colWidth="{{ colWidth }}" rowHeight="{{ rowHeight }}"
+                     colWidth="{{ colWidth }}" rowHeight="{{ rowHeight }}" itemTemplateSelector="templateSelector"
                      itemTap="gridViewItemTap" itemLoading="gridViewItemLoading" loadMoreItems="gridViewLoadMoreItems">
-            <gv:GridView.itemTemplate>
+            <!-- <gv:GridView.itemTemplate>
                 <GridLayout backgroundColor="#33ffff" style="margin: 10 10 0 0">
                     <Label text="{{ value }}" verticalAlignment="center"/>
                 </GridLayout>
-            </gv:GridView.itemTemplate>
+            </gv:GridView.itemTemplate> -->
+            <gv:GridView.itemTemplates>
+                <template key="odd">
+                    <GridLayout backgroundColor="#33ffff" style="margin: 10 10 0 0">
+                        <Label text="{{ value }}" verticalAlignment="center"/>
+                    </GridLayout>
+                </template>
+                <template key="even">
+                    <GridLayout backgroundColor="#33ffff" rows="auto, auto" style="margin: 10 10 0 0">
+                        <Label row="0" text="{{ value }}" verticalAlignment="center"/>
+                        <Label row="1" text="{{ value }}" verticalAlignment="center"/>
+                    </GridLayout>
+                </template>
+            </gv:GridView.itemTemplates>
         </gv:GridView>
         <Button row="1" text="Change Styles" tap="changeStyles" style="font-size: 25;" />
         <Button row="2" text="Scroll to 25" tap="scrollToIndex" style="font-size: 25;" />

@@ -15,10 +15,11 @@ limitations under the License.
 ***************************************************************************** */
 
 import { ObservableArray } from "data/observable-array";
-import { parse } from "ui/builder";
+import { parse, parseMultipleTemplates } from "ui/builder";
 import { makeParser, makeValidator } from "ui/content-view";
-import { CoercibleProperty, Length, PercentLength, Property, Template, View } from "ui/core/view";
+import { CoercibleProperty, KeyedTemplate, Length, PercentLength, Property, Template, View } from "ui/core/view";
 import { addWeakEventListener, removeWeakEventListener } from "ui/core/weak-event-listener";
+import { Label } from "ui/label";
 import { ItemsSource } from "ui/list-view";
 import { GridView as GridViewDefinition, Orientation } from ".";
 
@@ -32,13 +33,31 @@ export module knownTemplates {
     export const itemTemplate = "itemTemplate";
 }
 
+// tslint:disable-next-line
+export module knownMultiTemplates {
+    export const itemTemplates = "itemTemplates";
+}
+
 export abstract class GridViewBase extends View implements GridViewDefinition {
     public static itemLoadingEvent = "itemLoading";
     public static itemTapEvent = "itemTap";
     public static loadMoreItemsEvent = "loadMoreItems";
+    public static knownFunctions = ["itemTemplateSelector", "itemIdGenerator"]; // See component-builder.ts isKnownFunction
+
+    public _defaultTemplate: KeyedTemplate = {
+        key: "default",
+        createView: () => {
+            if (this.itemTemplate) {
+                return parse(this.itemTemplate, this);
+            }
+            return undefined;
+        }
+    };
+    public _itemTemplatesInternal = new Array<KeyedTemplate>(this._defaultTemplate);
 
     public orientation: Orientation;
     public itemTemplate: string | Template;
+    public itemTemplates: string | KeyedTemplate[];
     public items: any[] | ItemsSource;
     public isItemsSourceIn: boolean;
     public rowHeight: PercentLength;
@@ -49,6 +68,32 @@ export abstract class GridViewBase extends View implements GridViewDefinition {
     public _innerHeight: number = 0;
     public _effectiveRowHeight: number;
     public _effectiveColWidth: number;
+
+    private _itemTemplateSelectorBindable = new Label();    
+    private _itemTemplateSelector: (item: any, index: number, items: any) => string;
+    
+    get itemTemplateSelector(): string | ((item: any, index: number, items: any) => string) {
+        return this._itemTemplateSelector;
+    }
+    set itemTemplateSelector(value: string | ((item: any, index: number, items: any) => string)) {
+        if (typeof value === "string") {
+            this._itemTemplateSelectorBindable.bind({
+                sourceProperty: null,
+                targetProperty: "templateKey",
+                expression: value
+            });
+            this._itemTemplateSelector = (item: any, index: number, items: any) => {
+                item["$index"] = index;
+                this._itemTemplateSelectorBindable.bindingContext = item;
+                return this._itemTemplateSelectorBindable.get("templateKey");
+            };
+        }
+        else if (typeof value === "function") {
+            this._itemTemplateSelector = value;
+        }
+    }
+
+    public itemIdGenerator: (item: any, index: number, items: any) => number = (_item: any, index: number) => index;
 
     public abstract refresh();
     public abstract scrollToIndex(index: number, animated: boolean);
@@ -63,6 +108,24 @@ export abstract class GridViewBase extends View implements GridViewDefinition {
         this._effectiveRowHeight = PercentLength.toDevicePixels(this.rowHeight, autoEffectiveRowHeight, this._innerHeight);
     }
     
+    public _getItemTemplate(index: number): KeyedTemplate {
+        let templateKey = "default";
+        if (this.itemTemplateSelector) {
+            const dataItem = this._getDataItem(index);
+            templateKey = this._itemTemplateSelector(dataItem, index, this.items);
+        }
+
+        for (const template of this._itemTemplatesInternal) {
+            if (template.key === templateKey) {
+                return template;
+            }
+        }
+
+        // This is the default template
+        return this._itemTemplatesInternal[0];
+    }
+
+    // TODO: Remove this
     public _getItemTemplateContent(): View {
         let view;
 
@@ -148,10 +211,24 @@ colWidthProperty.register(GridViewBase);
 
 const converter = makeParser<Orientation>(makeValidator("horizontal", "vertical"));
 export const orientationProperty = new Property<GridViewBase, Orientation>({
-    name: "orientation", defaultValue: "vertical", affectsLayout: true,
+    name: "orientation",
+    defaultValue: "vertical",
+    affectsLayout: true,
     valueChanged: (target: GridViewBase, oldValue: Orientation, newValue: Orientation) => {
         target.refresh();
     },
     valueConverter: converter
 });
 orientationProperty.register(GridViewBase);
+
+export const itemTemplatesProperty = new Property<GridViewBase, string | KeyedTemplate[]>({
+    name: "itemTemplates",
+    valueConverter: (value) => {
+        if (typeof value === "string") {
+            return parseMultipleTemplates(value);
+        }
+
+        return value;
+    }
+});
+itemTemplatesProperty.register(GridViewBase);

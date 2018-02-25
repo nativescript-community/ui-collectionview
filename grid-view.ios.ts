@@ -15,11 +15,12 @@ limitations under the License.
 ***************************************************************************** */
 
 import { EventData, Observable } from "data/observable";
-import { Length, View } from "ui/core/view";
+import { KeyedTemplate, Length, View } from "ui/core/view";
 import * as utils from "utils/utils";
 
 import {
     GridViewBase,
+    itemTemplatesProperty,
     orientationProperty,
     paddingBottomProperty,
     paddingLeftProperty,
@@ -30,8 +31,6 @@ import {
 import { GridItemEventData, Orientation } from ".";
 
 export * from "./grid-view-common";
-
-const CELLIDENTIFIER = "gridcell";
 
 export class GridView extends GridViewBase {
     private _layout: UICollectionViewFlowLayout;
@@ -49,7 +48,7 @@ export class GridView extends GridViewBase {
 
         this.nativeView = UICollectionView.alloc().initWithFrameCollectionViewLayout(CGRectMake(0, 0, 0, 0), this._layout);
         this.nativeView.backgroundColor = utils.ios.getter(UIColor, UIColor.clearColor);
-        this.nativeView.registerClassForCellWithReuseIdentifier(GridViewCell.class(), CELLIDENTIFIER);
+        this.nativeView.registerClassForCellWithReuseIdentifier(GridViewCell.class(), this._defaultTemplate.key);
         this.nativeView.autoresizesSubviews = false;
         this.nativeView.autoresizingMask = UIViewAutoresizing.None;
 
@@ -124,6 +123,22 @@ export class GridView extends GridViewBase {
         }
     }
 
+    public [itemTemplatesProperty.getDefault](): KeyedTemplate[] {
+        return null;
+    }
+    public [itemTemplatesProperty.setNative](value: KeyedTemplate[]) {
+        this._itemTemplatesInternal = new Array<KeyedTemplate>(this._defaultTemplate);
+        if (value) {
+            for (const template of value) {
+                this.ios.registerClassForCellWithReuseIdentifier(GridViewCell.class(), template.key);
+            }
+            
+            this._itemTemplatesInternal = this._itemTemplatesInternal.concat(value);
+        }
+
+        this.refresh();
+    }
+
     public eachChildView(callback: (child: View) => boolean): void {
         this._map.forEach((view, key) => {
             callback(view);
@@ -184,7 +199,7 @@ export class GridView extends GridViewBase {
 
             let view = cell.view;
             if (!view) {
-                view = this._getItemTemplateContent();
+                view = this._getItemTemplate(indexPath.row).createView();
             }
 
             this.notify<GridItemEventData>({
@@ -285,7 +300,8 @@ class GridViewDataSource extends NSObject implements UICollectionViewDataSource 
 
     public collectionViewCellForItemAtIndexPath(collectionView: UICollectionView, indexPath: NSIndexPath): UICollectionViewCell {
         const owner = this._owner.get();
-        const cell: any = collectionView.dequeueReusableCellWithReuseIdentifierForIndexPath(CELLIDENTIFIER, indexPath) || GridViewCell.new();
+        const template = owner._getItemTemplate(indexPath.row);
+        const cell: any = collectionView.dequeueReusableCellWithReuseIdentifierForIndexPath(template.key, indexPath) || GridViewCell.new();
         
         owner._prepareCell(cell, indexPath);
 
