@@ -31,9 +31,27 @@ class names available for styling your app at https://docs.nativescript.org/ui/t
       </StackLayout>
     </ng-template>
   </GridView>
-  <GridView row="1" [items]="items" colWidth="33%" rowHeight="100" orientation="horizontal">
-    <ng-template let-item="item" let-odd="odd">
+  <GridView row="1" [items]="items" colWidth="33%" rowHeight="100" orientation="horizontal" [itemTemplateSelector]="templateSelector">
+    <ng-template gvTemplateKey="Defender" let-item="item" let-odd="odd">
       <StackLayout [nsRouterLink]="['/item', item.id]" borderColor="blue" borderWidth="2" borderRadius="5" verticalAlignment="stretch" class="list-group-item" [class.odd]="odd">
+        <Label verticalAlignment="center" [text]="item.name" class="list-group-item-text" textWrap="true"></Label>
+      </StackLayout>
+    </ng-template>
+
+    <ng-template gvTemplateKey="Goalkeeper" let-item="item" let-odd="odd">
+      <StackLayout [nsRouterLink]="['/item', item.id]" borderColor="black" borderWidth="2" borderRadius="5" verticalAlignment="stretch" class="list-group-item" [class.odd]="odd">
+        <Label verticalAlignment="center" [text]="item.name" class="list-group-item-text" textWrap="true"></Label>
+      </StackLayout>
+    </ng-template>
+
+    <ng-template gvTemplateKey="Midfielder" let-item="item" let-odd="odd">
+      <StackLayout [nsRouterLink]="['/item', item.id]" borderColor="yellow" borderWidth="2" borderRadius="5" verticalAlignment="stretch" class="list-group-item" [class.odd]="odd">
+        <Label verticalAlignment="center" [text]="item.name" class="list-group-item-text" textWrap="true"></Label>
+      </StackLayout>
+    </ng-template>
+
+    <ng-template gvTemplateKey="Forward" let-item="item" let-odd="odd">
+      <StackLayout [nsRouterLink]="['/item', item.id]" borderColor="red" borderWidth="2" borderRadius="5" verticalAlignment="stretch" class="list-group-item" [class.odd]="odd">
         <Label verticalAlignment="center" [text]="item.name" class="list-group-item-text" textWrap="true"></Label>
       </StackLayout>
     </ng-template>

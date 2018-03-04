@@ -164,6 +164,18 @@ export const itemTemplateProperty = new Property<GridViewBase, string | Template
 });
 itemTemplateProperty.register(GridViewBase);
 
+export const itemTemplatesProperty = new Property<GridViewBase, string | KeyedTemplate[]>({
+    name: "itemTemplates",
+    valueConverter: (value) => {
+        if (typeof value === "string") {
+            return parseMultipleTemplates(value);
+        }
+
+        return value;
+    }
+});
+itemTemplatesProperty.register(GridViewBase);
+
 const defaultRowHeight: PercentLength = "auto";
 export const rowHeightProperty = new CoercibleProperty<GridViewBase, PercentLength>({
     name: "rowHeight",
@@ -209,15 +221,3 @@ export const orientationProperty = new Property<GridViewBase, Orientation>({
     valueConverter: converter
 });
 orientationProperty.register(GridViewBase);
-
-export const itemTemplatesProperty = new Property<GridViewBase, string | KeyedTemplate[]>({
-    name: "itemTemplates",
-    valueConverter: (value) => {
-        if (typeof value === "string") {
-            return parseMultipleTemplates(value);
-        }
-
-        return value;
-    }
-});
-itemTemplatesProperty.register(GridViewBase);

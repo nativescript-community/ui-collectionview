@@ -19,14 +19,15 @@ END - original License
 
 import {
     AfterContentInit,
-    AfterViewInit,
     ChangeDetectionStrategy,
     Component,
     ContentChild,
+    Directive,
     DoCheck,
     ElementRef,
     EmbeddedViewRef,
     EventEmitter,
+    Host,
     Inject,
     Input,
     IterableDiffer,
@@ -40,32 +41,12 @@ import {
 } from "@angular/core";
 import { ObservableArray } from "tns-core-modules/data/observable-array";
 import { profile } from "tns-core-modules/profiling";
-import { messageType, write } from "tns-core-modules/trace";
-import {
-  KeyedTemplate,
-  View,
-} from "tns-core-modules/ui/core/view";
+import { KeyedTemplate, View } from "tns-core-modules/ui/core/view";
 import { LayoutBase } from "tns-core-modules/ui/layouts/layout-base";
-import {
-  GridItemEventData,
-  GridView,
-} from "../grid-view";
+import { GridItemEventData, GridView } from "../grid-view";
+import { gridViewError, gridViewLog } from "./trace";
 
-import {
-  getSingleViewRecursive,
-  isKnownView,
-  registerElement,
-} from "nativescript-angular/element-registry";
-
-export const gridViewTraceCategory = "ns-grid-view";
-
-export function gridViewLog(message: string): void {
-    write(message, gridViewTraceCategory);
-}
-
-export function listViewError(message: string): void {
-    write(message, gridViewTraceCategory, messageType.error);
-}
+import { getSingleViewRecursive, isKnownView, registerElement } from "nativescript-angular/element-registry";
 
 const NG_VIEW = "_ngViewRef";
 
@@ -80,7 +61,7 @@ export class GridItemContext {
     }
 }
 
-export interface SetupGridViewArgs {
+export interface SetupItemViewArgs {
     view: EmbeddedViewRef<any>;
     data: any;
     index: number;
@@ -95,22 +76,19 @@ export interface SetupGridViewArgs {
         </DetachedContainer>`,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class GridViewComponent implements DoCheck, OnDestroy, AfterContentInit, AfterViewInit {
+export class GridViewComponent implements DoCheck, OnDestroy, AfterContentInit {
     public get nativeElement(): GridView {
         return this.gridView;
     }
 
     @ViewChild("loader", { read: ViewContainerRef }) public loader: ViewContainerRef;
-
-    @Output() public setupGridView = new EventEmitter<SetupGridViewArgs>();
-
+    @Output() public setupItemView = new EventEmitter<SetupItemViewArgs>();
     @ContentChild(TemplateRef) public itemTemplateQuery: TemplateRef<GridItemContext>;
 
     @Input()
     public get items() {
         return this._items;
     }
-
     public set items(value: any) {
         this._items = value;
         let needDiffer = true;
@@ -129,9 +107,12 @@ export class GridViewComponent implements DoCheck, OnDestroy, AfterContentInit, 
     private _items: any;
     private _differ: IterableDiffer<KeyedTemplate>;
     private itemTemplate: TemplateRef<GridItemContext>;
+    private _templateMap: Map<string, KeyedTemplate>;
 
-    constructor(@Inject(ElementRef) _elementRef: ElementRef,
-                @Inject(IterableDiffers) private _iterableDiffers: IterableDiffers) {
+    constructor(
+        @Inject(ElementRef) _elementRef: ElementRef,
+        @Inject(IterableDiffers) private _iterableDiffers: IterableDiffers,
+    ) {
         this.gridView = _elementRef.nativeElement;
 
         this.gridView.on(GridView.itemLoadingEvent, this.onItemLoading, this);
@@ -140,10 +121,6 @@ export class GridViewComponent implements DoCheck, OnDestroy, AfterContentInit, 
     public ngAfterContentInit() {
         gridViewLog("GridView.ngAfterContentInit()");
         this.setItemTemplates();
-    }
-
-    public ngAfterViewInit() {
-        gridViewLog("GridView.ngAfterViewInit()");
     }
 
     public ngOnDestroy() {
@@ -160,6 +137,20 @@ export class GridViewComponent implements DoCheck, OnDestroy, AfterContentInit, 
                 this.refresh();
             }
         }
+    }
+
+    public registerTemplate(key: string, template: TemplateRef<GridItemContext>) {
+        gridViewLog("registerTemplate for key: " + key);
+        if (!this._templateMap) {
+            this._templateMap = new Map<string, KeyedTemplate>();
+        }
+
+        const keyedTemplate = {
+            key,
+            createView: this.createNativeViewFactoryFromTemplate(template),
+        };
+
+        this._templateMap.set(key, keyedTemplate);
     }
 
     @profile
@@ -183,14 +174,14 @@ export class GridViewComponent implements DoCheck, OnDestroy, AfterContentInit, 
             }
 
             if (!viewRef) {
-                listViewError("ViewReference not found for item " + index + ". View recycling is not working");
+                gridViewError("ViewReference not found for item " + index + ". View recycling is not working");
             }
         }
 
         if (!viewRef) {
             gridViewLog("onItemLoading: " + index + " - Creating view from template");
             viewRef = this.loader.createEmbeddedView(this.itemTemplate, new GridItemContext(), 0);
-            args.view = getGridItemRoot(viewRef);
+            args.view = getItemViewRoot(viewRef);
             args.view[NG_VIEW] = viewRef;
         }
 
@@ -207,7 +198,7 @@ export class GridViewComponent implements DoCheck, OnDestroy, AfterContentInit, 
         context.even = (index % 2 === 0);
         context.odd = !context.even;
 
-        this.setupGridView.next({
+        this.setupItemView.next({
           context,
           data,
           index,
@@ -215,18 +206,33 @@ export class GridViewComponent implements DoCheck, OnDestroy, AfterContentInit, 
         });
     }
 
+    private createNativeViewFactoryFromTemplate(template: TemplateRef<GridItemContext>) {
+        return () => {
+            const viewRef = this.loader.createEmbeddedView(template, new GridItemContext(), 0);
+            const resultView = getItemViewRoot(viewRef);
+            resultView[NG_VIEW] = viewRef;
+
+            return resultView;
+        };
+    }
+
     private setItemTemplates() {
         // The itemTemplateQuery may be changed after list items are added that contain <template> inside,
         // so cache and use only the original template to avoid errors.
         this.itemTemplate = this.itemTemplateQuery;
 
-        this.gridView.itemTemplate = () => {
-            const viewRef = this.loader.createEmbeddedView(this.itemTemplate, new GridItemContext(), 0);
-            const resultView = getGridItemRoot(viewRef);
-            resultView[NG_VIEW] = viewRef;
+        if (this._templateMap) {
+            gridViewLog("Setting templates");
 
-            return resultView;
-        };
+            const templates: KeyedTemplate[] = [];
+            this._templateMap.forEach((value) => {
+                templates.push(value);
+            });
+            this.gridView.itemTemplates = templates;
+        }
+        else { // If the map was not initialized this means that there are no named templates, so we register the default one. 
+            this.gridView.itemTemplate = this.createNativeViewFactoryFromTemplate(this.itemTemplate);
+        }
     }
 
     @profile
@@ -250,9 +256,26 @@ export interface ComponentView {
 
 export type RootLocator = (nodes: any[], nestLevel: number) => View;
 
-export function getGridItemRoot(viewRef: ComponentView, rootLocator: RootLocator = getSingleViewRecursive): View {
+export function getItemViewRoot(viewRef: ComponentView, rootLocator: RootLocator = getSingleViewRecursive): View {
     const rootView = rootLocator(viewRef.rootNodes, 0);
     return rootView;
+}
+
+@Directive({ selector: "[gvTemplateKey]" })
+export class TemplateKeyDirective {
+    constructor(
+        private templateRef: TemplateRef<any>,
+        @Host() private grid: GridViewComponent,
+    ) {
+    }
+
+    @Input()
+    set gvTemplateKey(value: any) {
+        gridViewLog("gvTemplateKey: " + value);
+        if (this.grid && this.templateRef) {
+            this.grid.registerTemplate(value, this.templateRef);
+        }
+    }
 }
 
 if (!isKnownView("GridView")) {

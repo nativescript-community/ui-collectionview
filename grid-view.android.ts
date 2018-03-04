@@ -355,7 +355,6 @@ function initGridViewAdapter() {
             const owner = this.owner.get();
             const template = owner._itemTemplatesInternal[viewType];
             const view = template.createView();
-            console.log("CreateViewHolder", viewType, owner._realizedItems.size);
 
             owner._addView(view);
 

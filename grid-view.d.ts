@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ***************************************************************************** */
 
-import { PercentLength, Template, View } from "ui/core/view";
+import { KeyedTemplate, PercentLength, Template, View } from "ui/core/view";
 import { ItemsSource } from "ui/list-view";
 import { EventData } from "data/observable";
 
@@ -27,6 +27,7 @@ export class GridView extends View {
 
     public items: any[] | ItemsSource;
     public itemTemplate: string | Template;
+    public itemTemplates: string | KeyedTemplate[];
     public rowHeight: PercentLength;
     public colWidth: PercentLength;
     public orientation: Orientation;
