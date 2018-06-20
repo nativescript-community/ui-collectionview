@@ -29,8 +29,8 @@ export class GridView extends View {
     public colWidth: PercentLength;
     public orientation: Orientation;
 
-    public ios: any; /* UICollectionView */
-    public android: any; /* android.support.v7.widget.RecyclerView */
+    // public ios: any; /* UICollectionView */
+    // public android: any; /* android.support.v7.widget.RecyclerView */
 
     public refresh();
     public scrollToIndex(index: number, animated?: boolean);

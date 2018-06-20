@@ -8,8 +8,8 @@ declare module android {
 	}
 }
 
-import javalangClass = java.lang.Class;
-import javalangObject = java.lang.Object;
+// import javalangClass = java.lang.Class;
+// import javalangObject = java.lang.Object;
 declare module android {
 	export module support {
 		export module v7 {
@@ -290,7 +290,7 @@ declare module android {
 	}
 }
 
-import javautilList = java.util.List;
+// import javautilList = java.util.List;
 declare module android {
 	export module support {
 		export module v7 {
@@ -635,7 +635,7 @@ declare module android {
 	}
 }
 
-import javalangRunnable = java.lang.Runnable;
+// import javalangRunnable = java.lang.Runnable;
 declare module android {
 	export module support {
 		export module v7 {

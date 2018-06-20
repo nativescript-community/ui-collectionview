@@ -3,6 +3,7 @@
   "rules": {
     "eofline": false,
     "one-line": [ "check-open-brace" ],
+    "no-reference":false,
     "object-literal-sort-keys": false,
     "interface-name": [ true, "never-prefix" ],
     "max-line-length": [ false ],
@@ -10,6 +11,7 @@
     "prefer-for-of": true,
     "no-string-literal": false,
     "no-trailing-whitespace": false,
+    "quotemark":false,
     "trailing-comma": [
       true,
       {
@@ -17,14 +19,16 @@
         "singleline": "never"
       }
     ],
+    "no-implicit-dependencies":false,
+    "no-submodule-imports":false,
     "switch-default": false,
+    "arrow-parens": false,
+    "ordered-imports": false,
+    "no-misused-new": false,
+    "prefer-conditional-expression": false,
     "max-classes-per-file": [false],
     "no-console": [
       false
-    ],
-    "ordered-imports": [
-      true,
-      {"named-imports-order": "lowercase-last"}
     ],
     "no-bitwise": false
   }

@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ***************************************************************************** */
-/// <reference path="../../references.d.ts" />
+/// <reference path="./grid-view.ios.d.ts" />
 
 import { EventData, Observable } from 'data/observable';
 import { KeyedTemplate, Length, View } from 'ui/core/view';
@@ -247,8 +247,8 @@ export class GridView extends GridViewBase {
 
     private _layoutCell(cell: GridViewCell, cellView: View, index: NSIndexPath): [number, number] {
         if (cellView) {
-            let width = this._effectiveColWidth;
-            let height = this._effectiveRowHeight;
+            const width = this._effectiveColWidth;
+            const height = this._effectiveRowHeight;
             const horizontal = this.isHorizontal();
             const widthMeasureSpec = width ? utilLayout.makeMeasureSpec(width, utilLayout.EXACTLY) : horizontal ? infinity : utilLayout.makeMeasureSpec(this._innerWidth, utilLayout.UNSPECIFIED);
             const heightMeasureSpec = height ? utilLayout.makeMeasureSpec(height, utilLayout.EXACTLY) : horizontal ? utilLayout.makeMeasureSpec(this._innerHeight, utilLayout.UNSPECIFIED) : infinity;
@@ -332,13 +332,13 @@ class GridViewDataSource extends NSObject implements UICollectionViewDataSource 
 
 @ObjCClass(UICollectionViewDelegate, UICollectionViewDelegateFlowLayout)
 class UICollectionViewDelegateImpl extends NSObject implements UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-    private _measureCellMap: Map<string, GridViewCell>;
     public static initWithOwner(owner: WeakRef<GridView>): UICollectionViewDelegateImpl {
         const delegate = UICollectionViewDelegateImpl.new() as UICollectionViewDelegateImpl;
         delegate._owner = owner;
         delegate._measureCellMap = new Map<string, GridViewCell>();
         return delegate;
     }
+    private _measureCellMap: Map<string, GridViewCell>;
 
     private _owner: WeakRef<GridView>;
 

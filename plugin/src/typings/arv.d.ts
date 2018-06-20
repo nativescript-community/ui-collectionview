@@ -35,7 +35,7 @@ declare module com {
 							public constructor();
 							public append(param0: com.h6ah4i.android.widget.advrecyclerview.adapter.AdapterPathSegment): com.h6ah4i.android.widget.advrecyclerview.adapter.AdapterPath;
 							public lastSegment(): com.h6ah4i.android.widget.advrecyclerview.adapter.AdapterPathSegment;
-							public segments(): javautilList;
+							public segments(): javautilList<any>;
 							public clear(): com.h6ah4i.android.widget.advrecyclerview.adapter.AdapterPath;
 							public firstSegment(): com.h6ah4i.android.widget.advrecyclerview.adapter.AdapterPathSegment;
 							public isEmpty(): boolean;
@@ -90,14 +90,7 @@ declare module com {
 								/**
 								 * Constructs a new instance of the com.h6ah4i.android.widget.advrecyclerview.adapter.BridgeAdapterDataObserver$Subscriber interface with the provided implementation.
 								 */
-								public constructor(implementation: {
-									onBridgedAdapterChanged(param0: androidsupportv7widgetRecyclerViewAdapter, param1: javalangObject): void;
-									onBridgedAdapterItemRangeChanged(param0: androidsupportv7widgetRecyclerViewAdapter, param1: javalangObject, param2: number, param3: number): void;
-									onBridgedAdapterItemRangeChanged(param0: androidsupportv7widgetRecyclerViewAdapter, param1: javalangObject, param2: number, param3: number, param4: javalangObject): void;
-									onBridgedAdapterItemRangeInserted(param0: androidsupportv7widgetRecyclerViewAdapter, param1: javalangObject, param2: number, param3: number): void;
-									onBridgedAdapterItemRangeRemoved(param0: androidsupportv7widgetRecyclerViewAdapter, param1: javalangObject, param2: number, param3: number): void;
-									onBridgedAdapterRangeMoved(param0: androidsupportv7widgetRecyclerViewAdapter, param1: javalangObject, param2: number, param3: number, param4: number): void;
-								});
+								public constructor();
 								public onBridgedAdapterRangeMoved(param0: androidsupportv7widgetRecyclerViewAdapter, param1: javalangObject, param2: number, param3: number, param4: number): void;
 								public onBridgedAdapterItemRangeChanged(param0: androidsupportv7widgetRecyclerViewAdapter, param1: javalangObject, param2: number, param3: number): void;
 								public onBridgedAdapterItemRangeInserted(param0: androidsupportv7widgetRecyclerViewAdapter, param1: javalangObject, param2: number, param3: number): void;
@@ -198,7 +191,7 @@ declare module com {
 				export module advrecyclerview {
 					export module adapter {
 						export class SimpleWrapperAdapter extends androidsupportv7widgetRecyclerViewAdapter implements com.h6ah4i.android.widget.advrecyclerview.adapter.WrapperAdapter, com.h6ah4i.android.widget.advrecyclerview.adapter.BridgeAdapterDataObserver.Subscriber {
-							public static FULL_UPDATE_PAYLOADS: javautilList;
+							public static FULL_UPDATE_PAYLOADS: javautilList<any>;
 							public onBridgedAdapterItemRangeInserted(param0: androidsupportv7widgetRecyclerViewAdapter, param1: javalangObject, param2: number, param3: number): void;
 							public getItemId(param0: number): number;
 							public constructor(param0: androidsupportv7widgetRecyclerViewAdapter);
@@ -207,13 +200,13 @@ declare module com {
 							public onBridgedAdapterChanged(param0: androidsupportv7widgetRecyclerViewAdapter, param1: javalangObject): void;
 							public unwrapPosition(param0: com.h6ah4i.android.widget.advrecyclerview.adapter.UnwrapPositionResult, param1: number): void;
 							public onRelease(): void;
-							public getWrappedAdapters(param0: javautilList): void;
+							public getWrappedAdapters(param0: javautilList<any>): void;
 							public setHasStableIds(param0: boolean): void;
 							public onFailedToRecycleView(param0: androidsupportv7widgetRecyclerViewViewHolder): boolean;
 							public onFailedToRecycleView(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number): boolean;
 							public onHandleWrappedAdapterRangeMoved(param0: number, param1: number, param2: number): void;
 							public onBridgedAdapterItemRangeChanged(param0: androidsupportv7widgetRecyclerViewAdapter, param1: javalangObject, param2: number, param3: number): void;
-							public onBindViewHolder(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: javautilList): void;
+							public onBindViewHolder(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: javautilList<any>): void;
 							public onBindViewHolder(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number): void;
 							public constructor();
 							public wrapPosition(param0: com.h6ah4i.android.widget.advrecyclerview.adapter.AdapterPathSegment, param1: number): number;
@@ -276,12 +269,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.h6ah4i.android.widget.advrecyclerview.adapter.WrappedAdapter interface with the provided implementation.
 							 */
-							public constructor(implementation: {
-								onViewAttachedToWindow(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number): void;
-								onViewDetachedFromWindow(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number): void;
-								onViewRecycled(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number): void;
-								onFailedToRecycleView(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number): boolean;
-							});
+							public constructor();
 							public onViewAttachedToWindow(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number): void;
 							public onViewDetachedFromWindow(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number): void;
 							public onViewRecycled(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number): void;
@@ -304,22 +292,13 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.h6ah4i.android.widget.advrecyclerview.adapter.WrapperAdapter interface with the provided implementation.
 							 */
-							public constructor(implementation: {
-								unwrapPosition(param0: com.h6ah4i.android.widget.advrecyclerview.adapter.UnwrapPositionResult, param1: number): void;
-								wrapPosition(param0: com.h6ah4i.android.widget.advrecyclerview.adapter.AdapterPathSegment, param1: number): number;
-								getWrappedAdapters(param0: javautilList): void;
-								release(): void;
-								onViewAttachedToWindow(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number): void;
-								onViewDetachedFromWindow(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number): void;
-								onViewRecycled(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number): void;
-								onFailedToRecycleView(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number): boolean;
-							});
+							public constructor();
 							public wrapPosition(param0: com.h6ah4i.android.widget.advrecyclerview.adapter.AdapterPathSegment, param1: number): number;
 							public onViewAttachedToWindow(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number): void;
 							public onViewDetachedFromWindow(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number): void;
 							public unwrapPosition(param0: com.h6ah4i.android.widget.advrecyclerview.adapter.UnwrapPositionResult, param1: number): void;
 							public onViewRecycled(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number): void;
-							public getWrappedAdapters(param0: javautilList): void;
+							public getWrappedAdapters(param0: javautilList<any>): void;
 							public release(): void;
 							public onFailedToRecycleView(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number): boolean;
 						}
@@ -360,16 +339,11 @@ declare module com {
 							public setListener(param0: com.h6ah4i.android.widget.advrecyclerview.animator.BaseItemAnimator.ItemAnimatorListener): void;
 						}
 						export module BaseItemAnimator {
-							export class ItemAnimatorListener extends javalangObject {
+							export interface ItemAnimatorListener  {
 								/**
 								 * Constructs a new instance of the com.h6ah4i.android.widget.advrecyclerview.animator.BaseItemAnimator$ItemAnimatorListener interface with the provided implementation.
 								 */
-								public constructor(implementation: {
-									onRemoveFinished(param0: androidsupportv7widgetRecyclerViewViewHolder): void;
-									onAddFinished(param0: androidsupportv7widgetRecyclerViewViewHolder): void;
-									onMoveFinished(param0: androidsupportv7widgetRecyclerViewViewHolder): void;
-									onChangeFinished(param0: androidsupportv7widgetRecyclerViewViewHolder): void;
-								});
+								public constructor();
 								public onRemoveFinished(param0: androidsupportv7widgetRecyclerViewViewHolder): void;
 								public onChangeFinished(param0: androidsupportv7widgetRecyclerViewViewHolder): void;
 								public onAddFinished(param0: androidsupportv7widgetRecyclerViewViewHolder): void;
@@ -457,7 +431,7 @@ declare module com {
 							public constructor();
 							public canReuseUpdatedViewHolder(param0: androidsupportv7widgetRecyclerViewViewHolder): boolean;
 							public onSetup(): void;
-							public canReuseUpdatedViewHolder(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: javautilList): boolean;
+							public canReuseUpdatedViewHolder(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: javautilList<any>): boolean;
 							public onSchedulePendingAnimations(): void;
 						}
 						export module RefactoredDefaultItemAnimator {
@@ -592,9 +566,9 @@ declare module com {
 						export module impl {
 							export abstract class BaseItemAnimationManager extends javalangObject {
 								public mItemAnimator: com.h6ah4i.android.widget.advrecyclerview.animator.BaseItemAnimator;
-								public mPending: javautilList;
-								public mDeferredReadySets: javautilList;
-								public mActive: javautilList;
+								public mPending: javautilList<any>;
+								public mDeferredReadySets: javautilList<any>;
+								public mActive: javautilList<any>;
 								public dispatchFinishedWhenDone(): void;
 								public endNotStartedAnimation(param0: com.h6ah4i.android.widget.advrecyclerview.animator.impl.ItemAnimationInfo, param1: androidsupportv7widgetRecyclerViewViewHolder): boolean;
 								public enqueuePendingAnimationInfo(param0: com.h6ah4i.android.widget.advrecyclerview.animator.impl.ItemAnimationInfo): void;
@@ -856,7 +830,7 @@ declare module com {
 					export module composedadapter {
 						export class AdaptersSet extends javalangObject {
 							public static NO_SEGMENTED_POSITION: number;
-							public getUniqueAdaptersList(): javautilList;
+							public getUniqueAdaptersList(): javautilList<any>;
 							public getTag(param0: number): com.h6ah4i.android.widget.advrecyclerview.composedadapter.ComposedChildAdapterTag;
 							public static extractSegmentOffset(param0: number): number;
 							public getAdapter(param0: number): androidsupportv7widgetRecyclerViewAdapter;
@@ -888,21 +862,21 @@ declare module com {
 							public getItemId(param0: number): number;
 							public getItemViewType(param0: number): number;
 							public onViewDetachedFromWindow(param0: androidsupportv7widgetRecyclerViewViewHolder): void;
-							public onHandleWrappedAdapterRangeMoved(param0: androidsupportv7widgetRecyclerViewAdapter, param1: javautilList, param2: number, param3: number, param4: number): void;
+							public onHandleWrappedAdapterRangeMoved(param0: androidsupportv7widgetRecyclerViewAdapter, param1: javautilList<any>, param2: number, param3: number, param4: number): void;
 							public onBridgedAdapterChanged(param0: androidsupportv7widgetRecyclerViewAdapter, param1: javalangObject): void;
 							public onRelease(): void;
 							public static extractSegmentOffsetPart(param0: number): number;
 							public unwrapPosition(param0: com.h6ah4i.android.widget.advrecyclerview.adapter.UnwrapPositionResult, param1: number): void;
-							public onHandleWrappedAdapterItemRangeRemoved(param0: androidsupportv7widgetRecyclerViewAdapter, param1: javautilList, param2: number, param3: number): void;
-							public getWrappedAdapters(param0: javautilList): void;
+							public onHandleWrappedAdapterItemRangeRemoved(param0: androidsupportv7widgetRecyclerViewAdapter, param1: javautilList<any>, param2: number, param3: number): void;
+							public getWrappedAdapters(param0: javautilList<any>): void;
 							public setHasStableIds(param0: boolean): void;
 							public onFailedToRecycleView(param0: androidsupportv7widgetRecyclerViewViewHolder): boolean;
 							public onFailedToRecycleView(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number): boolean;
 							public getChildAdapterCount(): number;
 							public onBridgedAdapterItemRangeChanged(param0: androidsupportv7widgetRecyclerViewAdapter, param1: javalangObject, param2: number, param3: number): void;
-							public onBindViewHolder(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: javautilList): void;
+							public onBindViewHolder(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: javautilList<any>): void;
 							public onBindViewHolder(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number): void;
-							public onHandleWrappedAdapterItemRangeChanged(param0: androidsupportv7widgetRecyclerViewAdapter, param1: javautilList, param2: number, param3: number): void;
+							public onHandleWrappedAdapterItemRangeChanged(param0: androidsupportv7widgetRecyclerViewAdapter, param1: javautilList<any>, param2: number, param3: number): void;
 							public constructor();
 							public static extractSegmentPart(param0: number): number;
 							public removeAdapter(param0: com.h6ah4i.android.widget.advrecyclerview.composedadapter.ComposedChildAdapterTag): boolean;
@@ -913,20 +887,20 @@ declare module com {
 							public addAdapter(param0: androidsupportv7widgetRecyclerViewAdapter, param1: number): com.h6ah4i.android.widget.advrecyclerview.composedadapter.ComposedChildAdapterTag;
 							public onViewRecycled(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number): void;
 							public onViewRecycled(param0: androidsupportv7widgetRecyclerViewViewHolder): void;
-							public onHandleWrappedAdapterItemRangeInserted(param0: androidsupportv7widgetRecyclerViewAdapter, param1: javautilList, param2: number, param3: number): void;
+							public onHandleWrappedAdapterItemRangeInserted(param0: androidsupportv7widgetRecyclerViewAdapter, param1: javautilList<any>, param2: number, param3: number): void;
 							public release(): void;
 							public getSegment(param0: com.h6ah4i.android.widget.advrecyclerview.composedadapter.ComposedChildAdapterTag): number;
 							public onCreateViewHolder(param0: androidviewViewGroup, param1: number): androidsupportv7widgetRecyclerViewViewHolder;
 							public onAttachedToRecyclerView(param0: androidsupportv7widgetRecyclerView): void;
 							public onBridgedAdapterRangeMoved(param0: androidsupportv7widgetRecyclerViewAdapter, param1: javalangObject, param2: number, param3: number, param4: number): void;
-							public onHandleWrappedAdapterItemRangeChanged(param0: androidsupportv7widgetRecyclerViewAdapter, param1: javautilList, param2: number, param3: number, param4: javalangObject): void;
+							public onHandleWrappedAdapterItemRangeChanged(param0: androidsupportv7widgetRecyclerViewAdapter, param1: javautilList<any>, param2: number, param3: number, param4: javalangObject): void;
 							public onViewAttachedToWindow(param0: androidsupportv7widgetRecyclerViewViewHolder): void;
 							public onViewAttachedToWindow(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number): void;
 							public getItemCount(): number;
 							public getSegmentedPosition(param0: number): number;
 							public onBridgedAdapterItemRangeChanged(param0: androidsupportv7widgetRecyclerViewAdapter, param1: javalangObject, param2: number, param3: number, param4: javalangObject): void;
 							public onDetachedFromRecyclerView(param0: androidsupportv7widgetRecyclerView): void;
-							public onHandleWrappedAdapterChanged(param0: androidsupportv7widgetRecyclerViewAdapter, param1: javautilList): void;
+							public onHandleWrappedAdapterChanged(param0: androidsupportv7widgetRecyclerViewAdapter, param1: javautilList<any>): void;
 						}
 					}
 				}
@@ -1149,14 +1123,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.h6ah4i.android.widget.advrecyclerview.draggable.DraggableItemAdapter interface with the provided implementation.
 							 */
-							public constructor(implementation: {
-								onCheckCanStartDrag(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number, param3: number): boolean;
-								onGetItemDraggableRange(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number): com.h6ah4i.android.widget.advrecyclerview.draggable.ItemDraggableRange;
-								onMoveItem(param0: number, param1: number): void;
-								onCheckCanDrop(param0: number, param1: number): boolean;
-								onItemDragStarted(param0: number): void;
-								onItemDragFinished(param0: number, param1: number, param2: boolean): void;
-							});
+							public constructor();
 							public onCheckCanDrop(param0: number, param1: number): boolean;
 							public onMoveItem(param0: number, param1: number): void;
 							public onGetItemDraggableRange(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number): com.h6ah4i.android.widget.advrecyclerview.draggable.ItemDraggableRange;
@@ -1181,8 +1148,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.h6ah4i.android.widget.advrecyclerview.draggable.DraggableItemConstants interface with the provided implementation.
 							 */
-							public constructor(implementation: {
-							});
+							public constructor();
 							public static STATE_FLAG_DRAGGING: number;
 							public static STATE_FLAG_IS_IN_RANGE: number;
 							public static STATE_FLAG_IS_UPDATED: number;
@@ -1201,16 +1167,9 @@ declare module com {
 			export module widget {
 				export module advrecyclerview {
 					export module draggable {
-						export class DraggableItemViewHolder extends javalangObject {
-							/**
-							 * Constructs a new instance of the com.h6ah4i.android.widget.advrecyclerview.draggable.DraggableItemViewHolder interface with the provided implementation.
-							 */
-							public constructor(implementation: {
-								setDragStateFlags(param0: number): void;
-								getDragStateFlags(): number;
-							});
-							public setDragStateFlags(param0: number): void;
-							public getDragStateFlags(): number;
+						export interface DraggableItemViewHolder {
+							setDragStateFlags(param0: number): void;
+							 getDragStateFlags(): number;
 						}
 					}
 				}
@@ -1232,13 +1191,13 @@ declare module com {
 							public onBridgedAdapterChanged(param0: androidsupportv7widgetRecyclerViewAdapter, param1: javalangObject): void;
 							public onRelease(): void;
 							public unwrapPosition(param0: com.h6ah4i.android.widget.advrecyclerview.adapter.UnwrapPositionResult, param1: number): void;
-							public getWrappedAdapters(param0: javautilList): void;
+							public getWrappedAdapters(param0: javautilList<any>): void;
 							public onSwipeItemStarted(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number): void;
 							public onHandleWrappedAdapterRangeMoved(param0: number, param1: number, param2: number): void;
 							public isDragging(): boolean;
 							public onSetSwipeBackground(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number): void;
 							public onBridgedAdapterItemRangeChanged(param0: androidsupportv7widgetRecyclerViewAdapter, param1: javalangObject, param2: number, param3: number): void;
-							public onBindViewHolder(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: javautilList): void;
+							public onBindViewHolder(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: javautilList<any>): void;
 							public constructor(param0: com.h6ah4i.android.widget.advrecyclerview.draggable.RecyclerViewDragDropManager, param1: androidsupportv7widgetRecyclerViewAdapter);
 							public onBindViewHolder(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number): void;
 							public constructor();
@@ -1264,8 +1223,7 @@ declare module com {
 								/**
 								 * Constructs a new instance of the com.h6ah4i.android.widget.advrecyclerview.draggable.DraggableItemWrapperAdapter$Constants interface with the provided implementation.
 								 */
-								public constructor(implementation: {
-								});
+								public constructor();
 								public static STATE_FLAG_DRAGGING: number;
 								public static STATE_FLAG_IS_IN_RANGE: number;
 								public static STATE_FLAG_IS_UPDATED: number;
@@ -1500,15 +1458,10 @@ declare module com {
 								/**
 								 * Constructs a new instance of the com.h6ah4i.android.widget.advrecyclerview.draggable.RecyclerViewDragDropManager$ItemMoveMode interface with the provided implementation.
 								 */
-								public constructor(implementation: {
-									equals(param0: javalangObject): boolean;
-									hashCode(): number;
-									toString(): string;
-									annotationType(): javalangClass;
-								});
+								public constructor();
 								public equals(param0: javalangObject): boolean;
 								public toString(): string;
-								public annotationType(): javalangClass;
+								public annotationType(): javalangClass<any>;
 								public hashCode(): number;
 							}
 							export class OnItemDragEventListener extends javalangObject {
@@ -1602,15 +1555,10 @@ declare module com {
 								/**
 								 * Constructs a new instance of the com.h6ah4i.android.widget.advrecyclerview.draggable.annotation.DraggableItemStateFlags interface with the provided implementation.
 								 */
-								public constructor(implementation: {
-									equals(param0: javalangObject): boolean;
-									hashCode(): number;
-									toString(): string;
-									annotationType(): javalangClass;
-								});
+								public constructor();
 								public equals(param0: javalangObject): boolean;
 								public toString(): string;
-								public annotationType(): javalangClass;
+								public annotationType(): javalangClass<any>;
 								public hashCode(): number;
 							}
 						}
@@ -1630,7 +1578,7 @@ declare module com {
 						export abstract class BaseRecyclerViewEventDistributor extends javalangObject {
 							public mReleased: boolean;
 							public mRecyclerView: androidsupportv7widgetRecyclerView;
-							public mListeners: javautilList;
+							public mListeners: javautilList<any>;
 							public mPerformingClearMethod: boolean;
 							public constructor();
 							public size(): number;
@@ -1666,10 +1614,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.h6ah4i.android.widget.advrecyclerview.event.RecyclerViewEventDistributorListener interface with the provided implementation.
 							 */
-							public constructor(implementation: {
-								onAddedToEventDistributor(param0: com.h6ah4i.android.widget.advrecyclerview.event.BaseRecyclerViewEventDistributor): void;
-								onRemovedFromEventDistributor(param0: com.h6ah4i.android.widget.advrecyclerview.event.BaseRecyclerViewEventDistributor): void;
-							});
+							public constructor();
 							public onAddedToEventDistributor(param0: com.h6ah4i.android.widget.advrecyclerview.event.BaseRecyclerViewEventDistributor): void;
 							public onRemovedFromEventDistributor(param0: com.h6ah4i.android.widget.advrecyclerview.event.BaseRecyclerViewEventDistributor): void;
 						}
@@ -1680,6 +1625,7 @@ declare module com {
 	}
 }
 
+import androidsupportv7widgetRecyclerViewRecyclerListener = android.support.v7.widget.RecyclerView.RecyclerListener;
 declare module com {
 	export module h6ah4i {
 		export module android {
@@ -1711,24 +1657,13 @@ declare module com {
 			export module widget {
 				export module advrecyclerview {
 					export module expandable {
-						export class BaseExpandableSwipeableItemAdapter extends javalangObject {
-							/**
-							 * Constructs a new instance of the com.h6ah4i.android.widget.advrecyclerview.expandable.BaseExpandableSwipeableItemAdapter interface with the provided implementation.
-							 */
-							public constructor(implementation: {
-								onGetGroupItemSwipeReactionType(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number, param3: number): number;
-								onGetChildItemSwipeReactionType(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number, param3: number, param4: number): number;
-								onSwipeGroupItemStarted(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number): void;
-								onSwipeChildItemStarted(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number): void;
-								onSetGroupItemSwipeBackground(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number): void;
-								onSetChildItemSwipeBackground(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number, param3: number): void;
-							});
-							public onGetChildItemSwipeReactionType(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number, param3: number, param4: number): number;
-							public onSwipeGroupItemStarted(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number): void;
-							public onGetGroupItemSwipeReactionType(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number, param3: number): number;
-							public onSetChildItemSwipeBackground(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number, param3: number): void;
-							public onSwipeChildItemStarted(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number): void;
-							public onSetGroupItemSwipeBackground(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number): void;
+						export interface BaseExpandableSwipeableItemAdapter {
+							 onGetChildItemSwipeReactionType(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number, param3: number, param4: number): number;
+							 onSwipeGroupItemStarted(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number): void;
+							 onGetGroupItemSwipeReactionType(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number, param3: number): number;
+							 onSetChildItemSwipeBackground(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number, param3: number): void;
+							 onSwipeChildItemStarted(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number): void;
+							 onSetGroupItemSwipeBackground(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number): void;
 						}
 					}
 				}
@@ -1784,20 +1719,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.h6ah4i.android.widget.advrecyclerview.expandable.ExpandableDraggableItemAdapter interface with the provided implementation.
 							 */
-							public constructor(implementation: {
-								onCheckGroupCanStartDrag(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number, param3: number): boolean;
-								onCheckChildCanStartDrag(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number, param3: number, param4: number): boolean;
-								onGetGroupItemDraggableRange(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number): com.h6ah4i.android.widget.advrecyclerview.draggable.ItemDraggableRange;
-								onGetChildItemDraggableRange(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number): com.h6ah4i.android.widget.advrecyclerview.draggable.ItemDraggableRange;
-								onMoveGroupItem(param0: number, param1: number): void;
-								onMoveChildItem(param0: number, param1: number, param2: number, param3: number): void;
-								onCheckGroupCanDrop(param0: number, param1: number): boolean;
-								onCheckChildCanDrop(param0: number, param1: number, param2: number, param3: number): boolean;
-								onGroupDragStarted(param0: number): void;
-								onChildDragStarted(param0: number, param1: number): void;
-								onGroupDragFinished(param0: number, param1: number, param2: boolean): void;
-								onChildDragFinished(param0: number, param1: number, param2: number, param3: number, param4: boolean): void;
-							});
+							public constructor();
 							public onGetGroupItemDraggableRange(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number): com.h6ah4i.android.widget.advrecyclerview.draggable.ItemDraggableRange;
 							public onChildDragStarted(param0: number, param1: number): void;
 							public onMoveGroupItem(param0: number, param1: number): void;
@@ -1824,48 +1746,25 @@ declare module com {
 			export module widget {
 				export module advrecyclerview {
 					export module expandable {
-						export class ExpandableItemAdapter extends javalangObject {
-							/**
-							 * Constructs a new instance of the com.h6ah4i.android.widget.advrecyclerview.expandable.ExpandableItemAdapter interface with the provided implementation.
-							 */
-							public constructor(implementation: {
-								getGroupCount(): number;
-								getChildCount(param0: number): number;
-								getGroupId(param0: number): number;
-								getChildId(param0: number, param1: number): number;
-								getGroupItemViewType(param0: number): number;
-								getChildItemViewType(param0: number, param1: number): number;
-								onCreateGroupViewHolder(param0: androidviewViewGroup, param1: number): androidsupportv7widgetRecyclerViewViewHolder;
-								onCreateChildViewHolder(param0: androidviewViewGroup, param1: number): androidsupportv7widgetRecyclerViewViewHolder;
-								onBindGroupViewHolder(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number): void;
-								onBindGroupViewHolder(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number, param3: javautilList): void;
-								onBindChildViewHolder(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number, param3: number, param4: javautilList): void;
-								onBindChildViewHolder(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number, param3: number): void;
-								onCheckCanExpandOrCollapseGroup(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number, param3: number, param4: boolean): boolean;
-								onHookGroupExpand(param0: number, param1: boolean): boolean;
-								onHookGroupExpand(param0: number, param1: boolean, param2: javalangObject): boolean;
-								onHookGroupCollapse(param0: number, param1: boolean): boolean;
-								onHookGroupCollapse(param0: number, param1: boolean, param2: javalangObject): boolean;
-								getInitialGroupExpandedState(param0: number): boolean;
-							});
-							public onBindGroupViewHolder(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number, param3: javautilList): void;
-							public onCheckCanExpandOrCollapseGroup(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number, param3: number, param4: boolean): boolean;
-							public onHookGroupCollapse(param0: number, param1: boolean, param2: javalangObject): boolean;
-							public onBindGroupViewHolder(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number): void;
-							public onHookGroupExpand(param0: number, param1: boolean, param2: javalangObject): boolean;
-							public getChildId(param0: number, param1: number): number;
-							public getGroupItemViewType(param0: number): number;
-							public getInitialGroupExpandedState(param0: number): boolean;
-							public getChildCount(param0: number): number;
-							public onBindChildViewHolder(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number, param3: number): void;
-							public onHookGroupExpand(param0: number, param1: boolean): boolean;
-							public onCreateChildViewHolder(param0: androidviewViewGroup, param1: number): androidsupportv7widgetRecyclerViewViewHolder;
-							public getChildItemViewType(param0: number, param1: number): number;
-							public onBindChildViewHolder(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number, param3: number, param4: javautilList): void;
-							public onHookGroupCollapse(param0: number, param1: boolean): boolean;
-							public onCreateGroupViewHolder(param0: androidviewViewGroup, param1: number): androidsupportv7widgetRecyclerViewViewHolder;
-							public getGroupCount(): number;
-							public getGroupId(param0: number): number;
+						export interface ExpandableItemAdapter {
+							 onBindGroupViewHolder(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number, param3: javautilList<any>): void;
+							 onCheckCanExpandOrCollapseGroup(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number, param3: number, param4: boolean): boolean;
+							 onHookGroupCollapse(param0: number, param1: boolean, param2: javalangObject): boolean;
+							 onBindGroupViewHolder(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number): void;
+							 onHookGroupExpand(param0: number, param1: boolean, param2: javalangObject): boolean;
+							 getChildId(param0: number, param1: number): number;
+							 getGroupItemViewType(param0: number): number;
+							 getInitialGroupExpandedState(param0: number): boolean;
+							 getChildCount(param0: number): number;
+							 onBindChildViewHolder(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number, param3: number): void;
+							 onHookGroupExpand(param0: number, param1: boolean): boolean;
+							 onCreateChildViewHolder(param0: androidviewViewGroup, param1: number): androidsupportv7widgetRecyclerViewViewHolder;
+							 getChildItemViewType(param0: number, param1: number): number;
+							 onBindChildViewHolder(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number, param3: number, param4: javautilList<any>): void;
+							 onHookGroupCollapse(param0: number, param1: boolean): boolean;
+							 onCreateGroupViewHolder(param0: androidviewViewGroup, param1: number): androidsupportv7widgetRecyclerViewViewHolder;
+							 getGroupCount(): number;
+							 getGroupId(param0: number): number;
 						}
 					}
 				}
@@ -1884,8 +1783,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.h6ah4i.android.widget.advrecyclerview.expandable.ExpandableItemConstants interface with the provided implementation.
 							 */
-							public constructor(implementation: {
-							});
+							public constructor();
 							public static STATE_FLAG_IS_GROUP: number;
 							public static STATE_FLAG_IS_EXPANDED: number;
 							public static STATE_FLAG_HAS_EXPANDED_STATE_CHANGED: number;
@@ -1905,16 +1803,9 @@ declare module com {
 			export module widget {
 				export module advrecyclerview {
 					export module expandable {
-						export class ExpandableItemViewHolder extends javalangObject {
-							/**
-							 * Constructs a new instance of the com.h6ah4i.android.widget.advrecyclerview.expandable.ExpandableItemViewHolder interface with the provided implementation.
-							 */
-							public constructor(implementation: {
-								setExpandStateFlags(param0: number): void;
-								getExpandStateFlags(): number;
-							});
-							public getExpandStateFlags(): number;
-							public setExpandStateFlags(param0: number): void;
+						export interface ExpandableItemViewHolder {
+							 getExpandStateFlags(): number;
+							 setExpandStateFlags(param0: number): void;
 						}
 					}
 				}
@@ -1982,14 +1873,14 @@ declare module com {
 							public onBridgedAdapterChanged(param0: androidsupportv7widgetRecyclerViewAdapter, param1: javalangObject): void;
 							public onRelease(): void;
 							public unwrapPosition(param0: com.h6ah4i.android.widget.advrecyclerview.adapter.UnwrapPositionResult, param1: number): void;
-							public getWrappedAdapters(param0: javautilList): void;
+							public getWrappedAdapters(param0: javautilList<any>): void;
 							public onGetItemDraggableRange(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number): com.h6ah4i.android.widget.advrecyclerview.draggable.ItemDraggableRange;
 							public onSwipeItemStarted(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number): void;
 							public onHandleWrappedAdapterRangeMoved(param0: number, param1: number, param2: number): void;
 							public onSetSwipeBackground(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number): void;
 							public onBridgedAdapterItemRangeChanged(param0: androidsupportv7widgetRecyclerViewAdapter, param1: javalangObject, param2: number, param3: number): void;
 							public onCheckCanDrop(param0: number, param1: number): boolean;
-							public onBindViewHolder(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: javautilList): void;
+							public onBindViewHolder(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: javautilList<any>): void;
 							public onBindViewHolder(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number): void;
 							public constructor();
 							public constructor(param0: com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandableItemManager, param1: androidsupportv7widgetRecyclerViewAdapter, param2: native.Array<number>);
@@ -2041,28 +1932,15 @@ declare module com {
 			export module widget {
 				export module advrecyclerview {
 					export module expandable {
-						export class ExpandableSwipeableItemAdapter extends javalangObject implements com.h6ah4i.android.widget.advrecyclerview.expandable.BaseExpandableSwipeableItemAdapter {
-							/**
-							 * Constructs a new instance of the com.h6ah4i.android.widget.advrecyclerview.expandable.ExpandableSwipeableItemAdapter interface with the provided implementation.
-							 */
-							public constructor(implementation: {
-								onSwipeGroupItem(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number): com.h6ah4i.android.widget.advrecyclerview.swipeable.action.SwipeResultAction;
-								onSwipeChildItem(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number, param3: number): com.h6ah4i.android.widget.advrecyclerview.swipeable.action.SwipeResultAction;
-								onGetGroupItemSwipeReactionType(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number, param3: number): number;
-								onGetChildItemSwipeReactionType(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number, param3: number, param4: number): number;
-								onSwipeGroupItemStarted(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number): void;
-								onSwipeChildItemStarted(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number): void;
-								onSetGroupItemSwipeBackground(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number): void;
-								onSetChildItemSwipeBackground(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number, param3: number): void;
-							});
-							public onGetChildItemSwipeReactionType(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number, param3: number, param4: number): number;
-							public onSwipeGroupItemStarted(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number): void;
-							public onSwipeChildItem(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number, param3: number): com.h6ah4i.android.widget.advrecyclerview.swipeable.action.SwipeResultAction;
-							public onGetGroupItemSwipeReactionType(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number, param3: number): number;
-							public onSetChildItemSwipeBackground(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number, param3: number): void;
-							public onSwipeGroupItem(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number): com.h6ah4i.android.widget.advrecyclerview.swipeable.action.SwipeResultAction;
-							public onSwipeChildItemStarted(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number): void;
-							public onSetGroupItemSwipeBackground(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number): void;
+						export interface ExpandableSwipeableItemAdapter extends com.h6ah4i.android.widget.advrecyclerview.expandable.BaseExpandableSwipeableItemAdapter {
+							 onGetChildItemSwipeReactionType(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number, param3: number, param4: number): number;
+							 onSwipeGroupItemStarted(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number): void;
+							 onSwipeChildItem(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number, param3: number): com.h6ah4i.android.widget.advrecyclerview.swipeable.action.SwipeResultAction;
+							 onGetGroupItemSwipeReactionType(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number, param3: number): number;
+							 onSetChildItemSwipeBackground(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number, param3: number): void;
+							 onSwipeGroupItem(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number): com.h6ah4i.android.widget.advrecyclerview.swipeable.action.SwipeResultAction;
+							 onSwipeChildItemStarted(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number): void;
+							 onSetGroupItemSwipeBackground(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number): void;
 						}
 					}
 				}
@@ -2188,22 +2066,18 @@ declare module com {
 								/**
 								 * Constructs a new instance of the com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandableItemManager$OnGroupCollapseListener interface with the provided implementation.
 								 */
-								public constructor(implementation: {
-									onGroupCollapse(param0: number, param1: boolean, param2: javalangObject): void;
-								});
+								public constructor();
 								public onGroupCollapse(param0: number, param1: boolean, param2: javalangObject): void;
 							}
 							export class OnGroupExpandListener extends javalangObject {
 								/**
 								 * Constructs a new instance of the com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandableItemManager$OnGroupExpandListener interface with the provided implementation.
 								 */
-								public constructor(implementation: {
-									onGroupExpand(param0: number, param1: boolean, param2: javalangObject): void;
-								});
+								public constructor();
 								public onGroupExpand(param0: number, param1: boolean, param2: javalangObject): void;
 							}
 							export class SavedState extends javalangObject implements androidosParcelable {
-								public static CREATOR: androidosParcelableCreator;
+								public static CREATOR: androidosParcelableCreator<any>;
 								public describeContents(): number;
 								public constructor(param0: native.Array<number>);
 								public writeToParcel(param0: androidosParcel, param1: number): void;
@@ -2227,15 +2101,10 @@ declare module com {
 								/**
 								 * Constructs a new instance of the com.h6ah4i.android.widget.advrecyclerview.expandable.annotation.ExpandableItemStateFlags interface with the provided implementation.
 								 */
-								public constructor(implementation: {
-									equals(param0: javalangObject): boolean;
-									hashCode(): number;
-									toString(): string;
-									annotationType(): javalangClass;
-								});
+								public constructor();
 								public equals(param0: javalangObject): boolean;
 								public toString(): string;
-								public annotationType(): javalangClass;
+								public annotationType(): javalangClass<any>;
 								public hashCode(): number;
 							}
 						}
@@ -2262,13 +2131,13 @@ declare module com {
 							public onBridgedAdapterChanged(param0: androidsupportv7widgetRecyclerViewAdapter, param1: javalangObject): void;
 							public onRelease(): void;
 							public unwrapPosition(param0: com.h6ah4i.android.widget.advrecyclerview.adapter.UnwrapPositionResult, param1: number): void;
-							public onBindHeaderItemViewHolder(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: javautilList): void;
-							public getWrappedAdapters(param0: javautilList): void;
+							public onBindHeaderItemViewHolder(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: javautilList<any>): void;
+							public getWrappedAdapters(param0: javautilList<any>): void;
 							public getFooterSegment(): com.h6ah4i.android.widget.advrecyclerview.adapter.AdapterPathSegment;
-							public setAdapter(param0: androidsupportv7widgetRecyclerViewAdapter): com.h6ah4i.android.widget.advrecyclerview.headerfooter.AbstractHeaderFooterWrapperAdapter;
+							public setAdapter(param0: androidsupportv7widgetRecyclerViewAdapter): com.h6ah4i.android.widget.advrecyclerview.headerfooter.AbstractHeaderFooterWrapperAdapter<HVH, FVH>;
 							public onCreateFooterItemViewHolder(param0: androidviewViewGroup, param1: number): androidsupportv7widgetRecyclerViewViewHolder;
 							public onCreateFooterAdapter(): androidsupportv7widgetRecyclerViewAdapter;
-							public onBindFooterItemViewHolder(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: javautilList): void;
+							public onBindFooterItemViewHolder(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: javautilList<any>): void;
 							public onCreateHeaderAdapter(): androidsupportv7widgetRecyclerViewAdapter;
 							public onBridgedAdapterItemRangeChanged(param0: androidsupportv7widgetRecyclerViewAdapter, param1: javalangObject, param2: number, param3: number): void;
 							public getHeaderItemId(param0: number): number;
@@ -2291,26 +2160,26 @@ declare module com {
 						}
 						export module AbstractHeaderFooterWrapperAdapter {
 							export class BaseFooterAdapter extends androidsupportv7widgetRecyclerViewAdapter {
-								public mHolder: com.h6ah4i.android.widget.advrecyclerview.headerfooter.AbstractHeaderFooterWrapperAdapter;
+								public mHolder: com.h6ah4i.android.widget.advrecyclerview.headerfooter.AbstractHeaderFooterWrapperAdapter<any, any>;
 								public onBindViewHolder(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number): void;
 								public onCreateViewHolder(param0: androidviewViewGroup, param1: number): androidsupportv7widgetRecyclerViewViewHolder;
-								public onBindViewHolder(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: javautilList): void;
+								public onBindViewHolder(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: javautilList<any>): void;
 								public getItemCount(): number;
 								public constructor();
 								public getItemViewType(param0: number): number;
 								public getItemId(param0: number): number;
-								public constructor(param0: com.h6ah4i.android.widget.advrecyclerview.headerfooter.AbstractHeaderFooterWrapperAdapter);
+								public constructor(param0: com.h6ah4i.android.widget.advrecyclerview.headerfooter.AbstractHeaderFooterWrapperAdapter<any, any>);
 							}
 							export class BaseHeaderAdapter extends androidsupportv7widgetRecyclerViewAdapter {
-								public mHolder: com.h6ah4i.android.widget.advrecyclerview.headerfooter.AbstractHeaderFooterWrapperAdapter;
+								public mHolder: com.h6ah4i.android.widget.advrecyclerview.headerfooter.AbstractHeaderFooterWrapperAdapter<any, any>;
 								public onBindViewHolder(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number): void;
 								public onCreateViewHolder(param0: androidviewViewGroup, param1: number): androidsupportv7widgetRecyclerViewViewHolder;
-								public onBindViewHolder(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: javautilList): void;
+								public onBindViewHolder(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: javautilList<any>): void;
 								public getItemCount(): number;
 								public constructor();
 								public getItemViewType(param0: number): number;
 								public getItemId(param0: number): number;
-								public constructor(param0: com.h6ah4i.android.widget.advrecyclerview.headerfooter.AbstractHeaderFooterWrapperAdapter);
+								public constructor(param0: com.h6ah4i.android.widget.advrecyclerview.headerfooter.AbstractHeaderFooterWrapperAdapter<any, any>);
 							}
 						}
 					}
@@ -2456,10 +2325,7 @@ declare module com {
 								/**
 								 * Constructs a new instance of the com.h6ah4i.android.widget.advrecyclerview.swipeable.RecyclerViewSwipeManager$OnItemSwipeEventListener interface with the provided implementation.
 								 */
-								public constructor(implementation: {
-									onItemSwipeStarted(param0: number): void;
-									onItemSwipeFinished(param0: number, param1: number, param2: number): void;
-								});
+								public constructor();
 								public onItemSwipeStarted(param0: number): void;
 								public onItemSwipeFinished(param0: number, param1: number, param2: number): void;
 							}
@@ -2545,20 +2411,11 @@ declare module com {
 			export module widget {
 				export module advrecyclerview {
 					export module swipeable {
-						export class SwipeableItemAdapter extends javalangObject {
-							/**
-							 * Constructs a new instance of the com.h6ah4i.android.widget.advrecyclerview.swipeable.SwipeableItemAdapter interface with the provided implementation.
-							 */
-							public constructor(implementation: {
-								onGetSwipeReactionType(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number, param3: number): number;
-								onSwipeItemStarted(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number): void;
-								onSetSwipeBackground(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number): void;
-								onSwipeItem(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number): com.h6ah4i.android.widget.advrecyclerview.swipeable.action.SwipeResultAction;
-							});
-							public onSwipeItem(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number): com.h6ah4i.android.widget.advrecyclerview.swipeable.action.SwipeResultAction;
-							public onSetSwipeBackground(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number): void;
-							public onGetSwipeReactionType(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number, param3: number): number;
-							public onSwipeItemStarted(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number): void;
+						export interface SwipeableItemAdapter {
+							 onSwipeItem(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number): com.h6ah4i.android.widget.advrecyclerview.swipeable.action.SwipeResultAction;
+							 onSetSwipeBackground(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number): void;
+							 onGetSwipeReactionType(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number, param3: number): number;
+							 onSwipeItemStarted(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number): void;
 						}
 					}
 				}
@@ -2577,8 +2434,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.h6ah4i.android.widget.advrecyclerview.swipeable.SwipeableItemConstants interface with the provided implementation.
 							 */
-							public constructor(implementation: {
-							});
+							public constructor();
 							public static AFTER_SWIPE_REACTION_DO_NOTHING: number;
 							public static REACTION_CAN_SWIPE_LEFT: number;
 							public static AFTER_SWIPE_REACTION_MOVE_TO_SWIPED_DIRECTION: number;
@@ -2643,56 +2499,29 @@ declare module com {
 			export module widget {
 				export module advrecyclerview {
 					export module swipeable {
-						export class SwipeableItemViewHolder extends javalangObject {
-							/**
-							 * Constructs a new instance of the com.h6ah4i.android.widget.advrecyclerview.swipeable.SwipeableItemViewHolder interface with the provided implementation.
-							 */
-							public constructor(implementation: {
-								setSwipeStateFlags(param0: number): void;
-								getSwipeStateFlags(): number;
-								setSwipeResult(param0: number): void;
-								getSwipeResult(): number;
-								setAfterSwipeReaction(param0: number): void;
-								getAfterSwipeReaction(): number;
-								setProportionalSwipeAmountModeEnabled(param0: boolean): void;
-								isProportionalSwipeAmountModeEnabled(): boolean;
-								setSwipeItemHorizontalSlideAmount(param0: number): void;
-								getSwipeItemHorizontalSlideAmount(): number;
-								setSwipeItemVerticalSlideAmount(param0: number): void;
-								getSwipeItemVerticalSlideAmount(): number;
-								setMaxLeftSwipeAmount(param0: number): void;
-								getMaxLeftSwipeAmount(): number;
-								setMaxUpSwipeAmount(param0: number): void;
-								getMaxUpSwipeAmount(): number;
-								setMaxRightSwipeAmount(param0: number): void;
-								getMaxRightSwipeAmount(): number;
-								setMaxDownSwipeAmount(param0: number): void;
-								getMaxDownSwipeAmount(): number;
-								getSwipeableContainerView(): androidviewView;
-								onSlideAmountUpdated(param0: number, param1: number, param2: boolean): void;
-							});
-							public setMaxDownSwipeAmount(param0: number): void;
-							public setMaxUpSwipeAmount(param0: number): void;
-							public getMaxLeftSwipeAmount(): number;
-							public getSwipeStateFlags(): number;
-							public getSwipeItemVerticalSlideAmount(): number;
-							public getSwipeResult(): number;
-							public onSlideAmountUpdated(param0: number, param1: number, param2: boolean): void;
-							public setProportionalSwipeAmountModeEnabled(param0: boolean): void;
-							public setMaxLeftSwipeAmount(param0: number): void;
-							public setSwipeResult(param0: number): void;
-							public getSwipeItemHorizontalSlideAmount(): number;
-							public isProportionalSwipeAmountModeEnabled(): boolean;
-							public setSwipeItemVerticalSlideAmount(param0: number): void;
-							public getMaxRightSwipeAmount(): number;
-							public getMaxDownSwipeAmount(): number;
-							public setAfterSwipeReaction(param0: number): void;
-							public getMaxUpSwipeAmount(): number;
-							public setSwipeItemHorizontalSlideAmount(param0: number): void;
-							public setSwipeStateFlags(param0: number): void;
-							public getAfterSwipeReaction(): number;
-							public getSwipeableContainerView(): androidviewView;
-							public setMaxRightSwipeAmount(param0: number): void;
+						export interface SwipeableItemViewHolder {
+							 setMaxDownSwipeAmount(param0: number): void;
+							 setMaxUpSwipeAmount(param0: number): void;
+							 getMaxLeftSwipeAmount(): number;
+							 getSwipeStateFlags(): number;
+							 getSwipeItemVerticalSlideAmount(): number;
+							 getSwipeResult(): number;
+							 onSlideAmountUpdated(param0: number, param1: number, param2: boolean): void;
+							 setProportionalSwipeAmountModeEnabled(param0: boolean): void;
+							 setMaxLeftSwipeAmount(param0: number): void;
+							 setSwipeResult(param0: number): void;
+							 getSwipeItemHorizontalSlideAmount(): number;
+							 isProportionalSwipeAmountModeEnabled(): boolean;
+							 setSwipeItemVerticalSlideAmount(param0: number): void;
+							 getMaxRightSwipeAmount(): number;
+							 getMaxDownSwipeAmount(): number;
+							 setAfterSwipeReaction(param0: number): void;
+							 getMaxUpSwipeAmount(): number;
+							 setSwipeItemHorizontalSlideAmount(param0: number): void;
+							 setSwipeStateFlags(param0: number): void;
+							 getAfterSwipeReaction(): number;
+							 getSwipeableContainerView(): androidviewView;
+							 setMaxRightSwipeAmount(param0: number): void;
 						}
 					}
 				}
@@ -2713,11 +2542,11 @@ declare module com {
 							public onBridgedAdapterChanged(param0: androidsupportv7widgetRecyclerViewAdapter, param1: javalangObject): void;
 							public onRelease(): void;
 							public unwrapPosition(param0: com.h6ah4i.android.widget.advrecyclerview.adapter.UnwrapPositionResult, param1: number): void;
-							public getWrappedAdapters(param0: javautilList): void;
+							public getWrappedAdapters(param0: javautilList<any>): void;
 							public isSwiping(): boolean;
 							public onHandleWrappedAdapterRangeMoved(param0: number, param1: number, param2: number): void;
 							public onBridgedAdapterItemRangeChanged(param0: androidsupportv7widgetRecyclerViewAdapter, param1: javalangObject, param2: number, param3: number): void;
-							public onBindViewHolder(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: javautilList): void;
+							public onBindViewHolder(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: javautilList<any>): void;
 							public onBindViewHolder(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number): void;
 							public constructor();
 							public wrapPosition(param0: com.h6ah4i.android.widget.advrecyclerview.adapter.AdapterPathSegment, param1: number): number;
@@ -2740,8 +2569,7 @@ declare module com {
 								/**
 								 * Constructs a new instance of the com.h6ah4i.android.widget.advrecyclerview.swipeable.SwipeableItemWrapperAdapter$Constants interface with the provided implementation.
 								 */
-								public constructor(implementation: {
-								});
+								public constructor();
 								public static AFTER_SWIPE_REACTION_DO_NOTHING: number;
 								public static REACTION_CAN_SWIPE_LEFT: number;
 								public static AFTER_SWIPE_REACTION_MOVE_TO_SWIPED_DIRECTION: number;
@@ -2967,15 +2795,10 @@ declare module com {
 								/**
 								 * Constructs a new instance of the com.h6ah4i.android.widget.advrecyclerview.swipeable.annotation.SwipeableItemAfterReactions interface with the provided implementation.
 								 */
-								public constructor(implementation: {
-									equals(param0: javalangObject): boolean;
-									hashCode(): number;
-									toString(): string;
-									annotationType(): javalangClass;
-								});
+								public constructor();
 								public equals(param0: javalangObject): boolean;
 								public toString(): string;
-								public annotationType(): javalangClass;
+								public annotationType(): javalangClass<any>;
 								public hashCode(): number;
 							}
 						}
@@ -2997,15 +2820,10 @@ declare module com {
 								/**
 								 * Constructs a new instance of the com.h6ah4i.android.widget.advrecyclerview.swipeable.annotation.SwipeableItemDrawableTypes interface with the provided implementation.
 								 */
-								public constructor(implementation: {
-									equals(param0: javalangObject): boolean;
-									hashCode(): number;
-									toString(): string;
-									annotationType(): javalangClass;
-								});
+								public constructor();
 								public equals(param0: javalangObject): boolean;
 								public toString(): string;
-								public annotationType(): javalangClass;
+								public annotationType(): javalangClass<any>;
 								public hashCode(): number;
 							}
 						}
@@ -3027,15 +2845,10 @@ declare module com {
 								/**
 								 * Constructs a new instance of the com.h6ah4i.android.widget.advrecyclerview.swipeable.annotation.SwipeableItemReactions interface with the provided implementation.
 								 */
-								public constructor(implementation: {
-									equals(param0: javalangObject): boolean;
-									hashCode(): number;
-									toString(): string;
-									annotationType(): javalangClass;
-								});
+								public constructor();
 								public equals(param0: javalangObject): boolean;
 								public toString(): string;
-								public annotationType(): javalangClass;
+								public annotationType(): javalangClass<any>;
 								public hashCode(): number;
 							}
 						}
@@ -3057,15 +2870,10 @@ declare module com {
 								/**
 								 * Constructs a new instance of the com.h6ah4i.android.widget.advrecyclerview.swipeable.annotation.SwipeableItemResults interface with the provided implementation.
 								 */
-								public constructor(implementation: {
-									equals(param0: javalangObject): boolean;
-									hashCode(): number;
-									toString(): string;
-									annotationType(): javalangClass;
-								});
+								public constructor();
 								public equals(param0: javalangObject): boolean;
 								public toString(): string;
-								public annotationType(): javalangClass;
+								public annotationType(): javalangClass<any>;
 								public hashCode(): number;
 							}
 						}
@@ -3087,15 +2895,10 @@ declare module com {
 								/**
 								 * Constructs a new instance of the com.h6ah4i.android.widget.advrecyclerview.swipeable.annotation.SwipeableItemStateFlags interface with the provided implementation.
 								 */
-								public constructor(implementation: {
-									equals(param0: javalangObject): boolean;
-									hashCode(): number;
-									toString(): string;
-									annotationType(): javalangClass;
-								});
+								public constructor();
 								public equals(param0: javalangObject): boolean;
 								public toString(): string;
-								public annotationType(): javalangClass;
+								public annotationType(): javalangClass<any>;
 								public hashCode(): number;
 							}
 						}
@@ -3196,7 +2999,7 @@ declare module com {
 						export abstract class AbstractExpandableItemAdapter extends androidsupportv7widgetRecyclerViewAdapter implements com.h6ah4i.android.widget.advrecyclerview.expandable.ExpandableItemAdapter {
 							public getItemId(param0: number): number;
 							public getItemViewType(param0: number): number;
-							public onBindGroupViewHolder(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number, param3: javautilList): void;
+							public onBindGroupViewHolder(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number, param3: javautilList<any>): void;
 							public onHookGroupExpand(param0: number, param1: boolean, param2: javalangObject): boolean;
 							public onBindGroupViewHolder(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number): void;
 							public getChildId(param0: number, param1: number): number;
@@ -3205,7 +3008,7 @@ declare module com {
 							public onHookGroupExpand(param0: number, param1: boolean): boolean;
 							public getChildCount(param0: number): number;
 							public onBindChildViewHolder(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number, param3: number): void;
-							public onBindViewHolder(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: javautilList): void;
+							public onBindViewHolder(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: javautilList<any>): void;
 							public onCreateChildViewHolder(param0: androidviewViewGroup, param1: number): androidsupportv7widgetRecyclerViewViewHolder;
 							public onHookGroupCollapse(param0: number, param1: boolean): boolean;
 							public onBindViewHolder(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number): void;
@@ -3216,7 +3019,7 @@ declare module com {
 							public onCreateViewHolder(param0: androidviewViewGroup, param1: number): androidsupportv7widgetRecyclerViewViewHolder;
 							public getItemCount(): number;
 							public getChildItemViewType(param0: number, param1: number): number;
-							public onBindChildViewHolder(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number, param3: number, param4: javautilList): void;
+							public onBindChildViewHolder(param0: androidsupportv7widgetRecyclerViewViewHolder, param1: number, param2: number, param3: number, param4: javautilList<any>): void;
 							public onCreateGroupViewHolder(param0: androidviewViewGroup, param1: number): androidsupportv7widgetRecyclerViewViewHolder;
 							public getGroupCount(): number;
 						}
@@ -3299,7 +3102,7 @@ declare module com {
 							public onBridgedAdapterItemRangeChanged(param0: androidsupportv7widgetRecyclerViewAdapter, param1: javalangObject, param2: number, param3: number): void;
 							public onBridgedAdapterChanged(param0: androidsupportv7widgetRecyclerViewAdapter, param1: javalangObject): void;
 							public unwrapPosition(param0: com.h6ah4i.android.widget.advrecyclerview.adapter.UnwrapPositionResult, param1: number): void;
-							public getWrappedAdapters(param0: javautilList): void;
+							public getWrappedAdapters(param0: javautilList<any>): void;
 							public release(): void;
 							public onBridgedAdapterItemRangeChanged(param0: androidsupportv7widgetRecyclerViewAdapter, param1: javalangObject, param2: number, param3: number, param4: javalangObject): void;
 						}
@@ -3381,7 +3184,7 @@ declare module com {
 							public constructor(param0: androidsupportv7widgetRecyclerViewAdapter);
 							public onBridgedAdapterChanged(param0: androidsupportv7widgetRecyclerViewAdapter, param1: javalangObject): void;
 							public unwrapPosition(param0: com.h6ah4i.android.widget.advrecyclerview.adapter.UnwrapPositionResult, param1: number): void;
-							public getWrappedAdapters(param0: javautilList): void;
+							public getWrappedAdapters(param0: javautilList<any>): void;
 							public release(): void;
 							public getSettingFlags(): number;
 							public onBridgedAdapterRangeMoved(param0: androidsupportv7widgetRecyclerViewAdapter, param1: javalangObject, param2: number, param3: number, param4: number): void;
@@ -3445,8 +3248,8 @@ declare module com {
 							public static unwrapPosition(param0: androidsupportv7widgetRecyclerViewAdapter, param1: androidsupportv7widgetRecyclerViewAdapter, param2: javalangObject, param3: number, param4: com.h6ah4i.android.widget.advrecyclerview.adapter.AdapterPath): number;
 							public static wrapPosition(param0: com.h6ah4i.android.widget.advrecyclerview.adapter.AdapterPath, param1: androidsupportv7widgetRecyclerViewAdapter, param2: androidsupportv7widgetRecyclerViewAdapter, param3: number): number;
 							public static unwrapPosition(param0: androidsupportv7widgetRecyclerViewAdapter, param1: number): number;
-							public static findWrappedAdapter(param0: androidsupportv7widgetRecyclerViewAdapter, param1: javalangClass): javalangObject;
-							public static findWrappedAdapter(param0: androidsupportv7widgetRecyclerViewAdapter, param1: javalangClass, param2: number): javalangObject;
+							public static findWrappedAdapter(param0: androidsupportv7widgetRecyclerViewAdapter, param1: javalangClass<any>): javalangObject;
+							public static findWrappedAdapter(param0: androidsupportv7widgetRecyclerViewAdapter, param1: javalangClass<any>, param2: number): javalangObject;
 							public static unwrapPosition(param0: androidsupportv7widgetRecyclerViewAdapter, param1: com.h6ah4i.android.widget.advrecyclerview.adapter.AdapterPathSegment, param2: number, param3: com.h6ah4i.android.widget.advrecyclerview.adapter.AdapterPath): number;
 							public static unwrapPosition(param0: androidsupportv7widgetRecyclerViewAdapter, param1: androidsupportv7widgetRecyclerViewAdapter, param2: number): number;
 							public static releaseAll(param0: androidsupportv7widgetRecyclerViewAdapter): androidsupportv7widgetRecyclerViewAdapter;
@@ -3469,15 +3272,10 @@ declare module com {
 								/**
 								 * Constructs a new instance of the com.h6ah4i.android.widget.advrecyclerview.utils.annotation.DebugWrapperAdapterSettingFlags interface with the provided implementation.
 								 */
-								public constructor(implementation: {
-									equals(param0: javalangObject): boolean;
-									hashCode(): number;
-									toString(): string;
-									annotationType(): javalangClass;
-								});
+								public constructor();
 								public equals(param0: javalangObject): boolean;
 								public toString(): string;
-								public annotationType(): javalangClass;
+								public annotationType(): javalangClass<any>;
 								public hashCode(): number;
 							}
 						}

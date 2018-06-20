@@ -13,6 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ***************************************************************************** */
+/// <reference path="./grid-view.android.d.ts" />
 
 import { KeyedTemplate, Length, View } from 'ui/core/view';
 import * as utils from 'utils/utils';
@@ -45,16 +46,17 @@ import GridLayoutManager = android.support.v7.widget.GridLayoutManager;
 import RecyclerViewExpandableItemManager = com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandableItemManager;
 
 export class GridView extends GridViewBase {
+    public static DEFAULT_TEMPLATE_VIEW_TYPE = 0;
+    public static CUSTOM_TEMPLATE_ITEM_TYPE = 1;
     // adapter: GridViewAdapter;
     public nativeView: RecyclerView;
     // public _realizedItems = new Map<android.view.View, View>();
-    public static DEFAULT_TEMPLATE_VIEW_TYPE = 0;
-    public static CUSTOM_TEMPLATE_ITEM_TYPE = 1;
+
     public _itemTemplatesByViewType: Map<number, KeyedTemplate>;
 
     // private items:java.util.List<Item>;
 
-    itemTypeCount = GridView.CUSTOM_TEMPLATE_ITEM_TYPE;
+    private itemTypeCount = GridView.CUSTOM_TEMPLATE_ITEM_TYPE;
     constructor() {
         super();
         this._itemTemplatesByViewType = new Map<number, KeyedTemplate>();
@@ -67,7 +69,6 @@ export class GridView extends GridViewBase {
         const recyclerView = new GridViewRecyclerView(this._context, new WeakRef(this));
 
         const expMgr = new RecyclerViewExpandableItemManager(null);
-
 
         initGridViewAdapter();
         const adapter = new GridViewAdapter(new WeakRef(this));
@@ -364,7 +365,7 @@ function initGridViewAdapter() {
 
     class GridViewAdapterImpl extends com.h6ah4i.android.widget.advrecyclerview.headerfooter.AbstractHeaderFooterWrapperAdapter<GridViewCellHolder, GridViewCellHolder> {
         constructor(private owner: WeakRef<GridView>, adapter: RecyclerView.Adapter) {
-            super(null);
+            super();
 
             return global.__native(this);
         }
@@ -453,31 +454,29 @@ function initGridViewAdapter() {
             return 0;
         }
 
-        public  onClick( v: android.view.View) {
+        public onClick(v: android.view.View) {
             const rv = com.h6ah4i.android.widget.advrecyclerview.utils.RecyclerViewAdapterUtils.getParentRecyclerView(v);
             const vh = rv.findContainingViewHolder(v);
-    
+
             const rootPosition = vh.getAdapterPosition();
-            if (rootPosition == RecyclerView.NO_POSITION) {
+            if (rootPosition === RecyclerView.NO_POSITION) {
                 return;
             }
-    
+
             // need to determine adapter local position like this:
             const rootAdapter = rv.getAdapter();
             const localPosition = com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils.unwrapPosition(rootAdapter, this, rootPosition);
-    
+
             // get segment
-            const segmentedPosition = this.getSegmentedPosition(localPosition);
-            const segment = this.extractSegmentPart(segmentedPosition);
-            const offset = this.extractSegmentOffsetPart(segmentedPosition);
-    
-            let message;
-    
-            if (segment == SEGMENT_TYPE_HEADER) {
-                // Header item is clicked !
-            } else if (segment == SEGMENT_TYPE_FOOTER) {
-                // Footer item is clicked !
-            }
+            // const segmentedPosition = this.getSegmentedPosition(localPosition);
+            // const segment = this.extractSegmentPart(segmentedPosition);
+            // const offset = this.extractSegmentOffsetPart(segmentedPosition);
+
+            // if (segment === GridViewAdapterImpl.SEGMENT_TYPE_HEADER) {
+            //     // Header item is clicked !
+            // } else if (segment === GridViewAdapterImpl.SEGMENT_TYPE_FOOTER) {
+            //     // Footer item is clicked !
+            // }
         }
     }
 

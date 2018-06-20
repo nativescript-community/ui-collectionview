@@ -23,9 +23,9 @@ import { addWeakEventListener, removeWeakEventListener } from 'ui/core/weak-even
 import { Label } from 'ui/label';
 import { ItemsSource } from 'ui/list-view';
 import { GridView as GridViewDefinition, Orientation } from './grid-view';
-import * as dependencyObservable from "ui/core/dependency-observable";
-import {ObservableArray} from "data/observable-array";
-import * as weakEventsModule from "ui/core/weak-event-listener";
+import * as dependencyObservable from 'ui/core/dependency-observable';
+import { ObservableArray } from 'data/observable-array';
+// import * as weakEventsModule from "ui/core/weak-event-listener";
 
 const autoEffectiveRowHeight = 0;
 const autoEffectiveColWidth = 0;
@@ -57,7 +57,6 @@ export abstract class GridViewBase extends View implements GridViewDefinition {
             return undefined;
         }
     };
-    protected _itemTemplatesInternal: Map<string, KeyedTemplate>;
 
     public orientation: Orientation;
     public itemTemplate: string | Template;
@@ -72,6 +71,8 @@ export abstract class GridViewBase extends View implements GridViewDefinition {
     public _innerHeight: number = 0;
     public _effectiveRowHeight: number;
     public _effectiveColWidth: number;
+
+    protected _itemTemplatesInternal: Map<string, KeyedTemplate>;
 
     private _itemTemplateSelectorBindable = new Label();
     private _itemTemplateSelector: (item: any, index: number, items: any) => string;
@@ -135,11 +136,11 @@ export abstract class GridViewBase extends View implements GridViewDefinition {
 
     public _getItemTemplateByIndex(index: number): KeyedTemplate {
         // let templateKey = this._getItemTemplateKey(index, section);
-        return this._getItemTemplate(this._getDataItem(index))
+        return this._getItemTemplate(this._getDataItem(index));
     }
 
-    public _getItemTemplateKey(dataItem, index:number, isHeader = false): string {
-        let templateKey = isHeader?'header':'default';
+    public _getItemTemplateKey(dataItem, index: number, isHeader = false): string {
+        let templateKey = isHeader ? 'header' : 'default';
         if (typeof dataItem.template === 'string') {
             templateKey = dataItem.template;
         } else if (this.itemTemplateSelector) {
@@ -149,10 +150,10 @@ export abstract class GridViewBase extends View implements GridViewDefinition {
     }
     public _getItemTemplateKeyByIndex(index: number, isHeader = false): string {
         // let templateKey = this._getItemTemplateKey(index, section);
-        return this._getItemTemplateKey(this._getDataItem(index), index, isHeader)
+        return this._getItemTemplateKey(this._getDataItem(index), index, isHeader);
     }
 
-    public _getItemTemplate(index:number, isHeader = false): KeyedTemplate {
+    public _getItemTemplate(index: number, isHeader = false): KeyedTemplate {
         return this._itemTemplatesInternal.get(this._getItemTemplateKeyByIndex(index, isHeader));
     }
 
@@ -184,7 +185,7 @@ export abstract class GridViewBase extends View implements GridViewDefinition {
 
     //     return v;
     // }
-    
+
     // public _getHeaderTemplateContent(section:number =0): view.View {
     //     var v;
 
@@ -199,7 +200,7 @@ export abstract class GridViewBase extends View implements GridViewDefinition {
 
     public _prepareItem(item: View, row: number) {
         if (item) {
-            var dataItem = this._getDataItem(row);
+            const dataItem = this._getDataItem(row);
             if (!(dataItem instanceof observable.Observable)) {
                 item.bindingContext = null;
             }
@@ -209,7 +210,7 @@ export abstract class GridViewBase extends View implements GridViewDefinition {
 
     public _getDataItem(index: number): any {
         // if(this.sections.getItem()) {
-            // return this.items.getItem(row);
+        // return this.items.getItem(row);
         // }
         return this.isItemsSourceIn ? (this.items as ItemsSource).getItem(index) : this.items[index];
     }
@@ -225,14 +226,12 @@ export abstract class GridViewBase extends View implements GridViewDefinition {
     //     return lbl;
     // }
 
-
     public _onRowHeightPropertyChanged(oldValue: PercentLength, newValue: PercentLength) {
         this.refresh();
     }
     public _onColWidthPropertyChanged(oldValue: PercentLength, newValue: PercentLength) {
         this.refresh();
     }
-
 }
 
 export const itemsProperty = new Property<GridViewBase, any[] | ItemsSource>({
@@ -275,7 +274,7 @@ export const itemTemplatesProperty = new Property<GridViewBase, string | KeyedTe
 });
 itemTemplatesProperty.register(GridViewBase);
 
-const defaultRowHeight: Length = "auto";
+const defaultRowHeight: Length = 'auto';
 export const rowHeightProperty = new CoercibleProperty<GridViewBase, PercentLength>({
     name: 'rowHeight',
     defaultValue: defaultRowHeight,
