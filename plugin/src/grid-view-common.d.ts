@@ -13,10 +13,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ***************************************************************************** */
-import { CoercibleProperty, KeyedTemplate, Length, PercentLength, Property, Template, View } from 'tns-core-modules/ui/core/view';
-import { ItemsSource } from 'tns-core-modules/ui/list-view';
+import { CoercibleProperty, KeyedTemplate, Length, PercentLength, Property, Template, View } from 'ui/core/view';
+import { ItemsSource } from 'ui/list-view';
 import { GridView as GridViewDefinition, Orientation } from './grid-view';
-export * from 'tns-core-modules/ui/core/view';
+export * from 'ui/core/view';
 export declare namespace knownTemplates {
     const itemTemplate = "itemTemplate";
 }
@@ -29,7 +29,6 @@ export declare abstract class GridViewBase extends View implements GridViewDefin
     static loadMoreItemsEvent: string;
     static knownFunctions: string[];
     _defaultTemplate: KeyedTemplate;
-    protected _itemTemplatesInternal: Map<string, KeyedTemplate>;
     orientation: Orientation;
     itemTemplate: string | Template;
     itemTemplates: string | KeyedTemplate[];
@@ -42,6 +41,7 @@ export declare abstract class GridViewBase extends View implements GridViewDefin
     _innerHeight: number;
     _effectiveRowHeight: number;
     _effectiveColWidth: number;
+    protected _itemTemplatesInternal: Map<string, KeyedTemplate>;
     private _itemTemplateSelectorBindable;
     private _itemTemplateSelector;
     constructor();
