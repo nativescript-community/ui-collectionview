@@ -1,0 +1,1529 @@
+/// <reference path="./android.support.v7.widget.RecyclerView.d.ts" />
+
+declare module eu {
+	export module davidea {
+		export module fastscroller {
+			export class BubbleAnimator extends java.lang.Object {
+				public animator: android.animation.ObjectAnimator;
+				public bubble: android.view.View;
+				public durationInMillis: number;
+				public createShowAnimator(param0: android.view.View): android.animation.ObjectAnimator;
+				public onShowAnimationStop(param0: android.view.View): void;
+				public constructor(param0: android.view.View, param1: number);
+				public onHideAnimationStop(param0: android.view.View): void;
+				public showBubble(): void;
+				public hideBubble(): void;
+				public createHideAnimator(param0: android.view.View): android.animation.ObjectAnimator;
+			}
+		}
+	}
+}
+declare module eu {
+	export module davidea {
+		export module fastscroller {
+			export class FastScroller extends android.widget.FrameLayout {
+				public static TRACK_SNAP_RANGE: number;
+				public static BUBBLE_ANIMATION_DURATION: number;
+				public static AUTOHIDE_ANIMATION_DURATION: number;
+				public static DEFAULT_AUTOHIDE_DELAY_IN_MILLIS: number;
+				public static DEFAULT_AUTOHIDE_ENABLED: boolean;
+				public bubble: android.widget.TextView;
+				public handle: android.widget.ImageView;
+				public bar: android.view.View;
+				public height: number;
+				public width: number;
+				public minimumScrollThreshold: number;
+				public recyclerView: android.support.v7.widget.RecyclerView;
+				public layoutManager: android.support.v7.widget.RecyclerView.LayoutManager;
+				public bubbleTextCreator: eu.davidea.fastscroller.FastScroller.BubbleTextCreator;
+				public scrollStateChangeListeners: java.util.List;
+				public bubbleAndHandleColor: number;
+				public autoHideDelayInMillis: number;
+				public isInitialized: boolean;
+				public autoHideEnabled: boolean;
+				public bubbleEnabled: boolean;
+				public ignoreTouchesOutsideHandle: boolean;
+				public bubblePosition: number;
+				public bubbleAnimator: eu.davidea.fastscroller.BubbleAnimator;
+				public scrollbarAnimator: eu.davidea.fastscroller.ScrollbarAnimator;
+				public onScrollListener: android.support.v7.widget.RecyclerView.OnScrollListener;
+				public requestDisallowInterceptTouchEvent(param0: boolean): void;
+				public focusSearch(param0: number): android.view.View;
+				public startActionModeForChild(param0: android.view.View, param1: android.view.ActionMode.Callback, param2: number): android.view.ActionMode;
+				public startActionModeForChild(param0: android.view.View, param1: android.view.ActionMode.Callback): android.view.ActionMode;
+				public onKeyUp(param0: number, param1: android.view.KeyEvent): boolean;
+				public setBubbleTextCreator(param0: eu.davidea.fastscroller.FastScroller.BubbleTextCreator): void;
+				public setEnabled(param0: boolean): void;
+				public onNestedScroll(param0: android.view.View, param1: number, param2: number, param3: number, param4: number): void;
+				public init(): void;
+				public isLayoutRequested(): boolean;
+				public sendAccessibilityEvent(param0: number): void;
+				public addOnScrollStateChangeListener(param0: eu.davidea.fastscroller.FastScroller.OnScrollStateChangeListener): void;
+				public requestFitSystemWindows(): void;
+				public onStartNestedScroll(param0: android.view.View, param1: android.view.View, param2: number): boolean;
+				public getTextDirection(): number;
+				public setViewsToUse(param0: number, param1: number, param2: number): void;
+				public onNestedPreFling(param0: android.view.View, param1: number, param2: number): boolean;
+				public scheduleDrawable(param0: android.graphics.drawable.Drawable, param1: java.lang.Runnable, param2: number): void;
+				public invalidateChild(param0: android.view.View, param1: android.graphics.Rect): void;
+				public updateBubbleText(param0: number): void;
+				public setBubbleAndHandlePosition(param0: number): void;
+				public showScrollbar(): void;
+				public getChildVisibleRect(param0: android.view.View, param1: android.graphics.Rect, param2: android.graphics.Point): boolean;
+				public setAutoHideEnabled(param0: boolean): void;
+				public notifyScrollStateChange(param0: boolean): void;
+				public invalidateDrawable(param0: android.graphics.drawable.Drawable): void;
+				public getParent(): android.view.ViewParent;
+				public addView(param0: android.view.View, param1: number, param2: android.view.ViewGroup.LayoutParams): void;
+				public getTextAlignment(): number;
+				public unscheduleDrawable(param0: android.graphics.drawable.Drawable, param1: java.lang.Runnable): void;
+				public addView(param0: android.view.View, param1: number): void;
+				public onTouchEvent(param0: android.view.MotionEvent): boolean;
+				public setMinimumScrollThreshold(param0: number): void;
+				public focusSearch(param0: android.view.View, param1: number): android.view.View;
+				public unscheduleDrawable(param0: android.graphics.drawable.Drawable): void;
+				public removeOnScrollStateChangeListener(param0: eu.davidea.fastscroller.FastScroller.OnScrollStateChangeListener): void;
+				public hideScrollbar(): void;
+				public onKeyMultiple(param0: number, param1: number, param2: android.view.KeyEvent): boolean;
+				public requestTransparentRegion(param0: android.view.View): void;
+				public constructor(param0: android.content.Context, param1: android.util.AttributeSet);
+				public createContextMenu(param0: android.view.ContextMenu): void;
+				public removeView(param0: android.view.View): void;
+				public isTextDirectionResolved(): boolean;
+				public focusableViewAvailable(param0: android.view.View): void;
+				public constructor(param0: android.content.Context);
+				public onDetachedFromWindow(): void;
+				public getTargetPos(param0: number): number;
+				public requestChildRectangleOnScreen(param0: android.view.View, param1: android.graphics.Rect, param2: boolean): boolean;
+				public isLayoutDirectionResolved(): boolean;
+				public isTextAlignmentResolved(): boolean;
+				public static getValueInRange(param0: number, param1: number, param2: number): number;
+				public getLayoutDirection(): number;
+				public addView(param0: android.view.View, param1: android.view.ViewGroup.LayoutParams): void;
+				public isAutoHideEnabled(): boolean;
+				public sendAccessibilityEventUnchecked(param0: android.view.accessibility.AccessibilityEvent): void;
+				public canResolveTextDirection(): boolean;
+				public setIgnoreTouchesOutsideHandle(param0: boolean): void;
+				public showContextMenuForChild(param0: android.view.View): boolean;
+				public canResolveTextAlignment(): boolean;
+				public hideBubble(): void;
+				public isHidden(): boolean;
+				public onKeyLongPress(param0: number, param1: android.view.KeyEvent): boolean;
+				public constructor(param0: android.content.Context, param1: android.util.AttributeSet, param2: number, param3: number);
+				public setBubbleAndHandleColor(param0: number): void;
+				public setRecyclerView(param0: android.support.v7.widget.RecyclerView): void;
+				public onNestedPrePerformAccessibilityAction(param0: android.view.View, param1: number, param2: android.os.Bundle): boolean;
+				public setRecyclerViewPosition(param0: number): void;
+				public onNestedScrollAccepted(param0: android.view.View, param1: android.view.View, param2: number): void;
+				public requestLayout(): void;
+				public childDrawableStateChanged(param0: android.view.View): void;
+				public notifySubtreeAccessibilityStateChanged(param0: android.view.View, param1: android.view.View, param2: number): void;
+				public onNestedPreScroll(param0: android.view.View, param1: number, param2: number, param3: native.Array<number>): void;
+				public childHasTransientStateChanged(param0: android.view.View, param1: boolean): void;
+				public getParentForAccessibility(): android.view.ViewParent;
+				public toggleFastScroller(): void;
+				public updateViewLayout(param0: android.view.View, param1: android.view.ViewGroup.LayoutParams): void;
+				public onKeyDown(param0: number, param1: android.view.KeyEvent): boolean;
+				public onStopNestedScroll(param0: android.view.View): void;
+				public bringChildToFront(param0: android.view.View): void;
+				public showBubble(): void;
+				public showContextMenuForChild(param0: android.view.View, param1: number, param2: number): boolean;
+				public setAutoHideDelayInMillis(param0: number): void;
+				public getAutoHideDelayInMillis(): number;
+				public requestChildFocus(param0: android.view.View, param1: android.view.View): void;
+				public onNestedFling(param0: android.view.View, param1: number, param2: number, param3: boolean): boolean;
+				public canResolveLayoutDirection(): boolean;
+				public addView(param0: android.view.View): void;
+				public requestSendAccessibilityEvent(param0: android.view.View, param1: android.view.accessibility.AccessibilityEvent): boolean;
+				public addView(param0: android.view.View, param1: number, param2: number): void;
+				public onSizeChanged(param0: number, param1: number, param2: number, param3: number): void;
+				public invalidateChildInParent(param0: native.Array<number>, param1: android.graphics.Rect): android.view.ViewParent;
+				public recomputeViewAttributes(param0: android.view.View): void;
+				public constructor(param0: android.content.Context, param1: android.util.AttributeSet, param2: number);
+				public onAttachedToWindow(): void;
+				public clearChildFocus(param0: android.view.View): void;
+			}
+			export module FastScroller {
+				export class AdapterInterface extends java.lang.Object {
+					/**
+					 * Constructs a new instance of the eu.davidea.fastscroller.FastScroller$AdapterInterface interface with the provided implementation.
+					 */
+					public constructor(implementation?: {
+						setFastScroller(param0: eu.davidea.fastscroller.FastScroller): void;
+					});
+					public setFastScroller(param0: eu.davidea.fastscroller.FastScroller): void;
+				}
+				export class BubbleTextCreator extends java.lang.Object {
+					/**
+					 * Constructs a new instance of the eu.davidea.fastscroller.FastScroller$BubbleTextCreator interface with the provided implementation.
+					 */
+					public constructor(implementation?: {
+						onCreateBubbleText(param0: number): string;
+					});
+					public onCreateBubbleText(param0: number): string;
+				}
+				export class Delegate extends java.lang.Object {
+					public setFastScroller(param0: eu.davidea.fastscroller.FastScroller): void;
+					public constructor();
+					public toggleFastScroller(): void;
+					public isFastScrollerEnabled(): boolean;
+					public onAttachedToRecyclerView(param0: android.support.v7.widget.RecyclerView): void;
+					public getFastScroller(): eu.davidea.fastscroller.FastScroller;
+					public onDetachedFromRecyclerView(param0: android.support.v7.widget.RecyclerView): void;
+				}
+				export class FastScrollerBubblePosition extends java.lang.Object implements java.lang.annotation.Annotation {
+					/**
+					 * Constructs a new instance of the eu.davidea.fastscroller.FastScroller$FastScrollerBubblePosition interface with the provided implementation.
+					 */
+					public constructor(implementation?: {
+						equals(param0: java.lang.Object): boolean;
+						hashCode(): number;
+						toString(): string;
+						annotationType(): java.lang.Class;
+					});
+					public static ADJACENT: number;
+					public static CENTER: number;
+					public toString(): string;
+					public equals(param0: java.lang.Object): boolean;
+					public annotationType(): java.lang.Class;
+					public hashCode(): number;
+				}
+				export class OnScrollStateChangeListener extends java.lang.Object {
+					/**
+					 * Constructs a new instance of the eu.davidea.fastscroller.FastScroller$OnScrollStateChangeListener interface with the provided implementation.
+					 */
+					public constructor(implementation?: {
+						onFastScrollerStateChange(param0: boolean): void;
+					});
+					public onFastScrollerStateChange(param0: boolean): void;
+				}
+			}
+		}
+	}
+}
+declare module eu {
+	export module davidea {
+		export module fastscroller {
+			export class ScrollbarAnimator extends java.lang.Object {
+				public bar: android.view.View;
+				public handle: android.view.View;
+				public scrollbarAnimatorSet: android.animation.AnimatorSet;
+				public delayInMillis: number;
+				public durationInMillis: number;
+				public isAnimating(): boolean;
+				public setDelayInMillis(param0: number): void;
+				public onHideAnimationStop(param0: android.view.View, param1: android.view.View): void;
+				public constructor(param0: android.view.View, param1: android.view.View, param2: number, param3: number);
+				public showScrollbar(): void;
+				public createAnimator(param0: android.view.View, param1: android.view.View, param2: boolean): android.animation.AnimatorSet;
+				public hideScrollbar(): void;
+				public onShowAnimationStop(param0: android.view.View, param1: android.view.View): void;
+			}
+		}
+	}
+}
+declare module eu {
+	export module davidea {
+		export module flexibleadapter {
+			export abstract class AnimatorAdapter extends eu.davidea.flexibleadapter.SelectableAdapter {
+				public setAnimationOnForwardScrolling(param0: boolean): eu.davidea.flexibleadapter.AnimatorAdapter;
+				public setAnimationDelay(param0: number): eu.davidea.flexibleadapter.AnimatorAdapter;
+				public setAnimationEntryStep(param0: boolean): eu.davidea.flexibleadapter.AnimatorAdapter;
+				public setAnimationDuration(param0: number): eu.davidea.flexibleadapter.AnimatorAdapter;
+				public setFastScroller(param0: eu.davidea.fastscroller.FastScroller): void;
+				public onFastScrollerStateChange(param0: boolean): void;
+				public onCreateBubbleText(param0: number): string;
+				public animateView(param0: android.support.v7.widget.RecyclerView.ViewHolder, param1: number): void;
+				public setAnimationInterpolator(param0: android.view.animation.Interpolator): eu.davidea.flexibleadapter.AnimatorAdapter;
+				public isAnimationOnReverseScrollingEnabled(): boolean;
+				public isOnlyEntryAnimation(): boolean;
+				public setAnimationInitialDelay(param0: number): eu.davidea.flexibleadapter.AnimatorAdapter;
+				public isAnimationOnForwardScrollingEnabled(): boolean;
+				public setAnimationOnReverseScrolling(param0: boolean): eu.davidea.flexibleadapter.AnimatorAdapter;
+				public isScrollableHeaderOrFooter(param0: number): boolean;
+				public setOnlyEntryAnimation(param0: boolean): eu.davidea.flexibleadapter.AnimatorAdapter;
+			}
+			export module AnimatorAdapter {
+				export class AnimatorAdapterDataObserver {
+					public onChanged(): void;
+					public onItemRangeMoved(param0: number, param1: number, param2: number): void;
+					public isPositionNotified(): boolean;
+					public clearNotified(): void;
+					public onItemRangeChanged(param0: number, param1: number): void;
+					public onItemRangeRemoved(param0: number, param1: number): void;
+					public onItemRangeInserted(param0: number, param1: number): void;
+				}
+				export class AnimatorEnum extends java.lang.Enum {
+					public static ALPHA: eu.davidea.flexibleadapter.AnimatorAdapter.AnimatorEnum;
+					public static SLIDE_IN_LEFT: eu.davidea.flexibleadapter.AnimatorAdapter.AnimatorEnum;
+					public static SLIDE_IN_RIGHT: eu.davidea.flexibleadapter.AnimatorAdapter.AnimatorEnum;
+					public static SLIDE_IN_BOTTOM: eu.davidea.flexibleadapter.AnimatorAdapter.AnimatorEnum;
+					public static SLIDE_IN_TOP: eu.davidea.flexibleadapter.AnimatorAdapter.AnimatorEnum;
+					public static SCALE: eu.davidea.flexibleadapter.AnimatorAdapter.AnimatorEnum;
+					public static values(): native.Array<eu.davidea.flexibleadapter.AnimatorAdapter.AnimatorEnum>;
+					public static valueOf(param0: string): eu.davidea.flexibleadapter.AnimatorAdapter.AnimatorEnum;
+					public static valueOf(param0: java.lang.Class, param1: string): java.lang.Enum;
+				}
+				export class HelperAnimatorListener extends java.lang.Object implements android.animation.Animator.AnimatorListener {
+					public onAnimationEnd(param0: android.animation.Animator): void;
+					public onAnimationCancel(param0: android.animation.Animator): void;
+					public onAnimationStart(param0: android.animation.Animator): void;
+					public onAnimationRepeat(param0: android.animation.Animator): void;
+				}
+			}
+		}
+	}
+}
+declare module eu {
+	export module davidea {
+		export module flexibleadapter {
+			export class BuildConfig extends java.lang.Object {
+				public static DEBUG: boolean;
+				public static APPLICATION_ID: string;
+				public static BUILD_TYPE: string;
+				public static FLAVOR: string;
+				public static VERSION_CODE: number;
+				public static VERSION_NAME: string;
+				public constructor();
+			}
+		}
+	}
+}
+
+declare module eu {
+	export module davidea {
+		export module flexibleadapter {
+			export class FlexibleAdapter extends eu.davidea.flexibleadapter.AnimatorAdapter implements eu.davidea.flexibleadapter.helpers.ItemTouchHelperCallback.AdapterCallback {
+				public UPDATE: number;
+				public FILTER: number;
+				public LOAD_MORE_COMPLETE: number;
+				public mHandler: android.os.Handler;
+				public mInflater: android.view.LayoutInflater;
+				public mItemClickListener: eu.davidea.flexibleadapter.FlexibleAdapter.OnItemClickListener;
+				public mItemLongClickListener: eu.davidea.flexibleadapter.FlexibleAdapter.OnItemLongClickListener;
+				public mUpdateListener: eu.davidea.flexibleadapter.FlexibleAdapter.OnUpdateListener;
+				public mFilterListener: eu.davidea.flexibleadapter.FlexibleAdapter.OnFilterListener;
+				public mItemMoveListener: eu.davidea.flexibleadapter.FlexibleAdapter.OnItemMoveListener;
+				public mItemSwipeListener: eu.davidea.flexibleadapter.FlexibleAdapter.OnItemSwipeListener;
+				public mEndlessScrollListener: eu.davidea.flexibleadapter.FlexibleAdapter.EndlessScrollListener;
+				public mDeleteCompleteListener: eu.davidea.flexibleadapter.FlexibleAdapter.OnDeleteCompleteListener;
+				public mStickyHeaderChangeListener: eu.davidea.flexibleadapter.FlexibleAdapter.OnStickyHeaderChangeListener;
+				public setAnimateChangesWithDiffUtil(param0: boolean): eu.davidea.flexibleadapter.FlexibleAdapter;
+				public onSaveInstanceState(param0: android.os.Bundle): void;
+				public setLoadingMoreAtStartUp(param0: boolean): eu.davidea.flexibleadapter.FlexibleAdapter;
+				public removeAllSelectedItems(): void;
+				public addScrollableHeaderWithDelay(param0: eu.davidea.flexibleadapter.items.IFlexible, param1: number, param2: boolean): void;
+				public removeAllScrollableFooters(): void;
+				public collapseAll(param0: number): number;
+				public onBindViewHolder(param0: android.support.v7.widget.RecyclerView.ViewHolder, param1: number, param2: java.util.List): void;
+				public addItemToSection(param0: eu.davidea.flexibleadapter.items.ISectionable, param1: eu.davidea.flexibleadapter.items.IHeader, param2: number): number;
+				public clearSelection(): void;
+				public updateDataSet(param0: java.util.List, param1: boolean): void;
+				public setEndlessScrollListener(param0: eu.davidea.flexibleadapter.FlexibleAdapter.EndlessScrollListener, param1: eu.davidea.flexibleadapter.items.IFlexible): eu.davidea.flexibleadapter.FlexibleAdapter;
+				public expand(param0: number): number;
+				public expandAll(): number;
+				public getItemTouchHelper(): android.support.v7.widget.helper.ItemTouchHelper;
+				public filterItems(param0: java.util.List): void;
+				public setNotifyChangeOfUnfilteredItems(param0: boolean): eu.davidea.flexibleadapter.FlexibleAdapter;
+				public setMinCollapsibleLevel(param0: number): eu.davidea.flexibleadapter.FlexibleAdapter;
+				public removeItem(param0: number, param1: java.lang.Object): void;
+				public getItem(param0: number, param1: java.lang.Class): eu.davidea.flexibleadapter.items.IFlexible;
+				public areHeadersSticky(): boolean;
+				public setAutoScrollOnExpand(param0: boolean): eu.davidea.flexibleadapter.FlexibleAdapter;
+				public moveItem(param0: number, param1: number): void;
+				public setStickyHeaderElevation(param0: number): eu.davidea.flexibleadapter.FlexibleAdapter;
+				public onRestoreInstanceState(param0: android.os.Bundle): void;
+				public onDetachedFromRecyclerView(param0: android.support.v7.widget.RecyclerView): void;
+				public setEndlessPageSize(param0: number): eu.davidea.flexibleadapter.FlexibleAdapter;
+				public ensureHeaderParent(): void;
+				public collapse(param0: number): number;
+				public addScrollableFooterWithDelay(param0: eu.davidea.flexibleadapter.items.IFlexible, param1: number, param2: boolean): void;
+				public removeAllSelectedItems(param0: java.lang.Object): void;
+				public isTopEndless(): boolean;
+				public constructor(param0: java.util.List);
+				public removeListener(param0: java.lang.Object): eu.davidea.flexibleadapter.FlexibleAdapter;
+				public removeRange(param0: number, param1: number, param2: java.lang.Object): void;
+				public setNotifyMoveOfFilteredItems(param0: boolean): eu.davidea.flexibleadapter.FlexibleAdapter;
+				public isRecursiveCollapse(): boolean;
+				public onFastScrollerStateChange(param0: boolean): void;
+				public setRecursiveCollapse(param0: boolean): eu.davidea.flexibleadapter.FlexibleAdapter;
+				public getEndlessCurrentPage(): number;
+				public removeItem(param0: number): void;
+				public getItemTouchHelperCallback(): eu.davidea.flexibleadapter.helpers.ItemTouchHelperCallback;
+				public getSameTypePositionOf(param0: eu.davidea.flexibleadapter.items.IFlexible): number;
+				public filterItems(param0: number): void;
+				public isExpanded(param0: eu.davidea.flexibleadapter.items.IFlexible): boolean;
+				public getHeaderOf(param0: eu.davidea.flexibleadapter.items.IFlexible): eu.davidea.flexibleadapter.items.IHeader;
+				public setStickyHeaders(param0: boolean, param1: android.view.ViewGroup): eu.davidea.flexibleadapter.FlexibleAdapter;
+				public setPermanentDelete(param0: boolean): eu.davidea.flexibleadapter.FlexibleAdapter;
+				public setItemTouchHelperCallback(param0: eu.davidea.flexibleadapter.helpers.ItemTouchHelperCallback): eu.davidea.flexibleadapter.FlexibleAdapter;
+				public setStickyHeaders(param0: boolean): eu.davidea.flexibleadapter.FlexibleAdapter;
+				public getSubPositionOf(param0: eu.davidea.flexibleadapter.items.IFlexible): number;
+				public getMinCollapsibleLevel(): number;
+				public hideAllHeaders(): void;
+				public selectAll(param0: native.Array<java.lang.Integer>): void;
+				public addSubItems(param0: number, param1: number, param2: java.util.List, param3: boolean, param4: java.lang.Object): boolean;
+				public getCardinalPositionOf(param0: eu.davidea.flexibleadapter.items.IFlexible): number;
+				public isScrollableHeaderOrFooter(param0: eu.davidea.flexibleadapter.items.IFlexible): boolean;
+				public removeItems(param0: java.util.List): void;
+				public isSwipeEnabled(): boolean;
+				public isFiltering(): boolean;
+				public isItemEnabled(param0: number): boolean;
+				public expand(param0: eu.davidea.flexibleadapter.items.IFlexible): number;
+				public getUndoPositions(): java.util.List;
+				public addItems(param0: number, param1: java.util.List): boolean;
+				public getExpandablePositionOf(param0: eu.davidea.flexibleadapter.items.IFlexible): number;
+				public setFilter(param0: java.io.Serializable): void;
+				public getItemCount(): number;
+				public hasFilter(): boolean;
+				public restoreDeletedItems(): void;
+				public addSection(param0: eu.davidea.flexibleadapter.items.IHeader, param1: java.util.Comparator): number;
+				public removeScrollableHeaderWithDelay(param0: eu.davidea.flexibleadapter.items.IFlexible, param1: number): void;
+				public addItemToSection(param0: eu.davidea.flexibleadapter.items.ISectionable, param1: eu.davidea.flexibleadapter.items.IHeader, param2: java.util.Comparator): number;
+				public emptyBin(): void;
+				public isLongPressDragEnabled(): boolean;
+				public shouldMove(param0: number, param1: number): boolean;
+				public setLongPressDragEnabled(param0: boolean): eu.davidea.flexibleadapter.FlexibleAdapter;
+				public removeRange(param0: number, param1: number): void;
+				public isHandleDragEnabled(): boolean;
+				public getGlobalPositionOf(param0: eu.davidea.flexibleadapter.items.IFlexible): number;
+				public filterObject(param0: eu.davidea.flexibleadapter.items.IFlexible, param1: java.io.Serializable): boolean;
+				public getMainItemCount(): number;
+				public isScrollableHeaderOrFooter(param0: number): boolean;
+				public addSection(param0: eu.davidea.flexibleadapter.items.IHeader): number;
+				public isExpanded(param0: number): boolean;
+				public contains(param0: eu.davidea.flexibleadapter.items.IFlexible): boolean;
+				public removeItemsOfType(param0: native.Array<java.lang.Integer>): void;
+				public setUnlinkAllItemsOnRemoveHeaders(param0: boolean): eu.davidea.flexibleadapter.FlexibleAdapter;
+				public constructor(param0: java.util.List, param1: java.lang.Object, param2: boolean);
+				public getDeletedItems(): java.util.List;
+				public getExpandableOf(param0: eu.davidea.flexibleadapter.items.IFlexible): eu.davidea.flexibleadapter.items.IExpandable;
+				public removeItemWithDelay(param0: eu.davidea.flexibleadapter.items.IFlexible, param1: number, param2: boolean): void;
+				public getCurrentItems(): java.util.List;
+				public isHeader(param0: eu.davidea.flexibleadapter.items.IFlexible): boolean;
+				public moveItem(param0: number, param1: number, param2: java.lang.Object): void;
+				public addItem(param0: eu.davidea.flexibleadapter.items.IFlexible): boolean;
+				public getScrollableFooters(): java.util.List;
+				public getItemCountOfTypes(param0: native.Array<java.lang.Integer>): number;
+				public expandAll(param0: number): number;
+				public getEndlessTargetCount(): number;
+				public setTopEndless(param0: boolean): void;
+				public confirmDeletion(): void;
+				public isAutoScrollOnExpand(): boolean;
+				public addItem(param0: number, param1: eu.davidea.flexibleadapter.items.IFlexible): boolean;
+				public getTime(): number;
+				public setHeadersShown(param0: boolean): eu.davidea.flexibleadapter.FlexibleAdapter;
+				public removeItems(param0: java.util.List, param1: java.lang.Object): void;
+				public calculatePositionFor(param0: java.lang.Object, param1: java.util.Comparator): number;
+				public onLoadMoreComplete(param0: java.util.List, param1: number): void;
+				public isSelectable(param0: number): boolean;
+				public isAnyChildSelected(): boolean;
+				public isExpandable(param0: eu.davidea.flexibleadapter.items.IFlexible): boolean;
+				public setHandleDragEnabled(param0: boolean): eu.davidea.flexibleadapter.FlexibleAdapter;
+				public setRestoreSelectionOnUndo(param0: boolean): eu.davidea.flexibleadapter.FlexibleAdapter;
+				public getFilter(param0: java.lang.Class): java.io.Serializable;
+				public setDisplayHeadersAtStartUp(param0: boolean): eu.davidea.flexibleadapter.FlexibleAdapter;
+				public hasHeader(param0: eu.davidea.flexibleadapter.items.IFlexible): boolean;
+				public updateDataSet(param0: java.util.List): void;
+				public onBindViewHolder(param0: android.support.v7.widget.RecyclerView.ViewHolder, param1: number): void;
+				public isEndlessScrollEnabled(): boolean;
+				public isPermanentDelete(): boolean;
+				public isEnabled(param0: number): boolean;
+				public getItemViewType(param0: number): number;
+				public isEmpty(): boolean;
+				public invalidateItemDecorations(param0: number): void;
+				public getSectionHeader(param0: number): eu.davidea.flexibleadapter.items.IHeader;
+				public addSubItems(param0: number, param1: number, param2: java.util.List): boolean;
+				public removeScrollableHeader(param0: eu.davidea.flexibleadapter.items.IFlexible): void;
+				public getStickyPosition(): number;
+				public setEndlessTargetCount(param0: number): eu.davidea.flexibleadapter.FlexibleAdapter;
+				public setFastScroller(param0: eu.davidea.fastscroller.FastScroller): void;
+				public hasSameHeader(param0: eu.davidea.flexibleadapter.items.IFlexible, param1: eu.davidea.flexibleadapter.items.IHeader): boolean;
+				public onViewDetachedFromWindow(param0: android.support.v7.widget.RecyclerView.ViewHolder): void;
+				public expand(param0: number, param1: boolean): number;
+				public setDiffUtilCallback(param0: eu.davidea.flexibleadapter.FlexibleAdapter.DiffUtilCallback): eu.davidea.flexibleadapter.FlexibleAdapter;
+				public expandItemsAtStartUp(): eu.davidea.flexibleadapter.FlexibleAdapter;
+				public addSubItem(param0: number, param1: number, param2: eu.davidea.flexibleadapter.items.IFlexible, param3: boolean, param4: java.lang.Object): boolean;
+				public constructor(param0: java.util.List, param1: java.lang.Object);
+				public setEndlessScrollThreshold(param0: number): eu.davidea.flexibleadapter.FlexibleAdapter;
+				public onItemSwiped(param0: number, param1: number): void;
+				public clearAllBut(param0: native.Array<java.lang.Integer>): void;
+				public clear(): void;
+				public isRestoreWithSelection(): boolean;
+				public getExpandableOf(param0: number): eu.davidea.flexibleadapter.items.IExpandable;
+				public updateItem(param0: eu.davidea.flexibleadapter.items.IFlexible): void;
+				public addScrollableFooter(param0: eu.davidea.flexibleadapter.items.IFlexible): boolean;
+				public isAutoCollapseOnExpand(): boolean;
+				public onViewAttachedToWindow(param0: android.support.v7.widget.RecyclerView.ViewHolder): void;
+				public onCreateBubbleText(param0: number): string;
+				public removeScrollableFooterWithDelay(param0: eu.davidea.flexibleadapter.items.IFlexible, param1: number): void;
+				public addItemWithDelay(param0: number, param1: eu.davidea.flexibleadapter.items.IFlexible, param2: number, param3: boolean): void;
+				public isRestoreInTime(): boolean;
+				public saveUndoPositions(param0: java.util.List): void;
+				public getExpandableOfDeletedChild(param0: eu.davidea.flexibleadapter.items.IFlexible): eu.davidea.flexibleadapter.items.IExpandable;
+				public removeScrollableFooter(param0: eu.davidea.flexibleadapter.items.IFlexible): void;
+				public expand(param0: eu.davidea.flexibleadapter.items.IFlexible, param1: boolean): number;
+				public filterItems(): void;
+				public onLoadMore(param0: number): void;
+				public getScrollableHeaders(): java.util.List;
+				public isAnyParentSelected(): boolean;
+				public getDeletedChildren(param0: eu.davidea.flexibleadapter.items.IExpandable): java.util.List;
+				public constructor();
+				public addListener(param0: java.lang.Object): eu.davidea.flexibleadapter.FlexibleAdapter;
+				public setSwipeEnabled(param0: boolean): eu.davidea.flexibleadapter.FlexibleAdapter;
+				public swapItems(param0: java.util.List, param1: number, param2: number): void;
+				public onItemMove(param0: number, param1: number): boolean;
+				public collapse(param0: number, param1: boolean): number;
+				public getCurrentChildren(param0: eu.davidea.flexibleadapter.items.IExpandable): java.util.List;
+				public onActionStateChanged(param0: android.support.v7.widget.RecyclerView.ViewHolder, param1: number): void;
+				public toggleSelection(param0: number): void;
+				public getExpandedItems(): java.util.List;
+				public onCreateViewHolder(param0: android.view.ViewGroup, param1: number): android.support.v7.widget.RecyclerView.ViewHolder;
+				public addScrollableHeader(param0: eu.davidea.flexibleadapter.items.IFlexible): boolean;
+				public getItemId(param0: number): number;
+				public getSiblingsOf(param0: eu.davidea.flexibleadapter.items.IFlexible): java.util.List;
+				public addSubItem(param0: number, param1: number, param2: eu.davidea.flexibleadapter.items.IFlexible): boolean;
+				public getItem(param0: number): eu.davidea.flexibleadapter.items.IFlexible;
+				public removeAllScrollableHeaders(): void;
+				public getEndlessPageSize(): number;
+				public showAllHeaders(): eu.davidea.flexibleadapter.FlexibleAdapter;
+				public collapseAll(): number;
+				public areHeadersShown(): boolean;
+				public getExpandedPositions(): java.util.List;
+				public setEndlessProgressItem(param0: eu.davidea.flexibleadapter.items.IFlexible): eu.davidea.flexibleadapter.FlexibleAdapter;
+				public hasSubItems(param0: eu.davidea.flexibleadapter.items.IExpandable): boolean;
+				public getHeaderItems(): java.util.List;
+				public onViewRecycled(param0: android.support.v7.widget.RecyclerView.ViewHolder): void;
+				public setAnimateToLimit(param0: number): eu.davidea.flexibleadapter.FlexibleAdapter;
+				public onPostFilter(): void;
+				public getStickyHeaderElevation(): number;
+				public hasNewFilter(param0: java.io.Serializable): boolean;
+				public onLoadMoreComplete(param0: java.util.List): void;
+				public updateItem(param0: number, param1: eu.davidea.flexibleadapter.items.IFlexible, param2: java.lang.Object): void;
+				public filterItems(param0: java.util.List, param1: number): void;
+				public isAnimateChangesWithDiffUtil(): boolean;
+				public updateItem(param0: eu.davidea.flexibleadapter.items.IFlexible, param1: java.lang.Object): void;
+				public getSectionItemPositions(param0: eu.davidea.flexibleadapter.items.IHeader): java.util.List;
+				public onPostUpdate(): void;
+				public setAutoCollapseOnExpand(param0: boolean): eu.davidea.flexibleadapter.FlexibleAdapter;
+				public onAttachedToRecyclerView(param0: android.support.v7.widget.RecyclerView): void;
+				public getSectionItems(param0: eu.davidea.flexibleadapter.items.IHeader): java.util.List;
+			}
+			export module FlexibleAdapter {
+				export class AdapterDataObserver {
+					public onChanged(): void;
+					public onItemRangeRemoved(param0: number, param1: number): void;
+					public onItemRangeChanged(param0: number, param1: number): void;
+					public onItemRangeInserted(param0: number, param1: number): void;
+				}
+				export class DiffUtilCallback {
+					public oldItems: java.util.List;
+					public newItems: java.util.List;
+					public getNewListSize(): number;
+					public getNewItems(): java.util.List;
+					public areContentsTheSame(param0: number, param1: number): boolean;
+					public constructor();
+					public getChangePayload(param0: number, param1: number): java.lang.Object;
+					public getOldListSize(): number;
+					public areItemsTheSame(param0: number, param1: number): boolean;
+					public setItems(param0: java.util.List, param1: java.util.List): void;
+				}
+				export class EndlessScrollListener extends java.lang.Object {
+					/**
+					 * Constructs a new instance of the eu.davidea.flexibleadapter.FlexibleAdapter$EndlessScrollListener interface with the provided implementation.
+					 */
+					public constructor(implementation?: {
+						noMoreLoad(param0: number): void;
+						onLoadMore(param0: number, param1: number): void;
+					});
+					public onLoadMore(param0: number, param1: number): void;
+					public noMoreLoad(param0: number): void;
+				}
+				export class FilterAsyncTask extends android.os.AsyncTask {
+					public doInBackground(param0: native.Array<java.lang.Void>): java.lang.Void;
+					public onPreExecute(): void;
+					public onCancelled(): void;
+					public doInBackground(param0: native.Array<java.lang.Object>): java.lang.Object;
+					public onPostExecute(param0: java.lang.Object): void;
+					public onCancelled(param0: java.lang.Object): void;
+					public onPostExecute(param0: java.lang.Void): void;
+				}
+				export class HandlerCallback extends java.lang.Object implements android.os.Handler.Callback {
+					public handleMessage(param0: android.os.Message): boolean;
+					public constructor(param0: eu.davidea.flexibleadapter.FlexibleAdapter);
+				}
+				export class Notification extends java.lang.Object {
+					public static ADD: number;
+					public static CHANGE: number;
+					public static REMOVE: number;
+					public static MOVE: number;
+					public toString(): string;
+					public constructor(param0: number, param1: number, param2: number);
+					public constructor(param0: number, param1: number);
+				}
+				export class OnActionStateListener extends java.lang.Object {
+					/**
+					 * Constructs a new instance of the eu.davidea.flexibleadapter.FlexibleAdapter$OnActionStateListener interface with the provided implementation.
+					 */
+					public constructor(implementation?: {
+						onActionStateChanged(param0: android.support.v7.widget.RecyclerView.ViewHolder, param1: number): void;
+					});
+					public onActionStateChanged(param0: android.support.v7.widget.RecyclerView.ViewHolder, param1: number): void;
+				}
+				export class OnDeleteCompleteListener extends java.lang.Object {
+					/**
+					 * Constructs a new instance of the eu.davidea.flexibleadapter.FlexibleAdapter$OnDeleteCompleteListener interface with the provided implementation.
+					 */
+					public constructor(implementation?: {
+						onDeleteConfirmed(param0: number): void;
+					});
+					public onDeleteConfirmed(param0: number): void;
+				}
+				export class OnFilterListener extends java.lang.Object {
+					/**
+					 * Constructs a new instance of the eu.davidea.flexibleadapter.FlexibleAdapter$OnFilterListener interface with the provided implementation.
+					 */
+					public constructor(implementation?: {
+						onUpdateFilterView(param0: number): void;
+					});
+					public onUpdateFilterView(param0: number): void;
+				}
+				export class OnItemClickListener extends java.lang.Object {
+					/**
+					 * Constructs a new instance of the eu.davidea.flexibleadapter.FlexibleAdapter$OnItemClickListener interface with the provided implementation.
+					 */
+					public constructor(implementation?: {
+						onItemClick(param0: android.view.View, param1: number): boolean;
+					});
+					public onItemClick(param0: android.view.View, param1: number): boolean;
+				}
+				export class OnItemLongClickListener extends java.lang.Object {
+					/**
+					 * Constructs a new instance of the eu.davidea.flexibleadapter.FlexibleAdapter$OnItemLongClickListener interface with the provided implementation.
+					 */
+					public constructor(implementation?: {
+						onItemLongClick(param0: number): void;
+					});
+					public onItemLongClick(param0: number): void;
+				}
+				export class OnItemMoveListener extends java.lang.Object implements eu.davidea.flexibleadapter.FlexibleAdapter.OnActionStateListener {
+					/**
+					 * Constructs a new instance of the eu.davidea.flexibleadapter.FlexibleAdapter$OnItemMoveListener interface with the provided implementation.
+					 */
+					public constructor(implementation?: {
+						shouldMoveItem(param0: number, param1: number): boolean;
+						onItemMove(param0: number, param1: number): void;
+						onActionStateChanged(param0: android.support.v7.widget.RecyclerView.ViewHolder, param1: number): void;
+					});
+					public shouldMoveItem(param0: number, param1: number): boolean;
+					public onItemMove(param0: number, param1: number): void;
+					public onActionStateChanged(param0: android.support.v7.widget.RecyclerView.ViewHolder, param1: number): void;
+				}
+				export class OnItemSwipeListener extends java.lang.Object implements eu.davidea.flexibleadapter.FlexibleAdapter.OnActionStateListener {
+					/**
+					 * Constructs a new instance of the eu.davidea.flexibleadapter.FlexibleAdapter$OnItemSwipeListener interface with the provided implementation.
+					 */
+					public constructor(implementation?: {
+						onItemSwipe(param0: number, param1: number): void;
+						onActionStateChanged(param0: android.support.v7.widget.RecyclerView.ViewHolder, param1: number): void;
+					});
+					public onItemSwipe(param0: number, param1: number): void;
+					public onActionStateChanged(param0: android.support.v7.widget.RecyclerView.ViewHolder, param1: number): void;
+				}
+				export class OnStickyHeaderChangeListener extends java.lang.Object {
+					/**
+					 * Constructs a new instance of the eu.davidea.flexibleadapter.FlexibleAdapter$OnStickyHeaderChangeListener interface with the provided implementation.
+					 */
+					public constructor(implementation?: {
+						onStickyHeaderChange(param0: number, param1: number): void;
+					});
+					public onStickyHeaderChange(param0: number, param1: number): void;
+				}
+				export class OnUpdateListener extends java.lang.Object {
+					/**
+					 * Constructs a new instance of the eu.davidea.flexibleadapter.FlexibleAdapter$OnUpdateListener interface with the provided implementation.
+					 */
+					public constructor(implementation?: {
+						onUpdateEmptyView(param0: number): void;
+					});
+					public onUpdateEmptyView(param0: number): void;
+				}
+				export class RestoreInfo extends java.lang.Object {
+					public toString(): string;
+					public constructor(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: eu.davidea.flexibleadapter.items.IFlexible, param2: eu.davidea.flexibleadapter.items.IFlexible);
+					public getRestorePosition(param0: boolean): number;
+					public constructor(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: eu.davidea.flexibleadapter.items.IFlexible, param2: eu.davidea.flexibleadapter.items.IFlexible, param3: number);
+				}
+			}
+		}
+	}
+}
+declare module eu {
+	export module davidea {
+		export module flexibleadapter {
+			export class Payload extends java.lang.Enum {
+				public static CHANGE: eu.davidea.flexibleadapter.Payload;
+				public static NO_MORE_LOAD: eu.davidea.flexibleadapter.Payload;
+				public static FILTER: eu.davidea.flexibleadapter.Payload;
+				public static UNDO: eu.davidea.flexibleadapter.Payload;
+				public static ADD_SUB_ITEM: eu.davidea.flexibleadapter.Payload;
+				public static REM_SUB_ITEM: eu.davidea.flexibleadapter.Payload;
+				public static MOVE: eu.davidea.flexibleadapter.Payload;
+				public static LINK: eu.davidea.flexibleadapter.Payload;
+				public static UNLINK: eu.davidea.flexibleadapter.Payload;
+				public static SELECTION: eu.davidea.flexibleadapter.Payload;
+				public static MERGE: eu.davidea.flexibleadapter.Payload;
+				public static SPLIT: eu.davidea.flexibleadapter.Payload;
+				public static EXPANDED: eu.davidea.flexibleadapter.Payload;
+				public static COLLAPSED: eu.davidea.flexibleadapter.Payload;
+				public static valueOf(param0: string): eu.davidea.flexibleadapter.Payload;
+				public static values(): native.Array<eu.davidea.flexibleadapter.Payload>;
+				public static valueOf(param0: java.lang.Class, param1: string): java.lang.Enum;
+			}
+		}
+	}
+}
+declare module eu {
+	export module davidea {
+		export module flexibleadapter {
+			export abstract class SelectableAdapter {
+				public mRecyclerView: android.support.v7.widget.RecyclerView;
+				public mFastScrollerDelegate: eu.davidea.fastscroller.FastScroller.Delegate;
+				public isFastScroll: boolean;
+				public mSelectAll: boolean;
+				public mLastItemInActionMode: boolean;
+				public getMode(): number;
+				public getRecyclerView(): android.support.v7.widget.RecyclerView;
+				public addSelection(param0: number): boolean;
+				public onSaveInstanceState(param0: android.os.Bundle): void;
+				public removeSelection(param0: number): boolean;
+				public getAllBoundViewHolders(): java.util.Set;
+				public getFlexibleLayoutManager(): eu.davidea.flexibleadapter.common.IFlexibleLayoutManager;
+				public onFastScrollerStateChange(param0: boolean): void;
+				public constructor();
+				public isSelected(param0: number): boolean;
+				public setFlexibleLayoutManager(param0: eu.davidea.flexibleadapter.common.IFlexibleLayoutManager): void;
+				public onBindViewHolder(param0: android.support.v7.widget.RecyclerView.ViewHolder, param1: number, param2: java.util.List): void;
+				public clearSelection(): void;
+				public onViewRecycled(param0: android.support.v7.widget.RecyclerView.ViewHolder): void;
+				public static useTag(param0: string): void;
+				public isSelectAll(): boolean;
+				public toggleFastScroller(): void;
+				public isLastItemInActionMode(): boolean;
+				public getSelectedPositions(): java.util.List;
+				public swapSelection(param0: number, param1: number): void;
+				public static enableLogs(param0: number): void;
+				public getSelectedItemCount(): number;
+				public selectAll(param0: native.Array<java.lang.Integer>): void;
+				public setFastScroller(param0: eu.davidea.fastscroller.FastScroller): void;
+				public onRestoreInstanceState(param0: android.os.Bundle): void;
+				public isFastScrollerEnabled(): boolean;
+				public onCreateBubbleText(param0: number): string;
+				public onDetachedFromRecyclerView(param0: android.support.v7.widget.RecyclerView): void;
+				public getSelectedPositionsAsSet(): java.util.Set;
+				public getFastScroller(): eu.davidea.fastscroller.FastScroller;
+				public toggleSelection(param0: number): void;
+				public setMode(param0: number): void;
+				public onAttachedToRecyclerView(param0: android.support.v7.widget.RecyclerView): void;
+				public isSelectable(param0: number): boolean;
+			}
+			export module SelectableAdapter {
+				export class Mode extends java.lang.Object implements java.lang.annotation.Annotation {
+					/**
+					 * Constructs a new instance of the eu.davidea.flexibleadapter.SelectableAdapter$Mode interface with the provided implementation.
+					 */
+					public constructor(implementation?: {
+						equals(param0: java.lang.Object): boolean;
+						hashCode(): number;
+						toString(): string;
+						annotationType(): java.lang.Class;
+					});
+					public static MULTI: number;
+					public static SINGLE: number;
+					public static IDLE: number;
+					public toString(): string;
+					public equals(param0: java.lang.Object): boolean;
+					public annotationType(): java.lang.Class;
+					public hashCode(): number;
+				}
+			}
+		}
+	}
+}
+declare module eu {
+	export module davidea {
+		export module flexibleadapter {
+			export module common {
+				export class FlexibleLayoutManager extends java.lang.Object implements eu.davidea.flexibleadapter.common.IFlexibleLayoutManager {
+					public mRecyclerView: android.support.v7.widget.RecyclerView;
+					public mLayoutManager: android.support.v7.widget.RecyclerView.LayoutManager;
+					public findFirstVisibleItemPosition(): number;
+					public findLastVisibleItemPosition(): number;
+					public getSpanCount(): number;
+					public findFirstCompletelyVisibleItemPosition(): number;
+					public findLastCompletelyVisibleItemPosition(): number;
+					public constructor(param0: android.support.v7.widget.RecyclerView);
+					public constructor(param0: android.support.v7.widget.RecyclerView.LayoutManager);
+					public getOrientation(): number;
+				}
+			}
+		}
+	}
+}
+declare module eu {
+	export module davidea {
+		export module flexibleadapter {
+			export module common {
+				export class IFlexibleLayoutManager extends java.lang.Object {
+					/**
+					 * Constructs a new instance of the eu.davidea.flexibleadapter.common.IFlexibleLayoutManager interface with the provided implementation.
+					 */
+					public constructor(implementation?: {
+						getOrientation(): number;
+						getSpanCount(): number;
+						findFirstCompletelyVisibleItemPosition(): number;
+						findFirstVisibleItemPosition(): number;
+						findLastCompletelyVisibleItemPosition(): number;
+						findLastVisibleItemPosition(): number;
+					});
+					public findFirstVisibleItemPosition(): number;
+					public findLastVisibleItemPosition(): number;
+					public getSpanCount(): number;
+					public findFirstCompletelyVisibleItemPosition(): number;
+					public findLastCompletelyVisibleItemPosition(): number;
+					public getOrientation(): number;
+				}
+			}
+		}
+	}
+}
+declare module eu {
+	export module davidea {
+		export module flexibleadapter {
+			export module helpers {
+				export class ItemTouchHelperCallback {
+					public static ALPHA_FULL: number;
+					public mAdapterCallback: eu.davidea.flexibleadapter.helpers.ItemTouchHelperCallback.AdapterCallback;
+					public longPressDragEnabled: boolean;
+					public handleDragEnabled: boolean;
+					public swipeEnabled: boolean;
+					public mSwipeAnimationDuration: number;
+					public mDragAnimationDuration: number;
+					public mSwipeThreshold: number;
+					public mMoveThreshold: number;
+					public mSwipeFlags: number;
+					public onMove(param0: android.support.v7.widget.RecyclerView, param1: android.support.v7.widget.RecyclerView.ViewHolder, param2: android.support.v7.widget.RecyclerView.ViewHolder): boolean;
+					public setLongPressDragEnabled(param0: boolean): void;
+					public isLongPressDragEnabled(): boolean;
+					public getMovementFlags(param0: android.support.v7.widget.RecyclerView, param1: android.support.v7.widget.RecyclerView.ViewHolder): number;
+					public onChildDraw(param0: android.graphics.Canvas, param1: android.support.v7.widget.RecyclerView, param2: android.support.v7.widget.RecyclerView.ViewHolder, param3: number, param4: number, param5: number, param6: boolean): void;
+					public setMoveThreshold(param0: number): void;
+					public setSwipeThreshold(param0: number): void;
+					public canDropOver(param0: android.support.v7.widget.RecyclerView, param1: android.support.v7.widget.RecyclerView.ViewHolder, param2: android.support.v7.widget.RecyclerView.ViewHolder): boolean;
+					public onSwiped(param0: android.support.v7.widget.RecyclerView.ViewHolder, param1: number): void;
+					public setHandleDragEnabled(param0: boolean): void;
+					public getSwipeThreshold(param0: android.support.v7.widget.RecyclerView.ViewHolder): number;
+					public isItemViewSwipeEnabled(): boolean;
+					public getAnimationDuration(param0: android.support.v7.widget.RecyclerView, param1: number, param2: number, param3: number): number;
+					public setSwipeAnimationDuration(param0: number): void;
+					public setDragAnimationDuration(param0: number): void;
+					public onSelectedChanged(param0: android.support.v7.widget.RecyclerView.ViewHolder, param1: number): void;
+					public constructor(param0: eu.davidea.flexibleadapter.helpers.ItemTouchHelperCallback.AdapterCallback);
+					public isHandleDragEnabled(): boolean;
+					public setSwipeFlags(param0: number): void;
+					public getMoveThreshold(param0: android.support.v7.widget.RecyclerView.ViewHolder): number;
+					public setSwipeEnabled(param0: boolean): void;
+					public clearView(param0: android.support.v7.widget.RecyclerView, param1: android.support.v7.widget.RecyclerView.ViewHolder): void;
+				}
+				export module ItemTouchHelperCallback {
+					export class AdapterCallback extends java.lang.Object {
+						/**
+						 * Constructs a new instance of the eu.davidea.flexibleadapter.helpers.ItemTouchHelperCallback$AdapterCallback interface with the provided implementation.
+						 */
+						public constructor(implementation?: {
+							onActionStateChanged(param0: android.support.v7.widget.RecyclerView.ViewHolder, param1: number): void;
+							shouldMove(param0: number, param1: number): boolean;
+							onItemMove(param0: number, param1: number): boolean;
+							onItemSwiped(param0: number, param1: number): void;
+						});
+						public shouldMove(param0: number, param1: number): boolean;
+						public onActionStateChanged(param0: android.support.v7.widget.RecyclerView.ViewHolder, param1: number): void;
+						public onItemMove(param0: number, param1: number): boolean;
+						public onItemSwiped(param0: number, param1: number): void;
+					}
+					export class ViewHolderCallback extends java.lang.Object {
+						/**
+						 * Constructs a new instance of the eu.davidea.flexibleadapter.helpers.ItemTouchHelperCallback$ViewHolderCallback interface with the provided implementation.
+						 */
+						public constructor(implementation?: {
+							onActionStateChanged(param0: number, param1: number): void;
+							onItemReleased(param0: number): void;
+							isDraggable(): boolean;
+							isSwipeable(): boolean;
+							getFrontView(): android.view.View;
+							getRearLeftView(): android.view.View;
+							getRearRightView(): android.view.View;
+						});
+						public getRearRightView(): android.view.View;
+						public onItemReleased(param0: number): void;
+						public getFrontView(): android.view.View;
+						public isSwipeable(): boolean;
+						public getRearLeftView(): android.view.View;
+						public isDraggable(): boolean;
+						public onActionStateChanged(param0: number, param1: number): void;
+					}
+				}
+			}
+		}
+	}
+}
+declare module eu {
+	export module davidea {
+		export module flexibleadapter {
+			export module helpers {
+				export class StickyHeaderHelper {
+					public updateOrClearHeader(param0: boolean): void;
+					public clearHeaderWithAnimation(): void;
+					public onScrolled(param0: android.support.v7.widget.RecyclerView, param1: number, param2: number): void;
+					public detachFromRecyclerView(): void;
+					public constructor(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: eu.davidea.flexibleadapter.FlexibleAdapter.OnStickyHeaderChangeListener, param2: android.view.ViewGroup);
+					public attachToRecyclerView(param0: android.support.v7.widget.RecyclerView): void;
+					public getStickyPosition(): number;
+					public ensureHeaderParent(): void;
+				}
+			}
+		}
+	}
+}
+declare module eu {
+	export module davidea {
+		export module flexibleadapter {
+			export module items {
+				export abstract class AbstractExpandableHeaderItem extends eu.davidea.flexibleadapter.items.AbstractExpandableItem implements eu.davidea.flexibleadapter.items.IHeader {
+					public onViewDetached(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: android.support.v7.widget.RecyclerView.ViewHolder, param2: number): void;
+					public shouldNotifyChange(param0: eu.davidea.flexibleadapter.items.IFlexible): boolean;
+					public createViewHolder(param0: android.view.View, param1: eu.davidea.flexibleadapter.FlexibleAdapter): android.support.v7.widget.RecyclerView.ViewHolder;
+					public isExpanded(): boolean;
+					public isSwipeable(): boolean;
+					public isSelectable(): boolean;
+					public isDraggable(): boolean;
+					public constructor();
+					public getBubbleText(param0: number): string;
+					public bindViewHolder(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: android.support.v7.widget.RecyclerView.ViewHolder, param2: number, param3: java.util.List): void;
+					public getExpansionLevel(): number;
+					public isEnabled(): boolean;
+					public setDraggable(param0: boolean): void;
+					public setEnabled(param0: boolean): void;
+					public onViewAttached(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: android.support.v7.widget.RecyclerView.ViewHolder, param2: number): void;
+					public getSpanSize(param0: number, param1: number): number;
+					public setHidden(param0: boolean): void;
+					public isHidden(): boolean;
+					public setSwipeable(param0: boolean): void;
+					public getSubItems(): java.util.List;
+					public getItemViewType(): number;
+					public setSelectable(param0: boolean): void;
+					public setExpanded(param0: boolean): void;
+					public unbindViewHolder(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: android.support.v7.widget.RecyclerView.ViewHolder, param2: number): void;
+					public getLayoutRes(): number;
+				}
+			}
+		}
+	}
+}
+declare module eu {
+	export module davidea {
+		export module flexibleadapter {
+			export module items {
+				export abstract class AbstractExpandableItem extends eu.davidea.flexibleadapter.items.AbstractFlexibleItem implements eu.davidea.flexibleadapter.items.IExpandable {
+					public mExpanded: boolean;
+					public mSubItems: java.util.List;
+					public addSubItem(param0: eu.davidea.flexibleadapter.items.IFlexible): eu.davidea.flexibleadapter.items.AbstractExpandableItem;
+					public onViewDetached(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: android.support.v7.widget.RecyclerView.ViewHolder, param2: number): void;
+					public shouldNotifyChange(param0: eu.davidea.flexibleadapter.items.IFlexible): boolean;
+					public createViewHolder(param0: android.view.View, param1: eu.davidea.flexibleadapter.FlexibleAdapter): android.support.v7.widget.RecyclerView.ViewHolder;
+					public isExpanded(): boolean;
+					public isSwipeable(): boolean;
+					public isSelectable(): boolean;
+					public addSubItems(param0: number, param1: java.util.List): eu.davidea.flexibleadapter.items.AbstractExpandableItem;
+					public isDraggable(): boolean;
+					public removeSubItem(param0: number): boolean;
+					public constructor();
+					public getBubbleText(param0: number): string;
+					public setSubItems(param0: java.util.List): eu.davidea.flexibleadapter.items.AbstractExpandableItem;
+					public hasSubItems(): boolean;
+					public getExpansionLevel(): number;
+					public bindViewHolder(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: android.support.v7.widget.RecyclerView.ViewHolder, param2: number, param3: java.util.List): void;
+					public isEnabled(): boolean;
+					public setDraggable(param0: boolean): void;
+					public setEnabled(param0: boolean): void;
+					public onViewAttached(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: android.support.v7.widget.RecyclerView.ViewHolder, param2: number): void;
+					public contains(param0: eu.davidea.flexibleadapter.items.IFlexible): boolean;
+					public getSpanSize(param0: number, param1: number): number;
+					public setHidden(param0: boolean): void;
+					public isHidden(): boolean;
+					public getSubItemsCount(): number;
+					public getSubItems(): java.util.List;
+					public setSwipeable(param0: boolean): void;
+					public addSubItem(param0: number, param1: eu.davidea.flexibleadapter.items.IFlexible): eu.davidea.flexibleadapter.items.AbstractExpandableItem;
+					public getItemViewType(): number;
+					public setExpanded(param0: boolean): void;
+					public setSelectable(param0: boolean): void;
+					public removeSubItem(param0: eu.davidea.flexibleadapter.items.IFlexible): boolean;
+					public removeSubItems(param0: java.util.List): boolean;
+					public getSubItem(param0: number): eu.davidea.flexibleadapter.items.IFlexible;
+					public unbindViewHolder(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: android.support.v7.widget.RecyclerView.ViewHolder, param2: number): void;
+					public getLayoutRes(): number;
+					public getSubItemPosition(param0: eu.davidea.flexibleadapter.items.IFlexible): number;
+				}
+			}
+		}
+	}
+}
+declare module eu {
+	export module davidea {
+		export module flexibleadapter {
+			export module items {
+				export abstract class AbstractFlexibleItem<VH extends RecyclerView.ViewHolder> extends java.lang.Object implements eu.davidea.flexibleadapter.items.IFlexible<VH> {
+					public mEnabled: boolean;
+					public mHidden: boolean;
+					public mSelectable: boolean;
+					public mDraggable: boolean;
+					public mSwipeable: boolean;
+					public setEnabled(param0: boolean): void;
+					public onViewAttached(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: android.support.v7.widget.RecyclerView.ViewHolder, param2: number): void;
+					public getSpanSize(param0: number, param1: number): number;
+					public equals(param0: java.lang.Object): boolean;
+					public setHidden(param0: boolean): void;
+					public onViewDetached(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: android.support.v7.widget.RecyclerView.ViewHolder, param2: number): void;
+					public shouldNotifyChange(param0: eu.davidea.flexibleadapter.items.IFlexible): boolean;
+					public createViewHolder(param0: android.view.View, param1: eu.davidea.flexibleadapter.FlexibleAdapter): VH;
+					public isHidden(): boolean;
+					public isSwipeable(): boolean;
+					public setSwipeable(param0: boolean): void;
+					public isSelectable(): boolean;
+					public isDraggable(): boolean;
+					public getItemViewType(): number;
+					public setSelectable(param0: boolean): void;
+					public constructor();
+					public getBubbleText(param0: number): string;
+					public bindViewHolder(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: VH, param2: number, param3: java.util.List): void;
+					public unbindViewHolder(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: VH, param2: number): void;
+					public isEnabled(): boolean;
+					public setDraggable(param0: boolean): void;
+					public getLayoutRes(): number;
+				}
+			}
+		}
+	}
+}
+declare module eu {
+	export module davidea {
+		export module flexibleadapter {
+			export module items {
+				export abstract class AbstractHeaderItem<VH extends FlexibleViewHolder> extends eu.davidea.flexibleadapter.items.AbstractFlexibleItem<VH> implements eu.davidea.flexibleadapter.items.IHeader<VH> {
+					public setEnabled(param0: boolean): void;
+					public onViewAttached(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: android.support.v7.widget.RecyclerView.ViewHolder, param2: number): void;
+					public getSpanSize(param0: number, param1: number): number;
+					public setHidden(param0: boolean): void;
+					public onViewDetached(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: android.support.v7.widget.RecyclerView.ViewHolder, param2: number): void;
+					public shouldNotifyChange(param0: eu.davidea.flexibleadapter.items.IFlexible): boolean;
+					public createViewHolder(param0: android.view.View, param1: eu.davidea.flexibleadapter.FlexibleAdapter): android.support.v7.widget.RecyclerView.ViewHolder;
+					public isHidden(): boolean;
+					public isSwipeable(): boolean;
+					public setSwipeable(param0: boolean): void;
+					public isSelectable(): boolean;
+					public isDraggable(): boolean;
+					public getItemViewType(): number;
+					public setSelectable(param0: boolean): void;
+					public constructor();
+					public getBubbleText(param0: number): string;
+					public bindViewHolder(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: android.support.v7.widget.RecyclerView.ViewHolder, param2: number, param3: java.util.List): void;
+					public unbindViewHolder(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: android.support.v7.widget.RecyclerView.ViewHolder, param2: number): void;
+					public isEnabled(): boolean;
+					public setDraggable(param0: boolean): void;
+					public getLayoutRes(): number;
+				}
+			}
+		}
+	}
+}
+declare module eu {
+	export module davidea {
+		export module flexibleadapter {
+			export module items {
+				export abstract class AbstractSectionableItem<VH extends android.support.v7.widget.RecyclerView.ViewHolder, H extends eu.davidea.flexibleadapter.items.IHeader> extends eu.davidea.flexibleadapter.items.AbstractFlexibleItem<VH> implements eu.davidea.flexibleadapter.items.ISectionable<VH, H> {
+					public header: H;
+					public setEnabled(param0: boolean): void;
+					public onViewAttached(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: VH, param2: number): void;
+					public getSpanSize(param0: number, param1: number): number;
+					public setHidden(param0: boolean): void;
+					public onViewDetached(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: VH, param2: number): void;
+					public getHeader(): H;
+					public shouldNotifyChange(param0: eu.davidea.flexibleadapter.items.IFlexible): boolean;
+					public createViewHolder(param0: android.view.View, param1: eu.davidea.flexibleadapter.FlexibleAdapter): android.support.v7.widget.RecyclerView.ViewHolder;
+					public isHidden(): boolean;
+					public isSwipeable(): boolean;
+					public setHeader(param0: H): void;
+					public setSwipeable(param0: boolean): void;
+					public isSelectable(): boolean;
+					public isDraggable(): boolean;
+					public getItemViewType(): number;
+					public setSelectable(param0: boolean): void;
+					public constructor();
+					public getBubbleText(param0: number): string;
+					public constructor(param0: H);
+					public bindViewHolder(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: VH, param2: number, param3: java.util.List): void;
+					public unbindViewHolder(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: VH, param2: number): void;
+					public isEnabled(): boolean;
+					public setDraggable(param0: boolean): void;
+					public getLayoutRes(): number;
+				}
+			}
+		}
+	}
+}
+declare module eu {
+	export module davidea {
+		export module flexibleadapter {
+			export module items {
+				export class IExpandable extends java.lang.Object implements eu.davidea.flexibleadapter.items.IFlexible {
+					/**
+					 * Constructs a new instance of the eu.davidea.flexibleadapter.items.IExpandable interface with the provided implementation.
+					 */
+					public constructor(implementation?: {
+						isExpanded(): boolean;
+						setExpanded(param0: boolean): void;
+						getExpansionLevel(): number;
+						getSubItems(): java.util.List;
+						isEnabled(): boolean;
+						setEnabled(param0: boolean): void;
+						isHidden(): boolean;
+						setHidden(param0: boolean): void;
+						getSpanSize(param0: number, param1: number): number;
+						shouldNotifyChange(param0: eu.davidea.flexibleadapter.items.IFlexible): boolean;
+						isSelectable(): boolean;
+						setSelectable(param0: boolean): void;
+						getBubbleText(param0: number): string;
+						isDraggable(): boolean;
+						setDraggable(param0: boolean): void;
+						isSwipeable(): boolean;
+						setSwipeable(param0: boolean): void;
+						getItemViewType(): number;
+						getLayoutRes(): number;
+						createViewHolder(param0: android.view.View, param1: eu.davidea.flexibleadapter.FlexibleAdapter): android.support.v7.widget.RecyclerView.ViewHolder;
+						bindViewHolder(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: android.support.v7.widget.RecyclerView.ViewHolder, param2: number, param3: java.util.List): void;
+						unbindViewHolder(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: android.support.v7.widget.RecyclerView.ViewHolder, param2: number): void;
+						onViewAttached(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: android.support.v7.widget.RecyclerView.ViewHolder, param2: number): void;
+						onViewDetached(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: android.support.v7.widget.RecyclerView.ViewHolder, param2: number): void;
+					});
+					public setEnabled(param0: boolean): void;
+					public onViewAttached(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: android.support.v7.widget.RecyclerView.ViewHolder, param2: number): void;
+					public getSpanSize(param0: number, param1: number): number;
+					public setHidden(param0: boolean): void;
+					public onViewDetached(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: android.support.v7.widget.RecyclerView.ViewHolder, param2: number): void;
+					public shouldNotifyChange(param0: eu.davidea.flexibleadapter.items.IFlexible): boolean;
+					public createViewHolder(param0: android.view.View, param1: eu.davidea.flexibleadapter.FlexibleAdapter): android.support.v7.widget.RecyclerView.ViewHolder;
+					public isExpanded(): boolean;
+					public isHidden(): boolean;
+					public isSwipeable(): boolean;
+					public getSubItems(): java.util.List;
+					public setSwipeable(param0: boolean): void;
+					public isSelectable(): boolean;
+					public isDraggable(): boolean;
+					public getItemViewType(): number;
+					public setExpanded(param0: boolean): void;
+					public setSelectable(param0: boolean): void;
+					public getBubbleText(param0: number): string;
+					public getExpansionLevel(): number;
+					public bindViewHolder(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: android.support.v7.widget.RecyclerView.ViewHolder, param2: number, param3: java.util.List): void;
+					public unbindViewHolder(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: android.support.v7.widget.RecyclerView.ViewHolder, param2: number): void;
+					public isEnabled(): boolean;
+					public setDraggable(param0: boolean): void;
+					public getLayoutRes(): number;
+				}
+			}
+		}
+	}
+}
+declare module eu {
+	export module davidea {
+		export module flexibleadapter {
+			export module items {
+				export class IFilterable<F extends java.io.Serializable> extends java.lang.Object {
+					/**
+					 * Constructs a new instance of the eu.davidea.flexibleadapter.items.IFilterable interface with the provided implementation.
+					 */
+					public constructor(implementation?: {
+						filter(param0: F): boolean;
+					});
+					public filter(param0: F): boolean;
+				}
+			}
+		}
+	}
+}
+declare module eu {
+	export module davidea {
+		export module flexibleadapter {
+			export module items {
+				export class IFlexible<VH extends RecyclerView.ViewHolder> extends java.lang.Object {
+					/**
+					 * Constructs a new instance of the eu.davidea.flexibleadapter.items.IFlexible interface with the provided implementation.
+					 */
+					public constructor(implementation?: {
+						isEnabled(): boolean;
+						setEnabled(param0: boolean): void;
+						isHidden(): boolean;
+						setHidden(param0: boolean): void;
+						getSpanSize(param0: number, param1: number): number;
+						shouldNotifyChange(param0: eu.davidea.flexibleadapter.items.IFlexible): boolean;
+						isSelectable(): boolean;
+						setSelectable(param0: boolean): void;
+						getBubbleText(param0: number): string;
+						isDraggable(): boolean;
+						setDraggable(param0: boolean): void;
+						isSwipeable(): boolean;
+						setSwipeable(param0: boolean): void;
+						getItemViewType(): number;
+						getLayoutRes(): number;
+						createViewHolder(param0: android.view.View, param1: eu.davidea.flexibleadapter.FlexibleAdapter): VH;
+						bindViewHolder(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: VH, param2: number, param3: java.util.List): void;
+						unbindViewHolder(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: VH, param2: number): void;
+						onViewAttached(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: VH, param2: number): void;
+						onViewDetached(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: VH, param2: number): void;
+					});
+					public setEnabled(param0: boolean): void;
+					public onViewAttached(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: android.support.v7.widget.RecyclerView.ViewHolder, param2: number): void;
+					public getSpanSize(param0: number, param1: number): number;
+					public setHidden(param0: boolean): void;
+					public onViewDetached(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: VH, param2: number): void;
+					public shouldNotifyChange(param0: eu.davidea.flexibleadapter.items.IFlexible): boolean;
+					public createViewHolder(param0: android.view.View, param1: eu.davidea.flexibleadapter.FlexibleAdapter): android.support.v7.widget.RecyclerView.ViewHolder;
+					public isHidden(): boolean;
+					public isSwipeable(): boolean;
+					public setSwipeable(param0: boolean): void;
+					public isSelectable(): boolean;
+					public isDraggable(): boolean;
+					public getItemViewType(): number;
+					public setSelectable(param0: boolean): void;
+					public getBubbleText(param0: number): string;
+					public bindViewHolder(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: VH, param2: number, param3: java.util.List): void;
+					public unbindViewHolder(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: VH, param2: number): void;
+					public isEnabled(): boolean;
+					public setDraggable(param0: boolean): void;
+					public getLayoutRes(): number;
+				}
+			}
+		}
+	}
+}
+declare module eu {
+	export module davidea {
+		export module flexibleadapter {
+			export module items {
+				export class IHeader extends java.lang.Object implements eu.davidea.flexibleadapter.items.IFlexible {
+					/**
+					 * Constructs a new instance of the eu.davidea.flexibleadapter.items.IHeader interface with the provided implementation.
+					 */
+					public constructor(implementation?: {
+						isEnabled(): boolean;
+						setEnabled(param0: boolean): void;
+						isHidden(): boolean;
+						setHidden(param0: boolean): void;
+						getSpanSize(param0: number, param1: number): number;
+						shouldNotifyChange(param0: eu.davidea.flexibleadapter.items.IFlexible): boolean;
+						isSelectable(): boolean;
+						setSelectable(param0: boolean): void;
+						getBubbleText(param0: number): string;
+						isDraggable(): boolean;
+						setDraggable(param0: boolean): void;
+						isSwipeable(): boolean;
+						setSwipeable(param0: boolean): void;
+						getItemViewType(): number;
+						getLayoutRes(): number;
+						createViewHolder(param0: android.view.View, param1: eu.davidea.flexibleadapter.FlexibleAdapter): android.support.v7.widget.RecyclerView.ViewHolder;
+						bindViewHolder(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: android.support.v7.widget.RecyclerView.ViewHolder, param2: number, param3: java.util.List): void;
+						unbindViewHolder(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: android.support.v7.widget.RecyclerView.ViewHolder, param2: number): void;
+						onViewAttached(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: android.support.v7.widget.RecyclerView.ViewHolder, param2: number): void;
+						onViewDetached(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: android.support.v7.widget.RecyclerView.ViewHolder, param2: number): void;
+					});
+					public setEnabled(param0: boolean): void;
+					public onViewAttached(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: android.support.v7.widget.RecyclerView.ViewHolder, param2: number): void;
+					public getSpanSize(param0: number, param1: number): number;
+					public setHidden(param0: boolean): void;
+					public onViewDetached(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: android.support.v7.widget.RecyclerView.ViewHolder, param2: number): void;
+					public shouldNotifyChange(param0: eu.davidea.flexibleadapter.items.IFlexible): boolean;
+					public createViewHolder(param0: android.view.View, param1: eu.davidea.flexibleadapter.FlexibleAdapter): android.support.v7.widget.RecyclerView.ViewHolder;
+					public isHidden(): boolean;
+					public isSwipeable(): boolean;
+					public setSwipeable(param0: boolean): void;
+					public isSelectable(): boolean;
+					public isDraggable(): boolean;
+					public getItemViewType(): number;
+					public setSelectable(param0: boolean): void;
+					public getBubbleText(param0: number): string;
+					public bindViewHolder(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: android.support.v7.widget.RecyclerView.ViewHolder, param2: number, param3: java.util.List): void;
+					public unbindViewHolder(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: android.support.v7.widget.RecyclerView.ViewHolder, param2: number): void;
+					public isEnabled(): boolean;
+					public setDraggable(param0: boolean): void;
+					public getLayoutRes(): number;
+				}
+			}
+		}
+	}
+}
+declare module eu {
+	export module davidea {
+		export module flexibleadapter {
+			export module items {
+				export class IHolder extends java.lang.Object {
+					/**
+					 * Constructs a new instance of the eu.davidea.flexibleadapter.items.IHolder interface with the provided implementation.
+					 */
+					public constructor(implementation?: {
+						getModel(): java.lang.Object;
+					});
+					public getModel(): java.lang.Object;
+				}
+			}
+		}
+	}
+}
+declare module eu {
+	export module davidea {
+		export module flexibleadapter {
+			export module items {
+				export class ISectionable<VH extends android.support.v7.widget.RecyclerView.ViewHolder, T extends eu.davidea.flexibleadapter.items.IHeader> implements eu.davidea.flexibleadapter.items.IFlexible<VH> {
+					/**
+					 * Constructs a new instance of the eu.davidea.flexibleadapter.items.ISectionable interface with the provided implementation.
+					 */
+					public constructor(implementation?: {
+						getHeader(): T;
+						setHeader(param0: T): void;
+						isEnabled(): boolean;
+						setEnabled(param0: boolean): void;
+						isHidden(): boolean;
+						setHidden(param0: boolean): void;
+						getSpanSize(param0: number, param1: number): number;
+						shouldNotifyChange(param0: eu.davidea.flexibleadapter.items.IFlexible): boolean;
+						isSelectable(): boolean;
+						setSelectable(param0: boolean): void;
+						getBubbleText(param0: number): string;
+						isDraggable(): boolean;
+						setDraggable(param0: boolean): void;
+						isSwipeable(): boolean;
+						setSwipeable(param0: boolean): void;
+						getItemViewType(): number;
+						getLayoutRes(): number;
+						createViewHolder(param0: android.view.View, param1: eu.davidea.flexibleadapter.FlexibleAdapter): VH;
+						bindViewHolder(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: VH, param2: number, param3: java.util.List): void;
+						unbindViewHolder(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: VH, param2: number): void;
+						onViewAttached(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: VH, param2: number): void;
+						onViewDetached(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: VH, param2: number): void;
+					});
+					public setEnabled(param0: boolean): void;
+					public onViewAttached(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: VH, param2: number): void;
+					public getSpanSize(param0: number, param1: number): number;
+					public setHidden(param0: boolean): void;
+					public onViewDetached(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: VH, param2: number): void;
+					public getHeader(): eu.davidea.flexibleadapter.items.IHeader;
+					public shouldNotifyChange(param0: eu.davidea.flexibleadapter.items.IFlexible): boolean;
+					public createViewHolder(param0: android.view.View, param1: eu.davidea.flexibleadapter.FlexibleAdapter): VH;
+					public isHidden(): boolean;
+					public isSwipeable(): boolean;
+					public setHeader(param0: eu.davidea.flexibleadapter.items.IHeader): void;
+					public setSwipeable(param0: boolean): void;
+					public isSelectable(): boolean;
+					public isDraggable(): boolean;
+					public getItemViewType(): number;
+					public setSelectable(param0: boolean): void;
+					public getBubbleText(param0: number): string;
+					public bindViewHolder(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: VH, param2: number, param3: java.util.List): void;
+					public unbindViewHolder(param0: eu.davidea.flexibleadapter.FlexibleAdapter, param1: VH, param2: number): void;
+					public isEnabled(): boolean;
+					public setDraggable(param0: boolean): void;
+					public getLayoutRes(): number;
+				}
+			}
+		}
+	}
+}
+declare module eu {
+	export module davidea {
+		export module flexibleadapter {
+			export module utils {
+				export class LayoutUtils extends java.lang.Object {
+					public static getModeName(param0: number): string;
+					public static findFirstCompletelyVisibleItemPosition(param0: android.support.v7.widget.RecyclerView): number;
+					public constructor();
+					public static getClassName(param0: java.lang.Object): string;
+					public static findFirstVisibleItemPosition(param0: android.support.v7.widget.RecyclerView): number;
+					public static findLastVisibleItemPosition(param0: android.support.v7.widget.RecyclerView): number;
+					public static getOrientation(param0: android.support.v7.widget.RecyclerView): number;
+					public static getSpanCount(param0: android.support.v7.widget.RecyclerView): number;
+					public static findLastCompletelyVisibleItemPosition(param0: android.support.v7.widget.RecyclerView): number;
+				}
+			}
+		}
+	}
+}
+declare module eu {
+	export module davidea {
+		export module flexibleadapter {
+			export module utils {
+				export class Log extends java.lang.Object {
+					public static customTag: string;
+					public static isDebugEnabled(): boolean;
+					public static d(param0: string, param1: native.Array<java.lang.Object>): void;
+					public static wtf(param0: string, param1: native.Array<java.lang.Object>): void;
+					public static e(param0: string, param1: native.Array<java.lang.Object>): void;
+					public static isVerboseEnabled(): boolean;
+					public static i(param0: string, param1: native.Array<java.lang.Object>): void;
+					public static w(param0: string, param1: native.Array<java.lang.Object>): void;
+					public static v(param0: string, param1: native.Array<java.lang.Object>): void;
+					public static isInfoEnabled(): boolean;
+					public static isWarnEnabled(): boolean;
+					public static w(param0: java.lang.Throwable, param1: string, param2: native.Array<java.lang.Object>): void;
+					public static wtf(param0: java.lang.Throwable, param1: string, param2: native.Array<java.lang.Object>): void;
+					public static logMethodName(param0: boolean, param1: boolean): void;
+					public static isErrorEnabled(): boolean;
+					public static setLevel(param0: number): void;
+					public static useTag(param0: string): void;
+					public static e(param0: java.lang.Throwable, param1: string, param2: native.Array<java.lang.Object>): void;
+					public static iTag(param0: string, param1: string, param2: native.Array<java.lang.Object>): void;
+				}
+				export module Log {
+					export class Level extends java.lang.Object implements java.lang.annotation.Annotation {
+						/**
+						 * Constructs a new instance of the eu.davidea.flexibleadapter.utils.Log$Level interface with the provided implementation.
+						 */
+						public constructor(implementation?: {
+							equals(param0: java.lang.Object): boolean;
+							hashCode(): number;
+							toString(): string;
+							annotationType(): java.lang.Class;
+						});
+						public static VERBOSE: number;
+						public static ERROR: number;
+						public static DEBUG: number;
+						public static INFO: number;
+						public static WARN: number;
+						public static SUPPRESS: number;
+						public equals(param0: java.lang.Object): boolean;
+						public annotationType(): java.lang.Class;
+						public hashCode(): number;
+						public toString(): string;
+					}
+				}
+			}
+		}
+	}
+}
+declare module eu {
+	export module davidea {
+		export module flexibleadapter {
+			export module utils {
+				export class Logger extends java.lang.Object {
+					public v(param0: string, param1: native.Array<java.lang.Object>): void;
+					public w(param0: string, param1: native.Array<java.lang.Object>): void;
+					public constructor(param0: string);
+					public w(param0: java.lang.Throwable, param1: string, param2: native.Array<java.lang.Object>): void;
+					public d(param0: string, param1: native.Array<java.lang.Object>): void;
+					public i(param0: string, param1: native.Array<java.lang.Object>): void;
+					public e(param0: string, param1: native.Array<java.lang.Object>): void;
+					public e(param0: java.lang.Throwable, param1: string, param2: native.Array<java.lang.Object>): void;
+					public wtf(param0: java.lang.Throwable, param1: string, param2: native.Array<java.lang.Object>): void;
+					public wtf(param0: string, param1: native.Array<java.lang.Object>): void;
+				}
+			}
+		}
+	}
+}
+declare module eu {
+	export module davidea {
+		export module viewholders {
+			export class AnimatedViewHolder extends java.lang.Object {
+				/**
+				 * Constructs a new instance of the eu.davidea.viewholders.AnimatedViewHolder interface with the provided implementation.
+				 */
+				public constructor(implementation?: {
+					preAnimateAddImpl(): boolean;
+					preAnimateRemoveImpl(): boolean;
+					animateAddImpl(param0: android.support.v4.view.ViewPropertyAnimatorListener, param1: number, param2: number): boolean;
+					animateRemoveImpl(param0: android.support.v4.view.ViewPropertyAnimatorListener, param1: number, param2: number): boolean;
+				});
+				public animateRemoveImpl(param0: android.support.v4.view.ViewPropertyAnimatorListener, param1: number, param2: number): boolean;
+				public animateAddImpl(param0: android.support.v4.view.ViewPropertyAnimatorListener, param1: number, param2: number): boolean;
+				public preAnimateRemoveImpl(): boolean;
+				public preAnimateAddImpl(): boolean;
+			}
+		}
+	}
+}
+declare module eu {
+	export module davidea {
+		export module viewholders {
+			export abstract class ContentViewHolder extends android.support.v7.widget.RecyclerView.ViewHolder {
+				public getContentView(): android.view.View;
+				public getFlexibleAdapterPosition(): number;
+				public setBackupPosition(param0: number): void;
+			}
+		}
+	}
+}
+declare module eu {
+	export module davidea {
+		export module viewholders {
+			export abstract class ExpandableViewHolder extends eu.davidea.viewholders.FlexibleViewHolder {
+				public getRearLeftView(): android.view.View;
+				public isViewExpandableOnClick(): boolean;
+				public onClick(param0: android.view.View): void;
+				public expandView(param0: number): void;
+				public toggleExpansion(): void;
+				public isDraggable(): boolean;
+				public getRearRightView(): android.view.View;
+				public onTouch(param0: android.view.View, param1: android.view.MotionEvent): boolean;
+				public isSwipeable(): boolean;
+				public onLongClick(param0: android.view.View): boolean;
+				public collapseView(param0: number): void;
+				public onActionStateChanged(param0: number, param1: number): void;
+				public getFrontView(): android.view.View;
+				public constructor(param0: android.view.View, param1: eu.davidea.flexibleadapter.FlexibleAdapter, param2: boolean);
+				public isViewCollapsibleOnClick(): boolean;
+				public constructor(param0: android.view.View, param1: eu.davidea.flexibleadapter.FlexibleAdapter);
+				public isViewCollapsibleOnLongClick(): boolean;
+				public shouldNotifyParentOnClick(): boolean;
+				public onItemReleased(param0: number): void;
+			}
+		}
+	}
+}
+declare module eu {
+	export module davidea {
+		export module viewholders {
+			export abstract class FlexibleViewHolder extends eu.davidea.viewholders.ContentViewHolder implements android.view.View.OnClickListener, android.view.View.OnLongClickListener, android.view.View.OnTouchListener, eu.davidea.flexibleadapter.helpers.ItemTouchHelperCallback.ViewHolderCallback {
+				public mAdapter: eu.davidea.flexibleadapter.FlexibleAdapter;
+				public mActionState: number;
+				public setFullSpan(param0: boolean): void;
+				public toggleActivation(): void;
+				public getRearLeftView(): android.view.View;
+				public onClick(param0: android.view.View): void;
+				public shouldAddSelectionInActionMode(): boolean;
+				public isDraggable(): boolean;
+				public getRearRightView(): android.view.View;
+				public onTouch(param0: android.view.View, param1: android.view.MotionEvent): boolean;
+				public getActivationElevation(): number;
+				public isSwipeable(): boolean;
+				public onLongClick(param0: android.view.View): boolean;
+				public shouldActivateViewWhileSwiping(): boolean;
+				public onActionStateChanged(param0: number, param1: number): void;
+				public getFrontView(): android.view.View;
+				public constructor(param0: android.view.View, param1: eu.davidea.flexibleadapter.FlexibleAdapter, param2: boolean);
+				public scrollAnimators(param0: java.util.List, param1: number, param2: boolean): void;
+				public constructor(param0: android.view.View, param1: eu.davidea.flexibleadapter.FlexibleAdapter);
+				public setDragHandleView(param0: android.view.View): void;
+				public onItemReleased(param0: number): void;
+			}
+		}
+	}
+}

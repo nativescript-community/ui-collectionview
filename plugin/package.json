@@ -1,9 +1,9 @@
 {
-  "name": "nativescript-grid-view",
+  "name": "nativescript-collectionview",
   "version": "3.4.0",
-  "description": "A NativeScript GridView widget.",
-  "main": "grid-view",
-  "typings": "grid-view.d.ts",
+  "description": "A NativeScript CollectionView widget.",
+  "main": "src/grid-view",
+  "typings": "src/grid-view.d.ts",
   "nativescript": {
     "platforms": {
       "ios": "3.0.0",
@@ -37,33 +37,29 @@
     "tangra"
   ],
   "author": "Peter Staev <peter@tangrasoft.com>",
-	"contributors": [
-		"Morten Sjøgren (https://github.com/m-abs)"
-	],
+  "contributors": [
+    "Morten Sjøgren (https://github.com/m-abs)"
+  ],
   "license": "Apache-2.0",
-  "peerDependencies": {
-    "tns-core-modules": "^3.4.0"
-  },
   "devDependencies": {
-    "@angular/common": "~5.1.0",
-    "@angular/compiler": "~5.1.0",
-    "@angular/compiler-cli": "~5.1.0",
-    "@angular/core": "~5.1.0",
-    "@angular/forms": "~5.1.0",
-    "@angular/http": "~5.1.0",
-    "@angular/platform-browser": "~5.1.0",
-    "@angular/router": "~5.1.0",
-    "grunt": "1.0.1",
+    "@angular/common": "~5.2.10",
+    "@angular/compiler": "~5.2.10",
+    "@angular/compiler-cli": "~5.2.10",
+    "@angular/core": "~5.2.10",
+    "@angular/forms": "~5.2.10",
+    "@angular/http": "~5.2.10",
+    "@angular/platform-browser": "~5.2.10",
+    "@angular/router": "~5.2.10",
+    "grunt": "1.0.2",
     "grunt-contrib-clean": "1.1.0",
     "grunt-contrib-copy": "1.0.0",
-    "grunt-exec": "2.0.0",
-    "nativescript-angular": "~5.1.0",
-    "reflect-metadata": "^0.1.10",
+    "grunt-exec": "3.0.0",
+    "nativescript-angular": "~5.3.0",
+    "reflect-metadata": "^0.1.12",
     "rxjs": "^5.5.0",
-    "tns-core-modules": "3.4.0",
-    "tns-platform-declarations": "3.4.0",
-    "tslint": "4.4.2",
-    "typescript": "~2.4.2",
-    "zone.js": "^0.8.14"
+    "tns-core-modules": "~4.0.0",
+    "tns-platform-declarations": "~4.0.0",
+    "tslint": "5.9.1",
+    "typescript": "~2.8.3"
   }
 }

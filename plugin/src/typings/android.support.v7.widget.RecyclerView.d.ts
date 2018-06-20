@@ -10,8 +10,6 @@ declare module android {
 
 import javalangClass = java.lang.Class;
 import javalangObject = java.lang.Object;
-/// <reference path="./java.lang.Class.d.ts" />
-/// <reference path="./java.lang.Object.d.ts" />
 declare module android {
 	export module support {
 		export module v7 {
@@ -47,7 +45,6 @@ declare module android {
 	}
 }
 
-/// <reference path="./java.lang.Object.d.ts" />
 declare module android {
 	export module support {
 		export module v7 {
@@ -75,9 +72,6 @@ declare module android {
 }
 
 import javautilCollection = java.util.Collection;
-/// <reference path="./java.lang.Class.d.ts" />
-/// <reference path="./java.lang.Object.d.ts" />
-/// <reference path="./java.util.Collection.d.ts" />
 declare module android {
 	export module support {
 		export module v7 {
@@ -180,8 +174,6 @@ declare module android {
 	}
 }
 
-/// <reference path="./java.lang.Class.d.ts" />
-/// <reference path="./java.lang.Object.d.ts" />
 declare module android {
 	export module support {
 		export module v7 {
@@ -208,7 +200,6 @@ declare module android {
 	}
 }
 
-/// <reference path="./java.lang.Object.d.ts" />
 declare module android {
 	export module support {
 		export module v7 {
@@ -253,7 +244,6 @@ declare module android {
 	}
 }
 
-/// <reference path="./android.view.View.d.ts" />
 declare module android {
 	export module support {
 		export module v7 {
@@ -301,8 +291,6 @@ declare module android {
 }
 
 import javautilList = java.util.List;
-/// <reference path="./android.view.View.d.ts" />
-/// <reference path="./java.util.List.d.ts" />
 declare module android {
 	export module support {
 		export module v7 {
@@ -350,13 +338,6 @@ declare module android {
 	}
 }
 
-/// <reference path="./android.content.Context.d.ts" />
-/// <reference path="./android.graphics.Rect.d.ts" />
-/// <reference path="./android.support.v4.view.accessibility.AccessibilityNodeInfoCompat.d.ts" />
-/// <reference path="./android.support.v7.widget.RecyclerView.d.ts" />
-/// <reference path="./android.util.AttributeSet.d.ts" />
-/// <reference path="./android.view.View.d.ts" />
-/// <reference path="./java.lang.Object.d.ts" />
 declare module android {
 	export module support {
 		export module v7 {
@@ -438,16 +419,6 @@ declare module android {
 		}
 	}
 }
-
-/// <reference path="./android.content.Context.d.ts" />
-/// <reference path="./android.graphics.PointF.d.ts" />
-/// <reference path="./android.os.Parcel.d.ts" />
-/// <reference path="./android.os.Parcelable.d.ts" />
-/// <reference path="./android.support.v7.widget.RecyclerView.d.ts" />
-/// <reference path="./android.util.AttributeSet.d.ts" />
-/// <reference path="./android.view.View.d.ts" />
-/// <reference path="./android.view.accessibility.AccessibilityEvent.d.ts" />
-/// <reference path="./java.lang.String.d.ts" />
 declare module android {
 	export module support {
 		export module v7 {
@@ -535,12 +506,6 @@ declare module android {
 	}
 }
 
-/// <reference path="./android.content.Context.d.ts" />
-/// <reference path="./android.graphics.PointF.d.ts" />
-/// <reference path="./android.util.DisplayMetrics.d.ts" />
-/// <reference path="./android.view.View.d.ts" />
-/// <reference path="./android.view.animation.DecelerateInterpolator.d.ts" />
-/// <reference path="./android.view.animation.LinearInterpolator.d.ts" />
 declare module android {
 	export module support {
 		export module v7 {
@@ -576,7 +541,6 @@ declare module android {
 	}
 }
 
-/// <reference path="./java.lang.Object.d.ts" />
 declare module android {
 	export module support {
 		export module v7 {
@@ -602,7 +566,6 @@ declare module android {
 	}
 }
 
-/// <reference path="./android.view.View.d.ts" />
 declare module android {
 	export module support {
 		export module v7 {
@@ -636,8 +599,6 @@ declare module android {
 }
 
 import javautilArrayList = java.util.ArrayList;
-/// <reference path="./java.lang.Object.d.ts" />
-/// <reference path="./java.util.ArrayList.d.ts" />
 declare module android {
 	export module support {
 		export module v7 {
@@ -675,33 +636,11 @@ declare module android {
 }
 
 import javalangRunnable = java.lang.Runnable;
-/// <reference path="./android.content.Context.d.ts" />
-/// <reference path="./android.graphics.Canvas.d.ts" />
-/// <reference path="./android.graphics.PointF.d.ts" />
-/// <reference path="./android.graphics.Rect.d.ts" />
-/// <reference path="./android.os.Bundle.d.ts" />
-/// <reference path="./android.os.Parcel.d.ts" />
-/// <reference path="./android.os.Parcelable.d.ts" />
-/// <reference path="./android.support.v4.view.accessibility.AccessibilityNodeInfoCompat.d.ts" />
-/// <reference path="./android.support.v7.widget.RecyclerView.d.ts" />
-/// <reference path="./android.support.v7.widget.RecyclerViewAccessibilityDelegate.d.ts" />
-/// <reference path="./android.util.AttributeSet.d.ts" />
-/// <reference path="./android.util.SparseArray.d.ts" />
-/// <reference path="./android.view.MotionEvent.d.ts" />
-/// <reference path="./android.view.View.d.ts" />
-/// <reference path="./android.view.ViewGroup.d.ts" />
-/// <reference path="./android.view.accessibility.AccessibilityEvent.d.ts" />
-/// <reference path="./android.view.animation.Interpolator.d.ts" />
-/// <reference path="./java.lang.Object.d.ts" />
-/// <reference path="./java.lang.Runnable.d.ts" />
-/// <reference path="./java.lang.String.d.ts" />
-/// <reference path="./java.util.ArrayList.d.ts" />
-/// <reference path="./java.util.List.d.ts" />
 declare module android {
 	export module support {
 		export module v7 {
 			export module widget {
-				export class RecyclerView {
+				export class RecyclerView{
 					public static HORIZONTAL: number;
 					public static VERTICAL: number;
 					public static NO_POSITION: number;
@@ -747,7 +686,7 @@ declare module android {
 					public requestChildRectangleOnScreen(param0: android.view.View, param1: android.graphics.Rect, param2: boolean): boolean;
 					public getChildPosition(param0: android.view.View): number;
 					public getChildViewHolder(param0: android.view.View): android.support.v7.widget.RecyclerView.ViewHolder;
-					public addFocusables(param0: javautilArrayList<android.view.View>, param1: number, param2: number): void;
+					public addFocusables(views: javautilArrayList<android.view.View>, direction: number, focusableMode: number): void;
 					public setNestedScrollingEnabled(param0: boolean): void;
 					public generateDefaultLayoutParams(): android.view.ViewGroup.LayoutParams;
 					public stopScroll(): void;
@@ -1294,11 +1233,6 @@ declare module android {
 	}
 }
 
-/// <reference path="./android.os.Bundle.d.ts" />
-/// <reference path="./android.support.v4.view.accessibility.AccessibilityNodeInfoCompat.d.ts" />
-/// <reference path="./android.support.v7.widget.RecyclerView.d.ts" />
-/// <reference path="./android.view.View.d.ts" />
-/// <reference path="./android.view.accessibility.AccessibilityEvent.d.ts" />
 declare module android {
 	export module support {
 		export module v7 {
@@ -1325,7 +1259,6 @@ declare module android {
 	}
 }
 
-/// <reference path="./java.util.List.d.ts" />
 declare module android {
 	export module support {
 		export module v7 {
@@ -1365,18 +1298,6 @@ declare module android {
 		}
 	}
 }
-
-/// <reference path="./android.content.Context.d.ts" />
-/// <reference path="./android.graphics.Rect.d.ts" />
-/// <reference path="./android.os.Parcel.d.ts" />
-/// <reference path="./android.os.Parcelable.d.ts" />
-/// <reference path="./android.support.v4.view.accessibility.AccessibilityNodeInfoCompat.d.ts" />
-/// <reference path="./android.support.v7.widget.RecyclerView.d.ts" />
-/// <reference path="./android.util.AttributeSet.d.ts" />
-/// <reference path="./android.view.View.d.ts" />
-/// <reference path="./android.view.accessibility.AccessibilityEvent.d.ts" />
-/// <reference path="./java.lang.Object.d.ts" />
-/// <reference path="./java.lang.String.d.ts" />
 declare module android {
 	export module support {
 		export module v7 {
@@ -1527,15 +1448,6 @@ declare module android {
 	}
 }
 
-/// <reference path="./android.graphics.Canvas.d.ts" />
-/// <reference path="./android.graphics.Rect.d.ts" />
-/// <reference path="./android.support.v4.animation.ValueAnimatorCompat.d.ts" />
-/// <reference path="./android.support.v7.widget.RecyclerView.d.ts" />
-/// <reference path="./android.support.v7.widget.helper.ItemTouchHelper.d.ts" />
-/// <reference path="./android.support.v7.widget.helper.ItemTouchUIUtil.d.ts" />
-/// <reference path="./android.view.MotionEvent.d.ts" />
-/// <reference path="./android.view.View.d.ts" />
-/// <reference path="./java.util.List.d.ts" />
 declare module android {
 	export module support {
 		export module v7 {
@@ -1640,9 +1552,6 @@ declare module android {
 	}
 }
 
-/// <reference path="./android.graphics.Canvas.d.ts" />
-/// <reference path="./android.support.v7.widget.RecyclerView.d.ts" />
-/// <reference path="./android.view.View.d.ts" />
 declare module android {
 	export module support {
 		export module v7 {
@@ -1669,9 +1578,6 @@ declare module android {
 	}
 }
 
-/// <reference path="./android.graphics.Canvas.d.ts" />
-/// <reference path="./android.support.v7.widget.RecyclerView.d.ts" />
-/// <reference path="./android.view.View.d.ts" />
 declare module android {
 	export module support {
 		export module v7 {

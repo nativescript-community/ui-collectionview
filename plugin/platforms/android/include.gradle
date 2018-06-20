@@ -1,11 +1,10 @@
 android {
-  productFlavors {
-    "nativescript-grid-view" {
-      dimension "nativescript-grid-view"
-    }
-  }
+  
 }
 dependencies {
     def supportVer = project.hasProperty("supportVersion") ? supportVersion : "+";
     compile "com.android.support:recyclerview-v7:$supportVer"
+     compile ('com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:0.11.0@aar'){
+        transitive=true
+    }
 }
