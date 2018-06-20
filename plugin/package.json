@@ -1,6 +1,6 @@
 {
   "name": "nativescript-collectionview",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A NativeScript CollectionView widget.",
   "main": "src/grid-view",
   "typings": "src/grid-view.d.ts",

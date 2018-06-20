@@ -5,3 +5,4 @@ hooks/
 *.map
 *.old
 tsconfig.json
+!*.d.ts
