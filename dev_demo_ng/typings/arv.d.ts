@@ -1,0 +1,1 @@
+../../plugin/typings/arv.d.ts

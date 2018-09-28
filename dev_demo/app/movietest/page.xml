@@ -1,0 +1,39 @@
+<Page class="page"
+    navigatingTo="onNavigatingTo" 
+      loaded="pageLoaded"
+    xmlns:gv="nativescript-collectionview"
+    xmlns="http://schemas.nativescript.org/tns.xsd">
+    <Page.actionBar>
+            <ActionBar title="Movies"/>
+        </Page.actionBar>
+    <GridLayout>
+        <gv:CollectionView items="{{ dataItems }}" loadMoreItems="{{onLoadMoreItemsRequested}}"  itemTap="movieTap">
+                <gv:CollectionView.itemTemplates>
+                    <template key="default">
+                        <GridLayout  width="100%" height="120">
+                                <StackLayout orientation="horizontal" style="border-radius:3;">
+                                    <Image id="poster" decodeWidth="70dip" src="{{ poster_path }}" width="70" stretch="aspectFill" transition="fade" backgroundColor="red"/>
+                                    <AbsoluteLayout>
+                                        <Image stretch="aspectFill" width="100%" height="100%"  decodeWidth="50%"  style="opacity:0.4" src="{{ backdrop_path }}" transition="fade" />
+                                        <FlexboxLayout flexDirection="column" margin="7">
+                                            <label text="{{ title }}" class="info" textWrap="true"/>
+                                        </FlexboxLayout>
+                                    </AbsoluteLayout>
+                                </StackLayout>
+                        </GridLayout>
+                    </template>
+                    <template key="trailers">
+                        <AbsoluteLayout  height="150"  width="100%">
+                            <gv:CollectionView items="{{ trailerItems }}" width="100%" height="100%"  itemTap="trailerTap" orientation="Horizontal" backgroundColor="green">
+                                <gv:CollectionView.itemTemplate>
+                                    <StackLayout  width="90" height="100%" class="cardStyle" margin="5" elevation="3" radius="3" style="border-radius:3;">
+                                        <Image id="poster" decodeWidth="90dip" src="{{ poster_path }}" width="100%" stretch="aspectFill"/>
+                                    </StackLayout>
+                                </gv:CollectionView.itemTemplate>
+                            </gv:CollectionView> 
+                        </AbsoluteLayout>
+                    </template>
+                </gv:CollectionView.itemTemplates>
+            </gv:CollectionView>
+    </GridLayout>
+</Page>

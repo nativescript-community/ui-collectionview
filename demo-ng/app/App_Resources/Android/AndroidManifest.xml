@@ -22,7 +22,7 @@
 		android:name="com.tns.NativeScriptApplication"
 		android:allowBackup="true"
 		android:icon="@drawable/icon"
-		android:label="GridView NG"
+		android:label="CollectionView NG"
 		android:theme="@style/AppTheme">
 
 		<activity

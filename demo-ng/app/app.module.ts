@@ -13,9 +13,9 @@ import { ItemDetailComponent } from "./item/item-detail.component";
 // Uncomment and add to NgModule imports  if you need to use the HTTP wrapper
 // import { NativeScriptHttpModule } from "nativescript-angular/http";
 
-import { GridViewModule } from 'nativescript-grid-view/angular';
+import { CollectionViewModule } from 'nativescript-collectionview/angular';
 import * as trace from 'tns-core-modules/trace';
-trace.setCategories('ns-grid-view');
+trace.setCategories('ns-collectionview');
 // trace.enable();
 
 @NgModule({
@@ -25,7 +25,7 @@ trace.setCategories('ns-grid-view');
     imports: [
         NativeScriptModule,
         AppRoutingModule,
-        GridViewModule,
+        CollectionViewModule,
     ],
     declarations: [
         AppComponent,

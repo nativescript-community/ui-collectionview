@@ -1,10 +1,10 @@
-﻿# NativeScript GridView widget
+﻿# NativeScript CollectionView widget
 [![Build Status](https://travis-ci.org/PeterStaev/NativeScript-Grid-View.svg?branch=master)](https://travis-ci.org/PeterStaev/NativeScript-Grid-View)
-[![npm downloads](https://img.shields.io/npm/dm/nativescript-grid-view.svg)](https://www.npmjs.com/package/nativescript-grid-view)
-[![npm downloads](https://img.shields.io/npm/dt/nativescript-grid-view.svg)](https://www.npmjs.com/package/nativescript-grid-view)
-[![npm](https://img.shields.io/npm/v/nativescript-grid-view.svg)](https://www.npmjs.com/package/nativescript-grid-view)
+[![npm downloads](https://img.shields.io/npm/dm/nativescript-collectionview.svg)](https://www.npmjs.com/package/nativescript-collectionview)
+[![npm downloads](https://img.shields.io/npm/dt/nativescript-collectionview.svg)](https://www.npmjs.com/package/nativescript-collectionview)
+[![npm](https://img.shields.io/npm/v/nativescript-collectionview.svg)](https://www.npmjs.com/package/nativescript-collectionview)
 
-A NativeScript GridView widget. The GridView displays data in separate cells, each cell representing one data item. For iOS wraps up [UICollectionView](https://developer.apple.com/library/ios/documentation/UIKit/Reference/UICollectionView_class/) and for Android wraps up [RecyclerView](https://developer.android.com/reference/android/support/v7/widget/RecyclerView.html)
+A NativeScript CollectionView widget. The CollectionView displays data in separate cells, each cell representing one data item. For iOS wraps up [UICollectionView](https://developer.apple.com/library/ios/documentation/UIKit/Reference/UICollectionView_class/) and for Android wraps up [RecyclerView](https://developer.android.com/reference/android/support/v7/widget/RecyclerView.html)
 
 ## Screenshot
 ![Screenshot of Android](https://raw.githubusercontent.com/PeterStaev/NativeScript-Grid-View/master/docs/screenshot.png)
@@ -12,9 +12,9 @@ A NativeScript GridView widget. The GridView displays data in separate cells, ea
 ## Installation
 Run the following command from the root of your project:
 
-`tns plugin add nativescript-grid-view`
+`tns plugin add nativescript-collectionview`
 
-This command automatically installs the necessary files, as well as stores nativescript-grid-view as a dependency in your project's package.json file.
+This command automatically installs the necessary files, as well as stores nativescript-collectionview as a dependency in your project's package.json file.
 
 ## Configuration
 There is no additional configuration needed!
@@ -23,10 +23,10 @@ There is no additional configuration needed!
 
 ### Events
 * **itemLoading**  
-Triggered when generating an item in the GridView. 
+Triggered when generating an item in the CollectionView. 
 
 * **itemTap**  
-Triggered when the user taps on an item in the GridView. 
+Triggered when the user taps on an item in the CollectionView. 
 
 * **loadMoreItems**  
 Triggered when the generated items reached the end of the items property.
@@ -49,38 +49,38 @@ Gets the native iOS view that represents the user interface for this component. 
 Gets the native android widget that represents the user interface for this component. Valid only when running on Android OS.
 
 * **items** - *Array | ItemsSource*  
-Gets or sets the items collection of the GridView. The items property can be set to an array or an object defining length and getItem(index) method.
+Gets or sets the items collection of the CollectionView. The items property can be set to an array or an object defining length and getItem(index) method.
 
 * **itemTemplate** - *String*  
-Gets or sets the item template of the GridView.
+Gets or sets the item template of the CollectionView.
 
 * **rowHeight** - *PercentLength*  
-Gets or sets the height for every row in the GridView.
+Gets or sets the height for every row in the CollectionView.
 
 * **colWidth** - *PercentLength*  
-Gets or sets the width for every column in the GridView.
+Gets or sets the width for every column in the CollectionView.
 
 ### Instance Methods
 * **refresh()**  
-Forces the GridView to reload all its items.
+Forces the CollectionView to reload all its items.
 
 * **scrollToIndex(index: number, animated: boolean = true)**  
-Scrolls the GridView to the item with the given index. This can be either animated or not. Defaults to animated.
+Scrolls the CollectionView to the item with the given index. This can be either animated or not. Defaults to animated.
 
 ## Usage
-You need to add `xmlns:gv="nativescript-grid-view"` to your page tag, and then simply use `<gv:GridView/>` in order to add the widget to your page. Use `<gv:Gridview.itemTemplate/>` to specify the template for each cell:
+You need to add `xmlns:gv="nativescript-collectionview"` to your page tag, and then simply use `<gv:CollectionView/>` in order to add the widget to your page. Use `<gv:Gridview.itemTemplate/>` to specify the template for each cell:
 
 ```xml
 <!-- test-page.xml -->
-<Page xmlns="http://schemas.nativescript.org/tns.xsd" xmlns:gv="nativescript-grid-view" loaded="pageLoaded">
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" xmlns:gv="nativescript-collectionview" loaded="pageLoaded">
   <GridLayout>
-    <gv:GridView items="{{ items }}" colWidth="24%" rowHeight="15%" padding="5" itemTap="gridViewItemTap" itemLoading="gridViewItemLoading" loadMoreItems="gridViewLoadMoreItems">
-      <gv:GridView.itemTemplate>
+    <gv:CollectionView items="{{ items }}" colWidth="24%" rowHeight="15%" padding="5" itemTap="gridViewItemTap" itemLoading="gridViewItemLoading" loadMoreItems="gridViewLoadMoreItems">
+      <gv:CollectionView.itemTemplate>
         <GridLayout backgroundColor="#33ffff" style="margin: 5">
           <Label text="{{ value }}" verticalAlignment="center"/>
         </GridLayout>
-      </gv:GridView.itemTemplate>
-    </gv:GridView>
+      </gv:CollectionView.itemTemplate>
+    </gv:CollectionView>
   </GridLayout>
 </Page>
 ```
@@ -91,7 +91,7 @@ import { EventData, Observable } from "data/observable";
 import { ObservableArray } from "data/observable-array";
 import { Page } from "ui/page";
 
-import { GridItemEventData } from "nativescript-grid-view";
+import { CollectionViewItemEventData } from "nativescript-collectionview";
 
 let viewModel: Observable;
 
@@ -108,11 +108,11 @@ export function pageLoaded(args: EventData) {
     page.bindingContext = viewModel;
 }
 
-export function gridViewItemTap(args: GridItemEventData) {
+export function gridViewItemTap(args: CollectionViewItemEventData) {
     console.log("tap index " + args.index.toString());
 }
 
-export function gridViewItemLoading(args: GridItemEventData) {
+export function gridViewItemLoading(args: CollectionViewItemEventData) {
     console.log("item loading " + args.index.toString());
 }
 
@@ -123,10 +123,10 @@ export function gridViewLoadMoreItems(args: EventData) {
 
 You can also have multiple templates the same way you add them in the builtin `ListView` control:
 ```xml
-<gv:GridView id="gv" row="0" class="{{ cssClass }}" items="{{ items }}" 
+<gv:CollectionView id="gv" row="0" class="{{ cssClass }}" items="{{ items }}" 
                 colWidth="{{ colWidth }}" rowHeight="{{ rowHeight }}" itemTemplateSelector="templateSelector"
                 itemTap="gridViewItemTap" itemLoading="gridViewItemLoading" loadMoreItems="gridViewLoadMoreItems">
-    <gv:GridView.itemTemplates>
+    <gv:CollectionView.itemTemplates>
         <template key="odd">
             <GridLayout backgroundColor="#33ffff" style="margin: 10 10 0 0">
                 <Label text="{{ value }}" verticalAlignment="center"/>
@@ -139,8 +139,8 @@ You can also have multiple templates the same way you add them in the builtin `L
                 <Label row="1" text="{{ value }}" verticalAlignment="center"/>
             </GridLayout>
         </template>
-    </gv:GridView.itemTemplates>
-</gv:GridView>
+    </gv:CollectionView.itemTemplates>
+</gv:CollectionView>
 ```
 ```ts
 export function templateSelector(item: any, index: number, items: any) {
@@ -150,16 +150,16 @@ export function templateSelector(item: any, index: number, items: any) {
 
 ## Usage in Angular
 
-Import `GridViewModule` in your `NgModule`:
+Import `CollectionViewModule` in your `NgModule`:
 
 ```typescript
-import { GridViewModule } from 'nativescript-grid-view/angular';
+import { CollectionViewModule } from 'nativescript-collectionview/angular';
 
 @NgModule({
     //......
     imports: [
         //......
-        GridViewModule,
+        CollectionViewModule,
         //......
     ],
     //......
@@ -169,7 +169,7 @@ import { GridViewModule } from 'nativescript-grid-view/angular';
 #### Example Usage
 ```ts
 // app.module.ts
-import { GridViewModule } from "nativescript-grid-view/angular";
+import { CollectionViewModule } from "nativescript-collectionview/angular";
 
 @NgModule({
     bootstrap: [
@@ -178,7 +178,7 @@ import { GridViewModule } from "nativescript-grid-view/angular";
     imports: [
         NativeScriptModule,
         AppRoutingModule,
-        GridViewModule,
+        CollectionViewModule,
     ],
     declarations: [
         AppComponent,
@@ -198,49 +198,49 @@ export class AppModule { }
 ```html
 <!-- my.component.html -->
 <GridLayout class="page">
-  <GridView [items]="items" colWidth="30%" rowHeight="100">
+  <CollectionView [items]="items" colWidth="30%" rowHeight="100">
     <ng-template let-item="item" let-odd="odd">
       <StackLayout margin="10" [nsRouterLink]="['/item', item.id]" borderColor="blue" borderWidth="2" borderRadius="5" verticalAlignment="stretch" class="list-group-item" [class.odd]="odd">
         <Label verticalAlignment="center" [text]="item.name" class="list-group-item-text" textWrap="true"></Label>
       </StackLayout>
     </ng-template>
-  </GridView>
+  </CollectionView>
 </GridLayout>
 ```
 
-If you want to use multiple item templates, you can do that very similarly to how you do it for the builtin `ListView` control. The only difference is that due to current limitations instead of using the `nsTemplateKey` directive you need to use the `gvTemplateKey` directive that comes from the GridView. (In a future version, once the framework allows it this will be changed and you will be able to use the same directive for the `GridView` as well)
+If you want to use multiple item templates, you can do that very similarly to how you do it for the builtin `ListView` control. The only difference is that due to current limitations instead of using the `nsTemplateKey` directive you need to use the `cvTemplateKey` directive that comes from the CollectionView. (In a future version, once the framework allows it this will be changed and you will be able to use the same directive for the `CollectionView` as well)
 ```html
-<GridView row="1" [items]="items" colWidth="33%" rowHeight="100" [itemTemplateSelector]="templateSelector">
-    <ng-template gvTemplateKey="Defender" let-item="item" let-odd="odd">
+<CollectionView row="1" [items]="items" colWidth="33%" rowHeight="100" [itemTemplateSelector]="templateSelector">
+    <ng-template cvTemplateKey="Defender" let-item="item" let-odd="odd">
         <StackLayout [nsRouterLink]="['/item', item.id]" borderColor="blue" borderWidth="2" borderRadius="5" verticalAlignment="stretch" class="list-group-item" [class.odd]="odd">
         <Label verticalAlignment="center" [text]="item.name" class="list-group-item-text" textWrap="true"></Label>
         </StackLayout>
     </ng-template>
 
-    <ng-template gvTemplateKey="Goalkeeper" let-item="item" let-odd="odd">
+    <ng-template cvTemplateKey="Goalkeeper" let-item="item" let-odd="odd">
         <StackLayout [nsRouterLink]="['/item', item.id]" borderColor="black" borderWidth="2" borderRadius="5" verticalAlignment="stretch" class="list-group-item" [class.odd]="odd">
         <Label verticalAlignment="center" [text]="item.name" class="list-group-item-text" textWrap="true"></Label>
         </StackLayout>
     </ng-template>
 
-    <ng-template gvTemplateKey="Midfielder" let-item="item" let-odd="odd">
+    <ng-template cvTemplateKey="Midfielder" let-item="item" let-odd="odd">
         <StackLayout [nsRouterLink]="['/item', item.id]" borderColor="yellow" borderWidth="2" borderRadius="5" verticalAlignment="stretch" class="list-group-item" [class.odd]="odd">
         <Label verticalAlignment="center" [text]="item.name" class="list-group-item-text" textWrap="true"></Label>
         </StackLayout>
     </ng-template>
 
-    <ng-template gvTemplateKey="Forward" let-item="item" let-odd="odd">
+    <ng-template cvTemplateKey="Forward" let-item="item" let-odd="odd">
         <StackLayout [nsRouterLink]="['/item', item.id]" borderColor="red" borderWidth="2" borderRadius="5" verticalAlignment="stretch" class="list-group-item" [class.odd]="odd">
         <Label verticalAlignment="center" [text]="item.name" class="list-group-item-text" textWrap="true"></Label>
         </StackLayout>
     </ng-template>
-</GridView>
+</CollectionView>
 ```
 
 ## Working with Webpack+Uglify
-In case you are uing webpack and also are minifying/uglifying your code, there are some specific names that should be excluded from the uglification for the widget to work properly. The GridView widget exports those and you need to add them to the mangle exclude option of the uglifyjs plugin in the `webpack.common.js` file:
+In case you are uing webpack and also are minifying/uglifying your code, there are some specific names that should be excluded from the uglification for the widget to work properly. The CollectionView widget exports those and you need to add them to the mangle exclude option of the uglifyjs plugin in the `webpack.common.js` file:
 ```js
-var gridViewMangleExcludes = require("nativescript-grid-view/uglify-mangle-excludes").default;
+var gridViewMangleExcludes = require("nativescript-collectionview/uglify-mangle-excludes").default;
 //......
 module.exports = function (platform, destinationApp) {
     //......
@@ -265,8 +265,8 @@ module.exports = function (platform, destinationApp) {
 ## Demos
 This repository includes both Angular and plain NativeScript demos. In order to run those execute the following in your shell:
 ```shell
-$ git clone https://github.com/peterstaev/nativescript-grid-view
-$ cd nativescript-grid-view
+$ git clone https://github.com/peterstaev/nativescript-collectionview
+$ cd nativescript-collectionview
 $ npm install
 $ npm run demo-ios
 ```

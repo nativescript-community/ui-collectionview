@@ -2,9 +2,7 @@
 {
     "files.exclude": {
         "**/.git": true,
-        "**/.DS_Store": true, 
-        "demo": true, 
-        "demo-ng": true, 
+        "**/.DS_Store": true,
         "bin/**": true
     }
 ,

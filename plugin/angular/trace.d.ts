@@ -1,2 +1,2 @@
-export declare function gridViewLog(message: string): void;
-export declare function gridViewError(message: string): void;
+export declare function collectionViewLog(message: string): void;
+export declare function collectionViewError(message: string): void;

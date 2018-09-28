@@ -52,11 +52,9 @@ obj
 !gruntfile.js
 node_modules
 *.tmp.*
-demo/platforms
-demo/lib
-demo-ng/platforms
-demo-ng/lib
-demo-ng/**/*.css
+platforms
+lib
+*.css
 !webpack.*.js
 report
 *.log

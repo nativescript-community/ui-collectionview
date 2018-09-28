@@ -1,14 +1,14 @@
 export default [
-    "GridView",
+    "CollectionView",
 
     // iOS
-    "GridViewCell",
-    "GridViewDataSource",
+    "CollectionViewCell",
+    "CollectionViewDataSource",
     "UICollectionViewDelegateImpl",
 
     // Android
-    "GridViewRecyclerView",
-    "GridViewScrollListener", 
-    "GridViewCellHolder",
-    "GridViewAdapter"
+    "CollectionViewRecyclerView",
+    "CollectionViewScrollListener", 
+    "CollectionViewCellHolder",
+    "CollectionViewAdapter"
 ];

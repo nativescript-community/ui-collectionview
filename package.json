@@ -1,0 +1,29 @@
+{
+    "name": "nativescript-collectionview",
+    "version": "1.0.0",
+    "directories": {
+        "doc": "docs"
+    },
+    "dependencies": {
+        "eslint-config-prettier": "^3.1.0",
+        "eslint-plugin-vue": "^4.7.1"
+    },
+    "devDependencies": {
+        "eslint": "^5.6.0",
+        "vue": "^2.5.17",
+        "vue-property-decorator": "^7.1.1"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Akylas/nativescript-collectionview.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/Akylas/nativescript-collectionview/issues"
+    },
+    "homepage": "https://github.com/Akylas/nativescript-collectionview#readme"
+}

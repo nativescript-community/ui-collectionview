@@ -1,2 +1,2 @@
-export declare class GridViewModule {
+export declare class CollectionViewModule {
 }
