@@ -91,3 +91,8 @@ export function trailerTap(args) {
 export function movieTap(args) {
     showMovieDetails(args);
 }
+
+
+export function templateSelector(item: any, index: number, items: any) {
+    return index === 0 ? "trailers" : "item";
+}

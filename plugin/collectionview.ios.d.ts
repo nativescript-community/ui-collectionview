@@ -1,6 +1,5 @@
-import { KeyedTemplate, View } from 'ui/core/view';
+import { View } from 'ui/core/view';
 import { CollectionViewBase } from './collectionview-common';
-import { ChangedData } from 'tns-core-modules/data/observable-array/observable-array';
 export * from './collectionview-common';
 export declare class CollectionView extends CollectionViewBase {
     private _layout;
@@ -14,11 +13,10 @@ export declare class CollectionView extends CollectionViewBase {
     onUnloaded(): void;
     readonly ios: UICollectionView;
     readonly _childrenCount: number;
-    addTemplate(template: any): void;
     eachChildView(callback: (child: View) => boolean): void;
     onLayout(left: number, top: number, right: number, bottom: number): void;
     isHorizontal(): boolean;
-    onItemsChanged(event: ChangedData<any>): void;
+    onSourceCollectionChanged(event: any): void;
     private unbindUnusedCells(removedDataItems);
     refresh(): void;
     scrollToIndex(index: number, animated?: boolean): void;
@@ -33,7 +31,9 @@ export declare class CollectionView extends CollectionViewBase {
         ios: any;
         android: any;
     };
-    _prepareCell(cell: CollectionViewCell, indexPath: NSIndexPath, template?: KeyedTemplate): [number, number];
+    _getItemTemplateType(indexPath: any): string;
+    getItemTemplateContent(index: any, templateType: any): any;
+    _prepareCell(cell: CollectionViewCell, indexPath: NSIndexPath, templateType: string): [number, number];
     getCellSize(index: number): number[];
     storeCellSize(index: number, value: any): void;
     private _layoutCell(cell, cellView, index);

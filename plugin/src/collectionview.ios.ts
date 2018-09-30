@@ -16,7 +16,7 @@ import {
 } from './collectionview-common';
 
 import { CollectionViewItemEventData, Orientation } from './collectionview';
-import { ObservableArray, ChangedData, ChangeType } from 'tns-core-modules/data/observable-array/observable-array';
+import { ObservableArray, ChangeType } from 'tns-core-modules/data/observable-array/observable-array';
 
 export * from './collectionview-common';
 
@@ -147,7 +147,7 @@ export class CollectionView extends CollectionViewBase {
         return this._layout.scrollDirection === UICollectionViewScrollDirection.Horizontal;
     }
 
-    public onSourceCollectionChanged(event: ChangedData<any>) {
+    public onSourceCollectionChanged(event /*: ChangedData<any>*/) {
         // console.log('onItemsChanged', event.action, event.index, event.addedCount, event.removed && event.removed.length);
         switch (event.action) {
             case ChangeType.Delete: {

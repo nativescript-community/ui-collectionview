@@ -13,6 +13,9 @@
             "version": "4.2.0"
         }
     },
+    "android": {
+        "markingMode": "none"
+    },
     "dependencies": {
         "nativescript-theme-core": "^1.0.4",
         "nativescript-ui-listview": "^3.7.0",

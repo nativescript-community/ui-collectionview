@@ -89,7 +89,7 @@ export abstract class CollectionViewBase extends View
   constructor() {
     super();
     this._defaultTemplate = {
-      key: "default",
+      key: "__default",
       createView: () => {
         if (this.itemTemplate) {
           return builder.parse(this.itemTemplate, this);
@@ -131,7 +131,7 @@ export abstract class CollectionViewBase extends View
       );
     }
   }
-  items: any[] | ItemsSource
+  items: any[] | ItemsSource;
   // get items(): any[] | ItemsSource {
   //   return this._getValue(itemsProperty);
   // }
@@ -199,6 +199,7 @@ export abstract class CollectionViewBase extends View
   }
   _getDefaultItemContent() {
     var lbl = new Label();
+    lbl['defaultItemView'] = true;
     lbl.bind({
       targetProperty: "text",
       sourceProperty: "$value"
@@ -266,10 +267,9 @@ export abstract class CollectionViewBase extends View
   }
   onItemTemplatesChanged(oldValue, newValue) {
     this._itemTemplatesInternal = new Array(this._defaultTemplate);
-    var newKeyedTemplates = newValue;
-    if (newKeyedTemplates) {
+    if (newValue) {
       this._itemTemplatesInternal = this._itemTemplatesInternal.concat(
-        newKeyedTemplates
+        newValue
       );
     }
   }
@@ -284,10 +284,9 @@ export abstract class CollectionViewBase extends View
     this.onItemTemplateChanged(oldValue, newValue);
   }
 
-  onItemsChangedInternal(oldValue, newValue) {
-    if (!this.isLoaded) {
-      return;
-    }
+  onItemsChangedInternal = (oldValue, newValue) => {
+    // console.log("onItemsChangedInternal", newValue instanceof observable.Observable);
+
     const getItem = newValue && (newValue as ItemsSource).getItem;
 
     this.isItemsSourceIn = typeof getItem === "function";
@@ -309,13 +308,16 @@ export abstract class CollectionViewBase extends View
         this
       );
     }
-
+    if (!this.isLoaded) {
+      return;
+    }
     this.refresh();
-  }
+  };
   onSourceCollectionChanged(event: ChangedData<any>) {
     this.refresh();
   }
   onSourceCollectionChangedInternal(event: ChangedData<any>) {
+    // console.log("onSourceCollectionChangedInternal");
     this.onSourceCollectionChanged(event);
   }
   onItemsChanged(oldValue, newValue) {

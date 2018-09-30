@@ -24,22 +24,16 @@ core theme, such as p-20, btn, h2, and list-group. You can view a full list of t
 class names available for styling your app at https://docs.nativescript.org/ui/theme.
 -->
 <GridLayout class="page" rows="*,0">
-  <CollectionView row="0" [items]="items" orientation="vertical" (itemTap)="onItemTap($event)" rowHeight="60">
-    <ng-template let-item="item" let-odd="odd">
-      <StackLayout borderColor="blue" borderWidth="2" borderRadius="5" verticalAlignment="stretch" class="list-group-item" [class.odd]="odd" (longPress)="onItemLongPress($event, item)">
-        <Label verticalAlignment="center" [text]="item.name" class="list-group-item-text" textWrap="true"></Label>
-      </StackLayout>
-    </ng-template>
-  </CollectionView>
-  <CollectionView row="1" [items]="items" orientation="horizontal" [itemTemplateSelector]="templateSelector">
+
+  <CollectionView row="0" [items]="items" [itemTemplateSelector]="templateSelector" rowHeight="60">
     <ng-template cvTemplateKey="Defender" let-item="item" let-odd="odd">
-      <StackLayout [nsRouterLink]="['/item', item.id]" borderColor="blue" borderWidth="2" borderRadius="5" verticalAlignment="stretch" class="list-group-item" [class.odd]="odd">
+      <GridLayout [nsRouterLink]="['/item', item.id]" borderColor="blue" borderWidth="2" borderRadius="2" verticalAlignment="stretch" class="list-group-item" [class.odd]="odd">
         <Label verticalAlignment="center" [text]="item.name" class="list-group-item-text" textWrap="true"></Label>
-      </StackLayout>
+      </GridLayout>
     </ng-template>
 
     <ng-template cvTemplateKey="Goalkeeper" let-item="item" let-odd="odd">
-      <StackLayout [nsRouterLink]="['/item', item.id]" borderColor="black" borderWidth="2" borderRadius="5" verticalAlignment="stretch" class="list-group-item" [class.odd]="odd">
+      <StackLayout [nsRouterLink]="['/item', item.id]" borderColor="black" borderWidth="2" borderRadius="10" verticalAlignment="stretch" class="list-group-item" [class.odd]="odd">
         <Label verticalAlignment="center" [text]="item.name" class="list-group-item-text" textWrap="true"></Label>
       </StackLayout>
     </ng-template>
@@ -51,7 +45,7 @@ class names available for styling your app at https://docs.nativescript.org/ui/t
     </ng-template>
 
     <ng-template cvTemplateKey="Forward" let-item="item" let-odd="odd">
-      <StackLayout [nsRouterLink]="['/item', item.id]" borderColor="red" borderWidth="2" borderRadius="5" verticalAlignment="stretch" class="list-group-item" [class.odd]="odd">
+      <StackLayout [nsRouterLink]="['/item', item.id]" borderColor="red" borderWidth="2" borderRadius="20" verticalAlignment="stretch" class="list-group-item" [class.odd]="odd">
         <Label verticalAlignment="center" [text]="item.name" class="list-group-item-text" textWrap="true"></Label>
       </StackLayout>
     </ng-template>

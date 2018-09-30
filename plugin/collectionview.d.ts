@@ -34,6 +34,8 @@ export class CollectionView extends View {
 
     public refresh();
     public scrollToIndex(index: number, animated?: boolean);
+
+    public itemViewLoader?:(viewType)=>any
 }
 export namespace CollectionView {
     export class itemTemplate{}
@@ -45,4 +47,14 @@ export interface CollectionViewItemEventData extends EventData {
     object: CollectionView;
     index: number;
     view: View;
+}
+
+/**
+ * Defines the different view types that {@link RadListView} can display in various scenarios.
+ */
+export enum ListViewViewTypes {
+    /**
+     * Identifies a view created using the {@link itemTemplate} value.
+     */
+    ItemView,
 }

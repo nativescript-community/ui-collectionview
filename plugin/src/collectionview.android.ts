@@ -9,6 +9,8 @@ import { StackLayout } from "ui/layouts/stack-layout";
 import * as utils from "utils/utils";
 import * as application from "application";
 
+import * as profiling from "profiling";
+
 import {
   ListViewViewTypes,
   CollectionViewBase,
@@ -56,17 +58,9 @@ import RecyclerView = android.support.v7.widget.RecyclerView;
 // import GridLayoutManager = android.support.v7.widget.GridLayoutManager;
 
 // import RecyclerViewExpandableItemManager = com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandableItemManager;
-import { ChangedData } from "tns-core-modules/data/observable-array/observable-array";
-import { profile } from "tns-core-modules/profiling/profiling";
+import { ChangedData } from "data/observable-array";
+import { profile } from "profiling";
 
-function patchHolderViewIfChanged(holder, view) {
-  if (view !== holder["nsView"]._subViews[0]) {
-    console.log("patchHolderViewIfChanged", view);
-    // the view has been changed on the event handler
-    holder["nsView"].removeChildren();
-    holder["nsView"].addChild(view);
-  }
-}
 const HORIZONTAL = android.support.v7.widget.LinearLayoutManager.HORIZONTAL;
 
 export class CollectionView extends CollectionViewBase {
@@ -75,7 +69,7 @@ export class CollectionView extends CollectionViewBase {
   public nativeView: RecyclerView;
   // public _realizedItems = new Map<android.view.View, View>();
 
-  public _itemTemplatesByViewType: Map<number, KeyedTemplate>;
+  // public _itemTemplatesByViewType: Map<number, KeyedTemplate>;
 
   // private items:java.util.List<Item>;
 
@@ -84,13 +78,13 @@ export class CollectionView extends CollectionViewBase {
   private itemTypeCount = CollectionView.CUSTOM_TEMPLATE_ITEM_TYPE;
   constructor() {
     super();
-    this._itemTemplatesByViewType = new Map<number, KeyedTemplate>();
-    (this._defaultTemplate as ViewTypeTemplate).viewType =
-      CollectionView.DEFAULT_TEMPLATE_VIEW_TYPE;
-    this._itemTemplatesByViewType.set(
-      CollectionView.DEFAULT_TEMPLATE_VIEW_TYPE,
-      this._defaultTemplate
-    );
+    // this._itemTemplatesByViewType = new Map<number, KeyedTemplate>();
+    // (this._defaultTemplate as ViewTypeTemplate).viewType =
+    //   CollectionView.DEFAULT_TEMPLATE_VIEW_TYPE;
+    // this._itemTemplatesByViewType.set(
+    //   CollectionView.DEFAULT_TEMPLATE_VIEW_TYPE,
+    //   this._defaultTemplate
+    // );
   }
 
   public createNativeView() {
@@ -194,7 +188,7 @@ export class CollectionView extends CollectionViewBase {
     // if (this.listViewLayout instanceof ListViewLinearLayout) {
     // if (this.listViewLayout.scrollDirection.toLowerCase() === listViewCommonModule.ListViewScrollDirection.Vertical.toLowerCase()) {
     layoutParams.width =
-      org.nativescript.widgets.CommonLayoutParams.MATCH_PARENT;
+      org.nativescript.widgets.CommonLayoutParams.WRAP_CONTENT;
     layoutParams.height =
       org.nativescript.widgets.CommonLayoutParams.WRAP_CONTENT;
     // }
@@ -295,7 +289,6 @@ export class CollectionView extends CollectionViewBase {
     this.refresh();
   }
   onItemTemplatesChanged(oldValue, newValue) {
-    console.log("onItemTemplatesChanged");
     super.onItemTemplatesChanged(oldValue, newValue); // TODO: update current template with the new one
     this.refresh();
   }
@@ -341,9 +334,7 @@ export class CollectionView extends CollectionViewBase {
     if (!this.nativeView) {
       return;
     }
-    if (this._listViewAdapter) {
-      this._listViewAdapter.disposeViewHolderViews();
-    } else {
+    if (!this._listViewAdapter) {
       this._listViewAdapter = this.createComposedAdapter(
         this.nativeViewProtected
       );
@@ -500,7 +491,6 @@ interface CollectionViewAdapter
   // tslint:disable-next-line:no-misused-new
   new (owner: WeakRef<CollectionView>): CollectionViewAdapter;
   clearTemplateTypes();
-  disposeViewHolderViews();
 }
 
 let CollectionViewAdapter: CollectionViewAdapter;
@@ -561,6 +551,12 @@ function initCollectionViewAdapter() {
   class CollectionViewAdapterImpl extends RecyclerView.Adapter<
     CollectionViewCellHolder
   > {
+    templateTypeNumberString = new Map();
+    _currentNativeItemType = 0;
+
+    _viewHolders = new Array();
+    _viewHolderChildren = new Array();
+
     constructor(
       private owner: WeakRef<CollectionView>,
       adapter: RecyclerView.Adapter<any>
@@ -599,12 +595,16 @@ function initCollectionViewAdapter() {
       return true;
     }
 
-    templateTypeNumberString = new Map();
-    _currentNativeItemType = 0;
     public clearTemplateTypes() {
       this._currentNativeItemType = 0;
       this.templateTypeNumberString.clear();
     }
+
+    public notifyDataSetChanged() {
+      this.disposeViewHolderViews();
+      super.notifyDataSetChanged();
+    }
+
     public getItemViewType(position: number) {
       var owner = this.owner.get();
       var resultType = 0;
@@ -615,6 +615,7 @@ function initCollectionViewAdapter() {
         var dataItem = owner.getItemAtIndex(position);
         if (dataItem) {
           const selectorType = selector(dataItem, position, owner.items);
+          // console.log("selectorType", dataItem, position, selectorType);
           if (!this.templateTypeNumberString.has(selectorType)) {
             this.templateTypeNumberString.set(
               selectorType,
@@ -627,16 +628,15 @@ function initCollectionViewAdapter() {
       }
       return resultType;
     }
-    _viewHolders = new Array();
-    _viewHolderChildren = new Array();
+
     disposeViewHolderViews() {
       this._viewHolders = new Array();
       const owner = this.owner.get();
       this._viewHolderChildren.forEach(function(element) {
-        // if (!(element.parent instanceof CollectionView)) {
-        //   owner._removeView(element.parent);
-        // }
-        // element.parent._removeView(element);
+        if (!(element.parent instanceof CollectionView)) {
+          owner._removeView(element.parent);
+        }
+        element.parent._removeView(element);
       });
     }
     getKeyByValue(inputValue) {
@@ -648,52 +648,61 @@ function initCollectionViewAdapter() {
       }, this);
       return result;
     }
-    @profile("onCreateViewHolder")
+
+    @profile
     public onCreateViewHolder(
       parent: android.view.ViewGroup,
       viewType: number
     ) {
+      // profiling.start("onCreateViewHolder");
       const owner = this.owner.get();
       // const date = Date.now();
+
       const templateType = this.getKeyByValue(viewType);
 
-      const view = owner.getViewForViewType(
+      let view: View = owner.getViewForViewType(
         ListViewViewTypes.ItemView,
         templateType
       );
 
-      // console.log("onCreateViewHolder", templateType, view);
+      const isVue = !!view["defaultItemView"];
+      // console.log(
+      //   "onCreateViewHolder",
+      //   viewType,
+      //   templateType,
+      //   isVueOrAngular,
+      //   view
+      // );
 
-      var parentView = new StackLayout();
-      // parentView.backgroundColor = "red";
-      // parentView.padding = 10;
-      // parentView.borderRadius = 10;
-      var layoutParams = owner._getViewLayoutParams();
-      parentView.orientation = "vertical";
-      parentView.addChild(view);
-      this._viewHolderChildren.push(parentView);
+      //dont create unecessary StackLayout if template.createView returns. Will happend when not using Vue or angular
+      if (isVue) {
+        var parentView = new StackLayout();
+        var layoutParams = owner._getViewLayoutParams();
+        parentView.orientation = "vertical";
+        parentView.addChild(view);
 
-      propagateInheritableProperties(owner, parentView);
-      (parentView as any)._inheritStyleScope((owner as any)._styleScope);
-      propagateInheritableCssProperties(owner.style, parentView.style);
-      parentView._setupUI(parent.getContext());
-      if (!parentView.isLoaded) {
-        (parentView as any).callLoaded();
+        view = parentView;
       }
+      this._viewHolderChildren.push(view);
+      owner._addView(view);
 
-      parentView.nativeView.setLayoutParams(layoutParams);
       // parentView.nativeView.setBackgroundResource(this._selectionViewId);
       var holder = new CollectionViewCellHolder(
-        new WeakRef(parentView),
+        new WeakRef(view),
         new WeakRef(owner)
       );
-      holder["nsView"] = parentView;
+
+      if (isVue) {
+        view.nativeView.setLayoutParams(layoutParams);
+        holder["defaultItemView"] = true;
+      }
+
+      holder["nsView"] = view;
       this._viewHolders.push(holder);
 
-      // console.log('onCreateViewHolder2', template.key, viewType, !!view._context, !!view.parent, !!view.nativeView);
-      // console.log('onCreateViewHolder', Date.now() - date + 'ms');
-      // owner._addView(view);
-
+      // profiling.stop("onCreateViewHolder");
+      // (profiling as any).print("onCreateViewHolder");
+      // profiling.resetProfiles();
       return holder;
 
       // const v = android.view.LayoutInflater.from(parent.getContext()).inflate(getLayout('text_row_item'), parent, false);
@@ -716,25 +725,53 @@ function initCollectionViewAdapter() {
     // public onCreateFooterItemViewHolder(parent: android.view.ViewGroup, viewType: number) {
     //     return null;
     // }
+    patchHolderViewIfChanged(holder, view) {
+      if (
+        !!holder["defaultItemView"] &&
+        view !== holder["nsView"]._subViews[0]
+      ) {
+        // console.log("patchHolderView", view);
+        // the view has been changed on the event handler
+        holder["nsView"].removeChildren();
+        holder["nsView"].addChild(view);
+      }
+    }
+    private applyBindingContext(view: View, data) {
+      view.bindingContext = data;
+    }
 
-    @profile("onBindViewHolder")
-    public onBindViewHolder(
+    private notifyItemLoading(
       holder: CollectionViewCellHolder,
       position: number
     ) {
       const owner = this.owner.get();
-      const data = owner.getItemAtIndex(position);
-      // console.log("onBindViewHolder", data);
-      holder["nsView"].bindingContext = data;
       let args = {
         eventName: CollectionViewBase.itemLoadingEvent,
         index: position,
         object: owner,
-        view: holder["nsView"]._subViews[0],
+        view: !!holder["defaultItemView"]
+          ? holder["nsView"]._subViews[0]
+          : holder["nsView"],
         android: holder
       };
       owner.notify(args);
-      patchHolderViewIfChanged(holder, args.view);
+      return args;
+    }
+
+    @profile
+    public onBindViewHolder(
+      holder: CollectionViewCellHolder,
+      position: number
+    ) {
+      // profiling.start("onBindViewHolder");
+      const owner = this.owner.get();
+      const data = owner.getItemAtIndex(position);
+
+      this.applyBindingContext(holder["nsView"], data);
+
+      const args = this.notifyItemLoading(holder, position);
+
+      this.patchHolderViewIfChanged(holder, args.view);
 
       if (owner._effectiveColWidth || !holder.view.width) {
         holder.view.width = utils.layout.toDeviceIndependentPixels(
@@ -747,6 +784,9 @@ function initCollectionViewAdapter() {
         );
       }
 
+      // profiling.stop("onBindViewHolder");
+      // (profiling as any).print("onBindViewHolder");
+      // profiling.resetProfiles();
       // owner._prepareItem(vh.view, index);
       // this.notifyForItemAtIndex(owner, vh, vh.view, CollectionViewBase.itemLoadingEvent, index);
       // vh.getTextView().setText(data.value);

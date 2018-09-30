@@ -4,6 +4,14 @@
         "**/.git": true,
         "**/.DS_Store": true,
         "bin/**": true
+    },
+    "search.exclude": {
+        "**/.git": true,
+        "**/.DS_Store": true,
+        "bin/**": true,
+        "dev_demo/**": true,
+        "dev_demo_ng/**": true,
+        "dev_demo_vue/**": true
     }
 ,
 "typescript.tsdk": "./node_modules/typescript/lib"

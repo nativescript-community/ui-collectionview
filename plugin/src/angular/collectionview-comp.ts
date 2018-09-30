@@ -44,7 +44,7 @@ import { ObservableArray } from "tns-core-modules/data/observable-array";
 import { profile } from "tns-core-modules/profiling";
 import { KeyedTemplate, View } from "tns-core-modules/ui/core/view";
 import { LayoutBase } from "tns-core-modules/ui/layouts/layout-base";
-import { CollectionViewItemEventData, CollectionView } from "../collectionview";
+import { CollectionViewItemEventData, CollectionView, ListViewViewTypes } from "../collectionview";
 import { collectionViewError, collectionViewLog } from "./trace";
 
 import { getSingleViewRecursive, isKnownView, registerElement } from "nativescript-angular/element-registry";
@@ -79,13 +79,24 @@ export interface SetupItemViewArgs {
 })
 export class CollectionViewComponent implements DoCheck, OnDestroy, AfterContentInit {
     public get nativeElement(): any {
-        return this.collectionView;
+        return this._collectionView;
+    }    
+    public get listView(): any {
+        return this._collectionView;
     }
 
     @ViewChild("loader", { read: ViewContainerRef }) public loader: ViewContainerRef;
     @Output() public setupItemView = new EventEmitter<SetupItemViewArgs>();
     @ContentChild(TemplateRef) public itemTemplateQuery: TemplateRef<GridItemContext>;
 
+    @Input()
+    public get itemTemplate() {
+        return this._itemTemplate;
+    }
+    public set itemTemplate(value: any) {
+        this._itemTemplate = value;
+        this._collectionView.refresh();
+    }
     @Input()
     public get items() {
         return this._items;
@@ -101,22 +112,37 @@ export class CollectionViewComponent implements DoCheck, OnDestroy, AfterContent
                 .create((_index, item) => item);
         }
 
-        this.collectionView.items = this._items;
+        this._collectionView.items = this._items;
     }
 
-    private collectionView: CollectionView;
+    private _collectionView: CollectionView;
     private _items: any;
     private _differ: IterableDiffer<KeyedTemplate>;
-    private itemTemplate: TemplateRef<GridItemContext>;
+    private _itemTemplate: TemplateRef<GridItemContext>;
     private _templateMap: Map<string, KeyedTemplate>;
 
     constructor(
         @Inject(ElementRef) _elementRef: ElementRef,
         @Inject(IterableDiffers) private _iterableDiffers: IterableDiffers,
     ) {
-        this.collectionView = _elementRef.nativeElement;
+        this._collectionView = _elementRef.nativeElement;
 
-        this.collectionView.on(CollectionView.itemLoadingEvent, this.onItemLoading, this);
+        this._collectionView.on(CollectionView.itemLoadingEvent, this.onItemLoading, this);
+        this._collectionView.itemViewLoader = this.itemViewLoader;
+    }
+
+
+    private itemViewLoader = (viewType) => {
+        switch (viewType) {
+            case ListViewViewTypes.ItemView:
+                if (this._itemTemplate && this.loader) {
+                    var nativeItem = this.loader.createEmbeddedView(this._itemTemplate, new GridItemContext(), 0);
+                    var typedView = getItemViewRoot(nativeItem);
+                    typedView[NG_VIEW] = nativeItem;
+                    return typedView;
+                }
+                break;
+            }
     }
 
     public ngAfterContentInit() {
@@ -125,7 +151,7 @@ export class CollectionViewComponent implements DoCheck, OnDestroy, AfterContent
     }
 
     public ngOnDestroy() {
-        this.collectionView.off(CollectionView.itemLoadingEvent, this.onItemLoading, this);
+        this._collectionView.off(CollectionView.itemLoadingEvent, this.onItemLoading, this);
     }
 
     public ngDoCheck() {
@@ -156,39 +182,13 @@ export class CollectionViewComponent implements DoCheck, OnDestroy, AfterContent
 
     // @HostListener('itemLoadingInternal', ['$event'])
     public onItemLoading(args: CollectionViewItemEventData) {
-        if (!args.view && !this.itemTemplate) {
-            return;
+        var index = args.index;
+        var currentItem = args.view.bindingContext;
+        var ngView = args.view[NG_VIEW];
+        if (ngView) {
+            this.setupViewRef(ngView, currentItem, index);
+            this.detectChangesOnChild(ngView, index);
         }
-
-        const index = args.index;
-        const items = args.object.items as any;
-        const currentItem = typeof items.getItem === "function" ? items.getItem(index) : items[index];
-        let viewRef: EmbeddedViewRef<GridItemContext>;
-
-        if (args.view) {
-            collectionViewLog("onItemLoading: " + index + " - Reusing existing view");
-            viewRef = args.view[NG_VIEW];
-            // Getting angular view from original element (in cases when ProxyViewContainer
-            // is used NativeScript internally wraps it in a StackLayout)
-            if (!viewRef && args.view instanceof LayoutBase && args.view.getChildrenCount() > 0) {
-                viewRef = args.view.getChildAt(0)[NG_VIEW];
-            }
-
-            if (!viewRef) {
-                collectionViewError("ViewReference not found for item " + index + ". View recycling is not working");
-            }
-        }
-
-        if (!viewRef) {
-            collectionViewLog("onItemLoading: " + index + " - Creating view from template");
-            viewRef = this.loader.createEmbeddedView(this.itemTemplate, new GridItemContext(), 0);
-            args.view = getItemViewRoot(viewRef);
-            args.view[NG_VIEW] = viewRef;
-        }
-
-        this.setupViewRef(viewRef, currentItem, index);
-
-        this.detectChangesOnChild(viewRef, index);
     }
 
     public setupViewRef(view: EmbeddedViewRef<GridItemContext>, data: any, index: number): void {
@@ -229,10 +229,10 @@ export class CollectionViewComponent implements DoCheck, OnDestroy, AfterContent
             this._templateMap.forEach((value) => {
                 templates.push(value);
             });
-            this.collectionView.itemTemplates = templates;
+            this._collectionView.itemTemplates = templates;
         }
         else { // If the map was not initialized this means that there are no named templates, so we register the default one. 
-            this.collectionView.itemTemplate = this.createNativeViewFactoryFromTemplate(this.itemTemplate);
+            this._collectionView.itemTemplate = this.createNativeViewFactoryFromTemplate(this.itemTemplate);
         }
     }
 
@@ -244,8 +244,8 @@ export class CollectionViewComponent implements DoCheck, OnDestroy, AfterContent
     }
 
     private refresh() {
-      if (this.collectionView) {
-        this.collectionView.refresh();
+      if (this._collectionView) {
+        this._collectionView.refresh();
       }
     }
 }

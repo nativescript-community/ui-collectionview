@@ -40,11 +40,13 @@ export class Model extends Observable  {
         this.dataItems.push({ template: 'trailers', trailerItems: this.trailerItems }); //trailers
         // this._templateSelector = this.templateSelectorFunction;
         // this.loader = new LoadingIndicator();
+
     }
 
     
 
     refresh() {
+        console.log('refresh');
         // var options = {
         //     message: 'Loading...',
         //     android: {
@@ -68,9 +70,10 @@ export class Model extends Observable  {
             )
             .then(
                 (r: any) => {
-                    
+                    console.log('got data', r.results.length, this.dataItems.length);
                     // this.dataItems.addSection(r.results.map((result: MovieItem) => prepareMovieItem(result)))
                     r.results.forEach((result: MovieItem) => {
+                        console.log('adding item', result.title);
                         this.dataItems.push(prepareMovieItem(result));
                     });
                     // this.loader.hide();
@@ -88,6 +91,7 @@ export class Model extends Observable  {
             .getJSON(`https://api.themoviedb.org/3/movie/now_playing?api_key=2d06dfd032252c2f28640c29b6f0b067&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=true&page=1`)
             .then((r: any) => {
                 // this.trailerItems.addSection(r.results.map((result: MovieItem) => prepareMovieItem(result)))
+                console.log('got trailers', r.results.length);
                 r.results.forEach((result: MovieItem) => {
                     this.trailerItems.push(prepareMovieItem(result));
                 });

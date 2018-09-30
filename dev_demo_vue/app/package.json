@@ -1,6 +1,6 @@
 {
   "android": {
-    "v8Flags": "--expose_gc"
+    "markingMode": "none"
   },
   "main": "main",
   "name": "dev_demo_vue",

@@ -7,9 +7,9 @@
             <ActionBar title="Movies"/>
         </Page.actionBar>
     <GridLayout>
-        <gv:CollectionView items="{{ dataItems }}" loadMoreItems="{{onLoadMoreItemsRequested}}"  itemTap="movieTap">
+        <gv:CollectionView items="{{ dataItems }}" loadMoreItems="{{onLoadMoreItemsRequested}}"  itemTap="movieTap"  itemTemplateSelector="templateSelector">
                 <gv:CollectionView.itemTemplates>
-                    <template key="default">
+                    <template key="item">
                         <GridLayout  width="100%" height="120">
                                 <StackLayout orientation="horizontal" style="border-radius:3;">
                                     <Image id="poster" decodeWidth="70dip" src="{{ poster_path }}" width="70" stretch="aspectFill" transition="fade" backgroundColor="red"/>

@@ -4,7 +4,7 @@ var VUE_VIEW = "__vueVNodeRef__";
 exports.default = {
   props: {
     items: {
-      type: Array,
+      type: [Array, Object],
       required: true
     },
     "+alias": {
@@ -95,7 +95,6 @@ exports.default = {
       );
     },
     onItemLoading: function(args) {
-      console.log("onItemLoading", args);
       var index = args.index;
       var items = args.object.items;
       var currentItem =

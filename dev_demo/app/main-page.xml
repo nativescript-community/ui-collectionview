@@ -6,14 +6,14 @@
             
             <lv:CollectionView.itemTemplates>
                 <template key="odd">
-                <StackLayout width="100%" height="100%" backgroundColor="#00ffff" >
+                <GridLayout width="100%" height="100%" backgroundColor="#00ffff" >
                         <Label width="100%" height="60" backgroundColor="#00ffff" text="{{ value }}" verticalAlignment="center"/>
-                        </StackLayout>
+                        </GridLayout>
                 </template>
                 <template key="even">
-                <StackLayout width="100%" height="100%" backgroundColor="#ff55ff">
+                <GridLayout width="100%" height="100%" backgroundColor="#ff55ff">
                         <Label width="100%" height="60" backgroundColor="#ff55ff" row="1" text="{{ value }}" verticalAlignment="center"/>
-                        </StackLayout>
+                        </GridLayout>
                 </template>
             </lv:CollectionView.itemTemplates>
         </lv:CollectionView>

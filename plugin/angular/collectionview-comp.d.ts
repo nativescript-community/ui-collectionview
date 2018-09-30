@@ -18,16 +18,19 @@ export interface SetupItemViewArgs {
 export declare class CollectionViewComponent implements DoCheck, OnDestroy, AfterContentInit {
     private _iterableDiffers;
     readonly nativeElement: any;
+    readonly listView: any;
     loader: ViewContainerRef;
     setupItemView: EventEmitter<SetupItemViewArgs>;
     itemTemplateQuery: TemplateRef<GridItemContext>;
+    itemTemplate: any;
     items: any;
-    private collectionView;
+    private _collectionView;
     private _items;
     private _differ;
-    private itemTemplate;
+    private _itemTemplate;
     private _templateMap;
     constructor(_elementRef: ElementRef, _iterableDiffers: IterableDiffers);
+    private itemViewLoader;
     ngAfterContentInit(): void;
     ngOnDestroy(): void;
     ngDoCheck(): void;
