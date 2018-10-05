@@ -17,13 +17,13 @@ export declare class CollectionView extends CollectionViewBase {
     static CUSTOM_TEMPLATE_ITEM_TYPE: number;
     nativeView: RecyclerView;
     private _listViewAdapter;
-    private layoutManager;
     private itemTypeCount;
     constructor();
     createNativeView(): CollectionViewRecyclerView;
     initNativeView(): void;
     disposeNativeView(): void;
     readonly android: RecyclerView;
+    readonly layoutManager: GridLayoutManager;
     _getViewLayoutParams(): org.nativescript.widgets.CommonLayoutParams;
     onItemViewLoaderChanged(): void;
     onItemTemplateSelectorChanged(oldValue: any, newValue: any): void;
@@ -32,6 +32,7 @@ export declare class CollectionView extends CollectionViewBase {
     onLayout(left: number, top: number, right: number, bottom: number): void;
     onSourceCollectionChanged(event: ChangedData<any>): void;
     isHorizontal(): boolean;
+    private computeSpanCount();
     refresh(): void;
     scrollToIndex(index: number, animated?: boolean): void;
     private _setPadding(newPadding);

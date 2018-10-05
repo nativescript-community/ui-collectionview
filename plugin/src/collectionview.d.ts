@@ -1,1 +1,0 @@
-../collectionview.d.ts

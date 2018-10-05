@@ -143,6 +143,7 @@ export class CollectionViewComponent implements DoCheck, OnDestroy, AfterContent
                 }
                 break;
             }
+            return null;
     }
 
     public ngAfterContentInit() {

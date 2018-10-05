@@ -1,10 +1,10 @@
 <template>
   <Page>
     <StackLayout>
-      <CollectionView width="100%" height="100%" rowHeight="60" ref="listView" for="item in itemList" @itemTap="onItemTap">
+      <CollectionView width="100%" height="100%" rowHeight="60" ref="listView" for="item in itemList" @itemTap="onItemTap" backgroundColor="blue">
         <v-template>
           <StackLayout orientation="vertical" borderRadius="4" backgroundColor="yellow">
-            <Label :text="item.value"></Label>
+            <Label :text="item.value" backgroundColor="white"></Label>
           </StackLayout>
         </v-template>
       </CollectionView>

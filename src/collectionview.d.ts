@@ -1,0 +1,1 @@
+../plugin/collectionview.d.ts

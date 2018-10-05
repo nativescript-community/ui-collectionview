@@ -15,8 +15,10 @@ android {
   }  
 } 
 dependencies {
-    def supportVer = project.hasProperty("supportVersion") ? supportVersion : "+";
-    compile "com.android.support:recyclerview-v7:$supportVer"
+    def supportVersion = project.hasProperty("supportVersion") ? supportVersion : "27+";
+    compile "com.android.support:recyclerview-v7:$supportVersion"
+    compile "com.android.support:appcompat-v7:$supportVersion"
+    compile "com.android.support:design:$supportVersion"
      compile ('com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:0.11.0@aar'){
         transitive=true
     }

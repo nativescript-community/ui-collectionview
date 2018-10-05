@@ -30,7 +30,7 @@ exports.default = {
   watch: {
     items: {
       handler: function(newVal) {
-        console.log("items changed", newVal);
+        // console.log("items changed", newVal);
         this.$refs.listView.setAttribute("items", newVal);
       },
       deep: true

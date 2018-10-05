@@ -22,6 +22,17 @@ declare module com {
 			}
 		}
 	}
+
+	export module telerik {
+		export module widget {
+			export module list {
+				export class ListViewHolder extends globalAndroid.support.v7.widget.RecyclerView.ViewHolder {
+					public static class: java.lang.Class<com.telerik.widget.list.ListViewHolder>;
+					public constructor(param0: globalAndroid.view.View);
+				}
+			}
+		}
+	}
 }
 
 import androidsupportv7widgetRecyclerViewAdapter = android.support.v7.widget.RecyclerView.Adapter;

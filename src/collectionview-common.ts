@@ -1,20 +1,3 @@
-/*! *****************************************************************************
-Copyright (c) 2017 Tangra Inc.
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-***************************************************************************** */
-
-// import { ObservableArray } from 'data/observable-array';
 import * as observable from "data/observable";
 import { parseMultipleTemplates } from "ui/builder";
 import {
@@ -66,7 +49,6 @@ export abstract class CollectionViewBase extends View
   public orientation: Orientation;
   public itemTemplate: string | Template;
   public itemTemplates: string | KeyedTemplate[];
-  // public items: any[] | ItemsSource;
   public isItemsSourceIn: boolean;
   public rowHeight: PercentLength;
   public colWidth: PercentLength;
@@ -80,17 +62,14 @@ export abstract class CollectionViewBase extends View
   protected _itemTemplatesInternal: KeyedTemplate[];
   protected _defaultTemplate: KeyedTemplate;
   private _itemTemplateSelectorBindable = new Label();
-  private _itemTemplateSelector: (
-    item: any,
-    index: number,
-    items: any
-  ) => string;
+
 
   constructor() {
     super();
     this._defaultTemplate = {
-      key: "__default",
+      key: "default",
       createView: () => {
+        console.log('default createView', this.itemTemplate);
         if (this.itemTemplate) {
           return builder.parse(this.itemTemplate, this);
         }
@@ -108,68 +87,54 @@ export abstract class CollectionViewBase extends View
   public abstract refresh();
   public abstract scrollToIndex(index: number, animated: boolean);
 
-  public onLayout(left: number, top: number, right: number, bottom: number) {
-    super.onLayout(left, top, right, bottom);
-    this._innerWidth =
-      right - left - this.effectivePaddingLeft - this.effectivePaddingRight;
-    // console.log('onLayout', this.colWidth, this.rowHeight);
+  public setMeasuredDimension(measuredWidth: number, measuredHeight: number) {
+    super.setMeasuredDimension(measuredWidth, measuredHeight);
+    let changed  = false;
+    this._innerWidth = measuredWidth - this.effectivePaddingLeft - this.effectivePaddingRight;
     if (this.colWidth) {
-      this._effectiveColWidth = PercentLength.toDevicePixels(
+      const newValue = PercentLength.toDevicePixels(
         this.colWidth,
         autoEffectiveColWidth,
         this._innerWidth
       ); // We cannot use 0 for auto as it throws for android.
+      if (newValue !== this._effectiveColWidth) {
+        this._effectiveColWidth = newValue;
+        changed = true;
+      }
     }
 
-    this._innerHeight =
-      bottom - top - this.effectivePaddingTop - this.effectivePaddingBottom;
+    this._innerHeight = measuredHeight - this.effectivePaddingTop - this.effectivePaddingBottom;
     if (this.rowHeight) {
-      this._effectiveRowHeight = PercentLength.toDevicePixels(
+      const newValue = PercentLength.toDevicePixels(
         this.rowHeight,
         autoEffectiveRowHeight,
         this._innerHeight
       );
+      if (newValue !== this._effectiveRowHeight) {
+        this._effectiveRowHeight = newValue;
+        changed = true;
+      }
+    }
+    if (changed) {
+      this.refresh();
     }
   }
+  // public onLayout(left: number, top: number, right: number, bottom: number) {
+  //   super.onLayout(left, top, right, bottom);
+  // }
   items: any[] | ItemsSource;
-  // get items(): any[] | ItemsSource {
-  //   return this._getValue(itemsProperty);
-  // }
-  // set items(value: any[] | ItemsSource) {
-  //   this._setValue(itemsProperty, value);
-  // }
 
   public _prepareItem(item: View, index: number) {
     if (item) {
-      // const dataItem = this._getDataItem(row);
-      // console.log('_prepareItem', item, row, dataItem);
-      // if (!(dataItem instanceof observable.Observable)) {
-      //     item.bindingContext = null;
-      // }
       item.bindingContext = this.getItemAtIndex(index);
     }
   }
 
   public getItemAtIndex(index: number): any {
-    // console.log('_getDataItem', index, this.items);
-    // if(this.sections.getItem()) {
-    // return this.items.getItem(row);
-    // }
+
     const thisItems = this.items as ItemsSource;
     return thisItems.getItem ? thisItems.getItem(index) : thisItems[index];
-    // return this.isItemsSourceIn ? (this.items as ItemsSource).getItem(index) : this.items[index];
   }
-
-  // public _getDefaultHeaderContent(row: number, section:number = 0): View {
-  //     var label: typeof labelModule = require("ui/label");
-
-  //     var lbl = new label.Label();
-  //     lbl.bind({
-  //         targetProperty: "text",
-  //         sourceProperty: "$value"
-  //     });
-  //     return lbl;
-  // }
 
   public _onRowHeightPropertyChanged(
     oldValue: PercentLength,
@@ -227,7 +192,6 @@ export abstract class CollectionViewBase extends View
     if (templateKey) {
       var template = this.getTemplateFromSelector(templateKey);
       newView = template.createView();
-      // console.log('getViewForViewType', templateKey, newView);
     }
     if (!newView && this._itemViewLoader !== undefined) {
       newView = this._itemViewLoader(viewType);
@@ -240,7 +204,8 @@ export abstract class CollectionViewBase extends View
       case ListViewViewTypes.ItemView:
         templateString = this.itemTemplate;
         if (templateString === undefined) {
-          return this._getDefaultItemContent();
+          return undefined;
+          // return this._getDefaultItemContent();
         }
         break;
     }
@@ -266,6 +231,7 @@ export abstract class CollectionViewBase extends View
     }
   }
   onItemTemplatesChanged(oldValue, newValue) {
+    console.log('onItemTemplatesChanged', newValue);
     this._itemTemplatesInternal = new Array(this._defaultTemplate);
     if (newValue) {
       this._itemTemplatesInternal = this._itemTemplatesInternal.concat(
@@ -285,10 +251,7 @@ export abstract class CollectionViewBase extends View
   }
 
   onItemsChangedInternal = (oldValue, newValue) => {
-    // console.log("onItemsChangedInternal", newValue instanceof observable.Observable);
-
     const getItem = newValue && (newValue as ItemsSource).getItem;
-
     this.isItemsSourceIn = typeof getItem === "function";
 
     if (oldValue instanceof observable.Observable) {
@@ -313,6 +276,10 @@ export abstract class CollectionViewBase extends View
     }
     this.refresh();
   };
+  onLoaded() {
+    super.onLoaded();
+    this.refresh();
+  }
   onSourceCollectionChanged(event: ChangedData<any>) {
     this.refresh();
   }
@@ -332,7 +299,7 @@ export abstract class CollectionViewBase extends View
   }
 }
 
-const defaultRowHeight: Length = "auto";
+const defaultRowHeight: Length = 'auto';
 export const rowHeightProperty = new CoercibleProperty<
   CollectionViewBase,
   PercentLength
@@ -352,12 +319,11 @@ export const rowHeightProperty = new CoercibleProperty<
       target._innerHeight
     );
     target._onRowHeightPropertyChanged(oldValue, newValue);
-    // target.refresh();
   }
 });
 rowHeightProperty.register(CollectionViewBase);
 
-const defaultColWidth: PercentLength = "auto";
+const defaultColWidth: PercentLength = {unit:'%', value:1};
 export const colWidthProperty = new CoercibleProperty<
   CollectionViewBase,
   PercentLength
@@ -377,7 +343,6 @@ export const colWidthProperty = new CoercibleProperty<
       target._innerWidth
     );
     target._onColWidthPropertyChanged(oldValue, newValue);
-    // target.refresh();
   }
 });
 colWidthProperty.register(CollectionViewBase);

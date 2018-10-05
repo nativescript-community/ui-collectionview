@@ -172,15 +172,12 @@ export class CollectionView extends CollectionViewBase {
                 return;
             }
             case ChangeType.Splice: {
-                // this.ios.performBatchUpdatesCompletion(() => {
                     if (event.addedCount > 0) {
                         const indexes = NSMutableArray.alloc<NSIndexPath>().init();
                         for (let index = 0; index < event.addedCount; index++) {
                             indexes.addObject(NSIndexPath.indexPathForItemInSection(event.index + index, 0));
                         }
-                        // console.log('insertItemsAtIndexPaths2', indexes.count);
                         this.ios.insertItemsAtIndexPaths(indexes);
-                        // console.log('insertItemsAtIndexPaths2 done', indexes.count);
                     }
                     if (event.removed && event.removed.length > 0) {
                         const indexes = NSMutableArray.new<NSIndexPath>();
@@ -191,7 +188,6 @@ export class CollectionView extends CollectionViewBase {
                         // console.log('deleteItemsAtIndexPaths', indexes.count);
                         this.ios.deleteItemsAtIndexPaths(indexes);
                     }
-                // }, null);
 
                 return;
             }

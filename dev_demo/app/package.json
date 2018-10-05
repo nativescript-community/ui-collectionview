@@ -1,8 +1,10 @@
 {
     "android": {
+      "v8Flags": "--expose_gc",
       "markingMode": "none"
     },
     "main": "app.js",
     "name": "collectionviewdemo",
-    "version": "1.0.0"
+    "version": "1.0.0",
+    "profiling": "timeline"
   }
