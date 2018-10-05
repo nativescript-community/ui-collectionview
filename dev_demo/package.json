@@ -1,8 +1,8 @@
 {
   "nativescript": {
     "id": "com.nativescript.collectionviewexample",
-    "tns-android": {
-      "version": "5.0.0-2018-09-28-195532-01"
+    "tns-ios": {
+      "version": "4.2.0"
     }
   },
   "scripts": {
@@ -10,12 +10,10 @@
     "ios": "npm uninstall nativescript-collectionview && tns run ios --emulator"
   },
   "dependencies": {
-    "nativescript-ui-listview": "^3.7.0",
-    "tns-core-modules": "4.3.0-2018-09-28-182206-01",
-    "tns-core-modules-widgets": "4.3.0-2018-09-21-04"
+    "nativescript-ui-listview": "^3.7.1",
+    "tns-core-modules": "4.2.1"
   },
   "devDependencies": {
-    "tns-android": "5.0.0-2018-09-28-195532-01",
     "awesome-typescript-loader": "~5.2.1",
     "babel-traverse": "6.26.0",
     "babel-types": "6.26.0",
