@@ -33,8 +33,8 @@
     },
     "include": [
         "src/**/*.ts",
-        "./references.d.ts",
-        "./src/references.d.ts"
+        "references.d.ts",
+        "src/references.d.ts"
     ],
     "exclude": [
         "node_modules",
