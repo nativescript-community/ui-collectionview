@@ -36,6 +36,15 @@ export * from "ui/core/view";
 export enum ListViewViewTypes {
   ItemView
 }
+
+export namespace knownTemplates {
+  export const itemTemplate = "itemTemplate";
+}
+
+export namespace knownMultiTemplates {
+  export const itemTemplates = "itemTemplates";
+}
+
 export abstract class CollectionViewBase extends View
   implements CollectionViewDefinition {
   public static itemLoadingEvent = "itemLoading";
@@ -63,13 +72,11 @@ export abstract class CollectionViewBase extends View
   protected _defaultTemplate: KeyedTemplate;
   private _itemTemplateSelectorBindable = new Label();
 
-
   constructor() {
     super();
     this._defaultTemplate = {
       key: "default",
       createView: () => {
-        console.log('default createView', this.itemTemplate);
         if (this.itemTemplate) {
           return builder.parse(this.itemTemplate, this);
         }
@@ -89,8 +96,9 @@ export abstract class CollectionViewBase extends View
 
   public setMeasuredDimension(measuredWidth: number, measuredHeight: number) {
     super.setMeasuredDimension(measuredWidth, measuredHeight);
-    let changed  = false;
-    this._innerWidth = measuredWidth - this.effectivePaddingLeft - this.effectivePaddingRight;
+    let changed = false;
+    this._innerWidth =
+      measuredWidth - this.effectivePaddingLeft - this.effectivePaddingRight;
     if (this.colWidth) {
       const newValue = PercentLength.toDevicePixels(
         this.colWidth,
@@ -103,7 +111,8 @@ export abstract class CollectionViewBase extends View
       }
     }
 
-    this._innerHeight = measuredHeight - this.effectivePaddingTop - this.effectivePaddingBottom;
+    this._innerHeight =
+      measuredHeight - this.effectivePaddingTop - this.effectivePaddingBottom;
     if (this.rowHeight) {
       const newValue = PercentLength.toDevicePixels(
         this.rowHeight,
@@ -131,7 +140,6 @@ export abstract class CollectionViewBase extends View
   }
 
   public getItemAtIndex(index: number): any {
-
     const thisItems = this.items as ItemsSource;
     return thisItems.getItem ? thisItems.getItem(index) : thisItems[index];
   }
@@ -162,15 +170,15 @@ export abstract class CollectionViewBase extends View
   resolveTemplateView(template) {
     return builder.parse(template, this);
   }
-  _getDefaultItemContent() {
-    var lbl = new Label();
-    lbl['defaultItemView'] = true;
-    lbl.bind({
-      targetProperty: "text",
-      sourceProperty: "$value"
-    });
-    return lbl;
-  }
+  // _getDefaultItemContent() {
+  //   var lbl = new Label();
+  //   lbl["defaultItemView"] = true;
+  //   lbl.bind({
+  //     targetProperty: "text",
+  //     sourceProperty: "$value"
+  //   });
+  //   return lbl;
+  // }
   getTemplateFromSelector(templateKey) {
     for (
       var i = 0, length_1 = this._itemTemplatesInternal.length;
@@ -231,7 +239,6 @@ export abstract class CollectionViewBase extends View
     }
   }
   onItemTemplatesChanged(oldValue, newValue) {
-    console.log('onItemTemplatesChanged', newValue);
     this._itemTemplatesInternal = new Array(this._defaultTemplate);
     if (newValue) {
       this._itemTemplatesInternal = this._itemTemplatesInternal.concat(
@@ -239,7 +246,8 @@ export abstract class CollectionViewBase extends View
       );
     }
   }
-  onItemTemplateChanged(oldValue, newValue) {}
+  onItemTemplateChanged(oldValue, newValue) {
+  }
   onItemTemplateSelectorPropertyChanged(oldValue, newValue) {
     this.onItemTemplateSelectorChanged(oldValue, newValue);
   }
@@ -284,7 +292,6 @@ export abstract class CollectionViewBase extends View
     this.refresh();
   }
   onSourceCollectionChangedInternal(event: ChangedData<any>) {
-    // console.log("onSourceCollectionChangedInternal");
     this.onSourceCollectionChanged(event);
   }
   onItemsChanged(oldValue, newValue) {
@@ -299,7 +306,7 @@ export abstract class CollectionViewBase extends View
   }
 }
 
-const defaultRowHeight: Length = 'auto';
+const defaultRowHeight: Length = "auto";
 export const rowHeightProperty = new CoercibleProperty<
   CollectionViewBase,
   PercentLength
@@ -323,7 +330,7 @@ export const rowHeightProperty = new CoercibleProperty<
 });
 rowHeightProperty.register(CollectionViewBase);
 
-const defaultColWidth: PercentLength = {unit:'%', value:1};
+const defaultColWidth: PercentLength = { unit: "%", value: 1 };
 export const colWidthProperty = new CoercibleProperty<
   CollectionViewBase,
   PercentLength

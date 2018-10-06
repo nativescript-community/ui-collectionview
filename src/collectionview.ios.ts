@@ -149,6 +149,9 @@ export class CollectionView extends CollectionViewBase {
 
     public onSourceCollectionChanged(event /*: ChangedData<any>*/) {
         // console.log('onItemsChanged', event.action, event.index, event.addedCount, event.removed && event.removed.length);
+        // this.refresh();
+
+        // return;
         switch (event.action) {
             case ChangeType.Delete: {
                 const nativeSource = NSMutableArray.new<NSIndexPath>();
@@ -159,19 +162,22 @@ export class CollectionView extends CollectionViewBase {
             }
             case ChangeType.Add: {
                 const nativeSource = NSMutableArray.new<NSIndexPath>();
-                for (var i = 0; i < event.addedCount; i++) {
-                    nativeSource.addObject(NSIndexPath.indexPathForRowInSection(event.index + i, 0));
+                for (let index = 0; index < event.addedCount; index++) {
+                    nativeSource.addObject(NSIndexPath.indexPathForRowInSection(event.index + index, 0));
                 }
                 // if (this._nativeView.collectionView.dragging) {
                 //     // Adjust the content offset to force stop the drag:
                 //     this._nativeView.collectionView.setContentOffsetAnimated(this._nativeView.collectionView.contentOffset, false);
                 // }
-                this.ios.insertItemsAtIndexPaths(nativeSource);
+                this.ios.performBatchUpdatesCompletion(()=>{
+                    this.ios.insertItemsAtIndexPaths(nativeSource);
+                    // this.ios.reloadItemsAtIndexPaths(nativeSource);
+                }, null);
                 // Reload the items to avoid duplicate Load on Demand indicators:
-                this.ios.reloadItemsAtIndexPaths(nativeSource);
                 return;
             }
             case ChangeType.Splice: {
+                this.ios.performBatchUpdatesCompletion(() => {
                     if (event.addedCount > 0) {
                         const indexes = NSMutableArray.alloc<NSIndexPath>().init();
                         for (let index = 0; index < event.addedCount; index++) {
@@ -188,12 +194,20 @@ export class CollectionView extends CollectionViewBase {
                         // console.log('deleteItemsAtIndexPaths', indexes.count);
                         this.ios.deleteItemsAtIndexPaths(indexes);
                     }
+                }, null);
 
                 return;
             }
             // break;
         }
         this.refresh();
+    }
+
+    onItemTemplatesChanged (oldValue, newValue) {
+        super.onItemTemplatesChanged(oldValue, newValue);
+        for (var i = 0, length_1 = this._itemTemplatesInternal.length; i < length_1; i++) {
+            this.ios.registerClassForCellWithReuseIdentifier(CollectionViewCell.class(), this._itemTemplatesInternal[i].key.toLowerCase());
+        }
     }
 
     private unbindUnusedCells(removedDataItems) {
@@ -254,6 +268,7 @@ export class CollectionView extends CollectionViewBase {
         if (selector) {
             type = selector(this.getItemAtIndex(indexPath.item), indexPath.item, this.items);
         }
+        // console.log('_getItemTemplateType', indexPath.row, type);
         return type.toLowerCase();
     }
     getItemTemplateContent (index, templateType) {
@@ -285,7 +300,6 @@ export class CollectionView extends CollectionViewBase {
             // }
 
             // If cell is reused it have old content - remove it first.
-            // console.log('_prepareCell', indexPath.row, !!cell.view, cell.view !== view);
             if (!cell.view) {
                 cell.owner = new WeakRef(view);
             } else if (cell.view !== view) {
@@ -298,7 +312,7 @@ export class CollectionView extends CollectionViewBase {
             this._map.set(cell, view);
 
             if (view && !view.parent) {
-                this._addView(view);
+                this._addViewCore(view);
                 cell.contentView.addSubview(view.nativeViewProtected);
             }
 
@@ -318,6 +332,9 @@ export class CollectionView extends CollectionViewBase {
         return cellSize;
     }
     public getCellSize(index: number) {
+        if (this._effectiveColWidth && this._effectiveRowHeight) {
+            return CGSizeMake(utilLayout.toDeviceIndependentPixels(this._effectiveColWidth), utilLayout.toDeviceIndependentPixels(this._effectiveRowHeight));
+        }
         return this._sizes[index];
     }
     public storeCellSize(index: number, value) {
@@ -397,13 +414,12 @@ class CollectionViewDataSource extends NSObject implements UICollectionViewDataS
 
     public collectionViewNumberOfItemsInSection(collectionView: UICollectionView, section: number) {
         const owner = this._owner.get();
-        return owner.items ? owner.items.length : 0;
+       return owner.items ? owner.items.length : 0;
     }
 
     public collectionViewCellForItemAtIndexPath(collectionView: UICollectionView, indexPath: NSIndexPath): UICollectionViewCell {
-        // console.log('collectionViewCellForItemAtIndexPath', indexPath.row);
         const owner = this._owner.get();
-        var templateType = this._owner.get()._getItemTemplateType(indexPath);
+        var templateType = owner._getItemTemplateType(indexPath);
         const cell: any = collectionView.dequeueReusableCellWithReuseIdentifierForIndexPath(templateType, indexPath) || CollectionViewCell.new();
 
         owner._prepareCell(cell, indexPath, templateType);
@@ -475,10 +491,11 @@ class UICollectionViewDelegateImpl extends NSObject implements UICollectionViewD
         if (dataItem.visible === false) {
             return CGSizeZero;
         }
+
+
         let measuredSize = owner.getCellSize(indexPath.row);
-        // console.log('collectionViewLayoutSizeForItemAtIndexPath', indexPath.row, indexPath.section, measuredSize);
         // if (measuredSize === undefined) {
-            var templateType = this._owner.get()._getItemTemplateType(indexPath);
+        var templateType = owner._getItemTemplateType(indexPath);
             if (templateType) {
                 let cell = this._measureCellMap.get(templateType);
                 if (!cell) {

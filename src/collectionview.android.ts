@@ -1,15 +1,9 @@
 ﻿import {
-  KeyedTemplate,
   Length,
-  View,
-  propagateInheritableProperties,
-  propagateInheritableCssProperties
+  View
 } from "ui/core/view";
 import { StackLayout } from "ui/layouts/stack-layout";
 import * as utils from "utils/utils";
-import * as application from "application";
-
-import * as profiling from "profiling";
 
 import {
   ListViewViewTypes,
@@ -27,39 +21,30 @@ import { CollectionViewItemEventData, Orientation } from "./collectionview";
 
 export * from "./collectionview-common";
 
-export interface ViewTypeTemplate extends KeyedTemplate {
+// export interface ViewTypeTemplate extends KeyedTemplate {
   // key: string;
   // createView: Template;
-  viewType?: number;
-}
+//   viewType?: number;
+// }
 
-export const knownTemplates = {
-  itemTemplate: "itemTemplate"
-};
-
-export const knownMultiTemplates = {
-  itemTemplates: "itemTemplates"
-};
-
-function getLayout(id: string) {
-  var context = application.android.context;
-  return context
-    .getResources()
-    .getIdentifier(id, "layout", context.getPackageName());
-}
-function getId(id: string) {
-  var context = application.android.context;
-  return context
-    .getResources()
-    .getIdentifier(id, "id", context.getPackageName());
-}
+// function getLayout(id: string) {
+//   var context = application.android.context;
+//   return context
+//     .getResources()
+//     .getIdentifier(id, "layout", context.getPackageName());
+// }
+// function getId(id: string) {
+//   var context = application.android.context;
+//   return context
+//     .getResources()
+//     .getIdentifier(id, "id", context.getPackageName());
+// }
 
 import RecyclerView = android.support.v7.widget.RecyclerView;
 // import GridLayoutManager = android.support.v7.widget.GridLayoutManager;
 
 // import RecyclerViewExpandableItemManager = com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandableItemManager;
 import { ChangedData } from "data/observable-array";
-import { profile } from "profiling";
 
 const HORIZONTAL = android.support.v7.widget.LinearLayoutManager.HORIZONTAL;
 
@@ -133,7 +118,7 @@ export class CollectionView extends CollectionViewBase {
     const orientation = this._getLayoutManagarOrientation();
 
     initGridLayoutManager();
-    const layoutManager =  new GridLayoutManager(
+    const layoutManager = new GridLayoutManager(
       this._context,
       new WeakRef(this)
     );
@@ -339,7 +324,6 @@ export class CollectionView extends CollectionViewBase {
   public isHorizontal() {
     return this.orientation === "horizontal";
   }
-
 
   private computeSpanCount() {
     let spanCount = 1;
@@ -578,7 +562,7 @@ function initCollectionViewAdapter() {
   CollectionViewCellHolder = CollectionViewCellHolderImpl as any;
 
   class CollectionViewAdapterImpl extends RecyclerView.Adapter<
-  CollectionViewCellHolder
+    CollectionViewCellHolder
   > {
     templateTypeNumberString = new Map();
     _currentNativeItemType = 0;
@@ -676,7 +660,6 @@ function initCollectionViewAdapter() {
       return result;
     }
 
-    @profile("onCreateViewHolder")
     public onCreateViewHolder(
       parent: android.view.ViewGroup,
       viewType: number
@@ -742,11 +725,10 @@ function initCollectionViewAdapter() {
     // }
 
     // patchHolderViewIfChanged(holder: CollectionViewCellHolder, view) {
-      // console.log("patchHolderViewIfChanged", !!holder["defaultItemView"], (holder.view as StackLayout).getChildAt(0), view);
-      
+    // console.log("patchHolderViewIfChanged", !!holder["defaultItemView"], (holder.view as StackLayout).getChildAt(0), view);
+
     // }
 
-    @profile("onBindViewHolder")
     public onBindViewHolder(
       holder: CollectionViewCellHolder,
       position: number
@@ -856,7 +838,10 @@ function initCollectionViewRecyclerView() {
       super.onMeasure(widthMeasureSpec, heightMeasureSpec);
       const owner = this.owner.get();
       if (owner) {
-        owner.setMeasuredDimension(this.getMeasuredWidth(), this.getMeasuredHeight());
+        owner.setMeasuredDimension(
+          this.getMeasuredWidth(),
+          this.getMeasuredHeight()
+        );
       }
     }
 
@@ -903,7 +888,7 @@ function initGridLayoutManager() {
 
       return global.__native(this);
     }
-    
+
     onLayoutCompleted(state) {
       super.onLayoutCompleted(state);
       for (let i = 0; i < this.getChildCount(); i++) {
