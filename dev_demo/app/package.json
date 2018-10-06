@@ -5,6 +5,5 @@
     },
     "main": "app.js",
     "name": "collectionviewdemo",
-    "version": "1.0.0",
-    "profiling": "timeline"
+    "version": "1.0.0"
   }
