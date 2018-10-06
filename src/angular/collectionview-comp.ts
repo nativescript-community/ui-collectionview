@@ -38,14 +38,11 @@ import {
     ViewChild,
     ViewContainerRef,
     ɵisListLikeIterable as isListLikeIterable,
-    HostListener,
 } from "@angular/core";
 import { ObservableArray } from "tns-core-modules/data/observable-array";
-import { profile } from "tns-core-modules/profiling";
 import { KeyedTemplate, View } from "tns-core-modules/ui/core/view";
-import { LayoutBase } from "tns-core-modules/ui/layouts/layout-base";
 import { CollectionViewItemEventData, CollectionView, ListViewViewTypes } from "../collectionview";
-import { collectionViewError, collectionViewLog } from "./trace";
+import { collectionViewLog } from "./trace";
 
 import { getSingleViewRecursive, isKnownView, registerElement } from "nativescript-angular/element-registry";
 
@@ -237,7 +234,6 @@ export class CollectionViewComponent implements DoCheck, OnDestroy, AfterContent
         }
     }
 
-    @profile
     private detectChangesOnChild(viewRef: EmbeddedViewRef<GridItemContext>, index: number) {
         collectionViewLog("Manually detect changes in child: " + index);
         viewRef.markForCheck();
