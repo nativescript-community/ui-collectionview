@@ -72,10 +72,11 @@ export class Model extends Observable  {
                 (r: any) => {
                     console.log('got data', r.results.length, this.dataItems.length);
                     // this.dataItems.addSection(r.results.map((result: MovieItem) => prepareMovieItem(result)))
-                    r.results.forEach((result: MovieItem) => {
-                        console.log('adding item', result.title);
-                        this.dataItems.push(prepareMovieItem(result));
-                    });
+                    // r.results.forEach((result: MovieItem) => {
+                    //     console.log('adding item', result.title);
+                    //     this.dataItems.push(prepareMovieItem(result));
+                    // });
+                    this.dataItems.push(r.results.map((result: MovieItem) => prepareMovieItem(result)));
                     // this.loader.hide();
                 },
                 function(e) {
@@ -92,9 +93,10 @@ export class Model extends Observable  {
             .then((r: any) => {
                 // this.trailerItems.addSection(r.results.map((result: MovieItem) => prepareMovieItem(result)))
                 console.log('got trailers', r.results.length);
-                r.results.forEach((result: MovieItem) => {
-                    this.trailerItems.push(prepareMovieItem(result));
-                });
+                // r.results.forEach((result: MovieItem) => {
+                //     this.trailerItems.push(prepareMovieItem(result));
+                // });
+                this.trailerItems.push(r.results.map((result: MovieItem) => prepareMovieItem(result)));
                 // this.loader.hide();
             });
     }

@@ -4,6 +4,6 @@ import application = require("application");
 // import profiling = require("profiling");
 
 
-// profiling.enable('timeline');
-// profiling.start();
-application.start({ moduleName: "main-page" });
+// // profiling.enable('timeline');
+// profiling.disable();
+application.start({ moduleName: "movietest/page" });
