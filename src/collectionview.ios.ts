@@ -284,6 +284,7 @@ export class CollectionView extends CollectionViewBase {
             }
 
             let args = this.notifyForItemAtIndex(this, cell, view, CollectionViewBase.itemLoadingEvent, indexPath);
+            view = args.view;
             // this.notify({
             //     eventName: CollectionViewBase.itemLoadingInternalEvent,
             //     object: this,
@@ -318,7 +319,7 @@ export class CollectionView extends CollectionViewBase {
 
             cellSize = this._layoutCell(cell, view, indexPath);
 
-            this.notifyForItemAtIndex(this, cell, view, CollectionViewBase.itemLoadingEvent, indexPath);
+            // this.notifyForItemAtIndex(this, cell, view, CollectionViewBase.itemLoadingEvent, indexPath);
             // this.notify({
             //     eventName: CollectionViewBase.itemLoadingEvent,
             //     object: this,
