@@ -1,11 +1,16 @@
 import { CoercibleProperty, KeyedTemplate, Length, PercentLength, Property, Template, View } from "ui/core/view";
-import { Label } from "ui/label";
 import { ItemsSource } from "ui/list-view";
 import { CollectionView as CollectionViewDefinition, Orientation } from "./collectionview";
 import { ChangedData } from "data/observable-array";
 export * from "ui/core/view";
 export declare enum ListViewViewTypes {
     ItemView = 0,
+}
+export declare namespace knownTemplates {
+    const itemTemplate = "itemTemplate";
+}
+export declare namespace knownMultiTemplates {
+    const itemTemplates = "itemTemplates";
 }
 export declare abstract class CollectionViewBase extends View implements CollectionViewDefinition {
     static itemLoadingEvent: string;
@@ -44,7 +49,6 @@ export declare abstract class CollectionViewBase extends View implements Collect
     _itemViewLoader: any;
     itemViewLoader: any;
     resolveTemplateView(template: any): View;
-    _getDefaultItemContent(): Label;
     getTemplateFromSelector(templateKey: any): KeyedTemplate;
     getViewForViewType(viewType: any, templateKey: any): any;
     itemTemplateSelector: Function;

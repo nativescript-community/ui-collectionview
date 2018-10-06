@@ -1,15 +1,5 @@
-import { KeyedTemplate } from "ui/core/view";
 import { CollectionViewBase } from "./collectionview-common";
 export * from "./collectionview-common";
-export interface ViewTypeTemplate extends KeyedTemplate {
-    viewType?: number;
-}
-export declare const knownTemplates: {
-    itemTemplate: string;
-};
-export declare const knownMultiTemplates: {
-    itemTemplates: string;
-};
 import RecyclerView = android.support.v7.widget.RecyclerView;
 import { ChangedData } from "data/observable-array";
 export declare class CollectionView extends CollectionViewBase {

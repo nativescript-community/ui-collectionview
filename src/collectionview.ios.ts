@@ -333,7 +333,7 @@ export class CollectionView extends CollectionViewBase {
     }
     public getCellSize(index: number) {
         if (this._effectiveColWidth && this._effectiveRowHeight) {
-            return CGSizeMake(utilLayout.toDeviceIndependentPixels(this._effectiveColWidth), utilLayout.toDeviceIndependentPixels(this._effectiveRowHeight));
+            return [this._effectiveColWidth, this._effectiveRowHeight];
         }
         return this._sizes[index];
     }

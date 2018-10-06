@@ -17,6 +17,7 @@ export declare class CollectionView extends CollectionViewBase {
     onLayout(left: number, top: number, right: number, bottom: number): void;
     isHorizontal(): boolean;
     onSourceCollectionChanged(event: any): void;
+    onItemTemplatesChanged(oldValue: any, newValue: any): void;
     private unbindUnusedCells(removedDataItems);
     refresh(): void;
     scrollToIndex(index: number, animated?: boolean): void;
