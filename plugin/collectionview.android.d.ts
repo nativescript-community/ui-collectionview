@@ -1,18 +1,17 @@
-import { CollectionViewBase } from "./collectionview-common";
-export * from "./collectionview-common";
-import RecyclerView = android.support.v7.widget.RecyclerView;
-import { ChangedData } from "data/observable-array";
+import { CollectionViewBase } from './collectionview-common';
+export * from './collectionview-common';
+import { ChangedData } from 'data/observable-array';
 export declare class CollectionView extends CollectionViewBase {
     static DEFAULT_TEMPLATE_VIEW_TYPE: number;
     static CUSTOM_TEMPLATE_ITEM_TYPE: number;
-    nativeView: RecyclerView;
+    nativeView: android.support.v7.widget.RecyclerView;
     private _listViewAdapter;
     private itemTypeCount;
     constructor();
     createNativeView(): CollectionViewRecyclerView;
     initNativeView(): void;
     disposeNativeView(): void;
-    readonly android: RecyclerView;
+    readonly android: android.support.v7.widget.RecyclerView;
     readonly layoutManager: GridLayoutManager;
     _getViewLayoutParams(): org.nativescript.widgets.CommonLayoutParams;
     onItemViewLoaderChanged(): void;
