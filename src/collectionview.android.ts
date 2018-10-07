@@ -316,6 +316,8 @@ export class CollectionView extends CollectionViewBase {
         }
         if (!this._listViewAdapter) {
             this._listViewAdapter = this.createComposedAdapter(this.nativeViewProtected);
+        } else {
+            this._listViewAdapter.disposeViewHolderViews();
         }
 
         // nativeView.adapter.owner = new WeakRef(this);
@@ -427,6 +429,7 @@ interface CollectionViewAdapter extends android.support.v7.widget.RecyclerView.A
     // tslint:disable-next-line:no-misused-new
     new (owner: WeakRef<CollectionView>): CollectionViewAdapter;
     clearTemplateTypes();
+    disposeViewHolderViews();
 }
 let CollectionViewAdapter: CollectionViewAdapter;
 
@@ -527,19 +530,19 @@ function initCollectionViewAdapter() {
             return long(id);
         }
 
-        public hasStableIds(): boolean {
-            return true;
-        }
+        // public hasStableIds(): boolean {
+        //     return true;
+        // }
 
         public clearTemplateTypes() {
             this._currentNativeItemType = 0;
             this.templateTypeNumberString.clear();
         }
 
-        public notifyDataSetChanged() {
-            this.disposeViewHolderViews();
-            super.notifyDataSetChanged();
-        }
+        // public notifyDataSetChanged() {
+        //     this.disposeViewHolderViews();
+        //     super.notifyDataSetChanged();
+        // }
 
         public getItemViewType(position: number) {
             const owner = this.owner.get();
