@@ -1,4 +1,4 @@
 declare const CollectionViewPlugin: {
-    install: (Vue: any, options: any) => void;
+    install(Vue: any, options: any): void;
 };
 export default CollectionViewPlugin;

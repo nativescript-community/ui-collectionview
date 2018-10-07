@@ -1,17 +1,17 @@
-import { CollectionView } from "../collectionview";
+import { CollectionView } from '../collectionview';
 
 const CollectionViewPlugin = {
-  install: function(Vue, options) {
-    Vue.registerElement(
-      "CollectionView",
-      function() {
-        return CollectionView;
-      },
-      {
-        component: require("./component").default
-      }
-    );
-  }
+    install(Vue, options) {
+        Vue.registerElement(
+            'CollectionView',
+            function() {
+                return CollectionView;
+            },
+            {
+                component: require('./component').default
+            }
+        );
+    }
 };
 
 export default CollectionViewPlugin;

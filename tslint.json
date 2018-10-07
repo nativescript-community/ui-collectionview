@@ -2,7 +2,6 @@
     "extends": [
         "tslint:recommended",
         "tslint-config-standard",
-        "tslint-react",
         "tslint-config-prettier"
     ],
     "rules": {

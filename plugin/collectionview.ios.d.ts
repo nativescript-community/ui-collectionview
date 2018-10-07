@@ -2,6 +2,7 @@ import { View } from 'ui/core/view';
 import { CollectionViewBase } from './collectionview-common';
 export * from './collectionview-common';
 export declare class CollectionView extends CollectionViewBase {
+    layoutCell(index: number, cell: any, cellView: View): any;
     private _layout;
     private _dataSource;
     private _delegate;
@@ -37,7 +38,7 @@ export declare class CollectionView extends CollectionViewBase {
     _prepareCell(cell: CollectionViewCell, indexPath: NSIndexPath, templateType: string): [number, number];
     getCellSize(index: number): number[];
     storeCellSize(index: number, value: any): void;
-    private _layoutCell(cell, cellView, index);
+    private measureCell(cell, cellView, index);
     private _removeContainer(cell);
     private _setPadding(newPadding);
 }

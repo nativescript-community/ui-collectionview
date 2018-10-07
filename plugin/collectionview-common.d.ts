@@ -1,8 +1,8 @@
-import { CoercibleProperty, KeyedTemplate, Length, PercentLength, Property, Template, View } from "ui/core/view";
-import { ItemsSource } from "ui/list-view";
-import { CollectionView as CollectionViewDefinition, Orientation } from "./collectionview";
-import { ChangedData } from "data/observable-array";
-export * from "ui/core/view";
+import { CoercibleProperty, KeyedTemplate, Length, PercentLength, Property, Template, View } from 'ui/core/view';
+import { ItemsSource } from 'ui/list-view';
+import { CollectionView as CollectionViewDefinition, Orientation } from './collectionview';
+import { ChangedData } from 'data/observable-array';
+export * from 'ui/core/view';
 export declare enum ListViewViewTypes {
     ItemView = 0,
 }

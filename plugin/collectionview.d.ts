@@ -34,12 +34,8 @@ export class CollectionView extends View {
 
     public refresh();
     public scrollToIndex(index: number, animated?: boolean);
-
+    public onItemTemplatesPropertyChanged(oldValue: any, newValue: any): void;
     public itemViewLoader?:(viewType)=>any
-}
-export namespace CollectionView {
-    export class itemTemplate{}
-    export class itemTemplates{}
 }
 
 export interface CollectionViewItemEventData extends EventData {
