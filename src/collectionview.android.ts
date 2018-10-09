@@ -1,4 +1,5 @@
 ﻿import { Length, View } from 'ui/core/view';
+import { profile } from 'profiling';
 import { StackLayout } from 'ui/layouts/stack-layout';
 import * as utils from 'utils/utils';
 
@@ -584,6 +585,7 @@ function initCollectionViewAdapter() {
             return result;
         }
 
+        @profile('CV_onCreateViewHolder')
         public onCreateViewHolder(parent: android.view.ViewGroup, viewType: number) {
             const owner = this.owner.get();
 
@@ -644,6 +646,7 @@ function initCollectionViewAdapter() {
 
         // }
 
+        @profile('CV_onBindViewHolder')
         public onBindViewHolder(holder: CollectionViewCellHolder, position: number) {
             const owner = this.owner.get();
             let view = holder.view;
