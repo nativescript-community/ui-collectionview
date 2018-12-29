@@ -279,18 +279,27 @@ export class CollectionView extends CollectionViewBase {
         // console.log('onItemsChanged', event.action, event.index, event.addedCount, event.removed);
         switch (event.action) {
             case 'update':
-            case 'splice':
                 {
                     if (event.addedCount > 0) {
-                        this._listViewAdapter.notifyItemRangeInserted(event.index, event.addedCount);
+                        this._listViewAdapter.notifyItemRangeChanged(event.index, event.addedCount);
                         return;
                     }
                     if (event.removed && event.removed.length > 0) {
                         this._listViewAdapter.notifyItemRangeRemoved(event.index, event.removed.length);
                         return;
                     }
+                    break;
                 }
-                break;
+            case 'splice':
+                {
+                    if (event.addedCount > 0) {
+                        this._listViewAdapter.notifyItemRangeInserted(event.index, event.addedCount);
+                    }
+                    if (event.removed && event.removed.length > 0) {
+                        this._listViewAdapter.notifyItemRangeRemoved(event.index, event.removed.length);
+                    }
+                    return;
+                }
         }
         this._listViewAdapter.notifyDataSetChanged();
     }
