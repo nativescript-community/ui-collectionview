@@ -322,7 +322,7 @@ export class CollectionView extends CollectionViewBase {
             this._map.set(cell, view);
 
             if (view && !view.parent) {
-                this._addViewCore(view);
+                this._addView(view);
                 cell.contentView.addSubview(view.nativeViewProtected);
             }
 
