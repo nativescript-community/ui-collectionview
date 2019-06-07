@@ -27,12 +27,12 @@
         "tslint": "^5.17.0",
         "tslint-config-prettier": "^1.18.0",
         "tslint-config-standard": "^8.0.1",
-        "typescript": "~3.5.1",
+        "typescript": "~3.4.5",
         "vue": "^2.6.10",
         "vue-property-decorator": "^8.1.1"
     },
     "scripts": {
-        "ngc": "node --max-old-space-size=8192 ../../node_modules/.bin/ngc",
+        "ngc": "node --max-old-space-size=8192 ./node_modules/.bin/ngc",
         "tsc": "cpy '**/*.d.ts' '../plugin' --parents --cwd=src && tsc -skipLibCheck",
         "clean": "rimraf ./plugin/**/*.d.ts ./plugin/**/*.js ./plugin/**/*.js.map ./plugin/**/*.metadata.json plugin/node_modules plugin/package-lock.json",
         "build": "npm run tsc && npm run ngc",

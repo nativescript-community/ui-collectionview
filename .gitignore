@@ -59,3 +59,14 @@ lib
 report
 *.log
 plugin/**/*.d.ts
+/plugin/collectionview-common.metadata.json
+/plugin/collectionview-common.ngsummary.json
+/plugin/collectionview.android.metadata.json
+/plugin/collectionview.android.ngsummary.json
+/plugin/collectionview.ios.metadata.json
+/plugin/collectionview.ios.ngsummary.json
+/plugin/collectionview.ngsummary.json
+/plugin/references.ngsummary.json
+/plugin/angular
+/plugin/typings
+/plugin/vue
