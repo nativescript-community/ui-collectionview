@@ -1,6 +1,6 @@
 import * as observable from 'data/observable';
 import { parseMultipleTemplates } from 'ui/builder';
-import { heightProperty, makeParser, makeValidator, widthProperty } from 'ui/content-view';
+import { booleanConverter, heightProperty, makeParser, makeValidator, widthProperty } from 'ui/content-view';
 import { CoercibleProperty, KeyedTemplate, Length, PercentLength, Property, Template, View } from 'ui/core/view';
 import { addWeakEventListener, removeWeakEventListener } from 'ui/core/weak-event-listener';
 import { Label } from 'ui/label';
@@ -331,3 +331,10 @@ export const itemsProperty = new Property<CollectionViewBase, Function>({
     }
 });
 itemsProperty.register(CollectionViewBase);
+
+export const isScrollEnabledProperty = new Property<CollectionViewBase, boolean>({
+    name: 'isScrollEnabled',
+    defaultValue: true,
+    valueConverter: booleanConverter
+});
+isScrollEnabledProperty.register(CollectionViewBase);

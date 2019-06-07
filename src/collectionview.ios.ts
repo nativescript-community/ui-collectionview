@@ -6,6 +6,7 @@ const utilLayout = util.layout;
 
 import {
     CollectionViewBase,
+    isScrollEnabledProperty,
     itemTemplatesProperty,
     ListViewViewTypes,
     orientationProperty,
@@ -17,6 +18,7 @@ import {
 
 import { CollectionViewItemEventData, Orientation } from './collectionview';
 import { ChangeType, ObservableArray } from 'tns-core-modules/data/observable-array/observable-array';
+// import { isScrollEnabledProperty } from 'tns-core-modules/ui/scroll-view/scroll-view';
 
 export * from './collectionview-common';
 
@@ -38,6 +40,8 @@ export class CollectionView extends CollectionViewBase {
     private _preparingCell: boolean = false;
     private _sizes: number[][];
     private _map: Map<CollectionViewCell, View>;
+
+    nativeViewProtected: UICollectionView;
 
     constructor() {
         super();
@@ -122,6 +126,9 @@ export class CollectionView extends CollectionViewBase {
         } else {
             this._layout.scrollDirection = UICollectionViewScrollDirection.Vertical;
         }
+    }
+    public [isScrollEnabledProperty.setNative](value: boolean) {
+        this.nativeViewProtected.scrollEnabled = value;
     }
 
     public [itemTemplatesProperty.getDefault](): KeyedTemplate[] {

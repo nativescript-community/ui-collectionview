@@ -6,6 +6,7 @@ import * as utils from 'utils/utils';
 import {
     CollectionViewBase,
     colWidthProperty,
+    isScrollEnabledProperty,
     ListViewViewTypes,
     orientationProperty,
     paddingBottomProperty,
@@ -47,7 +48,12 @@ import { ChangedData } from 'data/observable-array';
 export class CollectionView extends CollectionViewBase {
     public static DEFAULT_TEMPLATE_VIEW_TYPE = 0;
     public static CUSTOM_TEMPLATE_ITEM_TYPE = 1;
-    public nativeView: android.support.v7.widget.RecyclerView;
+    public nativeViewProtected: CollectionViewRecyclerView;
+    public nativeView: CollectionViewRecyclerView & {
+        scrollListener: CollectionViewScrollListener;
+        owner: WeakRef<CollectionView>;
+        layoutManager: GridLayoutManager;
+    };
     // public _realizedItems = new Map<android.view.View, View>();
 
     // public _itemTemplatesByViewType: Map<number, KeyedTemplate>;
@@ -101,20 +107,6 @@ export class CollectionView extends CollectionViewBase {
         // .setEndlessScrollListener(this, new ProgressItem())
         // .setEndlessScrollThreshold(1); //Default=1
 
-        const orientation = this._getLayoutManagarOrientation();
-
-        initGridLayoutManager();
-        const layoutManager = new GridLayoutManager(this._context, new WeakRef(this));
-        recyclerView.setLayoutManager(layoutManager);
-        layoutManager.setOrientation(orientation);
-        layoutManager.setSmoothScrollbarEnabled(true);
-        (recyclerView as any).layoutManager = layoutManager;
-
-        initCollectionViewScrollListener();
-        const scrollListener = new CollectionViewScrollListener(new WeakRef(this));
-        recyclerView.addOnScrollListener(scrollListener);
-        (recyclerView as any).scrollListener = scrollListener;
-
         // const fastScroller = new com.l4digital.fastscroll.FastScroller(this._context);
         // fastScroller.setSectionIndexer(adapter);
         // fastScroller.attachRecyclerView(recyclerView);
@@ -125,9 +117,22 @@ export class CollectionView extends CollectionViewBase {
     public initNativeView() {
         super.initNativeView();
 
-        const nativeView = this.nativeView as any;
-        // nativeView.scrollListener.owner = new WeakRef(this);
+        const nativeView = this.nativeView;
         nativeView.owner = new WeakRef(this);
+
+        const orientation = this._getLayoutManagarOrientation();
+
+        initGridLayoutManager();
+        const layoutManager = new GridLayoutManager(this._context, new WeakRef(this));
+        nativeView.setLayoutManager(layoutManager);
+        layoutManager.setOrientation(orientation);
+        layoutManager.setSmoothScrollbarEnabled(true);
+        nativeView.layoutManager = layoutManager;
+
+        initCollectionViewScrollListener();
+        const scrollListener = new CollectionViewScrollListener(new WeakRef(this));
+        nativeView.addOnScrollListener(scrollListener);
+        nativeView.scrollListener = scrollListener;
 
         colWidthProperty.coerce(this);
         rowHeightProperty.coerce(this);
@@ -141,11 +146,10 @@ export class CollectionView extends CollectionViewBase {
         });
         // this._realizedItems.clear();
 
-        const nativeView = this.nativeView as any;
+        const nativeView = this.nativeView;
         this.nativeView.removeOnScrollListener(nativeView.scrollListener);
 
         nativeView.scrollListener = null;
-        nativeView.adapter = null;
         nativeView.layoutManager = null;
 
         super.disposeNativeView();
@@ -198,28 +202,28 @@ export class CollectionView extends CollectionViewBase {
     // }
 
     public [paddingTopProperty.getDefault](): number {
-        return ((this.nativeView as any) as android.view.View).getPaddingTop();
+        return (this.nativeView as android.view.View).getPaddingTop();
     }
     public [paddingTopProperty.setNative](value: Length) {
         this._setPadding({ top: this.effectivePaddingTop });
     }
 
     public [paddingRightProperty.getDefault](): number {
-        return ((this.nativeView as any) as android.view.View).getPaddingRight();
+        return (this.nativeView as android.view.View).getPaddingRight();
     }
     public [paddingRightProperty.setNative](value: Length) {
         this._setPadding({ right: this.effectivePaddingRight });
     }
 
     public [paddingBottomProperty.getDefault](): number {
-        return ((this.nativeView as any) as android.view.View).getPaddingBottom();
+        return (this.nativeView as android.view.View).getPaddingBottom();
     }
     public [paddingBottomProperty.setNative](value: Length) {
         this._setPadding({ bottom: this.effectivePaddingBottom });
     }
 
     public [paddingLeftProperty.getDefault](): number {
-        return ((this.nativeView as any) as android.view.View).getPaddingLeft();
+        return (this.nativeView as android.view.View).getPaddingLeft();
     }
     public [paddingLeftProperty.setNative](value: Length) {
         this._setPadding({ left: this.effectivePaddingLeft });
@@ -240,6 +244,10 @@ export class CollectionView extends CollectionViewBase {
         } else {
             layoutManager.setOrientation(android.support.v7.widget.LinearLayoutManager.VERTICAL);
         }
+    }
+    isScrollEnabled = true;
+    public [isScrollEnabledProperty.setNative](value: boolean) {
+        this.isScrollEnabled = value;
     }
 
     onItemViewLoaderChanged() {
@@ -278,28 +286,26 @@ export class CollectionView extends CollectionViewBase {
     public onSourceCollectionChanged(event: ChangedData<any>) {
         // console.log('onItemsChanged', event.action, event.index, event.addedCount, event.removed);
         switch (event.action) {
-            case 'update':
-                {
-                    if (event.addedCount > 0) {
-                        this._listViewAdapter.notifyItemRangeChanged(event.index, event.addedCount);
-                        return;
-                    }
-                    if (event.removed && event.removed.length > 0) {
-                        this._listViewAdapter.notifyItemRangeRemoved(event.index, event.removed.length);
-                        return;
-                    }
-                    break;
-                }
-            case 'splice':
-                {
-                    if (event.addedCount > 0) {
-                        this._listViewAdapter.notifyItemRangeInserted(event.index, event.addedCount);
-                    }
-                    if (event.removed && event.removed.length > 0) {
-                        this._listViewAdapter.notifyItemRangeRemoved(event.index, event.removed.length);
-                    }
+            case 'update': {
+                if (event.addedCount > 0) {
+                    this._listViewAdapter.notifyItemRangeChanged(event.index, event.addedCount);
                     return;
                 }
+                if (event.removed && event.removed.length > 0) {
+                    this._listViewAdapter.notifyItemRangeRemoved(event.index, event.removed.length);
+                    return;
+                }
+                break;
+            }
+            case 'splice': {
+                if (event.addedCount > 0) {
+                    this._listViewAdapter.notifyItemRangeInserted(event.index, event.addedCount);
+                }
+                if (event.removed && event.removed.length > 0) {
+                    this._listViewAdapter.notifyItemRangeRemoved(event.index, event.removed.length);
+                }
+                return;
+            }
         }
         this._listViewAdapter.notifyDataSetChanged();
     }
@@ -352,7 +358,7 @@ export class CollectionView extends CollectionViewBase {
     }
 
     private _setPadding(newPadding: { top?: number; right?: number; bottom?: number; left?: number }) {
-        const nativeView: android.view.View = this.nativeView as any;
+        const nativeView: android.view.View = this.nativeView;
         const padding = {
             top: nativeView.getPaddingTop(),
             right: nativeView.getPaddingRight(),
@@ -747,6 +753,21 @@ function initCollectionViewRecyclerView() {
             if (owner) {
                 owner.setMeasuredDimension(this.getMeasuredWidth(), this.getMeasuredHeight());
             }
+        }
+
+        canScrollVertically() {
+            const owner = this.owner.get();
+            if (owner) {
+                return owner.isScrollEnabled;
+            }
+            return true;
+        }
+        canScrollHorizontally() {
+            const owner = this.owner.get();
+            if (owner) {
+                return owner.isScrollEnabled;
+            }
+            return true;
         }
 
         // public onLayout(
