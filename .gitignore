@@ -58,3 +58,4 @@ lib
 !webpack.*.js
 report
 *.log
+plugin/**/*.d.ts
