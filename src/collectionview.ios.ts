@@ -51,7 +51,7 @@ export class CollectionView extends CollectionViewBase {
         this._layout.minimumInteritemSpacing = 0;
 
         this.nativeView = UICollectionView.alloc().initWithFrameCollectionViewLayout(CGRectMake(0, 0, 0, 0), this._layout);
-        this.nativeView.backgroundColor = util.ios.getter(UIColor, UIColor.clearColor);
+        this.nativeView.backgroundColor = UIColor.clearColor;
         this.nativeView.registerClassForCellWithReuseIdentifier(CollectionViewCell.class(), this._defaultTemplate.key);
         this.nativeView.autoresizesSubviews = false;
         this.nativeView.autoresizingMask = UIViewAutoresizing.None;
