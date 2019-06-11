@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.19](https://github.com/Akylas/nativescript-collectionview/compare/v1.0.18...v1.0.19) (2019-06-11)
+
+
+### Bug Fixes
+
+* typings ([c90bed4](https://github.com/Akylas/nativescript-collectionview/commit/c90bed4))
+
+
+### Features
+
+* isBounceEnabled property ([6487f1e](https://github.com/Akylas/nativescript-collectionview/commit/6487f1e))
+
+
+
+
+
 ## 1.0.18 (2019-06-07)
 
 
