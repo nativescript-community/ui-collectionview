@@ -35,6 +35,8 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     public static dataPopulatedEvent = 'dataPopulated';
     public static knownFunctions = ['itemTemplateSelector', 'itemIdGenerator']; // See component-builder.ts isKnownFunction
 
+    public isBounceEnabled: boolean;
+    public isScrollEnabled: boolean;
     public orientation: Orientation;
     public itemTemplate: string | Template;
     public itemTemplates: string | KeyedTemplate[];
