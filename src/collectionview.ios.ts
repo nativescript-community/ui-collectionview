@@ -6,6 +6,7 @@ const utilLayout = util.layout;
 
 import {
     CollectionViewBase,
+    isBounceEnabledProperty,
     isScrollEnabledProperty,
     itemTemplatesProperty,
     ListViewViewTypes,
@@ -129,6 +130,10 @@ export class CollectionView extends CollectionViewBase {
     }
     public [isScrollEnabledProperty.setNative](value: boolean) {
         this.nativeViewProtected.scrollEnabled = value;
+    }
+    public [isBounceEnabledProperty.setNative](value: boolean) {
+        this.nativeViewProtected.alwaysBounceVertical = value;
+        this.nativeViewProtected.alwaysBounceHorizontal = value;
     }
 
     public [itemTemplatesProperty.getDefault](): KeyedTemplate[] {

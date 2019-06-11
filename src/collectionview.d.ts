@@ -17,6 +17,8 @@ export class CollectionView extends View {
     public rowHeight: PercentLength;
     public colWidth: PercentLength;
     public orientation: Orientation;
+    public isBounceEnabled: boolean;
+    public isScrollEnabled: boolean;
 
     // public ios: any; /* UICollectionView */
     // public android: any; /* android.support.v7.widget.RecyclerView */

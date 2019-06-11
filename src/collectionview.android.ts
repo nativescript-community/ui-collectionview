@@ -247,6 +247,7 @@ export class CollectionView extends CollectionViewBase {
     }
     isScrollEnabled = true;
     public [isScrollEnabledProperty.setNative](value: boolean) {
+        console.log('isScrollEnabledProperty', value);
         this.isScrollEnabled = value;
     }
 
@@ -386,7 +387,7 @@ export class CollectionView extends CollectionViewBase {
 }
 
 // Snapshot friendly CollectionViewScrollListener
-interface CollectionViewScrollListener extends android.support.v7.widget.RecyclerView.OnScrollListener {
+export interface CollectionViewScrollListener extends android.support.v7.widget.RecyclerView.OnScrollListener {
     // tslint:disable-next-line:no-misused-new
     new (owner: WeakRef<CollectionView>): CollectionViewScrollListener;
 }
@@ -755,20 +756,6 @@ function initCollectionViewRecyclerView() {
             }
         }
 
-        canScrollVertically() {
-            const owner = this.owner.get();
-            if (owner) {
-                return owner.isScrollEnabled;
-            }
-            return true;
-        }
-        canScrollHorizontally() {
-            const owner = this.owner.get();
-            if (owner) {
-                return owner.isScrollEnabled;
-            }
-            return true;
-        }
 
         // public onLayout(
         //   changed: boolean,
@@ -829,6 +816,21 @@ function initGridLayoutManager() {
                 scrolledY += this.childSizesMap.get(i) || 0;
             }
             return Math.round(scrolledY);
+        }
+
+        canScrollVertically() {
+            const owner = this.owner.get();
+            if (owner) {
+                return owner.isScrollEnabled && super.canScrollVertically();
+            }
+            return super.canScrollVertically();
+        }
+        canScrollHorizontally() {
+            const owner = this.owner.get();
+            if (owner) {
+                return owner.isScrollEnabled && super.canScrollHorizontally();
+            }
+            return super.canScrollHorizontally();
         }
 
         // computeScrollVectorForPosition( targetPosition) {

@@ -338,3 +338,9 @@ export const isScrollEnabledProperty = new Property<CollectionViewBase, boolean>
     valueConverter: booleanConverter
 });
 isScrollEnabledProperty.register(CollectionViewBase);
+export const isBounceEnabledProperty = new Property<CollectionViewBase, boolean>({
+    name: 'isBounceEnabled',
+    defaultValue: true,
+    valueConverter: booleanConverter
+});
+isBounceEnabledProperty.register(CollectionViewBase);
