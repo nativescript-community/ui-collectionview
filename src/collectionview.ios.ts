@@ -1,24 +1,13 @@
-import { EventData, Observable } from 'data/observable';
-import { KeyedTemplate, Length, View } from 'ui/core/view';
-import * as util from 'utils/utils';
+import { EventData, Observable } from 'tns-core-modules/data/observable';
+import { ChangeType } from 'tns-core-modules/data/observable-array/observable-array';
+import { KeyedTemplate, Length, View } from 'tns-core-modules/ui/core/view';
+import * as util from 'tns-core-modules/utils/utils';
+import { CollectionViewItemEventData, Orientation } from './collectionview';
+import { CollectionViewBase, isBounceEnabledProperty, isScrollEnabledProperty, itemTemplatesProperty, ListViewViewTypes, orientationProperty, paddingBottomProperty, paddingLeftProperty, paddingRightProperty, paddingTopProperty } from './collectionview-common';
 
 const utilLayout = util.layout;
 
-import {
-    CollectionViewBase,
-    isBounceEnabledProperty,
-    isScrollEnabledProperty,
-    itemTemplatesProperty,
-    ListViewViewTypes,
-    orientationProperty,
-    paddingBottomProperty,
-    paddingLeftProperty,
-    paddingRightProperty,
-    paddingTopProperty
-} from './collectionview-common';
 
-import { CollectionViewItemEventData, Orientation } from './collectionview';
-import { ChangeType, ObservableArray } from 'tns-core-modules/data/observable-array/observable-array';
 // import { isScrollEnabledProperty } from 'tns-core-modules/ui/scroll-view/scroll-view';
 
 export * from './collectionview-common';

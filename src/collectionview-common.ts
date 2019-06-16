@@ -1,13 +1,12 @@
-import * as observable from 'data/observable';
-import { parseMultipleTemplates } from 'ui/builder';
-import { booleanConverter, heightProperty, makeParser, makeValidator, widthProperty } from 'ui/content-view';
-import { CoercibleProperty, KeyedTemplate, Length, PercentLength, Property, Template, View } from 'ui/core/view';
-import { addWeakEventListener, removeWeakEventListener } from 'ui/core/weak-event-listener';
-import { Label } from 'ui/label';
-import { ItemsSource } from 'ui/list-view';
-import { CollectionView as CollectionViewDefinition, Orientation } from './collectionview';
-import { ChangedData, ObservableArray } from 'data/observable-array';
+import * as observable from 'tns-core-modules/data/observable';
+import { ChangedData, ObservableArray } from 'tns-core-modules/data/observable-array';
 import * as builder from 'tns-core-modules/ui/builder';
+import { booleanConverter, heightProperty, makeParser, makeValidator, widthProperty } from 'tns-core-modules/ui/content-view';
+import { CoercibleProperty, KeyedTemplate, Length, PercentLength, Property, Template, View } from 'tns-core-modules/ui/core/view';
+import { addWeakEventListener, removeWeakEventListener } from 'tns-core-modules/ui/core/weak-event-listener';
+import { Label } from 'tns-core-modules/ui/label';
+import { ItemsSource } from 'tns-core-modules/ui/list-view';
+import { CollectionView as CollectionViewDefinition, Orientation } from './collectionview';
 
 const autoEffectiveRowHeight = 0;
 const autoEffectiveColWidth = 0;
@@ -305,7 +304,7 @@ export const itemTemplatesProperty = new Property<CollectionViewBase, KeyedTempl
     name: 'itemTemplates',
     valueConverter: value => {
         if (typeof value === 'string') {
-            return parseMultipleTemplates(value);
+            return builder.parseMultipleTemplates(value);
         }
 
         return value;

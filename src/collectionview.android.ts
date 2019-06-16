@@ -1,8 +1,9 @@
-﻿import { Length, View } from 'ui/core/view';
-import { profile } from 'profiling';
-import { StackLayout } from 'ui/layouts/stack-layout';
-import * as utils from 'utils/utils';
-
+﻿import { ChangedData } from 'data/observable-array';
+import { profile } from 'tns-core-modules/profiling';
+import { Length, View } from 'tns-core-modules/ui/core/view';
+import { StackLayout } from 'tns-core-modules/ui/layouts/stack-layout';
+import * as utils from 'tns-core-modules/utils/utils';
+import { CollectionViewItemEventData, Orientation } from './collectionview';
 import {
     CollectionViewBase,
     colWidthProperty,
@@ -16,34 +17,7 @@ import {
     rowHeightProperty
 } from './collectionview-common';
 
-import { CollectionViewItemEventData, Orientation } from './collectionview';
-
 export * from './collectionview-common';
-
-// export interface ViewTypeTemplate extends KeyedTemplate {
-// key: string;
-// createView: Template;
-//   viewType?: number;
-// }
-
-// function getLayout(id: string) {
-//   var context = application.android.context;
-//   return context
-//     .getResources()
-//     .getIdentifier(id, "layout", context.getPackageName());
-// }
-// function getId(id: string) {
-//   var context = application.android.context;
-//   return context
-//     .getResources()
-//     .getIdentifier(id, "id", context.getPackageName());
-// }
-
-// import RecyclerView = android.support.v7.widget.RecyclerView;
-// import GridLayoutManager = android.support.v7.widget.GridLayoutManager;
-
-// import RecyclerViewExpandableItemManager = com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandableItemManager;
-import { ChangedData } from 'data/observable-array';
 
 export class CollectionView extends CollectionViewBase {
     public static DEFAULT_TEMPLATE_VIEW_TYPE = 0;
@@ -755,7 +729,6 @@ function initCollectionViewRecyclerView() {
                 owner.setMeasuredDimension(this.getMeasuredWidth(), this.getMeasuredHeight());
             }
         }
-
 
         // public onLayout(
         //   changed: boolean,
