@@ -129,7 +129,7 @@ export class CollectionView extends CollectionViewBase {
         super.disposeNativeView();
     }
 
-    get android(): android.support.v7.widget.RecyclerView {
+    get android(): androidx.recyclerview.widget.RecyclerView {
         return this.nativeView;
     }
     get layoutManager(): GridLayoutManager {
@@ -205,7 +205,7 @@ export class CollectionView extends CollectionViewBase {
 
     public [orientationProperty.getDefault](): Orientation {
         const layoutManager = this.nativeView.getLayoutManager() as GridLayoutManager;
-        if (layoutManager.getOrientation() === android.support.v7.widget.LinearLayoutManager.HORIZONTAL) {
+        if (layoutManager.getOrientation() === androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL) {
             return 'horizontal';
         }
 
@@ -214,9 +214,9 @@ export class CollectionView extends CollectionViewBase {
     public [orientationProperty.setNative](value: Orientation) {
         const layoutManager = this.nativeView.getLayoutManager() as GridLayoutManager;
         if (this.isHorizontal()) {
-            layoutManager.setOrientation(android.support.v7.widget.LinearLayoutManager.HORIZONTAL);
+            layoutManager.setOrientation(androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL);
         } else {
-            layoutManager.setOrientation(android.support.v7.widget.LinearLayoutManager.VERTICAL);
+            layoutManager.setOrientation(androidx.recyclerview.widget.LinearLayoutManager.VERTICAL);
         }
     }
     isScrollEnabled = true;
@@ -346,9 +346,9 @@ export class CollectionView extends CollectionViewBase {
     }
 
     private _getLayoutManagarOrientation() {
-        let orientation = android.support.v7.widget.LinearLayoutManager.VERTICAL;
+        let orientation = androidx.recyclerview.widget.LinearLayoutManager.VERTICAL;
         if (this.isHorizontal()) {
-            orientation = android.support.v7.widget.LinearLayoutManager.HORIZONTAL;
+            orientation = androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL;
         }
 
         return orientation;
@@ -361,7 +361,7 @@ export class CollectionView extends CollectionViewBase {
 }
 
 // Snapshot friendly CollectionViewScrollListener
-export interface CollectionViewScrollListener extends android.support.v7.widget.RecyclerView.OnScrollListener {
+export interface CollectionViewScrollListener extends androidx.recyclerview.widget.RecyclerView.OnScrollListener {
     // tslint:disable-next-line:no-misused-new
     new (owner: WeakRef<CollectionView>): CollectionViewScrollListener;
 }
@@ -373,14 +373,14 @@ function initCollectionViewScrollListener() {
         return;
     }
 
-    class CollectionViewScrollListenerImpl extends android.support.v7.widget.RecyclerView.OnScrollListener {
+    class CollectionViewScrollListenerImpl extends androidx.recyclerview.widget.RecyclerView.OnScrollListener {
         constructor(private owner: WeakRef<CollectionView>) {
             super();
 
             return global.__native(this);
         }
 
-        public onScrolled(view: android.support.v7.widget.RecyclerView, dx: number, dy: number) {
+        public onScrolled(view: androidx.recyclerview.widget.RecyclerView, dx: number, dy: number) {
             const owner: CollectionView = this.owner.get();
             if (!owner) {
                 return;
@@ -406,7 +406,7 @@ function initCollectionViewScrollListener() {
             }
         }
 
-        public onScrollStateChanged(view: android.support.v7.widget.RecyclerView, newState: number) {
+        public onScrollStateChanged(view: androidx.recyclerview.widget.RecyclerView, newState: number) {
             // Not Needed
         }
     }
@@ -416,7 +416,7 @@ function initCollectionViewScrollListener() {
 // END snapshot friendly CollectionViewScrollListener
 
 // Snapshot friendly CollectionViewAdapter
-interface CollectionViewAdapter extends android.support.v7.widget.RecyclerView.Adapter<any> {
+interface CollectionViewAdapter extends androidx.recyclerview.widget.RecyclerView.Adapter<any> {
     // tslint:disable-next-line:no-misused-new
     new (owner: WeakRef<CollectionView>): CollectionViewAdapter;
     clearTemplateTypes();
@@ -425,7 +425,7 @@ interface CollectionViewAdapter extends android.support.v7.widget.RecyclerView.A
 let CollectionViewAdapter: CollectionViewAdapter;
 
 // Snapshot friendly CollectionViewAdapter
-interface CollectionViewCellHolder extends android.support.v7.widget.RecyclerView.ViewHolder {
+interface CollectionViewCellHolder extends androidx.recyclerview.widget.RecyclerView.ViewHolder {
     // tslint:disable-next-line:no-misused-new
     new (owner: WeakRef<View>, gridView: WeakRef<CollectionView>, androidView?: android.view.View): CollectionViewCellHolder;
     view: View;
@@ -455,7 +455,7 @@ function initCollectionViewAdapter() {
     // }
 
     @Interfaces([android.view.View.OnClickListener])
-    class CollectionViewCellHolderImpl extends android.support.v7.widget.RecyclerView.ViewHolder implements android.view.View.OnClickListener {
+    class CollectionViewCellHolderImpl extends androidx.recyclerview.widget.RecyclerView.ViewHolder implements android.view.View.OnClickListener {
         constructor(private owner: WeakRef<View>, private collectionView: WeakRef<CollectionView>, androidView?: android.view.View) {
             super(androidView || owner.get().android);
             const nativeThis = global.__native(this);
@@ -484,14 +484,14 @@ function initCollectionViewAdapter() {
     }
     CollectionViewCellHolder = CollectionViewCellHolderImpl as any;
 
-    class CollectionViewAdapterImpl extends android.support.v7.widget.RecyclerView.Adapter<CollectionViewCellHolder> {
+    class CollectionViewAdapterImpl extends androidx.recyclerview.widget.RecyclerView.Adapter<CollectionViewCellHolder> {
         templateTypeNumberString = new Map();
         _currentNativeItemType = 0;
 
         _viewHolders = new Array();
         _viewHolderChildren = new Array();
 
-        constructor(private owner: WeakRef<CollectionView>, adapter: android.support.v7.widget.RecyclerView.Adapter<any>) {
+        constructor(private owner: WeakRef<CollectionView>, adapter: androidx.recyclerview.widget.RecyclerView.Adapter<any>) {
             super();
 
             return global.__native(this);
@@ -683,7 +683,7 @@ function initCollectionViewAdapter() {
             const vh = rv.findContainingViewHolder(v);
 
             const rootPosition = vh.getAdapterPosition();
-            if (rootPosition === android.support.v7.widget.RecyclerView.NO_POSITION) {
+            if (rootPosition === androidx.recyclerview.widget.RecyclerView.NO_POSITION) {
                 return;
             }
 
@@ -698,7 +698,7 @@ function initCollectionViewAdapter() {
 // END Snapshot friendly CollectionViewAdapter
 
 // Snapshot friendly CollectionViewRecyclerView
-export interface CollectionViewRecyclerView extends android.support.v7.widget.RecyclerView {
+export interface CollectionViewRecyclerView extends androidx.recyclerview.widget.RecyclerView {
     // tslint:disable-next-line:no-misused-new
     new (context: any, owner: WeakRef<CollectionView>): CollectionViewRecyclerView;
 }
@@ -710,7 +710,7 @@ function initCollectionViewRecyclerView() {
         return;
     }
 
-    class CollectionViewRecyclerViewImpl extends android.support.v7.widget.RecyclerView {
+    class CollectionViewRecyclerViewImpl extends androidx.recyclerview.widget.RecyclerView {
         constructor(context: android.content.Context, private owner: WeakRef<CollectionView>) {
             super(context);
             return global.__native(this);
@@ -750,7 +750,7 @@ function initCollectionViewRecyclerView() {
 // END Snapshot friendly CollectionViewRecyclerView
 
 // Snapshot friendly GridLayoutManager
-export interface GridLayoutManager extends android.support.v7.widget.GridLayoutManager {
+export interface GridLayoutManager extends androidx.recyclerview.widget.GridLayoutManager {
     // tslint:disable-next-line:no-misused-new
     new (context: any, owner: WeakRef<CollectionView>): GridLayoutManager;
 }
@@ -762,7 +762,7 @@ function initGridLayoutManager() {
         return;
     }
 
-    class GridLayoutManagerImpl extends android.support.v7.widget.GridLayoutManager {
+    class GridLayoutManagerImpl extends androidx.recyclerview.widget.GridLayoutManager {
         private childSizesMap = new Map<number, number>();
         constructor(context: android.content.Context, private owner: WeakRef<CollectionView>) {
             super(context, 1);

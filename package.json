@@ -22,14 +22,14 @@
         "prompt": "^1.0.0",
         "rimraf": "^2.6.3",
         "rxjs": "^6.5.2",
-        "tns-core-modules": "5.4.2",
-        "tns-platform-declarations": "^5.4.2",
-        "tslint": "^5.17.0",
+        "tns-core-modules": "rc",
+        "tns-platform-declarations": "rc",
+        "tslint": "^5.18.0",
         "tslint-config-prettier": "^1.18.0",
         "tslint-config-standard": "^8.0.1",
         "typescript": "~3.4.5",
         "vue": "^2.6.10",
-        "vue-property-decorator": "^8.1.1"
+        "vue-property-decorator": "^8.2.1"
     },
     "scripts": {
         "ngc": "node --max-old-space-size=8192 ./node_modules/.bin/ngc",

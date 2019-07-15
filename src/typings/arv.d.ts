@@ -26,7 +26,7 @@ declare module com {
 	export module telerik {
 		export module widget {
 			export module list {
-				export class ListViewHolder extends globalAndroid.support.v7.widget.RecyclerView.ViewHolder {
+				export class ListViewHolder extends androidx.recyclerview.widget.RecyclerView.ViewHolder {
 					public static class: java.lang.Class<com.telerik.widget.list.ListViewHolder>;
 					public constructor(param0: globalAndroid.view.View);
 				}
@@ -35,7 +35,7 @@ declare module com {
 	}
 }
 
-import androidsupportv7widgetRecyclerViewAdapter = android.support.v7.widget.RecyclerView.Adapter;
+import androidsupportv7widgetRecyclerViewAdapter = androidx.recyclerview.widget.RecyclerView.Adapter;
 declare module com {
 	export module h6ah4i {
 		export module android {
@@ -78,7 +78,7 @@ declare module com {
 	}
 }
 
-import androidsupportv7widgetRecyclerViewAdapterDataObserver = android.support.v7.widget.RecyclerView.AdapterDataObserver;
+import androidsupportv7widgetRecyclerViewAdapterDataObserver = androidx.recyclerview.widget.RecyclerView.AdapterDataObserver;
 declare module com {
 	export module h6ah4i {
 		export module android {
@@ -192,8 +192,8 @@ declare module com {
 	}
 }
 
-import androidsupportv7widgetRecyclerView = android.support.v7.widget.RecyclerView;
-import androidsupportv7widgetRecyclerViewViewHolder = android.support.v7.widget.RecyclerView.ViewHolder;
+import androidsupportv7widgetRecyclerView = androidx.recyclerview.widget.RecyclerView;
+import androidsupportv7widgetRecyclerViewViewHolder = androidx.recyclerview.widget.RecyclerView.ViewHolder;
 import androidviewViewGroup = android.view.ViewGroup;
 declare module com {
 	export module h6ah4i {
@@ -320,7 +320,7 @@ declare module com {
 	}
 }
 
-import androidsupportv7widgetSimpleItemAnimator = android.support.v7.widget.SimpleItemAnimator;
+import androidsupportv7widgetSimpleItemAnimator = androidx.recyclerview.widget.SimpleItemAnimator;
 declare module com {
 	export module h6ah4i {
 		export module android {
@@ -367,7 +367,7 @@ declare module com {
 	}
 }
 
-import androidsupportv7widgetRecyclerViewItemAnimatorItemHolderInfo = android.support.v7.widget.RecyclerView.ItemAnimator.ItemHolderInfo;
+import androidsupportv7widgetRecyclerViewItemAnimatorItemHolderInfo = androidx.recyclerview.widget.RecyclerView.ItemAnimator.ItemHolderInfo;
 declare module com {
 	export module h6ah4i {
 		export module android {
@@ -387,7 +387,7 @@ declare module com {
 	}
 }
 
-import androidsupportv7widgetRecyclerViewItemAnimatorItemAnimatorFinishedListener = android.support.v7.widget.RecyclerView.ItemAnimator.ItemAnimatorFinishedListener;
+import androidsupportv7widgetRecyclerViewItemAnimatorItemAnimatorFinishedListener = androidx.recyclerview.widget.RecyclerView.ItemAnimator.ItemAnimatorFinishedListener;
 declare module com {
 	export module h6ah4i {
 		export module android {
@@ -564,8 +564,8 @@ declare module com {
 	}
 }
 
-import androidsupportv4viewViewPropertyAnimatorCompat = android.support.v4.view.ViewPropertyAnimatorCompat;
-import androidsupportv4viewViewPropertyAnimatorListener = android.support.v4.view.ViewPropertyAnimatorListener;
+import androidsupportv4viewViewPropertyAnimatorCompat = androidx.core.view.ViewPropertyAnimatorCompat;
+import androidsupportv4viewViewPropertyAnimatorListener = androidx.core.view.ViewPropertyAnimatorListener;
 import androidviewView = android.view.View;
 declare module com {
 	export module h6ah4i {
@@ -1000,10 +1000,10 @@ declare module com {
 	}
 }
 
-import androidsupportv7widgetRecyclerViewItemDecoration = android.support.v7.widget.RecyclerView.ItemDecoration;
+import androidsupportv7widgetRecyclerViewItemDecoration = androidx.recyclerview.widget.RecyclerView.ItemDecoration;
 import androidgraphicsdrawableNinePatchDrawable = android.graphics.drawable.NinePatchDrawable;
 import androidgraphicsCanvas = android.graphics.Canvas;
-import androidsupportv7widgetRecyclerViewState = android.support.v7.widget.RecyclerView.State;
+import androidsupportv7widgetRecyclerViewState = androidx.recyclerview.widget.RecyclerView.State;
 import androidgraphicsRect = android.graphics.Rect;
 declare module com {
 	export module h6ah4i {
@@ -1635,7 +1635,7 @@ declare module com {
 	}
 }
 
-import androidsupportv7widgetRecyclerViewRecyclerListener = android.support.v7.widget.RecyclerView.RecyclerListener;
+import androidsupportv7widgetRecyclerViewRecyclerListener = androidx.recyclerview.widget.RecyclerView.RecyclerListener;
 declare module com {
 	export module h6ah4i {
 		export module android {
@@ -2230,7 +2230,7 @@ declare module com {
 	}
 }
 
-import androidsupportv4viewViewPropertyAnimatorUpdateListener = android.support.v4.view.ViewPropertyAnimatorUpdateListener;
+import androidsupportv4viewViewPropertyAnimatorUpdateListener = androidx.core.view.ViewPropertyAnimatorUpdateListener;
 declare module com {
 	export module h6ah4i {
 		export module android {
@@ -3123,7 +3123,7 @@ declare module com {
 	}
 }
 
-import androidsupportv7widgetRecyclerViewLayoutManager = android.support.v7.widget.RecyclerView.LayoutManager;
+import androidsupportv7widgetRecyclerViewLayoutManager = androidx.recyclerview.widget.RecyclerView.LayoutManager;
 declare module com {
 	export module h6ah4i {
 		export module android {
