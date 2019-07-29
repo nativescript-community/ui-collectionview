@@ -1,4 +1,4 @@
-﻿import { ChangedData } from 'data/observable-array';
+﻿import { ChangedData, ChangeType } from 'data/observable-array';
 import { profile } from 'tns-core-modules/profiling';
 import { Length, View } from 'tns-core-modules/ui/core/view';
 import { StackLayout } from 'tns-core-modules/ui/layouts/stack-layout';
@@ -108,8 +108,8 @@ export class CollectionView extends CollectionViewBase {
         nativeView.addOnScrollListener(scrollListener);
         nativeView.scrollListener = scrollListener;
 
-        colWidthProperty.coerce(this);
-        rowHeightProperty.coerce(this);
+        // colWidthProperty.coerce(this);
+        // rowHeightProperty.coerce(this);
     }
 
     public disposeNativeView() {
@@ -221,7 +221,6 @@ export class CollectionView extends CollectionViewBase {
     }
     isScrollEnabled = true;
     public [isScrollEnabledProperty.setNative](value: boolean) {
-        console.log('isScrollEnabledProperty', value);
         this.isScrollEnabled = value;
     }
 
@@ -261,7 +260,11 @@ export class CollectionView extends CollectionViewBase {
     public onSourceCollectionChanged(event: ChangedData<any>) {
         // console.log('onItemsChanged', event.action, event.index, event.addedCount, event.removed);
         switch (event.action) {
-            case 'update': {
+            case ChangeType.Delete: {
+                this._listViewAdapter.notifyItemRangeRemoved(event.index, event.removed.length);
+                break;
+            }
+            case ChangeType.Update: {
                 if (event.addedCount > 0) {
                     this._listViewAdapter.notifyItemRangeChanged(event.index, event.addedCount);
                     return;
@@ -272,7 +275,7 @@ export class CollectionView extends CollectionViewBase {
                 }
                 break;
             }
-            case 'splice': {
+            case ChangeType.Splice: {
                 if (event.addedCount > 0) {
                     this._listViewAdapter.notifyItemRangeInserted(event.index, event.addedCount);
                 }
@@ -581,6 +584,7 @@ function initCollectionViewAdapter() {
 
             const templateType = this.getKeyByValue(viewType);
             let view: View = owner.getViewForViewType(ListViewViewTypes.ItemView, templateType);
+            console.log('onCreateViewHolder', viewType, templateType, view);
             // const isVue = !!view["defaultItemView"];
             const isVue = view === undefined;
             // dont create unecessary StackLayout if template.createView returns. Will happend when not using Vue or angular
@@ -640,16 +644,19 @@ function initCollectionViewAdapter() {
         public onBindViewHolder(holder: CollectionViewCellHolder, position: number) {
             const owner = this.owner.get();
             let view = holder.view;
-            view.bindingContext = owner.getItemAtIndex(position);
+            const bindingContext = owner.getItemAtIndex(position);
             const isVue = !!holder['defaultItemView'];
 
             view = isVue ? (view as StackLayout).getChildAt(0) : view;
-
+            if (view && view.bindingContext !== bindingContext) {
+                view.requestLayout();
+            }
             const args = {
                 eventName: CollectionViewBase.itemLoadingEvent,
                 index: position,
                 object: owner,
                 view,
+                bindingContext,
                 android: holder
             };
             owner.notify(args);
@@ -661,6 +668,7 @@ function initCollectionViewAdapter() {
                 (holder.view as StackLayout).addChild(args.view);
                 // holder["defaultItemView"] = false;
             }
+            view.bindingContext = bindingContext;
             if (owner._effectiveColWidth || !view.width) {
                 view.width = utils.layout.toDeviceIndependentPixels(owner._effectiveColWidth);
             }

@@ -3,10 +3,20 @@ import { ChangeType } from 'tns-core-modules/data/observable-array/observable-ar
 import { KeyedTemplate, Length, View } from 'tns-core-modules/ui/core/view';
 import * as util from 'tns-core-modules/utils/utils';
 import { CollectionViewItemEventData, Orientation } from './collectionview';
-import { CollectionViewBase, isBounceEnabledProperty, isScrollEnabledProperty, itemTemplatesProperty, ListViewViewTypes, orientationProperty, paddingBottomProperty, paddingLeftProperty, paddingRightProperty, paddingTopProperty } from './collectionview-common';
+import {
+    CollectionViewBase,
+    isBounceEnabledProperty,
+    isScrollEnabledProperty,
+    itemTemplatesProperty,
+    ListViewViewTypes,
+    orientationProperty,
+    paddingBottomProperty,
+    paddingLeftProperty,
+    paddingRightProperty,
+    paddingTopProperty
+} from './collectionview-common';
 
 const utilLayout = util.layout;
-
 
 // import { isScrollEnabledProperty } from 'tns-core-modules/ui/scroll-view/scroll-view';
 
@@ -35,36 +45,45 @@ export class CollectionView extends CollectionViewBase {
 
     constructor() {
         super();
+        this._map = new Map<CollectionViewCell, View>();
+        this._sizes = new Array<number[]>();
+    }
 
+    public createNativeView() {
         this._layout = UICollectionViewFlowLayout.alloc().init();
         this._layout.minimumLineSpacing = 0;
         this._layout.minimumInteritemSpacing = 0;
 
-        this.nativeView = UICollectionView.alloc().initWithFrameCollectionViewLayout(CGRectMake(0, 0, 0, 0), this._layout);
-        this.nativeView.backgroundColor = UIColor.clearColor;
-        this.nativeView.registerClassForCellWithReuseIdentifier(CollectionViewCell.class(), this._defaultTemplate.key);
-        this.nativeView.autoresizesSubviews = false;
-        this.nativeView.autoresizingMask = UIViewAutoresizing.None;
+        const view = UICollectionView.alloc().initWithFrameCollectionViewLayout(CGRectMake(0, 0, 0, 0), this._layout);
+        view.backgroundColor = UIColor.clearColor;
+        view.registerClassForCellWithReuseIdentifier(CollectionViewCell.class(), this._defaultTemplate.key);
+        view.autoresizesSubviews = false;
+        view.autoresizingMask = UIViewAutoresizing.None;
 
+        return view;
+    }
+
+    public initNativeView() {
+        super.initNativeView();
+
+        const nativeView = this.nativeView;
         this._dataSource = CollectionViewDataSource.initWithOwner(new WeakRef(this));
-        this.nativeView.dataSource = this._dataSource;
+        nativeView.dataSource = this._dataSource;
 
         this._delegate = UICollectionViewDelegateImpl.initWithOwner(new WeakRef(this));
-
-        this._map = new Map<CollectionViewCell, View>();
-        this._sizes = new Array<number[]>();
+        this.nativeView.delegate = this._delegate;
 
         this._setNativeClipToBounds();
     }
 
-    public onLoaded() {
-        super.onLoaded();
-        this.nativeView.delegate = this._delegate;
-    }
-
-    public onUnloaded() {
-        this.nativeView.delegate = null;
-        super.onUnloaded();
+    public disposeNativeView() {
+        const nativeView = this.nativeView;
+        nativeView.delegate = null;
+        this._delegate = null;
+        nativeView.dataSource = null;
+        this._dataSource = null;
+        this._layout = null;
+        super.disposeNativeView();
     }
 
     get ios(): UICollectionView {
@@ -238,6 +257,8 @@ export class CollectionView extends CollectionViewBase {
             }
         });
 
+        // TODO: this is ugly look here: https://github.com/nativescript-vue/nativescript-vue/issues/525
+        this.clearRealizedCells();
         this.ios.reloadData();
     }
 
@@ -267,8 +288,8 @@ export class CollectionView extends CollectionViewBase {
     public _setNativeClipToBounds() {
         this.nativeView.clipsToBounds = true;
     }
-    notifyForItemAtIndex(listView: CollectionViewBase, cell: any, view: View, eventName: string, indexPath: NSIndexPath) {
-        const args = { eventName, object: listView, index: indexPath.row, view, ios: cell, android: undefined };
+    notifyForItemAtIndex(listView: CollectionViewBase, cell: any, view: View, eventName: string, indexPath: NSIndexPath, bindingContext) {
+        const args = { eventName, object: listView, index: indexPath.row, view, ios: cell, bindingContext, android: undefined };
         listView.notify(args);
         return args;
     }
@@ -278,7 +299,6 @@ export class CollectionView extends CollectionViewBase {
         if (selector) {
             type = selector(this.getItemAtIndex(indexPath.item), indexPath.item, this.items);
         }
-        // console.log('_getItemTemplateType', indexPath.row, type);
         return type.toLowerCase();
     }
     getItemTemplateContent(index, templateType) {
@@ -289,12 +309,19 @@ export class CollectionView extends CollectionViewBase {
         try {
             this._preparingCell = true;
             let view = cell.view;
+            console.log('_prepareCell0', indexPath.row, !!view);
             if (!view) {
                 view = this.getItemTemplateContent(indexPath.item, templateType);
             }
-
-            const args = this.notifyForItemAtIndex(this, cell, view, CollectionViewBase.itemLoadingEvent, indexPath);
+            const bindingContext = this._prepareItem(view, indexPath.row);
+            // console.log('_prepareCell', indexPath.row, bindingContext['image'], bindingContext['name']);
+            if (view && view.bindingContext !== bindingContext) {
+                // view['isLayoutRequired'] = true;
+                view.requestLayout();
+            }
+            const args = this.notifyForItemAtIndex(this, cell, view, CollectionViewBase.itemLoadingEvent, indexPath, bindingContext);
             view = args.view;
+            view.bindingContext = bindingContext;
             // this.notify({
             //     eventName: CollectionViewBase.itemLoadingInternalEvent,
             //     object: this,
@@ -319,7 +346,6 @@ export class CollectionView extends CollectionViewBase {
                 cell.owner = new WeakRef(view);
             }
 
-            this._prepareItem(view, indexPath.row);
             this._map.set(cell, view);
 
             if (view && !view.parent) {
@@ -337,17 +363,27 @@ export class CollectionView extends CollectionViewBase {
             //     ios: cell,
             //     view
             // });
+            // console.log('_prepareCell done', indexPath.row, bindingContext['image'], bindingContext['name']);
         } finally {
             this._preparingCell = false;
         }
         return cellSize;
     }
     public getCellSize(index: number) {
-        if (this._effectiveColWidth && this._effectiveRowHeight) {
-            return [this._effectiveColWidth, this._effectiveRowHeight];
+        let result = this._sizes[index];
+        // console.log('getCellSize', index, this._effectiveColWidth, this._effectiveRowHeight,this.getMeasuredWidth(), this.getMeasuredHeight());
+        if (!result) {
+            if (this._effectiveColWidth && this._effectiveRowHeight) {
+                result = [this._effectiveColWidth, this._effectiveRowHeight];
+            } else if (this._effectiveRowHeight && this.orientation === 'vertical') {
+                result = [this.getMeasuredWidth(), this._effectiveRowHeight];
+            } else if (this._effectiveColWidth && this.orientation === 'horizontal') {
+                result = [this._effectiveColWidth, this.getMeasuredHeight()];
+            }
         }
+
         // return undefined;
-        return this._sizes[index];
+        return result;
     }
     public storeCellSize(index: number, value) {
         this._sizes[index] = value;
@@ -365,6 +401,25 @@ export class CollectionView extends CollectionViewBase {
             return [measuredSize.measuredWidth, measuredSize.measuredHeight];
         }
         return undefined;
+    }
+
+    private clearRealizedCells() {
+        const that = new WeakRef<CollectionView>(this);
+        this._map.forEach(function(value, key: CollectionViewCell) {
+            that.get()._removeContainer(key);
+            that.get()._clearCellViews(key);
+        }, that);
+        this._map.clear();
+    }
+
+    private _clearCellViews(cell: CollectionViewCell) {
+        if (cell && cell.view) {
+            if (cell.view.nativeViewProtected) {
+                (cell.view.nativeViewProtected as UIView).removeFromSuperview();
+            }
+
+            cell.owner = undefined;
+        }
     }
 
     private _removeContainer(cell: CollectionViewCell): void {
@@ -437,6 +492,7 @@ class CollectionViewDataSource extends NSObject implements UICollectionViewDataS
         owner._prepareCell(cell, indexPath, templateType);
 
         const cellView: View = cell.view;
+        console.log('collectionViewCellForItemAtIndexPath', indexPath.row, cellView && cellView['isLayoutRequired']);
         if (cellView && cellView['isLayoutRequired']) {
             owner.layoutCell(indexPath.row, cell, cellView);
         }
@@ -503,7 +559,7 @@ class UICollectionViewDelegateImpl extends NSObject implements UICollectionViewD
         // console.log('collectionViewLayoutSizeForItemAtIndexPath', measuredSize);
         // if (measuredSize === undefined) {
         const templateType = owner._getItemTemplateType(indexPath);
-        if (templateType) {
+        if (!measuredSize && templateType) {
             let cell = this._measureCellMap.get(templateType);
             if (!cell) {
                 cell = CollectionViewCell.new();

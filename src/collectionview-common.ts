@@ -103,7 +103,7 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
 
     public _prepareItem(item: View, index: number) {
         if (item) {
-            item.bindingContext = this.getItemAtIndex(index);
+            return this.getItemAtIndex(index);
         }
     }
 
@@ -132,15 +132,15 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     resolveTemplateView(template) {
         return builder.parse(template, this);
     }
-    // _getDefaultItemContent() {
-    //   var lbl = new Label();
-    //   lbl["defaultItemView"] = true;
-    //   lbl.bind({
-    //     targetProperty: "text",
-    //     sourceProperty: "$value"
-    //   });
-    //   return lbl;
-    // }
+    _getDefaultItemContent() {
+        const lbl = new Label();
+        lbl['defaultItemView'] = true;
+        lbl.bind({
+            targetProperty: 'text',
+            sourceProperty: '$value'
+        });
+        return lbl;
+    }
     getTemplateFromSelector(templateKey) {
         for (let i = 0, length_1 = this._itemTemplatesInternal.length; i < length_1; i++) {
             if (this._itemTemplatesInternal[i].key.toLowerCase() === templateKey.toLowerCase()) {
@@ -194,7 +194,12 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     onItemTemplatesChanged(oldValue, newValue) {
         this._itemTemplatesInternal = new Array(this._defaultTemplate);
         if (newValue) {
-            this._itemTemplatesInternal = this._itemTemplatesInternal.concat(newValue);
+            this._itemTemplatesInternal = this._itemTemplatesInternal.concat(
+                newValue.map(t => {
+                    t.key = t._key;
+                    delete t._key;
+                })
+            );
         }
     }
     onItemTemplateChanged(oldValue, newValue) {}
@@ -247,15 +252,16 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
 }
 
 const defaultRowHeight: Length = 'auto';
-export const rowHeightProperty = new CoercibleProperty<CollectionViewBase, PercentLength>({
+export const rowHeightProperty = new Property<CollectionViewBase, PercentLength>({
     name: 'rowHeight',
     defaultValue: defaultRowHeight,
     equalityComparer: PercentLength.equals,
     valueConverter: PercentLength.parse,
-    coerceValue: (target, value) => {
-        // We coerce to default value if we don't have display density.
-        return target.nativeView ? value : defaultRowHeight;
-    },
+    // coerceValue: (target, value) => {
+    //     console.log('coerceValue', !!target.nativeView, value, defaultRowHeight);
+    //     // We coerce to default value if we don't have display density.
+    //     return target.nativeView ? value : defaultRowHeight;
+    // },
     valueChanged: (target, oldValue, newValue) => {
         target._effectiveRowHeight = PercentLength.toDevicePixels(newValue, autoEffectiveRowHeight, target._innerHeight);
         target._onRowHeightPropertyChanged(oldValue, newValue);
@@ -264,15 +270,15 @@ export const rowHeightProperty = new CoercibleProperty<CollectionViewBase, Perce
 rowHeightProperty.register(CollectionViewBase);
 
 const defaultColWidth: PercentLength = { unit: '%', value: 1 };
-export const colWidthProperty = new CoercibleProperty<CollectionViewBase, PercentLength>({
+export const colWidthProperty = new Property<CollectionViewBase, PercentLength>({
     name: 'colWidth',
     defaultValue: defaultColWidth,
     equalityComparer: PercentLength.equals,
     valueConverter: PercentLength.parse,
-    coerceValue: (target, value) => {
-        // We coerce to default value if we don't have display density.
-        return target.nativeView ? value : defaultColWidth;
-    },
+    // coerceValue: (target, value) => {
+    //     // We coerce to default value if we don't have display density.
+    //     return target.nativeView ? value : defaultColWidth;
+    // },
     valueChanged: (target, oldValue, newValue) => {
         target._effectiveColWidth = PercentLength.toDevicePixels(newValue, autoEffectiveColWidth, target._innerWidth);
         target._onColWidthPropertyChanged(oldValue, newValue);
