@@ -584,7 +584,7 @@ function initCollectionViewAdapter() {
 
             const templateType = this.getKeyByValue(viewType);
             let view: View = owner.getViewForViewType(ListViewViewTypes.ItemView, templateType);
-            console.log('onCreateViewHolder', viewType, templateType, view);
+            // console.log('onCreateViewHolder', viewType, templateType, view);
             // const isVue = !!view["defaultItemView"];
             const isVue = view === undefined;
             // dont create unecessary StackLayout if template.createView returns. Will happend when not using Vue or angular
