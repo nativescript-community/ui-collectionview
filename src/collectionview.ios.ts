@@ -309,7 +309,6 @@ export class CollectionView extends CollectionViewBase {
         try {
             this._preparingCell = true;
             let view = cell.view;
-            console.log('_prepareCell0', indexPath.row, !!view);
             if (!view) {
                 view = this.getItemTemplateContent(indexPath.item, templateType);
             }
@@ -492,7 +491,6 @@ class CollectionViewDataSource extends NSObject implements UICollectionViewDataS
         owner._prepareCell(cell, indexPath, templateType);
 
         const cellView: View = cell.view;
-        console.log('collectionViewCellForItemAtIndexPath', indexPath.row, cellView && cellView['isLayoutRequired']);
         if (cellView && cellView['isLayoutRequired']) {
             owner.layoutCell(indexPath.row, cell, cellView);
         }
