@@ -16,7 +16,7 @@ exports.default = {
     props: {
         items: {
             type: [Object, Array],
-            validator: val => Array.isArray(val) || val instanceof ObservableArray,
+            validator: val => !val || Array.isArray(val) || val instanceof ObservableArray,
             required: true
         },
         '+alias': {
