@@ -7,46 +7,29 @@
   "nativescript": {
     "id": "com.nativescript.collectionviewexample",
     "tns-ios": {
-      "version": "4.2.0"
-    },
-    "tns-android": {
-      "version": "4.2.0"
+      "version": "6.0.2"
     }
   },
   "android": {
     "markingMode": "none"
   },
   "dependencies": {
-    "nativescript-theme-core": "^1.0.4",
-    "nativescript-ui-listview": "^3.7.0",
-    "nativescript-vue": "^2.0.0",
-    "tns-core-modules": "^4.2.0"
+    "nativescript-theme-core": "^2.0.5",
+    "nativescript-collectionview": "../plugin",
+    "nativescript-vue": "^2.4.0",
+    "tns-core-modules": "^6.0.6"
   },
   "devDependencies": {
-    "@babel/core": "^7.0.0",
-    "@babel/preset-env": "^7.0.0",
-    "babel-loader": "^8.0.2",
-    "babel-traverse": "6.26.0",
-    "babel-types": "6.26.0",
-    "babylon": "6.18.0",
-    "clean-webpack-plugin": "^0.1.19",
-    "copy-webpack-plugin": "^4.5.2",
-    "css-hot-loader": "^1.4.2",
-    "css-loader": "^1.0.0",
-    "lazy": "1.0.11",
-    "mini-css-extract-plugin": "^0.4.1",
-    "nativescript-dev-webpack": "^0.17.0-2018-09-12-01",
-    "nativescript-vue-template-compiler": "^2.0.0-alpha.3",
-    "nativescript-worker-loader": "~0.9.0",
-    "node-sass": "^4.9.2",
-    "sass-loader": "^7.1.0",
-    "ts-loader": "^5.2.1",
-    "tns-platform-declarations": "^4.2.1",
-    "typescript": "^3.1.1",
-    "uglifyjs-webpack-plugin": "~1.2.7",
-    "vue-loader": "^15.2.6",
-    "webpack": "^4.16.4",
-    "webpack-bundle-analyzer": "~2.13.1",
-    "webpack-cli": "^3.1.0"
+    "@babel/core":"^7.5.5",
+    "@babel/preset-env":"^7.5.5",
+    "babel-loader":"^8.0.6",
+    "nativescript-dev-webpack": "^1.1.0",
+    "nativescript-vue-template-compiler": "^2.4.0",
+    "node-sass":"^4.12.0",
+    "tns-platform-declarations": "^6.0.6",
+    "typescript": "^3.5.3",
+    "vue-loader": "^15.7.1",
+    "webpack": "^4.39.2",
+    "webpack-cli": "^3.3.7"
   }
 }
