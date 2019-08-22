@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.26](https://github.com/Akylas/nativescript-collectionview/compare/v1.0.25...v1.0.26) (2019-08-22)
+
+
+### Bug Fixes
+
+* ios fix ([4029c51](https://github.com/Akylas/nativescript-collectionview/commit/4029c51))
+
+
+
+
+
 ## [1.0.25](https://github.com/Akylas/nativescript-collectionview/compare/v1.0.24...v1.0.25) (2019-08-11)
 
 
