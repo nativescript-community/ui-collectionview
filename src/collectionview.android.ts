@@ -644,13 +644,12 @@ function initCollectionViewAdapter() {
         public onBindViewHolder(holder: CollectionViewCellHolder, position: number) {
             const owner = this.owner.get();
             let view = holder.view;
-            const bindingContext = owner.getItemAtIndex(position);
+            const oldBindingContext = view && view.bindingContext;
+            const bindingContext = owner._prepareItem(view, position);
             const isVue = !!holder['defaultItemView'];
 
             view = isVue ? (view as StackLayout).getChildAt(0) : view;
-            if (view && view.bindingContext !== bindingContext) {
-                view.requestLayout();
-            }
+
             const args = {
                 eventName: CollectionViewBase.itemLoadingEvent,
                 index: position,
@@ -668,12 +667,15 @@ function initCollectionViewAdapter() {
                 (holder.view as StackLayout).addChild(args.view);
                 // holder["defaultItemView"] = false;
             }
-            view.bindingContext = bindingContext;
+            // view.bindingContext = bindingContext;
             if (owner._effectiveColWidth || !view.width) {
                 view.width = utils.layout.toDeviceIndependentPixels(owner._effectiveColWidth);
             }
             if (owner._effectiveRowHeight || !view.height) {
                 view.height = utils.layout.toDeviceIndependentPixels(owner._effectiveRowHeight);
+            }
+            if (oldBindingContext !== bindingContext) {
+                view.requestLayout();
             }
         }
         // @profile("onBindViewHolder")

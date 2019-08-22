@@ -15,6 +15,7 @@ import {
     paddingRightProperty,
     paddingTopProperty
 } from './collectionview-common';
+import { StackLayout } from 'tns-core-modules/ui/layouts/stack-layout/stack-layout';
 
 const utilLayout = util.layout;
 
@@ -288,8 +289,8 @@ export class CollectionView extends CollectionViewBase {
     public _setNativeClipToBounds() {
         this.nativeView.clipsToBounds = true;
     }
-    notifyForItemAtIndex(listView: CollectionViewBase, cell: any, view: View, eventName: string, indexPath: NSIndexPath, bindingContext) {
-        const args = { eventName, object: listView, index: indexPath.row, view, ios: cell, bindingContext, android: undefined };
+    notifyForItemAtIndex(listView: CollectionViewBase, cell: any, view: View, eventName: string, indexPath: NSIndexPath, bindingContext?) {
+        const args = { eventName, object: listView, index: indexPath.row, view, ios: cell, bindingContext };
         listView.notify(args);
         return args;
     }
@@ -312,15 +313,31 @@ export class CollectionView extends CollectionViewBase {
             if (!view) {
                 view = this.getItemTemplateContent(indexPath.item, templateType);
             }
+
+            const oldBindingContext = view && view.bindingContext;
             const bindingContext = this._prepareItem(view, indexPath.row);
-            // console.log('_prepareCell', indexPath.row, bindingContext['image'], bindingContext['name']);
-            if (view && view.bindingContext !== bindingContext) {
-                // view['isLayoutRequired'] = true;
-                view.requestLayout();
-            }
             const args = this.notifyForItemAtIndex(this, cell, view, CollectionViewBase.itemLoadingEvent, indexPath, bindingContext);
             view = args.view;
-            view.bindingContext = bindingContext;
+
+            if (!cell.view) {
+                cell.owner = new WeakRef(view);
+            } else if (cell.view !== view) {
+                this._removeContainer(cell);
+                (cell.view.nativeViewProtected as UIView).removeFromSuperview();
+                cell.owner = new WeakRef(view);
+            }
+
+            if (oldBindingContext !== bindingContext) {
+                view.requestLayout();
+            }
+            // const oldBindingContext = view && view.bindingContext;
+            // const bindingContext = this._prepareItem(view, indexPath.row);
+            // console.log('_prepareCell', indexPath.row, oldBindingContext, bindingContext);
+            // if (oldBindingContext !== bindingContext) {
+            //     // view['isLayoutRequired'] = true;
+            //     view.requestLayout();
+            // }
+            // view.bindingContext = bindingContext;
             // this.notify({
             //     eventName: CollectionViewBase.itemLoadingInternalEvent,
             //     object: this,
@@ -337,13 +354,6 @@ export class CollectionView extends CollectionViewBase {
             // }
 
             // If cell is reused it have old content - remove it first.
-            if (!cell.view) {
-                cell.owner = new WeakRef(view);
-            } else if (cell.view !== view) {
-                this._removeContainer(cell);
-                (cell.view.nativeViewProtected as UIView).removeFromSuperview();
-                cell.owner = new WeakRef(view);
-            }
 
             this._map.set(cell, view);
 

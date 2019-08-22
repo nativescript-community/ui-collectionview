@@ -102,9 +102,11 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     items: any[] | ItemsSource;
 
     public _prepareItem(item: View, index: number) {
+        const context = this.getItemAtIndex(index);
         if (item) {
-            return this.getItemAtIndex(index);
+            item.bindingContext =  context;
         }
+        return context;
     }
 
     public getItemAtIndex(index: number): any {
