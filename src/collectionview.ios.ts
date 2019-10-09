@@ -260,7 +260,9 @@ export class CollectionView extends CollectionViewBase {
 
         // TODO: this is ugly look here: https://github.com/nativescript-vue/nativescript-vue/issues/525
         this.clearRealizedCells();
-        this.ios.reloadData();
+        if (this.nativeView){
+            this.nativeView.reloadData();
+        }
     }
 
     public scrollToIndex(index: number, animated: boolean = true) {
@@ -281,8 +283,8 @@ export class CollectionView extends CollectionViewBase {
     public measure(widthMeasureSpec: number, heightMeasureSpec: number): void {
         const changed = (this as any)._setCurrentMeasureSpecs(widthMeasureSpec, heightMeasureSpec);
         super.measure(widthMeasureSpec, heightMeasureSpec);
-        if (changed) {
-            this.ios.reloadData();
+        if (changed && this.nativeView) {
+            this.nativeView.reloadData();
         }
     }
 
