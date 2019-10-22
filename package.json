@@ -33,7 +33,7 @@
     },
     "scripts": {
         "ngc": "node --max-old-space-size=8192 ./node_modules/.bin/ngc",
-        "tsc": "cpy '**/*.d.ts' '../plugin' --parents --cwd=src && tsc -skipLibCheck",
+        "tsc": "cpy '**/*.d.ts' '../plugin' --parents --cwd=src && cp README.md plugin && tsc -skipLibCheck",
         "clean": "rimraf ./plugin/**/*.d.ts ./plugin/**/*.js ./plugin/**/*.js.map ./plugin/**/*.metadata.json plugin/node_modules plugin/package-lock.json",
         "build": "npm run tsc && npm run ngc",
         "publish": "npm run build && lerna publish",
