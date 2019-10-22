@@ -3,7 +3,6 @@ src/
 bin/
 hooks/
 *.ts
-*.map
 *.old
 tsconfig.json
 !*.d.ts
