@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.28](https://github.com/Akylas/nativescript-collectionview/compare/v1.0.27...v1.0.28) (2019-10-22)
+
+
+### Features
+
+* debug logging ([e89deb6](https://github.com/Akylas/nativescript-collectionview/commit/e89deb6))
+
+
+
+
+
 ## [1.0.27](https://github.com/Akylas/nativescript-collectionview/compare/v1.0.26...v1.0.27) (2019-10-09)
 
 
