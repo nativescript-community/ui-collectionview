@@ -13,7 +13,9 @@ import {
     paddingBottomProperty,
     paddingLeftProperty,
     paddingRightProperty,
-    paddingTopProperty
+    paddingTopProperty,
+    CLog,
+    CLogTypes
 } from './collectionview-common';
 import { StackLayout } from 'tns-core-modules/ui/layouts/stack-layout/stack-layout';
 
@@ -180,27 +182,32 @@ export class CollectionView extends CollectionViewBase {
     public onSourceCollectionChanged(event /*: ChangedData<any>*/) {
         // console.log('onItemsChanged', event.action, event.index, event.addedCount, event.removed && event.removed.length);
         // this.refresh();
+        CLog(CLogTypes.info, 'onItemsChanged', event.action, event.index, event.addedCount, event.removed && event.removed.length);
 
         // return;
         switch (event.action) {
             case ChangeType.Delete: {
-                const nativeSource = NSMutableArray.new<NSIndexPath>();
-                nativeSource.addObject(NSIndexPath.indexPathForRowInSection(event.index, 0));
+                const indexes = NSMutableArray.new<NSIndexPath>();
+                indexes.addObject(NSIndexPath.indexPathForRowInSection(event.index, 0));
                 this.unbindUnusedCells(event.removed);
-                this.ios.deleteItemsAtIndexPaths(nativeSource);
+                CLog(CLogTypes.info, 'deleteItemsAtIndexPaths', indexes.count);
+                this.ios.performBatchUpdatesCompletion(() => {
+                    this.ios.deleteItemsAtIndexPaths(indexes);
+                }, null);
                 return;
             }
             case ChangeType.Add: {
-                const nativeSource = NSMutableArray.new<NSIndexPath>();
+                const indexes = NSMutableArray.new<NSIndexPath>();
                 for (let index = 0; index < event.addedCount; index++) {
-                    nativeSource.addObject(NSIndexPath.indexPathForRowInSection(event.index + index, 0));
+                    indexes.addObject(NSIndexPath.indexPathForRowInSection(event.index + index, 0));
                 }
                 // if (this._nativeView.collectionView.dragging) {
                 //     // Adjust the content offset to force stop the drag:
                 //     this._nativeView.collectionView.setContentOffsetAnimated(this._nativeView.collectionView.contentOffset, false);
                 // }
+                CLog(CLogTypes.info, 'insertItemsAtIndexPaths', indexes.count);
                 this.ios.performBatchUpdatesCompletion(() => {
-                    this.ios.insertItemsAtIndexPaths(nativeSource);
+                    this.ios.insertItemsAtIndexPaths(indexes);
                     // this.ios.reloadItemsAtIndexPaths(nativeSource);
                 }, null);
                 // Reload the items to avoid duplicate Load on Demand indicators:
@@ -221,8 +228,10 @@ export class CollectionView extends CollectionViewBase {
                             indexes.addObject(NSIndexPath.indexPathForItemInSection(event.index + index, 0));
                         }
                         this.unbindUnusedCells(event.removed);
-                        // console.log('deleteItemsAtIndexPaths', indexes.count);
-                        this.ios.deleteItemsAtIndexPaths(indexes);
+                        CLog(CLogTypes.info, 'deleteItemsAtIndexPaths', indexes.count);
+                        this.ios.performBatchUpdatesCompletion(() => {
+                            this.ios.deleteItemsAtIndexPaths(indexes);
+                        }, null);
                     }
                 }, null);
 
@@ -260,7 +269,7 @@ export class CollectionView extends CollectionViewBase {
 
         // TODO: this is ugly look here: https://github.com/nativescript-vue/nativescript-vue/issues/525
         this.clearRealizedCells();
-        if (this.nativeView){
+        if (this.nativeView) {
             this.nativeView.reloadData();
         }
     }

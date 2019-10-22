@@ -8,6 +8,31 @@ import { Label } from 'tns-core-modules/ui/label';
 import { ItemsSource } from 'tns-core-modules/ui/list-view';
 import { CollectionView as CollectionViewDefinition, Orientation } from './collectionview';
 
+let debug = false;
+export function setDebug(value: boolean) {
+    debug = value;
+}
+
+export enum CLogTypes {
+    info,
+    warning,
+    error
+}
+
+export const CLog = (type: CLogTypes = 0, ...args) => {
+    if (debug) {
+        if (type === 0) {
+            // Info
+            console.log('[nativescript-collectionview]', ...args);
+        } else if (type === 1) {
+            // Warning
+            console.warn('[nativescript-collectionview]', ...args);
+        } else if (type === 2) {
+            console.error('[nativescript-collectionview]', ...args);
+        }
+    }
+};
+
 const autoEffectiveRowHeight = 0;
 const autoEffectiveColWidth = 0;
 
@@ -26,6 +51,12 @@ export namespace knownMultiTemplates {
 }
 
 export abstract class CollectionViewBase extends View implements CollectionViewDefinition {
+    static set debug(value) {
+        debug = value;
+    }
+    static get debug() {
+        return debug;
+    }
     public static itemLoadingEvent = 'itemLoading';
     public static cellCreateEvent = 'cellCreate';
     public static scrollEvent = 'scroll';
@@ -104,7 +135,7 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     public _prepareItem(item: View, index: number) {
         const context = this.getItemAtIndex(index);
         if (item) {
-            item.bindingContext =  context;
+            item.bindingContext = context;
         }
         return context;
     }
@@ -122,6 +153,7 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     }
     onItemViewLoaderChanged() {}
     _itemViewLoader;
+
     get itemViewLoader() {
         return this._itemViewLoader;
     }
@@ -230,7 +262,7 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
             return;
         }
         this.refresh();
-    }
+    };
     onLoaded() {
         super.onLoaded();
         this.refresh();
