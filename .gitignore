@@ -71,3 +71,4 @@ plugin/**/*.d.ts
 /plugin/typings
 /plugin/vue
 pnpm-lock.yaml
+/plugin/README.md
