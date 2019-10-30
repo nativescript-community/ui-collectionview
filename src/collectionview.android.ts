@@ -258,6 +258,9 @@ export class CollectionView extends CollectionViewBase {
         }
     }
     public onSourceCollectionChanged(event: ChangedData<any>) {
+        if (!this._listViewAdapter) {
+            return;
+        }
         // console.log('onItemsChanged', event.action, event.index, event.addedCount, event.removed);
         switch (event.action) {
             case ChangeType.Delete: {
