@@ -26,8 +26,9 @@
         "rootDir": "src",
         "paths": {
             "*": [
-                "./node_modules/tns-core-modules/*",
-                "./node_modules/*"
+                "./node_modules/*",
+                "tns-core-modules": ["./node_modules/@nativescript/core"],
+                "tns-core-modules/*": ["./node_modules/@nativescript/core/*"]
             ]
         }
     },
