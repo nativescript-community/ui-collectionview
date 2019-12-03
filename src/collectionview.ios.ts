@@ -168,8 +168,9 @@ export class CollectionView extends CollectionViewBase {
     }
 
     public onSourceCollectionChanged(event /*: ChangedData<any>*/) {
-        // console.log('onItemsChanged', event.action, event.index, event.addedCount, event.removed && event.removed.length);
-        // this.refresh();
+        if (!this.ios) {
+            return;
+        }
         CLog(CLogTypes.info, 'onItemsChanged', event.action, event.index, event.addedCount, event.removed && event.removed.length);
 
         // return;
