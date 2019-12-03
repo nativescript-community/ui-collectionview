@@ -1,6 +1,6 @@
 import { CollectionView } from '../collectionview';
-import { Observable } from 'tns-core-modules/data/observable';
-import { ObservableArray } from 'tns-core-modules/data/observable-array/observable-array';
+import { Observable } from '@nativescript/core/data/observable';
+import { ObservableArray } from '@nativescript/core/data/observable-array/observable-array';
 
 function extend(to, _from): any {
     for (const key in _from) {
@@ -107,7 +107,7 @@ exports.default = {
             const index = args.index;
             const items = args.object.items;
             const currentItem = args.bindingContext;
-            const name = args.object.itemTemplateSelector(currentItem, index, items);
+            const name = args.object._itemTemplateSelector(currentItem, index, items);
             // const isSelected = this.listView.nativeView.isItemSelected(currentItem);
             const isSelected = false;
             const context = this.getItemContext(currentItem, index, isSelected);

@@ -1,4 +1,4 @@
-import { messageType, write } from "tns-core-modules/trace";
+import { messageType, write } from "@nativescript/core/trace";
 
 const collectionViewTraceCategory = "ns-collectionview";
 

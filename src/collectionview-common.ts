@@ -1,12 +1,13 @@
-import * as observable from 'tns-core-modules/data/observable';
-import { ChangedData, ObservableArray } from 'tns-core-modules/data/observable-array';
-import * as builder from 'tns-core-modules/ui/builder';
-import { booleanConverter, heightProperty, makeParser, makeValidator, widthProperty } from 'tns-core-modules/ui/content-view';
-import { CoercibleProperty, KeyedTemplate, Length, PercentLength, Property, Template, View } from 'tns-core-modules/ui/core/view';
-import { addWeakEventListener, removeWeakEventListener } from 'tns-core-modules/ui/core/weak-event-listener';
-import { Label } from 'tns-core-modules/ui/label';
-import { ItemsSource } from 'tns-core-modules/ui/list-view';
+import * as observable from '@nativescript/core/data/observable';
+import { ChangedData, ObservableArray } from '@nativescript/core/data/observable-array';
+import * as builder from '@nativescript/core/ui/builder';
+import { booleanConverter, heightProperty, makeParser, makeValidator, widthProperty } from '@nativescript/core/ui/content-view';
+import { CoercibleProperty, KeyedTemplate, Length, PercentLength, Property, Template, View } from '@nativescript/core/ui/core/view';
+import { addWeakEventListener, removeWeakEventListener } from '@nativescript/core/ui/core/weak-event-listener';
+import { Label } from '@nativescript/core/ui/label';
+import { ItemsSource } from '@nativescript/core/ui/list-view';
 import { CollectionView as CollectionViewDefinition, Orientation } from './collectionview';
+import { profile } from '@nativescript/core/profiling';
 
 let debug = false;
 export function setDebug(value: boolean) {
@@ -36,7 +37,7 @@ export const CLog = (type: CLogTypes = 0, ...args) => {
 const autoEffectiveRowHeight = 0;
 const autoEffectiveColWidth = 0;
 
-export * from 'ui/core/view';
+// export * from 'ui/core/view';
 
 export enum ListViewViewTypes {
     ItemView
@@ -103,6 +104,7 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     public abstract refresh();
     public abstract scrollToIndex(index: number, animated: boolean);
 
+    @profile
     public setMeasuredDimension(measuredWidth: number, measuredHeight: number) {
         super.setMeasuredDimension(measuredWidth, measuredHeight);
         let changed = false;
@@ -132,6 +134,7 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     // }
     items: any[] | ItemsSource;
 
+    @profile
     public _prepareItem(item: View, index: number) {
         const context = this.getItemAtIndex(index);
         if (item) {
@@ -208,7 +211,7 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
         }
         return templateString === undefined ? undefined : this.resolveTemplateView(templateString);
     }
-    itemTemplateSelector: Function;
+    _itemTemplateSelector: Function;
     onItemTemplateSelectorChanged(oldValue, newValue) {
         if (typeof newValue === 'string') {
             this._itemTemplateSelectorBindable.bind({
@@ -216,13 +219,13 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
                 targetProperty: 'templateKey',
                 expression: newValue
             });
-            this.itemTemplateSelector = function(item, index, items) {
+            this._itemTemplateSelector = function(item, index, items) {
                 item['$index'] = index;
                 this._itemTemplateSelectorBindable.bindingContext = item;
                 return this._itemTemplateSelectorBindable.get('templateKey');
             };
         } else if (typeof newValue === 'function') {
-            this.itemTemplateSelector = newValue;
+            this._itemTemplateSelector = newValue;
         }
     }
     onItemTemplatesChanged(oldValue, newValue) {

@@ -1,27 +1,15 @@
-import { EventData, Observable } from 'tns-core-modules/data/observable';
-import { ChangeType } from 'tns-core-modules/data/observable-array/observable-array';
-import { KeyedTemplate, Length, View } from 'tns-core-modules/ui/core/view';
-import * as util from 'tns-core-modules/utils/utils';
+import { EventData, Observable } from '@nativescript/core/data/observable';
+import { ChangeType } from '@nativescript/core/data/observable-array/observable-array';
+import { KeyedTemplate, Length, View, paddingBottomProperty, paddingLeftProperty, paddingRightProperty, paddingTopProperty } from '@nativescript/core/ui/core/view';
+import * as util from '@nativescript/core/utils/utils';
 import { CollectionViewItemEventData, Orientation } from './collectionview';
-import {
-    CollectionViewBase,
-    isBounceEnabledProperty,
-    isScrollEnabledProperty,
-    itemTemplatesProperty,
-    ListViewViewTypes,
-    orientationProperty,
-    paddingBottomProperty,
-    paddingLeftProperty,
-    paddingRightProperty,
-    paddingTopProperty,
-    CLog,
-    CLogTypes
-} from './collectionview-common';
-import { StackLayout } from 'tns-core-modules/ui/layouts/stack-layout/stack-layout';
+import { CollectionViewBase, isBounceEnabledProperty, isScrollEnabledProperty, itemTemplatesProperty, ListViewViewTypes, orientationProperty, CLog, CLogTypes } from './collectionview-common';
+import { StackLayout } from '@nativescript/core/ui/layouts/stack-layout/stack-layout';
+import { profile } from '@nativescript/core/profiling';
 
 const utilLayout = util.layout;
 
-// import { isScrollEnabledProperty } from 'tns-core-modules/ui/scroll-view/scroll-view';
+// import { isScrollEnabledProperty } from '@nativescript/core/ui/scroll-view/scroll-view';
 
 export * from './collectionview-common';
 
@@ -259,6 +247,7 @@ export class CollectionView extends CollectionViewBase {
             }
         }, this);
     }
+    @profile
     public refresh() {
         // clear bindingContext when it is not observable because otherwise bindings to items won't reevaluate
         this._map.forEach((view, nativeView, map) => {
@@ -306,7 +295,7 @@ export class CollectionView extends CollectionViewBase {
         return args;
     }
     _getItemTemplateType(indexPath) {
-        const selector = this.itemTemplateSelector;
+        const selector = this._itemTemplateSelector;
         let type = this._defaultTemplate.key;
         if (selector) {
             type = selector(this.getItemAtIndex(indexPath.item), indexPath.item, this.items);
@@ -504,6 +493,7 @@ class CollectionViewDataSource extends NSObject implements UICollectionViewDataS
         return owner.items ? owner.items.length : 0;
     }
 
+    @profile
     public collectionViewCellForItemAtIndexPath(collectionView: UICollectionView, indexPath: NSIndexPath): UICollectionViewCell {
         const owner = this._owner.get();
         const templateType = owner._getItemTemplateType(indexPath);
@@ -567,6 +557,7 @@ class UICollectionViewDelegateImpl extends NSObject implements UICollectionViewD
         return indexPath;
     }
 
+    @profile
     public collectionViewLayoutSizeForItemAtIndexPath(collectionView: UICollectionView, collectionViewLayout: UICollectionViewLayout, indexPath: NSIndexPath) {
         const owner = this._owner.get();
         const dataItem = owner.getItemAtIndex(indexPath.row);

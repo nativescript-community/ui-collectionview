@@ -20,12 +20,12 @@ import {
     ViewContainerRef,
     ɵisListLikeIterable as isListLikeIterable
 } from '@angular/core';
-import { ObservableArray } from 'tns-core-modules/data/observable-array';
-import { KeyedTemplate, View } from 'tns-core-modules/ui/core/view';
+import { ObservableArray } from '@nativescript/core/data/observable-array';
+import { KeyedTemplate, View } from '@nativescript/core/ui/core/view';
 import { CollectionView, CollectionViewItemEventData, ListViewViewTypes } from '../collectionview';
 import { collectionViewLog } from './trace';
 
-import { getSingleViewRecursive, isKnownView, registerElement } from 'nativescript-angular/element-registry';
+import { getSingleViewRecursive, isKnownView, registerElement } from '@nativescript/angular/element-registry';
 
 const NG_VIEW = '_ngViewRef';
 

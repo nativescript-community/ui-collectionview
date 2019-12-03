@@ -1,21 +1,10 @@
-﻿import { ChangedData, ChangeType } from 'data/observable-array';
-import { profile } from 'tns-core-modules/profiling';
-import { Length, View } from 'tns-core-modules/ui/core/view';
-import { StackLayout } from 'tns-core-modules/ui/layouts/stack-layout';
-import * as utils from 'tns-core-modules/utils/utils';
+﻿import { ChangedData, ChangeType } from '@nativescript/core/data/observable-array';
+import { profile } from '@nativescript/core/profiling';
+import { Length, View, paddingBottomProperty, paddingLeftProperty, paddingRightProperty, paddingTopProperty } from '@nativescript/core/ui/core/view';
+import { StackLayout } from '@nativescript/core/ui/layouts/stack-layout';
+import * as utils from '@nativescript/core/utils/utils';
 import { CollectionViewItemEventData, Orientation } from './collectionview';
-import {
-    CollectionViewBase,
-    colWidthProperty,
-    isScrollEnabledProperty,
-    ListViewViewTypes,
-    orientationProperty,
-    paddingBottomProperty,
-    paddingLeftProperty,
-    paddingRightProperty,
-    paddingTopProperty,
-    rowHeightProperty
-} from './collectionview-common';
+import { CollectionViewBase, colWidthProperty, isScrollEnabledProperty, ListViewViewTypes, orientationProperty, rowHeightProperty } from './collectionview-common';
 
 export * from './collectionview-common';
 
@@ -307,6 +296,7 @@ export class CollectionView extends CollectionViewBase {
         }
         return spanCount;
     }
+    @profile
     public refresh() {
         if (!this.nativeView) {
             return;
@@ -541,12 +531,13 @@ function initCollectionViewAdapter() {
         //     super.notifyDataSetChanged();
         // }
 
+        @profile
         public getItemViewType(position: number) {
             const owner = this.owner.get();
             let resultType = 0;
 
-            if (owner.itemTemplateSelector) {
-                const selector = owner.itemTemplateSelector;
+            if (owner._itemTemplateSelector) {
+                const selector = owner._itemTemplateSelector;
                 const dataItem = owner.getItemAtIndex(position);
                 if (dataItem) {
                     const selectorType = selector(dataItem, position, owner.items);
@@ -560,6 +551,7 @@ function initCollectionViewAdapter() {
             return resultType;
         }
 
+        @profile
         disposeViewHolderViews() {
             this._viewHolders = new Array();
             const owner = this.owner.get();
@@ -571,6 +563,7 @@ function initCollectionViewAdapter() {
                 // element.parent._removeView(element);
             });
         }
+        @profile
         getKeyByValue(inputValue) {
             let result;
             this.templateTypeNumberString.forEach(function(value, key, map) {
@@ -581,7 +574,7 @@ function initCollectionViewAdapter() {
             return result;
         }
 
-        @profile('CV_onCreateViewHolder')
+        @profile
         public onCreateViewHolder(parent: android.view.ViewGroup, viewType: number) {
             const owner = this.owner.get();
 
@@ -643,7 +636,7 @@ function initCollectionViewAdapter() {
 
         // }
 
-        @profile('CV_onBindViewHolder')
+        @profile
         public onBindViewHolder(holder: CollectionViewCellHolder, position: number) {
             const owner = this.owner.get();
             let view = holder.view;
@@ -735,6 +728,7 @@ function initCollectionViewRecyclerView() {
         //   owner.setMeasuredDimension(w, h);
         // }
 
+        @profile
         public onMeasure(widthMeasureSpec, heightMeasureSpec) {
             super.onMeasure(widthMeasureSpec, heightMeasureSpec);
             const owner = this.owner.get();
@@ -783,6 +777,7 @@ function initGridLayoutManager() {
             return global.__native(this);
         }
 
+        @profile
         onLayoutCompleted(state) {
             super.onLayoutCompleted(state);
             for (let i = 0; i < this.getChildCount(); i++) {
@@ -791,6 +786,7 @@ function initGridLayoutManager() {
             }
         }
 
+        @profile
         computeVerticalScrollOffset(state) {
             if (this.getChildCount() === 0) {
                 return 0;

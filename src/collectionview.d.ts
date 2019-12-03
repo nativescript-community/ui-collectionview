@@ -1,6 +1,6 @@
-import { KeyedTemplate, PercentLength, Template, View } from 'tns-core-modules/ui/core/view';
-import { ItemsSource } from 'tns-core-modules/ui/list-view';
-import { EventData } from 'tns-core-modules/data/observable';
+import { KeyedTemplate, PercentLength, Template, View } from '@nativescript/core/ui/core/view';
+import { ItemsSource } from '@nativescript/core/ui/list-view';
+import { EventData } from '@nativescript/core/data/observable';
 
 export type Orientation = 'horizontal' | 'vertical';
 
