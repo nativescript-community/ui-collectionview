@@ -194,7 +194,7 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
             newView = template.createView();
         }
         if (!newView && this._itemViewLoader !== undefined) {
-            newView = this._itemViewLoader(viewType);
+            newView = this._itemViewLoader(templateKey);
         }
         if (newView) {
             return newView;
@@ -261,14 +261,14 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
         if (newValue instanceof observable.Observable) {
             addWeakEventListener(newValue, ObservableArray.changeEvent, this.onSourceCollectionChangedInternal, this);
         }
-        if (!this.isLoaded) {
-            return;
-        }
         this.refresh();
     };
+    _isDataDirty = false
     onLoaded() {
         super.onLoaded();
-        this.refresh();
+        if (this._isDataDirty) {
+            this.refresh();
+        }
     }
     onSourceCollectionChanged(event: ChangedData<any>) {
         this.refresh();

@@ -5,6 +5,7 @@ import { StackLayout } from '@nativescript/core/ui/layouts/stack-layout';
 import * as utils from '@nativescript/core/utils/utils';
 import { CollectionViewItemEventData, Orientation } from './collectionview';
 import { CollectionViewBase, colWidthProperty, isScrollEnabledProperty, ListViewViewTypes, orientationProperty, rowHeightProperty } from './collectionview-common';
+import { ProxyViewContainer } from '@nativescript/core/ui/proxy-view-container';
 
 export * from './collectionview-common';
 
@@ -124,20 +125,22 @@ export class CollectionView extends CollectionViewBase {
     get layoutManager(): GridLayoutManager {
         return this.nativeView.getLayoutManager() as GridLayoutManager;
     }
-
+    _layoutParams: org.nativescript.widgets.CommonLayoutParams;
     _getViewLayoutParams() {
-        const layoutParams = new org.nativescript.widgets.CommonLayoutParams();
-        // if (this.listViewLayout instanceof ListViewLinearLayout) {
-        // if (this.listViewLayout.scrollDirection.toLowerCase() === listViewCommonModule.ListViewScrollDirection.Vertical.toLowerCase()) {
-        layoutParams.width = org.nativescript.widgets.CommonLayoutParams.WRAP_CONTENT;
-        layoutParams.height = org.nativescript.widgets.CommonLayoutParams.WRAP_CONTENT;
+        if (!this._layoutParams) {
+            const layoutParams = (this._layoutParams = new org.nativescript.widgets.CommonLayoutParams());
+            // if (this.listViewLayout instanceof ListViewLinearLayout) {
+            // if (this.listViewLayout.scrollDirection.toLowerCase() === listViewCommonModule.ListViewScrollDirection.Vertical.toLowerCase()) {
+            layoutParams.width = org.nativescript.widgets.CommonLayoutParams.WRAP_CONTENT;
+            layoutParams.height = org.nativescript.widgets.CommonLayoutParams.WRAP_CONTENT;
+        }
         // }
         // else if (this.listViewLayout.scrollDirection.toLowerCase() === listViewCommonModule.ListViewScrollDirection.Horizontal.toLowerCase()) {
         //     layoutParams.width = org.nativescript.widgets.CommonLayoutParams.WRAP_CONTENT;
         //     layoutParams.height = org.nativescript.widgets.CommonLayoutParams.MATCH_PARENT;
         // }
         // }
-        return layoutParams;
+        return this._layoutParams;
     }
     //     private listViewItemHeights = new java.util.Hashtable<java.util.Integer, Integer>();
     //    private listViewItemWidth = new java.util.Hashtable<Integer, Integer>();
@@ -301,6 +304,11 @@ export class CollectionView extends CollectionViewBase {
         if (!this.nativeView) {
             return;
         }
+        if (!this.isLoaded) {
+            this._isDataDirty = true;
+            return;
+        }
+        this._isDataDirty = false;
         if (!this._listViewAdapter) {
             this._listViewAdapter = this.createComposedAdapter(this.nativeViewProtected);
         } else {
@@ -449,7 +457,6 @@ function initCollectionViewAdapter() {
     //     return this.textView;
     //   }
     // }
-
     @Interfaces([android.view.View.OnClickListener])
     class CollectionViewCellHolderImpl extends androidx.recyclerview.widget.RecyclerView.ViewHolder implements android.view.View.OnClickListener {
         constructor(private owner: WeakRef<View>, private collectionView: WeakRef<CollectionView>, androidView?: android.view.View) {
@@ -580,11 +587,11 @@ function initCollectionViewAdapter() {
 
             const templateType = this.getKeyByValue(viewType);
             let view: View = owner.getViewForViewType(ListViewViewTypes.ItemView, templateType);
-            // console.log('onCreateViewHolder', viewType, templateType, view);
             // const isVue = !!view["defaultItemView"];
             const isVue = view === undefined;
             // dont create unecessary StackLayout if template.createView returns. Will happend when not using Vue or angular
-            if (isVue) {
+
+            if (isVue || view instanceof ProxyViewContainer) {
                 const parentView = new StackLayout();
                 parentView.orientation = 'vertical';
                 // parentView.addChild(view);
@@ -599,12 +606,13 @@ function initCollectionViewAdapter() {
 
             const holder = new CollectionViewCellHolder(new WeakRef(view), new WeakRef(owner));
 
+            const layoutParams = owner._getViewLayoutParams();
+            view.nativeView.setLayoutParams(layoutParams);
             if (isVue) {
-                const layoutParams = owner._getViewLayoutParams();
-                view.nativeView.setLayoutParams(layoutParams);
                 holder['defaultItemView'] = true;
             }
             this._viewHolders.push(holder);
+            // console.timeEnd('onCreateViewHolder');
 
             return holder;
         }
@@ -639,7 +647,9 @@ function initCollectionViewAdapter() {
         @profile
         public onBindViewHolder(holder: CollectionViewCellHolder, position: number) {
             const owner = this.owner.get();
+            // console.log('onBindViewHolder', position);
             let view = holder.view;
+            (view as any)._suspendNativeUpdates(0);
             const oldBindingContext = view && view.bindingContext;
             const bindingContext = owner._prepareItem(view, position);
             const isVue = !!holder['defaultItemView'];
@@ -663,6 +673,7 @@ function initCollectionViewAdapter() {
                 (holder.view as StackLayout).addChild(args.view);
                 // holder["defaultItemView"] = false;
             }
+
             // view.bindingContext = bindingContext;
             if (owner._effectiveColWidth || !view.width) {
                 view.width = utils.layout.toDeviceIndependentPixels(owner._effectiveColWidth);
@@ -670,9 +681,11 @@ function initCollectionViewAdapter() {
             if (owner._effectiveRowHeight || !view.height) {
                 view.height = utils.layout.toDeviceIndependentPixels(owner._effectiveRowHeight);
             }
+            (view as any)._resumeNativeUpdates(0);
             if (oldBindingContext !== bindingContext) {
                 view.requestLayout();
             }
+            // console.log('onBindViewHolder done ', position);
         }
         // @profile("onBindViewHolder")
         // public onBindViewHolder(
