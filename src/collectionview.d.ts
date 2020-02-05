@@ -1,6 +1,7 @@
 import { KeyedTemplate, PercentLength, Template, View } from '@nativescript/core/ui/core/view';
 import { ItemsSource } from '@nativescript/core/ui/list-view';
 import { EventData } from '@nativescript/core/data/observable';
+export * from './collectionview-common';
 
 export type Orientation = 'horizontal' | 'vertical';
 
