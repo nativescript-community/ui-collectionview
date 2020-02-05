@@ -22,7 +22,6 @@
         "noImplicitUseStrict": false,
         "noFallthroughCasesInSwitch": true,
         "baseUrl": ".",
-        "types": ["svelte"],  
         "outDir": "./plugin",
         "rootDir": "src",
         "paths": {
