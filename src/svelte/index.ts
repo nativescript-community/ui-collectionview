@@ -1,3 +1,4 @@
+/// <reference path="../../node_modules/svelte-native/index.d.ts" />
 import { ItemEventData, ItemsSource } from "@nativescript/core/ui/list-view";
 import { View } from "@nativescript/core/ui/core/view";
 import {
@@ -10,8 +11,6 @@ import {
 } from "svelte-native/dom";
 import { CollectionView, setDebug } from "../collectionview";
 
-type SvelteComponent = any;
-
 class SvelteKeyedTemplate {
     _key;
     _templateEl;
@@ -20,7 +19,7 @@ class SvelteKeyedTemplate {
         this._templateEl = templateEl;
     }
     get component() {
-        return this._templateEl.component as SvelteComponent;
+        return this._templateEl.component as typeof SvelteComponent;
     }
     get key() {
         return this._key;
@@ -109,7 +108,7 @@ export default class CollectionViewViewElement extends NativeViewElementNode<
                     normalizedViewType
         ) as any;
         if (!templateEl) return null;
-        return templateEl.component as SvelteComponent;
+        return templateEl.component as typeof SvelteComponent;
     }
 
     onInsertedChild(childNode: ViewNode, index: number) {
