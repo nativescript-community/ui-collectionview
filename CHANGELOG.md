@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.1](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.0...v2.0.1) (2020-02-06)
+
+
+### Bug Fixes
+
+* multiple bug fixes and improvements ([34fc9f5](https://github.com/Akylas/nativescript-collectionview/commit/34fc9f5fbfface0fa1e046838e05fbb3c51a7fbc))
+* typings fix to get setDebug ([2df0d06](https://github.com/Akylas/nativescript-collectionview/commit/2df0d066555460919892cf4dbb31d9ffefb23072))
+
+
+### Features
+
+* svelte support ([df7f5b0](https://github.com/Akylas/nativescript-collectionview/commit/df7f5b0bf0111564c05fb281d59c61cc0277b037))
+
+
+
+
+
 # [2.0.0](https://github.com/Akylas/nativescript-collectionview/compare/v1.0.30...v2.0.0) (2019-12-03)
 
 
