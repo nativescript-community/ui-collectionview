@@ -314,12 +314,11 @@ export class CollectionView extends CollectionViewBase {
             let view = cell.view;
             const index = indexPath.row;
             if (!view) {
-                view = this.getItemTemplateContent(indexPath.item, templateType);
+                view = this.getItemTemplateContent(index, templateType);
             }
             if (isEnabled()) {
                 CLog(CLogTypes.log, '_prepareCell', index);
             }
-
             const oldBindingContext = view && view.bindingContext;
             const bindingContext = this._prepareItem(view, index);
             const args = this.notifyForItemAtIndex(this, cell, view, CollectionViewBase.itemLoadingEvent, indexPath, bindingContext);
