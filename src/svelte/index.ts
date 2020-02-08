@@ -9,7 +9,7 @@ import {
     logger,
     registerElement
 } from "svelte-native/dom";
-import { CollectionView, setDebug } from "../collectionview";
+import { CollectionView } from "../collectionview";
 
 class SvelteKeyedTemplate {
     _key;
