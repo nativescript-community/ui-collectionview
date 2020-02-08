@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.2](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.1...v2.0.2) (2020-02-08)
+
+
+### Bug Fixes
+
+* dont clear cells ! even if it breaks reactivity in vue ([4ce3c07](https://github.com/Akylas/nativescript-collectionview/commit/4ce3c0702eecf1a1e299e340686964beb0adaf2b))
+* this.getItemTemplateContent called with row! ([0660fc6](https://github.com/Akylas/nativescript-collectionview/commit/0660fc6ad308c9e04ad3133164dd08e0b981e4eb))
+
+
+
+
+
 ## [2.0.1](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.0...v2.0.1) (2020-02-06)
 
 
