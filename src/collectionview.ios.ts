@@ -259,7 +259,7 @@ export class CollectionView extends CollectionViewBase {
         });
 
         // TODO: this is ugly look here: https://github.com/nativescript-vue/nativescript-vue/issues/525
-        this.clearRealizedCells();
+        // this.clearRealizedCells();
         if (this.nativeView) {
             this.nativeView.reloadData();
         }
