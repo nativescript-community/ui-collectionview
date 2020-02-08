@@ -205,7 +205,9 @@ export class CollectionView extends CollectionViewBase {
                             indexes.addObject(NSIndexPath.indexPathForItemInSection(event.index + index, 0));
                         }
                         this.unbindUnusedCells(event.removed);
-                        CLog(CLogTypes.info, 'deleteItemsAtIndexPaths', indexes.count);
+                        if (isEnabled()) {
+                            CLog(CLogTypes.info, 'deleteItemsAtIndexPaths', indexes.count);
+                        }
                         this.nativeViewProtected.performBatchUpdatesCompletion(() => {
                             this.nativeViewProtected.deleteItemsAtIndexPaths(indexes);
                         }, null);
