@@ -8,30 +8,20 @@ import { Label } from '@nativescript/core/ui/label';
 import { ItemsSource } from '@nativescript/core/ui/list-view';
 import { CollectionView as CollectionViewDefinition, Orientation } from './collectionview';
 import { profile } from '@nativescript/core/profiling';
+import { write, messageType, isEnabled } from '@nativescript/core/trace'
 
-let debug = false;
-export function setDebug(value: boolean) {
-    debug = value;
-}
+
+export const CollectionViewTraceCategory = 'NativescriptCollectionView'
 
 export enum CLogTypes {
-    info,
-    warning,
-    error
+    log = messageType.log,
+    info = messageType.info,
+    warning = messageType.warn,
+    error = messageType.error
 }
 
-export const CLog = (type: CLogTypes = 0, ...args) => {
-    if (debug) {
-        if (type === 0) {
-            // Info
-            console.log('[nativescript-collectionview]', ...args);
-        } else if (type === 1) {
-            // Warning
-            console.warn('[nativescript-collectionview]', ...args);
-        } else if (type === 2) {
-            console.error('[nativescript-collectionview]', ...args);
-        }
-    }
+export const CLog = (type: CLogTypes, ...args) => {
+    write(args.join(' '), CollectionViewTraceCategory, type);
 };
 
 const autoEffectiveRowHeight = 0;
@@ -52,12 +42,6 @@ export namespace knownMultiTemplates {
 }
 
 export abstract class CollectionViewBase extends View implements CollectionViewDefinition {
-    static set debug(value) {
-        debug = value;
-    }
-    static get debug() {
-        return debug;
-    }
     public static itemLoadingEvent = 'itemLoading';
     public static cellCreateEvent = 'cellCreate';
     public static scrollEvent = 'scroll';

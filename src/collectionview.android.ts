@@ -1,11 +1,12 @@
 ﻿import { ChangedData, ChangeType } from '@nativescript/core/data/observable-array';
 import { profile } from '@nativescript/core/profiling';
-import { Length, View, paddingBottomProperty, paddingLeftProperty, paddingRightProperty, paddingTopProperty } from '@nativescript/core/ui/core/view';
+import { isEnabled } from '@nativescript/core/trace';
+import { Length, paddingBottomProperty, paddingLeftProperty, paddingRightProperty, paddingTopProperty, View } from '@nativescript/core/ui/core/view';
 import { StackLayout } from '@nativescript/core/ui/layouts/stack-layout';
+import { ProxyViewContainer } from '@nativescript/core/ui/proxy-view-container';
 import * as utils from '@nativescript/core/utils/utils';
 import { CollectionViewItemEventData, Orientation } from './collectionview';
-import { CollectionViewBase, colWidthProperty, isScrollEnabledProperty, ListViewViewTypes, orientationProperty, rowHeightProperty } from './collectionview-common';
-import { ProxyViewContainer } from '@nativescript/core/ui/proxy-view-container';
+import { CLog, CLogTypes, CollectionViewBase, isScrollEnabledProperty, ListViewViewTypes, orientationProperty } from './collectionview-common';
 
 export * from './collectionview-common';
 
@@ -253,7 +254,9 @@ export class CollectionView extends CollectionViewBase {
         if (!this._listViewAdapter) {
             return;
         }
-        // console.log('onItemsChanged', event.action, event.index, event.addedCount, event.removed);
+        if (isEnabled()) {
+            CLog(CLogTypes.log, 'onItemsChanged', event.action, event.index, event.addedCount, event.removed);
+        }
         switch (event.action) {
             case ChangeType.Delete: {
                 this._listViewAdapter.notifyItemRangeRemoved(event.index, event.removed.length);
@@ -364,7 +367,6 @@ export class CollectionView extends CollectionViewBase {
     }
 }
 
-// Snapshot friendly CollectionViewScrollListener
 export interface CollectionViewScrollListener extends androidx.recyclerview.widget.RecyclerView.OnScrollListener {
     // tslint:disable-next-line:no-misused-new
     new (owner: WeakRef<CollectionView>): CollectionViewScrollListener;
@@ -417,9 +419,7 @@ function initCollectionViewScrollListener() {
 
     CollectionViewScrollListener = CollectionViewScrollListenerImpl as any;
 }
-// END snapshot friendly CollectionViewScrollListener
 
-// Snapshot friendly CollectionViewAdapter
 interface CollectionViewAdapter extends androidx.recyclerview.widget.RecyclerView.Adapter<any> {
     // tslint:disable-next-line:no-misused-new
     new (owner: WeakRef<CollectionView>): CollectionViewAdapter;
@@ -631,23 +631,25 @@ function initCollectionViewAdapter() {
         // }
 
         // public onFailedToRecycleView(vh: CollectionViewCellHolder) {
-        //     console.log('onFailedToRecycleView');
+        //     CLog(CLogTypes.log, 'onFailedToRecycleView');
         //     return super.onFailedToRecycleView(vh);
         // }
         // public onViewRecycled(vh: CollectionViewCellHolder) {
-        //     console.log('onViewRecycled');
+        //     CLog(CLogTypes.log, 'onViewRecycled');
         //     super.onViewRecycled(vh);
         // }
 
         // patchHolderViewIfChanged(holder: CollectionViewCellHolder, view) {
-        // console.log("patchHolderViewIfChanged", !!holder["defaultItemView"], (holder.view as StackLayout).getChildAt(0), view);
+        // CLog(CLogTypes.log, "patchHolderViewIfChanged", !!holder["defaultItemView"], (holder.view as StackLayout).getChildAt(0), view);
 
         // }
 
         @profile
         public onBindViewHolder(holder: CollectionViewCellHolder, position: number) {
             const owner = this.owner.get();
-            // console.log('onBindViewHolder', position);
+            if (isEnabled()) {
+                CLog(CLogTypes.log, 'onBindViewHolder', position);
+            }
             let view = holder.view;
             (view as any)._suspendNativeUpdates(0);
             const oldBindingContext = view && view.bindingContext;
@@ -685,7 +687,9 @@ function initCollectionViewAdapter() {
             if (oldBindingContext !== bindingContext) {
                 view.requestLayout();
             }
-            // console.log('onBindViewHolder done ', position);
+            if (isEnabled()) {
+                CLog(CLogTypes.log, 'onBindViewHolder done ', position);
+            }
         }
         // @profile("onBindViewHolder")
         // public onBindViewHolder(
@@ -697,26 +701,24 @@ function initCollectionViewAdapter() {
         //   holder.getTextView().setText(data.value);
         // }
 
-        public onClick(v: android.view.View) {
-            const rv = com.h6ah4i.android.widget.advrecyclerview.utils.RecyclerViewAdapterUtils.getParentRecyclerView(v);
-            const vh = rv.findContainingViewHolder(v);
+        // public onClick(v: android.view.View) {
+        //     const rv = com.h6ah4i.android.widget.advrecyclerview.utils.RecyclerViewAdapterUtils.getParentRecyclerView(v);
+        //     const vh = rv.findContainingViewHolder(v);
 
-            const rootPosition = vh.getAdapterPosition();
-            if (rootPosition === androidx.recyclerview.widget.RecyclerView.NO_POSITION) {
-                return;
-            }
+        //     const rootPosition = vh.getAdapterPosition();
+        //     if (rootPosition === androidx.recyclerview.widget.RecyclerView.NO_POSITION) {
+        //         return;
+        //     }
 
-            // need to determine adapter local position like this:
-            const rootAdapter = rv.getAdapter();
-            const localPosition = com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils.unwrapPosition(rootAdapter, this, rootPosition);
-        }
+        //     // need to determine adapter local position like this:
+        //     const rootAdapter = rv.getAdapter();
+        //     const localPosition = com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils.unwrapPosition(rootAdapter, this, rootPosition);
+        // }
     }
 
     CollectionViewAdapter = CollectionViewAdapterImpl as any;
 }
-// END Snapshot friendly CollectionViewAdapter
 
-// Snapshot friendly CollectionViewRecyclerView
 export interface CollectionViewRecyclerView extends androidx.recyclerview.widget.RecyclerView {
     // tslint:disable-next-line:no-misused-new
     new (context: any, owner: WeakRef<CollectionView>): CollectionViewRecyclerView;
@@ -735,7 +737,7 @@ function initCollectionViewRecyclerView() {
             return global.__native(this);
         }
         // public setMeasuredDimension(w: number, h: number) {
-        //   console.log('test setMeasuredDimension', w, h);
+        //   CLog(CLogTypes.log, 'test setMeasuredDimension', w, h);
         //   super.setMeasuredDimension(w, h);
         //   const owner = this.owner.get();
         //   owner.setMeasuredDimension(w, h);
@@ -767,9 +769,7 @@ function initCollectionViewRecyclerView() {
 
     CollectionViewRecyclerView = CollectionViewRecyclerViewImpl as any;
 }
-// END Snapshot friendly CollectionViewRecyclerView
 
-// Snapshot friendly GridLayoutManager
 export interface GridLayoutManager extends androidx.recyclerview.widget.GridLayoutManager {
     // tslint:disable-next-line:no-misused-new
     new (context: any, owner: WeakRef<CollectionView>): GridLayoutManager;
@@ -849,4 +849,3 @@ function initGridLayoutManager() {
 
     GridLayoutManager = GridLayoutManagerImpl as any;
 }
-// END Snapshot friendly GridLayoutManager
