@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.4](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.3...v2.0.4) (2020-02-11)
+
+
+### Bug Fixes
+
+* **android:** faster using native classes ([6ba5bec](https://github.com/Akylas/nativescript-collectionview/commit/6ba5becfabe79f468f0c1e86c9288d80e5c0c75e))
+
+
+
+
+
 ## [2.0.3](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.2...v2.0.3) (2020-02-08)
 
 **Note:** Version bump only for package nativescript-collectionview
