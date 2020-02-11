@@ -8,10 +8,9 @@ import { Label } from '@nativescript/core/ui/label';
 import { ItemsSource } from '@nativescript/core/ui/list-view';
 import { CollectionView as CollectionViewDefinition, Orientation } from './collectionview';
 import { profile } from '@nativescript/core/profiling';
-import { write, messageType, isEnabled } from '@nativescript/core/trace'
+import { write, messageType, isEnabled } from '@nativescript/core/trace';
 
-
-export const CollectionViewTraceCategory = 'NativescriptCollectionView'
+export const CollectionViewTraceCategory = 'NativescriptCollectionView';
 
 export enum CLogTypes {
     log = messageType.log,
@@ -250,7 +249,7 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
         }
         this.refresh();
     };
-    _isDataDirty = false
+    _isDataDirty = false;
     onLoaded() {
         super.onLoaded();
         if (this._isDataDirty) {
