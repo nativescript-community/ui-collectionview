@@ -39,6 +39,9 @@ export class CollectionView extends CollectionViewBase {
         const view = UICollectionView.alloc().initWithFrameCollectionViewLayout(CGRectMake(0, 0, 0, 0), this._layout);
         view.backgroundColor = UIColor.clearColor;
         view.registerClassForCellWithReuseIdentifier(CollectionViewCell.class(), this._defaultTemplate.key);
+        for (let i = 0, length_1 = this._itemTemplatesInternal.length; i < length_1; i++) {
+            view.registerClassForCellWithReuseIdentifier(CollectionViewCell.class(), this._itemTemplatesInternal[i].key.toLowerCase());
+        }
         view.autoresizesSubviews = false;
         view.autoresizingMask = UIViewAutoresizing.None;
 
@@ -122,8 +125,8 @@ export class CollectionView extends CollectionViewBase {
         this.nativeViewProtected.scrollEnabled = value;
     }
     public [isBounceEnabledProperty.setNative](value: boolean) {
-        this.nativeViewProtected.alwaysBounceVertical = value;
-        this.nativeViewProtected.alwaysBounceHorizontal = value;
+        this.nativeViewProtected.bounces = value;
+        // this.nativeViewProtected.alwaysBounceHorizontal = value;
     }
 
     public [itemTemplatesProperty.getDefault](): KeyedTemplate[] {
@@ -244,7 +247,7 @@ export class CollectionView extends CollectionViewBase {
     }
     @profile
     public refresh() {
-        if (!this.isLoaded) {
+        if (!this.isLoaded || !this.nativeView) {
             this._isDataDirty = true;
             return;
         }
@@ -262,9 +265,13 @@ export class CollectionView extends CollectionViewBase {
 
         // TODO: this is ugly look here: https://github.com/nativescript-vue/nativescript-vue/issues/525
         // this.clearRealizedCells();
-        if (this.nativeView) {
-            this.nativeView.reloadData();
-        }
+        this.nativeView.reloadData();
+
+        const args = {
+            eventName: CollectionViewBase.dataPopulatedEvent,
+            object: this
+        };
+        this.notify(args);
     }
 
     public scrollToIndex(index: number, animated: boolean = true) {
