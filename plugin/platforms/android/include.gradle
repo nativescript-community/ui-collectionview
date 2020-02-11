@@ -1,4 +1,3 @@
-
 dependencies {
      compile ('com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:1.0.0@aar'){
         transitive=true
