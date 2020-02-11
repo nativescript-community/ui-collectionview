@@ -8,6 +8,9 @@
     "id": "com.nativescript.collectionviewexample",
     "tns-ios": {
       "version": "6.5.0-beta.2-v8-2020-02-05-153040-01"
+    },
+    "tns-android": {
+      "version": "6.3.1"
     }
   },
   "android": {
