@@ -4,6 +4,19 @@ import javalangClass = java.lang.Class;
 import javalangannotationAnnotation = java.lang.annotation.Annotation;
 import javalangRunnable = java.lang.Runnable;
 import javautilList = java.util.List;
+
+
+declare module com {
+    export module nativescript {
+        export module collectionview {
+            export class GridLayoutManager extends androidx.recyclerview.widget.GridLayoutManager {
+                isScrollEnabled: boolean;
+            }
+            export class CollectionViewCellHolder extends androidx.recyclerview.widget.RecyclerView.ViewHolder {
+            }
+        }
+    }
+}
 declare module com {
 	export module h6ah4i {
 		export module android {
