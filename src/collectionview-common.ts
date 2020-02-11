@@ -217,8 +217,11 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
         if (newValue) {
             this._itemTemplatesInternal = this._itemTemplatesInternal.concat(
                 newValue.map(t => {
-                    t.key = t._key;
-                    delete t._key;
+                    if (!t.key) {
+                        t.key = t._key;
+                        delete t._key;
+                    }
+                    return t;
                 })
             );
         }
