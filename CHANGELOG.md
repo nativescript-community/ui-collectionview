@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.7](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.6...v2.0.7) (2020-02-18)
+
+
+### Bug Fixes
+
+* **android:** revert optimization for now ([53af3c6](https://github.com/Akylas/nativescript-collectionview/commit/53af3c6b827f33814ea150d07f1bb35079ba90c1))
+
+
+
+
+
 ## [2.0.6](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.5...v2.0.6) (2020-02-18)
 
 
