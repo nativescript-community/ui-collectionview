@@ -610,9 +610,9 @@ function initCollectionViewAdapter() {
                 view = parentView;
             }
             this._viewHolderChildren.push(view);
-            // owner._addView(view);
+            owner._addView(view);
             // (view as any).parent = owner;
-            owner._addViewCore(view);
+            // owner._addViewCore(view);
             // view._parentChanged(null);
             if (!CollectionViewCellHolder) {
                 CollectionViewCellHolder = com.nativescript.collectionview.CollectionViewCellHolder as any;
