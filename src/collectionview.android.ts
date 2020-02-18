@@ -662,7 +662,7 @@ function initCollectionViewAdapter() {
                 CLog(CLogTypes.log, 'onBindViewHolder', position);
             }
             let view = holder.view;
-            (view as any)._suspendNativeUpdates(0);
+            // (view as any)._suspendNativeUpdates(0);
             const oldBindingContext = view && view.bindingContext;
             const bindingContext = owner._prepareItem(view, position);
             const isVue = !!holder['defaultItemView'];
@@ -694,7 +694,7 @@ function initCollectionViewAdapter() {
             if (owner._effectiveRowHeight || !view.height) {
                 view.height = utils.layout.toDeviceIndependentPixels(owner._effectiveRowHeight);
             }
-            (view as any)._resumeNativeUpdates(0);
+            // (view as any)._resumeNativeUpdates(0);
             if (oldBindingContext !== bindingContext) {
                 view.requestLayout();
             }
