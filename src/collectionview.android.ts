@@ -56,8 +56,6 @@ export class CollectionView extends CollectionViewBase {
         recyclerView.setDescendantFocusability(android.view.ViewGroup.FOCUS_AFTER_DESCENDANTS);
         // const expMgr = new RecyclerViewExpandableItemManager(null);
 
-       
-
         // adapter.setDisplayHeadersAtStartUp(true).setStickyHeaders(true); //Make headers sticky
         // Endless scroll with 1 item threshold
         // .setLoadingMoreAtStartUp(true)
@@ -326,8 +324,8 @@ export class CollectionView extends CollectionViewBase {
         if (!this._listViewAdapter) {
             this._listViewAdapter = this.createComposedAdapter(this.nativeViewProtected);
             this.nativeViewProtected.setAdapter(this._listViewAdapter);
-        } else {
-            // this._listViewAdapter.disposeViewHolderViews();
+        } else if (!this.nativeView.getAdapter()) {
+            this.nativeViewProtected.setAdapter(this._listViewAdapter);
         }
 
         // nativeView.adapter.owner = new WeakRef(this);
@@ -440,7 +438,7 @@ interface CollectionViewAdapter extends androidx.recyclerview.widget.RecyclerVie
 let CollectionViewAdapter: CollectionViewAdapter;
 
 // Snapshot friendly CollectionViewAdapter
-interface CollectionViewCellHolder extends  com.nativescript.collectionview.CollectionViewCellHolder {
+interface CollectionViewCellHolder extends com.nativescript.collectionview.CollectionViewCellHolder {
     // tslint:disable-next-line:no-misused-new
     new (androidView: android.view.View): CollectionViewCellHolder;
     view: View;
