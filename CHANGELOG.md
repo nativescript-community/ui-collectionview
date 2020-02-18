@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.6](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.5...v2.0.6) (2020-02-18)
+
+
+### Bug Fixes
+
+* **android:** set adapter if not set ([fd3eca5](https://github.com/Akylas/nativescript-collectionview/commit/fd3eca5a59608c8762d7caad2df3c765c1de5542))
+
+
+
+
+
 ## [2.0.5](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.4...v2.0.5) (2020-02-18)
 
 
