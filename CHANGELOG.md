@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.5](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.4...v2.0.5) (2020-02-18)
+
+
+### Bug Fixes
+
+* **android:** class not being forwarded to items ([36e7c8d](https://github.com/Akylas/nativescript-collectionview/commit/36e7c8dd3b6ebd1dc2bda8336d46b700d721abb8))
+
+
+
+
+
 ## [2.0.4](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.3...v2.0.4) (2020-02-11)
 
 
