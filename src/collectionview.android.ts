@@ -271,6 +271,14 @@ export class CollectionView extends CollectionViewBase {
                 this._listViewAdapter.notifyItemRangeRemoved(event.index, event.removed.length);
                 break;
             }
+            case ChangeType.Add: {
+                if (event.addedCount > 0) {
+                    this._listViewAdapter.notifyItemRangeChanged(event.index, event.addedCount);
+                    return;
+                }
+                // Reload the items to avoid duplicate Load on Demand indicators:
+                return;
+            }
             case ChangeType.Update: {
                 if (event.addedCount > 0) {
                     this._listViewAdapter.notifyItemRangeChanged(event.index, event.addedCount);

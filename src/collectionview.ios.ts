@@ -168,13 +168,26 @@ export class CollectionView extends CollectionViewBase {
         switch (event.action) {
             case ChangeType.Delete: {
                 const indexes = NSMutableArray.new<NSIndexPath>();
-                indexes.addObject(NSIndexPath.indexPathForRowInSection(event.index, 0));
+                for (let index = 0; index < event.addedCount; index++) {
+                    indexes.addObject(NSIndexPath.indexPathForRowInSection(event.index + index, 0));
+                }
                 this.unbindUnusedCells(event.removed);
                 if (isEnabled()) {
                     CLog(CLogTypes.info, 'deleteItemsAtIndexPaths', indexes.count);
                 }
                 this.nativeViewProtected.performBatchUpdatesCompletion(() => {
                     this.nativeViewProtected.deleteItemsAtIndexPaths(indexes);
+                }, null);
+                return;
+            }
+            case ChangeType.Update: {
+                const indexes = NSMutableArray.new<NSIndexPath>();
+                indexes.addObject(NSIndexPath.indexPathForRowInSection(event.index, 0));
+                if (isEnabled()) {
+                    CLog(CLogTypes.info, 'reloadItemsAtIndexPaths', indexes.count);
+                }
+                this.nativeViewProtected.performBatchUpdatesCompletion(() => {
+                    this.nativeViewProtected.reloadItemsAtIndexPaths(indexes);
                 }, null);
                 return;
             }
