@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.8](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.7...v2.0.8) (2020-02-20)
+
+
+### Bug Fixes
+
+* support cell update ([8ff4da8](https://github.com/Akylas/nativescript-collectionview/commit/8ff4da86052697455419d70093ec2e893a28c0d9))
+
+
+
+
+
 ## [2.0.7](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.6...v2.0.7) (2020-02-18)
 
 
