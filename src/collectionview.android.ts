@@ -19,27 +19,12 @@ export class CollectionView extends CollectionViewBase {
         owner: WeakRef<CollectionView>;
         layoutManager: com.nativescript.collectionview.GridLayoutManager;
     };
-    // public _realizedItems = new Map<android.view.View, View>();
-
-    // public _itemTemplatesByViewType: Map<number, KeyedTemplate>;
-
-    // private items:java.util.List<Item>;
 
     private _listViewAdapter: CollectionViewAdapter;
-    private itemTypeCount = CollectionView.CUSTOM_TEMPLATE_ITEM_TYPE;
-    constructor() {
-        super();
-        // this._itemTemplatesByViewType = new Map<number, KeyedTemplate>();
-        // (this._defaultTemplate as ViewTypeTemplate).viewType =
-        //   CollectionView.DEFAULT_TEMPLATE_VIEW_TYPE;
-        // this._itemTemplatesByViewType.set(
-        //   CollectionView.DEFAULT_TEMPLATE_VIEW_TYPE,
-        //   this._defaultTemplate
-        // );
-    }
 
+    @profile
     public createNativeView() {
-        initCollectionViewRecyclerView();
+        // initCollectionViewRecyclerView();
         if (!CollectionViewRecyclerView) {
             CollectionViewRecyclerView = androidx.recyclerview.widget.RecyclerView as any;
         }
@@ -69,6 +54,7 @@ export class CollectionView extends CollectionViewBase {
         return recyclerView;
     }
 
+    @profile
     public initNativeView() {
         super.initNativeView();
 
