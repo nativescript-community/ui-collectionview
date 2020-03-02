@@ -14,6 +14,10 @@ declare module com {
             }
             export class CollectionViewCellHolder extends androidx.recyclerview.widget.RecyclerView.ViewHolder {
             }
+            export class RecyclerView extends androidx.recyclerview.widget.RecyclerView {
+				static createRecyclerView(context):RecyclerView;
+				static inflate(context):RecyclerView;
+            }
         }
     }
 }

@@ -24,23 +24,13 @@ export class CollectionView extends CollectionViewBase {
 
     @profile
     public createNativeView() {
-        // initCollectionViewRecyclerView();
+
+        // storing the class in a property for reuse in the future cause a materializing which is pretty slow!
         if (!CollectionViewRecyclerView) {
-            CollectionViewRecyclerView = androidx.recyclerview.widget.RecyclerView as any;
+            CollectionViewRecyclerView = com.nativescript.collectionview.RecyclerView as any;
         }
-        const recyclerView = new CollectionViewRecyclerView(this._context);
-        recyclerView.setHorizontalScrollBarEnabled(true);
-        recyclerView.setVerticalScrollBarEnabled(true);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setItemViewCacheSize(-1);
-        recyclerView.setDrawingCacheEnabled(true);
-        recyclerView.setDrawingCacheQuality(android.view.View.DRAWING_CACHE_QUALITY_HIGH);
-        recyclerView.setFocusable(true);
-        // recyclerView.setNestedScrollingEnabled(false);
-
-        recyclerView.setDescendantFocusability(android.view.ViewGroup.FOCUS_AFTER_DESCENDANTS);
+        const recyclerView = (CollectionViewRecyclerView as any).createRecyclerView(this._context);
         // const expMgr = new RecyclerViewExpandableItemManager(null);
-
         // adapter.setDisplayHeadersAtStartUp(true).setStickyHeaders(true); //Make headers sticky
         // Endless scroll with 1 item threshold
         // .setLoadingMoreAtStartUp(true)
@@ -67,7 +57,6 @@ export class CollectionView extends CollectionViewBase {
         const layoutManager = new com.nativescript.collectionview.GridLayoutManager(this._context, 1);
         nativeView.setLayoutManager(layoutManager);
         layoutManager.setOrientation(orientation);
-        layoutManager.setSmoothScrollbarEnabled(true);
         nativeView.layoutManager = layoutManager;
 
         initCollectionViewScrollListener();
@@ -78,7 +67,6 @@ export class CollectionView extends CollectionViewBase {
         initCollectionViewAdapter();
         // tslint:disable-next-line:no-unused-expression
         // new CollectionViewCellHolder(new android.widget.TextView(this._context));
-        this.refresh();
 
         const animator = new com.h6ah4i.android.widget.advrecyclerview.animator.RefactoredDefaultItemAnimator();
 
@@ -87,6 +75,7 @@ export class CollectionView extends CollectionViewBase {
         animator.setSupportsChangeAnimations(false);
 
         nativeView.setItemAnimator(animator);
+        this.refresh();
 
         // colWidthProperty.coerce(this);
         // rowHeightProperty.coerce(this);
@@ -499,7 +488,6 @@ function initCollectionViewAdapter() {
 
         constructor(private owner: WeakRef<CollectionView>, adapter: androidx.recyclerview.widget.RecyclerView.Adapter<any>) {
             super();
-
             return global.__native(this);
         }
 
@@ -513,7 +501,6 @@ function initCollectionViewAdapter() {
             if (owner && owner.items && i < owner.items.length) {
                 return owner.getItemAtIndex(i);
             }
-
             return null;
         }
 
@@ -689,9 +676,9 @@ function initCollectionViewAdapter() {
                 view.height = utils.layout.toDeviceIndependentPixels(owner._effectiveRowHeight);
             }
             // (view as any)._resumeNativeUpdates(0);
-            if (oldBindingContext !== bindingContext) {
-                view.requestLayout();
-            }
+            // if (oldBindingContext !== bindingContext) {
+            //     view.requestLayout();
+            // }
             if (isEnabled()) {
                 CLog(CLogTypes.log, 'onBindViewHolder done ', position);
             }

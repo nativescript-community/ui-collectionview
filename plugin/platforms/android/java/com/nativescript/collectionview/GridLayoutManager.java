@@ -11,6 +11,7 @@ public class GridLayoutManager extends androidx.recyclerview.widget.GridLayoutMa
 
     public GridLayoutManager(Context context, int spanCount) {
         super(context, spanCount);
+        setSmoothScrollbarEnabled(true);
     }
 
     public void  onLayoutCompleted(RecyclerView.State state) {
