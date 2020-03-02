@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.11](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.10...v2.0.11) (2020-03-02)
+
+
+### Bug Fixes
+
+* **android:** native creation of the RecyclerView ([82f654e](https://github.com/Akylas/nativescript-collectionview/commit/82f654e151db3ebfc276580066f00c25421db43e))
+
+
+
+
+
 ## [2.0.10](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.9...v2.0.10) (2020-02-26)
 
 **Note:** Version bump only for package nativescript-collectionview
