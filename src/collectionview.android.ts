@@ -1,15 +1,24 @@
 ﻿import { ChangedData, ChangeType } from '@nativescript/core/data/observable-array';
 import { profile } from '@nativescript/core/profiling';
 import { isEnabled } from '@nativescript/core/trace';
-import { Length, paddingBottomProperty, paddingLeftProperty, paddingRightProperty, paddingTopProperty, View } from '@nativescript/core/ui/core/view';
+import { Length, paddingBottomProperty, paddingLeftProperty, paddingRightProperty, paddingTopProperty, View, Property } from '@nativescript/core/ui/core/view';
 import { StackLayout } from '@nativescript/core/ui/layouts/stack-layout';
 import { ProxyViewContainer } from '@nativescript/core/ui/proxy-view-container';
+import { screen } from '@nativescript/core/platform';
 import * as utils from '@nativescript/core/utils/utils';
 import { CollectionViewItemEventData, Orientation } from './collectionview';
 import { CLog, CLogTypes, CollectionViewBase, isScrollEnabledProperty, ListViewViewTypes, orientationProperty } from './collectionview-common';
 
 export * from './collectionview-common';
 
+
+
+const extraLayoutSpaceProperty = new Property<CollectionViewBase, number>({
+    name: 'extraLayoutSpace',
+});
+const itemViewCacheSizeProperty = new Property<CollectionViewBase, number>({
+    name: 'itemViewCacheSize',
+});
 export class CollectionView extends CollectionViewBase {
     public static DEFAULT_TEMPLATE_VIEW_TYPE = 0;
     public static CUSTOM_TEMPLATE_ITEM_TYPE = 1;
@@ -54,7 +63,7 @@ export class CollectionView extends CollectionViewBase {
         const orientation = this._getLayoutManagarOrientation();
 
         // initGridLayoutManager();
-        const layoutManager = new com.nativescript.collectionview.GridLayoutManager(this._context, 1);
+        const layoutManager = new com.nativescript.collectionview.PreCachingGridLayoutManager(this._context, 1);
         nativeView.setLayoutManager(layoutManager);
         layoutManager.setOrientation(orientation);
         nativeView.layoutManager = layoutManager;
@@ -101,8 +110,8 @@ export class CollectionView extends CollectionViewBase {
     get android(): androidx.recyclerview.widget.RecyclerView {
         return this.nativeView;
     }
-    get layoutManager(): com.nativescript.collectionview.GridLayoutManager {
-        return this.nativeView.getLayoutManager() as com.nativescript.collectionview.GridLayoutManager;
+    get layoutManager(): com.nativescript.collectionview.PreCachingGridLayoutManager {
+        return this.nativeView.getLayoutManager() as com.nativescript.collectionview.PreCachingGridLayoutManager;
     }
     _layoutParams: org.nativescript.widgets.CommonLayoutParams;
     _getViewLayoutParams() {
@@ -193,6 +202,12 @@ export class CollectionView extends CollectionViewBase {
     isScrollEnabled = true;
     public [isScrollEnabledProperty.setNative](value: boolean) {
         this.isScrollEnabled = value;
+    }
+    public [extraLayoutSpaceProperty.setNative](value: number) {
+        this.layoutManager.setExtraLayoutSpace(value) ;
+    }
+    public [itemViewCacheSizeProperty.setNative](value: number) {
+        this.nativeViewProtected.setItemViewCacheSize(value) ;
     }
 
     onItemViewLoaderChanged() {
@@ -433,52 +448,6 @@ function initCollectionViewAdapter() {
     if (CollectionViewAdapter) {
         return;
     }
-
-    // class ViewHolder extends android.support.v7.widget.RecyclerView.ViewHolder {
-    //   private textView: android.widget.TextView;
-
-    //   public constructor(v: android.view.View) {
-    //     super(v);
-    //     // Define click listener for the ViewHolder's View.
-    //     this.textView = v.findViewById(
-    //       getId("textView")
-    //     ) as android.widget.TextView;
-    //   }
-
-    //   public getTextView() {
-    //     return this.textView;
-    //   }
-    // }
-    // @Interfaces([android.view.View.OnClickListener])
-    // class CollectionViewCellHolderImpl extends androidx.recyclerview.widget.RecyclerView.ViewHolder implements android.view.View.OnClickListener {
-    //     constructor(private owner: WeakRef<View>, private collectionView: WeakRef<CollectionView>, androidView?: android.view.View) {
-    //         super(androidView || owner.get().android);
-    //         const nativeThis = global.__native(this);
-    //         if (owner) {
-    //             const nativeView = owner.get().android as android.view.View;
-    //             nativeView.setOnClickListener(nativeThis);
-    //         }
-
-    //         return nativeThis;
-    //     }
-
-    //     get view(): View {
-    //         return this.owner ? this.owner.get() : null;
-    //     }
-
-    //     public onClick(v: android.view.View) {
-    //         const gridView = this.collectionView.get();
-
-    //         gridView.notify<CollectionViewItemEventData>({
-    //             eventName: CollectionViewBase.itemTapEvent,
-    //             object: gridView,
-    //             index: this.getAdapterPosition(),
-    //             view: this.view
-    //         });
-    //     }
-    // }
-    // CollectionViewCellHolder = CollectionViewCellHolderImpl as any;
-
     class CollectionViewAdapterImpl extends androidx.recyclerview.widget.RecyclerView.Adapter<CollectionViewCellHolder> {
         templateTypeNumberString = new Map();
         _currentNativeItemType = 0;
@@ -608,33 +577,6 @@ function initCollectionViewAdapter() {
 
             return holder;
         }
-        // @profile("onCreateViewHolder")
-        // public onCreateViewHolder(
-        //   parent: android.view.ViewGroup,
-        //   viewType: number
-        // ) {
-        //   const v = this.inflateLayout('text_row_item', parent);
-        //   return new ViewHolder(v);
-        // }
-
-        // @profile("inflateLayout")
-        // private inflateLayout(str:string, parent) {
-        //   return android.view.LayoutInflater.from(parent.getContext()).inflate(getLayout(str), parent, false)
-        // }
-
-        // public onFailedToRecycleView(vh: CollectionViewCellHolder) {
-        //     CLog(CLogTypes.log, 'onFailedToRecycleView');
-        //     return super.onFailedToRecycleView(vh);
-        // }
-        // public onViewRecycled(vh: CollectionViewCellHolder) {
-        //     CLog(CLogTypes.log, 'onViewRecycled');
-        //     super.onViewRecycled(vh);
-        // }
-
-        // patchHolderViewIfChanged(holder: CollectionViewCellHolder, view) {
-        // CLog(CLogTypes.log, "patchHolderViewIfChanged", !!holder["defaultItemView"], (holder.view as StackLayout).getChildAt(0), view);
-
-        // }
 
         @profile
         public onBindViewHolder(holder: CollectionViewCellHolder, position: number) {
@@ -643,8 +585,6 @@ function initCollectionViewAdapter() {
                 CLog(CLogTypes.log, 'onBindViewHolder', position);
             }
             let view = holder.view;
-            // (view as any)._suspendNativeUpdates(0);
-            const oldBindingContext = view && view.bindingContext;
             const bindingContext = owner._prepareItem(view, position);
             const isVue = !!holder['defaultItemView'];
 
@@ -683,29 +623,6 @@ function initCollectionViewAdapter() {
                 CLog(CLogTypes.log, 'onBindViewHolder done ', position);
             }
         }
-        // @profile("onBindViewHolder")
-        // public onBindViewHolder(
-        //   holder: CollectionViewCellHolder,
-        //   position: number
-        // ) {
-        //   const owner = this.owner.get();
-        //   const data = owner.getItemAtIndex(position);
-        //   holder.getTextView().setText(data.value);
-        // }
-
-        // public onClick(v: android.view.View) {
-        //     const rv = com.h6ah4i.android.widget.advrecyclerview.utils.RecyclerViewAdapterUtils.getParentRecyclerView(v);
-        //     const vh = rv.findContainingViewHolder(v);
-
-        //     const rootPosition = vh.getAdapterPosition();
-        //     if (rootPosition === androidx.recyclerview.widget.RecyclerView.NO_POSITION) {
-        //         return;
-        //     }
-
-        //     // need to determine adapter local position like this:
-        //     const rootAdapter = rv.getAdapter();
-        //     const localPosition = com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils.unwrapPosition(rootAdapter, this, rootPosition);
-        // }
     }
 
     CollectionViewAdapter = CollectionViewAdapterImpl as any;
@@ -719,126 +636,29 @@ export interface CollectionViewRecyclerView extends androidx.recyclerview.widget
 
 let CollectionViewRecyclerView: CollectionViewRecyclerView;
 
-function initCollectionViewRecyclerView() {
-    if (CollectionViewRecyclerView) {
-        return;
-    }
-
-    class CollectionViewRecyclerViewImpl extends androidx.recyclerview.widget.RecyclerView {
-        constructor(context: android.content.Context, private owner: WeakRef<CollectionView>) {
-            super(context);
-            return global.__native(this);
-        }
-        // public setMeasuredDimension(w: number, h: number) {
-        //   CLog(CLogTypes.log, 'test setMeasuredDimension', w, h);
-        //   super.setMeasuredDimension(w, h);
-        //   const owner = this.owner.get();
-        //   owner.setMeasuredDimension(w, h);
-        // }
-
-        @profile
-        public onMeasure(widthMeasureSpec, heightMeasureSpec) {
-            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-            const owner = this.owner.get();
-            if (owner) {
-                owner.setMeasuredDimension(this.getMeasuredWidth(), this.getMeasuredHeight());
-            }
-        }
-
-        // public onLayout(
-        //   changed: boolean,
-        //   l: number,
-        //   t: number,
-        //   r: number,
-        //   b: number
-        // ) {
-        //   if (changed) {
-        //     const owner = this.owner.get();
-        //     owner.onLayout(l, t, r, b);
-        //   }
-        //   super.onLayout(changed, l, t, r, b);
-        // }
-    }
-
-    CollectionViewRecyclerView = CollectionViewRecyclerViewImpl as any;
-}
-
-// export interface GridLayoutManager extends androidx.recyclerview.widget.GridLayoutManager {
-//     // tslint:disable-next-line:no-misused-new
-//     new (context: any, owner: WeakRef<CollectionView>): GridLayoutManager;
-// }
-
-// let GridLayoutManager: GridLayoutManager;
-
-// function initGridLayoutManager() {
-//     if (GridLayoutManager) {
+// function initCollectionViewRecyclerView() {
+//     if (CollectionViewRecyclerView) {
 //         return;
 //     }
 
-//     class GridLayoutManagerImpl extends androidx.recyclerview.widget.GridLayoutManager {
-//         private childSizesMap = new Map<number, number>();
+//     class CollectionViewRecyclerViewImpl extends androidx.recyclerview.widget.RecyclerView {
 //         constructor(context: android.content.Context, private owner: WeakRef<CollectionView>) {
-//             super(context, 1);
-
+//             super(context);
 //             return global.__native(this);
 //         }
-
 //         @profile
-//         onLayoutCompleted(state) {
-//             super.onLayoutCompleted(state);
-//             for (let i = 0; i < this.getChildCount(); i++) {
-//                 const child = this.getChildAt(i);
-//                 this.childSizesMap.set(this.getPosition(child), child.getHeight());
-//             }
-//         }
-
-//         @profile
-//         computeVerticalScrollOffset(state) {
-//             if (this.getChildCount() === 0) {
-//                 return 0;
-//             }
-//             const firstChildPosition = this.findFirstVisibleItemPosition();
-//             const firstChild = this.findViewByPosition(firstChildPosition);
-//             let scrolledY = -firstChild.getY();
-//             for (let i = 0; i < firstChildPosition; i++) {
-//                 scrolledY += this.childSizesMap.get(i) || 0;
-//             }
-//             return Math.round(scrolledY);
-//         }
-
-//         canScrollVertically() {
+//         public onMeasure(widthMeasureSpec, heightMeasureSpec) {
+//             super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 //             const owner = this.owner.get();
 //             if (owner) {
-//                 return owner.isScrollEnabled && super.canScrollVertically();
+//                 owner.setMeasuredDimension(this.getMeasuredWidth(), this.getMeasuredHeight());
 //             }
-//             return super.canScrollVertically();
 //         }
-//         canScrollHorizontally() {
-//             const owner = this.owner.get();
-//             if (owner) {
-//                 return owner.isScrollEnabled && super.canScrollHorizontally();
-//             }
-//             return super.canScrollHorizontally();
-//         }
-
-//         // computeScrollVectorForPosition( targetPosition) {
-//         //     if (this.getChildCount() == 0) {
-//         //         return null;
-//         //     }
-//         //     const firstChildPos = this.getPosition(this.getChildAt(0));
-//         //     const direction = targetPosition < firstChildPos != this.getReverseLayout()
-//         //             ? 1 : -1;
-//         //     if (this.getOrientation() == HORIZONTAL) {
-//         //         return new PointF(direction, 0);
-//         //     } else {
-//         //         return new PointF(0, direction);
-//         //     }
-//         // }
-
-//         // public supportsPredictiveItemAnimations() {
-//         //     return false;
-//         // }
 //     }
 
-//     GridLayoutManager = GridLayoutManagerImpl as any;
+//     CollectionViewRecyclerView = CollectionViewRecyclerViewImpl as any;
 // }
+
+itemViewCacheSizeProperty.register(CollectionViewBase);
+
+extraLayoutSpaceProperty.register(CollectionViewBase);

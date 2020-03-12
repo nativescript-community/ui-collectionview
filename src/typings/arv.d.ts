@@ -12,6 +12,9 @@ declare module com {
             export class GridLayoutManager extends androidx.recyclerview.widget.GridLayoutManager {
                 isScrollEnabled: boolean;
             }
+            export class PreCachingGridLayoutManager extends GridLayoutManager {
+				setExtraLayoutSpace(space:number);
+            }
             export class CollectionViewCellHolder extends androidx.recyclerview.widget.RecyclerView.ViewHolder {
             }
             export class RecyclerView extends androidx.recyclerview.widget.RecyclerView {
