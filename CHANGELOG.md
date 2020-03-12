@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.13](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.12...v2.0.13) (2020-03-12)
+
+
+### Bug Fixes
+
+* **android:** new props to improve scrolling ([55da8d2](https://github.com/Akylas/nativescript-collectionview/commit/55da8d2eafcb980938dbf5012f40a44c40c7bca8))
+
+
+
+
+
 ## [2.0.12](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.11...v2.0.12) (2020-03-02)
 
 **Note:** Version bump only for package nativescript-collectionview
