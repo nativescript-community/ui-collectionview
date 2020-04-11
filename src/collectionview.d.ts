@@ -27,6 +27,9 @@ export class CollectionView extends View {
     public scrollToIndex(index: number, animated?: boolean);
     public onItemTemplatesPropertyChanged(oldValue: any, newValue: any): void;
     public itemViewLoader?: (viewType) => any;
+    getItemAtIndex(index: number);
+    addTemplate(key: string, t);
+    removeTemplate(key: string);
 }
 
 export interface CollectionViewItemEventData extends EventData {
@@ -44,5 +47,5 @@ export enum ListViewViewTypes {
     /**
      * Identifies a view created using the {@link itemTemplate} value.
      */
-    ItemView
+    ItemView,
 }

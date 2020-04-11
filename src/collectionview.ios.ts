@@ -1,9 +1,10 @@
 import { EventData, Observable } from '@nativescript/core/data/observable';
-import { ChangeType } from '@nativescript/core/data/observable-array/observable-array';
+import { ChangeType } from '@nativescript/core/data/observable-array';
 import { profile } from '@nativescript/core/profiling';
 import { isEnabled } from '@nativescript/core/trace';
 import { KeyedTemplate, Length, paddingBottomProperty, paddingLeftProperty, paddingRightProperty, paddingTopProperty, View } from '@nativescript/core/ui/core/view';
-import { StackLayout } from '@nativescript/core/ui/layouts/stack-layout/stack-layout';
+import { StackLayout } from '@nativescript/core/ui/layouts/stack-layout';
+import { GridLayout } from '@nativescript/core/ui/layouts/grid-layout';
 import { ProxyViewContainer } from '@nativescript/core/ui/proxy-view-container';
 import * as util from '@nativescript/core/utils/utils';
 import { CollectionViewItemEventData, Orientation } from './collectionview';
@@ -38,14 +39,21 @@ export class CollectionView extends CollectionViewBase {
 
         const view = UICollectionView.alloc().initWithFrameCollectionViewLayout(CGRectMake(0, 0, 0, 0), this._layout);
         view.backgroundColor = UIColor.clearColor;
-        view.registerClassForCellWithReuseIdentifier(CollectionViewCell.class(), this._defaultTemplate.key);
-        for (let i = 0, length_1 = this._itemTemplatesInternal.length; i < length_1; i++) {
-            view.registerClassForCellWithReuseIdentifier(CollectionViewCell.class(), this._itemTemplatesInternal[i].key.toLowerCase());
-        }
+        // view.registerClassForCellWithReuseIdentifier(CollectionViewCell.class(), this._defaultTemplate.key);
+        this._itemTemplatesInternal.forEach((t) => {
+            view.registerClassForCellWithReuseIdentifier(CollectionViewCell.class(), t.key.toLowerCase());
+        });
         view.autoresizesSubviews = false;
         view.autoresizingMask = UIViewAutoresizing.None;
 
         return view;
+    }
+
+    onTemplateAdded(t) {
+        super.onTemplateAdded(t);
+        if (this.nativeViewProtected) {
+            this.nativeViewProtected.registerClassForCellWithReuseIdentifier(CollectionViewCell.class(), t.key.toLowerCase());
+        }
     }
 
     public initNativeView() {
@@ -243,9 +251,13 @@ export class CollectionView extends CollectionViewBase {
         if (!this.nativeViewProtected) {
             return;
         }
-        for (let i = 0, length_1 = this._itemTemplatesInternal.length; i < length_1; i++) {
-            this.nativeViewProtected.registerClassForCellWithReuseIdentifier(CollectionViewCell.class(), this._itemTemplatesInternal[i].key.toLowerCase());
-        }
+        const view = this.nativeViewProtected;
+        this._itemTemplatesInternal.forEach((t) => {
+            view.registerClassForCellWithReuseIdentifier(CollectionViewCell.class(), t.key.toLowerCase());
+        });
+        // for (let i = 0, length_1 = this._itemTemplatesInternal.length; i < length_1; i++) {
+        //     this.nativeViewProtected.registerClassForCellWithReuseIdentifier(CollectionViewCell.class(), this._itemTemplatesInternal[i].key.toLowerCase());
+        // }
     }
 
     private unbindUnusedCells(removedDataItems) {
@@ -282,7 +294,7 @@ export class CollectionView extends CollectionViewBase {
 
         const args = {
             eventName: CollectionViewBase.dataPopulatedEvent,
-            object: this
+            object: this,
         };
         this.notify(args);
     }
@@ -347,7 +359,7 @@ export class CollectionView extends CollectionViewBase {
             view = args.view;
 
             if (view instanceof ProxyViewContainer) {
-                let sp = new StackLayout();
+                let sp = new GridLayout();
                 sp.addChild(view);
                 view = sp;
             }
@@ -436,7 +448,7 @@ export class CollectionView extends CollectionViewBase {
 
     private clearRealizedCells() {
         const that = new WeakRef<CollectionView>(this);
-        this._map.forEach(function(value, key: CollectionViewCell) {
+        this._map.forEach(function (value, key: CollectionViewCell) {
             that.get()._removeContainer(key);
             that.get()._clearCellViews(key);
         }, that);
@@ -473,7 +485,7 @@ export class CollectionView extends CollectionViewBase {
             top: this._layout.sectionInset.top,
             right: this._layout.sectionInset.right,
             bottom: this._layout.sectionInset.bottom,
-            left: this._layout.sectionInset.left
+            left: this._layout.sectionInset.left,
         };
         // tslint:disable-next-line:prefer-object-spread
         const newValue = Object.assign(padding, newPadding);
@@ -555,7 +567,7 @@ class UICollectionViewDelegateImpl extends NSObject implements UICollectionViewD
         if (indexPath.row === owner.items.length - 1) {
             owner.notify<EventData>({
                 eventName: CollectionViewBase.loadMoreItemsEvent,
-                object: owner
+                object: owner,
             });
         }
 
@@ -576,7 +588,7 @@ class UICollectionViewDelegateImpl extends NSObject implements UICollectionViewD
             eventName: CollectionViewBase.itemTapEvent,
             object: owner,
             index: indexPath.row,
-            view: (cell as CollectionViewCell).view
+            view: (cell as CollectionViewCell).view,
         });
 
         cell.highlighted = false;
@@ -625,7 +637,7 @@ class UICollectionViewDelegateImpl extends NSObject implements UICollectionViewD
             owner.notify({
                 object: owner,
                 eventName: 'scroll',
-                scrollOffset: owner.isHorizontal() ? scrollView.contentOffset.x : scrollView.contentOffset.y
+                scrollOffset: owner.isHorizontal() ? scrollView.contentOffset.x : scrollView.contentOffset.y,
             });
         }
     }

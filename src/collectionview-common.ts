@@ -1,7 +1,7 @@
 import * as observable from '@nativescript/core/data/observable';
 import { ChangedData, ObservableArray } from '@nativescript/core/data/observable-array';
 import * as builder from '@nativescript/core/ui/builder';
-import { booleanConverter, heightProperty, makeParser, makeValidator, widthProperty } from '@nativescript/core/ui/content-view';
+import { booleanConverter, heightProperty, makeParser, makeValidator, widthProperty, ViewBase } from '@nativescript/core/ui/content-view';
 import { CoercibleProperty, KeyedTemplate, Length, PercentLength, Property, Template, View } from '@nativescript/core/ui/core/view';
 import { addWeakEventListener, removeWeakEventListener } from '@nativescript/core/ui/core/weak-event-listener';
 import { Label } from '@nativescript/core/ui/label';
@@ -12,11 +12,40 @@ import { write, messageType, isEnabled } from '@nativescript/core/trace';
 
 export const CollectionViewTraceCategory = 'NativescriptCollectionView';
 
+declare module '@nativescript/core/ui/core/view-base' {
+    interface ViewBase {
+        _recursiveSuspendNativeUpdates(type);
+        _recursiveResumeNativeUpdates(type);
+        _recursiveBatchUpdates<T>(callback: () => T): T;
+    }
+}
+ViewBase.prototype._recursiveSuspendNativeUpdates = profile('_recursiveSuspendNativeUpdates', function (type) {
+    // console.log('_recursiveSuspendNativeUpdates', this, this._suspendNativeUpdatesCount);
+    this._suspendNativeUpdates(type);
+    this.eachChild((c) => c._recursiveSuspendNativeUpdates(type));
+});
+ViewBase.prototype._recursiveResumeNativeUpdates = profile('_recursiveResumeNativeUpdates', function (type) {
+    // console.log('_recursiveResumeNativeUpdates', this, this._suspendNativeUpdatesCount);
+    this._resumeNativeUpdates(type);
+    this.eachChild((c) => c._recursiveResumeNativeUpdates(type));
+});
+
+// right now _recursiveBatchUpdates suppose no view is added in the callback. If so it will crash from _resumeNativeUpdates
+ViewBase.prototype._recursiveBatchUpdates = profile('_recursiveBatchUpdates', function <T>(callback: () => T): T {
+    try {
+        this._recursiveSuspendNativeUpdates(0);
+
+        return callback();
+    } finally {
+        this._recursiveResumeNativeUpdates(0);
+    }
+});
+
 export enum CLogTypes {
     log = messageType.log,
     info = messageType.info,
     warning = messageType.warn,
-    error = messageType.error
+    error = messageType.error,
 }
 
 export const CLog = (type: CLogTypes, ...args) => {
@@ -29,7 +58,7 @@ const autoEffectiveColWidth = 0;
 // export * from 'ui/core/view';
 
 export enum ListViewViewTypes {
-    ItemView
+    ItemView,
 }
 
 export namespace knownTemplates {
@@ -64,7 +93,7 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     public _effectiveRowHeight: number;
     public _effectiveColWidth: number;
 
-    protected _itemTemplatesInternal: KeyedTemplate[];
+    protected _itemTemplatesInternal: Map<string, KeyedTemplate>;
     protected _defaultTemplate: KeyedTemplate;
     private _itemTemplateSelectorBindable = new Label();
 
@@ -77,9 +106,10 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
                     return builder.parse(this.itemTemplate, this);
                 }
                 return undefined;
-            }
+            },
         };
-        this._itemTemplatesInternal = new Array(this._defaultTemplate);
+        this._itemTemplatesInternal = new Map();
+        this._itemTemplatesInternal.set(this._defaultTemplate.key, this._defaultTemplate);
     }
 
     public itemIdGenerator: (item: any, index: number, items: any) => number = (_item: any, index: number) => index;
@@ -157,20 +187,21 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
         lbl['defaultItemView'] = true;
         lbl.bind({
             targetProperty: 'text',
-            sourceProperty: '$value'
+            sourceProperty: '$value',
         });
         return lbl;
     }
     getTemplateFromSelector(templateKey) {
-        for (let i = 0, length_1 = this._itemTemplatesInternal.length; i < length_1; i++) {
-            if (this._itemTemplatesInternal[i].key.toLowerCase() === templateKey.toLowerCase()) {
-                return this._itemTemplatesInternal[i];
-            }
-        }
-        // This is the default template
-        return this._itemTemplatesInternal[0];
+        return this._itemTemplatesInternal.get(templateKey) || this._itemTemplatesInternal.get('default');
+        // for (let i = 0, length_1 = this._itemTemplatesInternal.length; i < length_1; i++) {
+        //     if (this._itemTemplatesInternal[i].key.toLowerCase() === templateKey.toLowerCase()) {
+        //         return this._itemTemplatesInternal[i];
+        //     }
+        // }
+        // // This is the default template
+        // return this._itemTemplatesInternal[0];
     }
-    getViewForViewType(viewType, templateKey) {
+    getViewForViewType(viewType: ListViewViewTypes, templateKey: string) {
         let newView;
         if (templateKey) {
             const template = this.getTemplateFromSelector(templateKey);
@@ -196,13 +227,14 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     }
     _itemTemplateSelector: Function;
     onItemTemplateSelectorChanged(oldValue, newValue) {
+        console.log('onItemTemplateSelectorChanged');
         if (typeof newValue === 'string') {
             this._itemTemplateSelectorBindable.bind({
                 sourceProperty: null,
                 targetProperty: 'templateKey',
-                expression: newValue
+                expression: newValue,
             });
-            this._itemTemplateSelector = function(item, index, items) {
+            this._itemTemplateSelector = function (item, index, items) {
                 item['$index'] = index;
                 this._itemTemplateSelectorBindable.bindingContext = item;
                 return this._itemTemplateSelectorBindable.get('templateKey');
@@ -211,18 +243,35 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
             this._itemTemplateSelector = newValue;
         }
     }
+    onTemplateAdded(t) {}
+    onTemplateRemoved(key) {}
+    addTemplate(key, t) {
+        if (!t.key) {
+            t.key = t._key;
+            delete t._key;
+        }
+        this._itemTemplatesInternal.set(t.key, t);
+        this.onTemplateAdded(t);
+    }
+    removeTemplate(key) {
+        const didDelete = this._itemTemplatesInternal.delete(key);
+        if (didDelete) {
+            this.onTemplateRemoved(key);
+        }
+    }
     onItemTemplatesChanged(oldValue, newValue) {
-        this._itemTemplatesInternal = new Array(this._defaultTemplate);
+        this._itemTemplatesInternal = new Map();
         if (newValue) {
-            this._itemTemplatesInternal = this._itemTemplatesInternal.concat(
-                newValue.map(t => {
-                    if (!t.key) {
-                        t.key = t._key;
-                        delete t._key;
-                    }
-                    return t;
-                })
-            );
+            newValue.forEach((t) => {
+                if (!t.key) {
+                    t.key = t._key;
+                    delete t._key;
+                }
+                this._itemTemplatesInternal.set(t.key, t);
+            });
+        }
+        if (!this._itemTemplatesInternal.has(this._defaultTemplate.key)) {
+            this._itemTemplatesInternal.set(this._defaultTemplate.key, this._defaultTemplate);
         }
     }
     onItemTemplateChanged(oldValue, newValue) {}
@@ -239,7 +288,8 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     onItemsChangedInternal = (oldValue, newValue) => {
         const getItem = newValue && (newValue as ItemsSource).getItem;
         this.isItemsSourceIn = typeof getItem === 'function';
-
+        // we override the method to prevent the test on every getItem
+        this.getItemAtIndex = this.isItemsSourceIn ? (index: number) => (this.items as ItemsSource).getItem(index) : (index: number) => this.items[index];
         if (oldValue instanceof observable.Observable) {
             removeWeakEventListener(oldValue, ObservableArray.changeEvent, this.onSourceCollectionChangedInternal, this);
         }
@@ -288,7 +338,7 @@ export const rowHeightProperty = new Property<CollectionViewBase, PercentLength>
     valueChanged: (target, oldValue, newValue) => {
         target._effectiveRowHeight = PercentLength.toDevicePixels(newValue, autoEffectiveRowHeight, target._innerHeight);
         target._onRowHeightPropertyChanged(oldValue, newValue);
-    }
+    },
 });
 rowHeightProperty.register(CollectionViewBase);
 
@@ -305,7 +355,7 @@ export const colWidthProperty = new Property<CollectionViewBase, PercentLength>(
     valueChanged: (target, oldValue, newValue) => {
         target._effectiveColWidth = PercentLength.toDevicePixels(newValue, autoEffectiveColWidth, target._innerWidth);
         target._onColWidthPropertyChanged(oldValue, newValue);
-    }
+    },
 });
 colWidthProperty.register(CollectionViewBase);
 
@@ -317,7 +367,7 @@ export const orientationProperty = new Property<CollectionViewBase, Orientation>
     valueChanged: (target: CollectionViewBase, oldValue: Orientation, newValue: Orientation) => {
         target.refresh();
     },
-    valueConverter: converter
+    valueConverter: converter,
 });
 orientationProperty.register(CollectionViewBase);
 
@@ -325,13 +375,13 @@ export const itemTemplateProperty = new Property<CollectionViewBase, string | Te
     name: 'itemTemplate',
     valueChanged(target, oldValue, newValue) {
         target.onItemTemplatePropertyChanged(oldValue, newValue);
-    }
+    },
 });
 itemTemplateProperty.register(CollectionViewBase);
 
 export const itemTemplatesProperty = new Property<CollectionViewBase, KeyedTemplate[]>({
     name: 'itemTemplates',
-    valueConverter: value => {
+    valueConverter: (value) => {
         if (typeof value === 'string') {
             return builder.parseMultipleTemplates(value);
         }
@@ -340,7 +390,7 @@ export const itemTemplatesProperty = new Property<CollectionViewBase, KeyedTempl
     },
     valueChanged(target, oldValue, newValue) {
         target.onItemTemplatesPropertyChanged(oldValue, newValue);
-    }
+    },
 });
 itemTemplatesProperty.register(CollectionViewBase);
 
@@ -349,7 +399,7 @@ export const itemTemplateSelectorProperty = new Property<CollectionViewBase, Fun
     defaultValue: undefined,
     valueChanged(target, oldValue, newValue) {
         target.onItemTemplateSelectorPropertyChanged(oldValue, newValue);
-    }
+    },
 });
 itemTemplateSelectorProperty.register(CollectionViewBase);
 
@@ -358,19 +408,19 @@ export const itemsProperty = new Property<CollectionViewBase, Function>({
     defaultValue: undefined,
     valueChanged(target, oldValue, newValue) {
         target.onItemsChanged(oldValue, newValue);
-    }
+    },
 });
 itemsProperty.register(CollectionViewBase);
 
 export const isScrollEnabledProperty = new Property<CollectionViewBase, boolean>({
     name: 'isScrollEnabled',
     defaultValue: true,
-    valueConverter: booleanConverter
+    valueConverter: booleanConverter,
 });
 isScrollEnabledProperty.register(CollectionViewBase);
 export const isBounceEnabledProperty = new Property<CollectionViewBase, boolean>({
     name: 'isBounceEnabled',
     defaultValue: true,
-    valueConverter: booleanConverter
+    valueConverter: booleanConverter,
 });
 isBounceEnabledProperty.register(CollectionViewBase);
