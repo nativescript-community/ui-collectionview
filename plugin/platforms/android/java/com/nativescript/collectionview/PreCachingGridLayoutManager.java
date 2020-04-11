@@ -20,7 +20,7 @@ public class PreCachingGridLayoutManager extends GridLayoutManager {
     @Override
     protected void calculateExtraLayoutSpace(RecyclerView.State state, int[] extraLayoutSpace) {
         super.calculateExtraLayoutSpace(state, extraLayoutSpace);
-        Log.d(TAG, "calculateExtraLayoutSpace: " + this.extraLayoutSpace);
+        // Log.d(TAG, "calculateExtraLayoutSpace: " + this.extraLayoutSpace);
         if (this.extraLayoutSpace > 0) {
             // if (getOrientation() == HORIZONTAL) {
                 // extraLayoutSpace[0] = extraLayoutSpace[0] + this.extraLayoutSpace;
