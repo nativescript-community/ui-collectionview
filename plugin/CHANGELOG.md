@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.14](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.13...v2.0.14) (2020-04-24)
+
+
+### Bug Fixes
+
+* rewrote to improve perfs ([729d8c9](https://github.com/Akylas/nativescript-collectionview/commit/729d8c986e52ca9681574d3201334cb605817a13))
+
+
+
+
+
 ## [2.0.13](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.12...v2.0.13) (2020-03-12)
 
 
