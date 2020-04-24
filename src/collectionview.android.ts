@@ -67,7 +67,6 @@ export class CollectionView extends CollectionViewBase {
 
         initCollectionViewAdapter();
 
-        this.attach();
         // tslint:disable-next-line:no-unused-expression
         // new CollectionViewCellHolder(new android.widget.TextView(this._context));
 
@@ -84,12 +83,18 @@ export class CollectionView extends CollectionViewBase {
         // rowHeightProperty.coerce(this);
     }
 
+    onLoaded() {
+        super.onLoaded();
+        this.attach();
+    }
+
     _scrollOrLoadMoreChangeCount = 0;
     private attach() {
+        console.log('attach', this._scrollOrLoadMoreChangeCount, this.isLoaded );
         if (this._scrollOrLoadMoreChangeCount > 0 && this.isLoaded) {
             const nativeView = this.nativeViewProtected;
+            console.log('attaching scrolllistener');
             if (!nativeView.scrollListener) {
-                console.log('attaching scroll listener');
                 initCollectionViewScrollListener();
                 const scrollListener = new CollectionViewScrollListener(new WeakRef(this));
                 nativeView.addOnScrollListener(scrollListener);
@@ -109,6 +114,7 @@ export class CollectionView extends CollectionViewBase {
     }
     public addEventListener(arg: string, callback: any, thisArg?: any) {
         super.addEventListener(arg, callback, thisArg);
+        console.log('addEventListener', this, arg, arg === CollectionViewBase.scrollEvent, this._scrollOrLoadMoreChangeCount);
 
         if (arg === CollectionViewBase.scrollEvent) {
             this._scrollOrLoadMoreChangeCount++;
@@ -538,22 +544,21 @@ function initCollectionViewAdapter() {
         public getItemViewType(position: number) {
             const owner = this.owner.get();
             let resultType = 0;
-
+            let selectorType: string = 'default';
             if (owner._itemTemplateSelector) {
                 const selector = owner._itemTemplateSelector;
                 const dataItem = owner.getItemAtIndex(position);
                 if (dataItem) {
-                    const selectorType:string = selector(dataItem, position, owner.items);
-
-                    if (!this.templateTypeNumberString.has(selectorType)) {
-                        resultType = this._currentNativeItemType
-                        this.templateTypeNumberString.set(selectorType, resultType);
-                        this.templateStringTypeNumber.set(resultType, selectorType);
-                        this._currentNativeItemType++;
-                    } else {
-                        resultType = this.templateTypeNumberString.get(selectorType);
-                    }
+                    selectorType = selector(dataItem, position, owner.items);
                 }
+            }
+            if (!this.templateTypeNumberString.has(selectorType)) {
+                resultType = this._currentNativeItemType;
+                this.templateTypeNumberString.set(selectorType, resultType);
+                this.templateStringTypeNumber.set(resultType, selectorType);
+                this._currentNativeItemType++;
+            } else {
+                resultType = this.templateTypeNumberString.get(selectorType);
             }
             return resultType;
         }
@@ -568,14 +573,7 @@ function initCollectionViewAdapter() {
         }
         @profile
         getKeyByValue(viewType: number) {
-            // let result;
             return this.templateStringTypeNumber.get(viewType);
-            // this.templateTypeNumberString.forEach(function (value, key, map) {
-            //     if (value === inputValue) {
-            //         result = key;
-            //     }
-            // }, this);
-            // return result;
         }
 
         @profile

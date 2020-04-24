@@ -227,7 +227,6 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     }
     _itemTemplateSelector: Function;
     onItemTemplateSelectorChanged(oldValue, newValue) {
-        console.log('onItemTemplateSelectorChanged');
         if (typeof newValue === 'string') {
             this._itemTemplateSelectorBindable.bind({
                 sourceProperty: null,

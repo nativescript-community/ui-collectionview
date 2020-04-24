@@ -15,9 +15,9 @@ public class RecyclerView extends androidx.recyclerview.widget.RecyclerView {
         setHorizontalScrollBarEnabled(true);
         setVerticalScrollBarEnabled(true);
         setHasFixedSize(true);
-        setItemViewCacheSize(20);
-        setDrawingCacheEnabled(true);
-        setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+        // setItemViewCacheSize(20);
+        // setDrawingCacheEnabled(true);
+        // setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
         setFocusable(true);
         setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
     }

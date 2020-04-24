@@ -1,6 +1,7 @@
 import { CollectionView } from '../collectionview';
 import { Observable } from '@nativescript/core/data/observable';
 import { ObservableArray } from '@nativescript/core/data/observable-array/observable-array';
+import { View } from '@nativescript/core/ui/page/page';
 
 function extend(to, _from): any {
     for (const key in _from) {
@@ -9,7 +10,6 @@ function extend(to, _from): any {
     return to;
 }
 
-
 // Note: most of the code taken from nativescript-vue/platform/nativescript/runtime/components/list-view
 // TODO: reuse code from list-view component instead of copying
 const VUE_VIEW = '__vueVNodeRef__';
@@ -17,20 +17,20 @@ exports.default = {
     props: {
         items: {
             type: [Object, Array],
-            validator: val => !val || Array.isArray(val) || val instanceof ObservableArray,
-            required: true
+            validator: (val) => !val || Array.isArray(val) || val instanceof ObservableArray,
+            required: true,
         },
         '+alias': {
             type: String,
-            default: 'item'
+            default: 'item',
         },
         '+index': {
-            type: String
+            type: String,
         },
         itemTemplateSelector: {
             type: Function,
-            default: undefined
-        }
+            default: undefined,
+        },
     },
     template: `<NativeCollectionView ref="listView" :items="items" v-bind="$attrs" v-on="listeners" @itemTap="onItemTap" @itemLoading="onItemLoadingInternal"
   >
@@ -44,8 +44,8 @@ exports.default = {
                     this.refresh();
                 }
             },
-            deep: true
-        }
+            deep: true,
+        },
     },
     created() {
         // we need to remove the itemTap handler from a clone of the $listeners
@@ -56,7 +56,7 @@ exports.default = {
         this.getItemContext = getItemContext.bind(this);
     },
     mounted() {
-        const listView: any & { nativeView: CollectionView } = (this.$refs.listView);
+        const listView: any & { nativeView: CollectionView } = this.$refs.listView;
         this.listView = listView.nativeView;
         listView.setAttribute('itemTemplates', this.$templates.getKeyedTemplates());
 
@@ -76,7 +76,7 @@ exports.default = {
             this.$emit('itemTap', extend({ item: this.getItem(args.index) }, args));
         },
         updateViewTemplate(args) {
-            const listView = args.object as CollectionView
+            const listView = args.object as CollectionView;
             const index = args.index;
             const items = args.object.items;
             const currentItem = args.bindingContext;
@@ -85,7 +85,14 @@ exports.default = {
             const isSelected = false;
             const context = this.getItemContext(currentItem, index, isSelected);
             const oldVnode = args.view && args.view[VUE_VIEW];
-            args.view = this.$templates.patchTemplate(name, context, oldVnode);
+            if (args.view) {
+                // reusing
+                args.view._recursiveBatchUpdates(() => {
+                    args.view = this.$templates.patchTemplate(name, context, oldVnode);
+                });
+            } else {
+                args.view = this.$templates.patchTemplate(name, context, oldVnode);
+            }
         },
         onItemLoadingInternal(args) {
             this.updateViewTemplate(args);
@@ -105,7 +112,7 @@ exports.default = {
         // getSelectedItems() {
         //     return (this.listView as CollectionView).getSelectedItems();
         // }
-    }
+    },
 };
 function getItemContext(item, index = -1, selected = false, alias = this.$props['+alias'], index_alias = this.$props['+index']) {
     return {
@@ -113,6 +120,6 @@ function getItemContext(item, index = -1, selected = false, alias = this.$props[
         [index_alias || '$index']: index,
         $even: index % 2 === 0,
         $odd: index % 2 !== 0,
-        $selected: selected
+        $selected: selected,
     };
 }
