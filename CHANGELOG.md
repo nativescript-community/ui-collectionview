@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.15](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.14...v2.0.15) (2020-04-25)
+
+
+### Bug Fixes
+
+* **android:** removed logs ([2e5f195](https://github.com/Akylas/nativescript-collectionview/commit/2e5f195afb53a61fe3366ee5167adf3e3912d5cd))
+
+
+
+
+
 ## [2.0.14](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.13...v2.0.14) (2020-04-24)
 
 
