@@ -90,10 +90,8 @@ export class CollectionView extends CollectionViewBase {
 
     _scrollOrLoadMoreChangeCount = 0;
     private attach() {
-        console.log('attach', this._scrollOrLoadMoreChangeCount, this.isLoaded );
         if (this._scrollOrLoadMoreChangeCount > 0 && this.isLoaded) {
             const nativeView = this.nativeViewProtected;
-            console.log('attaching scrolllistener');
             if (!nativeView.scrollListener) {
                 initCollectionViewScrollListener();
                 const scrollListener = new CollectionViewScrollListener(new WeakRef(this));
@@ -114,8 +112,6 @@ export class CollectionView extends CollectionViewBase {
     }
     public addEventListener(arg: string, callback: any, thisArg?: any) {
         super.addEventListener(arg, callback, thisArg);
-        console.log('addEventListener', this, arg, arg === CollectionViewBase.scrollEvent, this._scrollOrLoadMoreChangeCount);
-
         if (arg === CollectionViewBase.scrollEvent) {
             this._scrollOrLoadMoreChangeCount++;
             this.attach();
