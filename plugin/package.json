@@ -1,6 +1,6 @@
 {
     "name": "nativescript-collectionview",
-    "version": "2.0.15",
+    "version": "2.0.16",
     "description": "Your awesome NativeScript plugin.",
     "main": "./collectionview",
     "typings": "./collectionview.d.ts",

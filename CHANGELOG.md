@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.16](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.15...v2.0.16) (2020-04-27)
+
+
+### Bug Fixes
+
+* template not found ([1f82783](https://github.com/Akylas/nativescript-collectionview/commit/1f827833a5a3d71b5ba5a7f7e1691153fd04bef6))
+
+
+
+
+
 ## [2.0.15](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.14...v2.0.15) (2020-04-25)
 
 
