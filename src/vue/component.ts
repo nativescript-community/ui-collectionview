@@ -97,12 +97,6 @@ exports.default = {
         onItemLoadingInternal(args) {
             this.updateViewTemplate(args);
         },
-        onItemSelected(args) {
-            this.updateViewTemplate(args);
-        },
-        onItemDeselected(args) {
-            this.updateViewTemplate(args);
-        },
         refresh() {
             (this.listView as CollectionView).refresh();
         },

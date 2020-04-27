@@ -192,14 +192,7 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
         return lbl;
     }
     getTemplateFromSelector(templateKey) {
-        return this._itemTemplatesInternal.get(templateKey) || this._itemTemplatesInternal.get('default');
-        // for (let i = 0, length_1 = this._itemTemplatesInternal.length; i < length_1; i++) {
-        //     if (this._itemTemplatesInternal[i].key.toLowerCase() === templateKey.toLowerCase()) {
-        //         return this._itemTemplatesInternal[i];
-        //     }
-        // }
-        // // This is the default template
-        // return this._itemTemplatesInternal[0];
+        return this._itemTemplatesInternal.get(templateKey.toLowerCase()) || this._itemTemplatesInternal.get('default');
     }
     getViewForViewType(viewType: ListViewViewTypes, templateKey: string) {
         let newView;
@@ -249,11 +242,11 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
             t.key = t._key;
             delete t._key;
         }
-        this._itemTemplatesInternal.set(t.key, t);
+        this._itemTemplatesInternal.set(t.key.toLowerCase(), t);
         this.onTemplateAdded(t);
     }
     removeTemplate(key) {
-        const didDelete = this._itemTemplatesInternal.delete(key);
+        const didDelete = this._itemTemplatesInternal.delete(key.toLowerCase());
         if (didDelete) {
             this.onTemplateRemoved(key);
         }

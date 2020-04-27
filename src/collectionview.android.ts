@@ -577,9 +577,9 @@ function initCollectionViewAdapter() {
             const owner = this.owner.get();
 
             let view: View = owner.getViewForViewType(ListViewViewTypes.ItemView, this.getKeyByValue(viewType));
-            const isVue = view === undefined;
+            const isNonSync = view === undefined;
             // dont create unecessary StackLayout if template.createView returns. Will happend when not using Vue or angular
-            if (isVue || view instanceof ProxyViewContainer) {
+            if (isNonSync || view instanceof ProxyViewContainer) {
                 const parentView = new GridLayout();
                 view = parentView;
             }
@@ -592,7 +592,7 @@ function initCollectionViewAdapter() {
             holder.view = view;
             const layoutParams = owner._getViewLayoutParams();
             view.nativeView.setLayoutParams(layoutParams);
-            if (isVue) {
+            if (isNonSync) {
                 holder['defaultItemView'] = true;
             }
             this._viewHolders.push(holder);
@@ -608,9 +608,9 @@ function initCollectionViewAdapter() {
             }
             let view = holder.view;
             const bindingContext = owner._prepareItem(view, position);
-            const isVue = !!holder['defaultItemView'];
+            const isNonSync = !!holder['defaultItemView'];
 
-            view = isVue ? (view as GridLayout).getChildAt(0) : view;
+            view = isNonSync ? (view as GridLayout).getChildAt(0) : view;
 
             const args = {
                 eventName: CollectionViewBase.itemLoadingEvent,
@@ -622,7 +622,7 @@ function initCollectionViewAdapter() {
             };
             owner.notify(args);
 
-            if (isVue && args.view !== view) {
+            if (isNonSync && args.view !== view) {
                 view = args.view;
                 // the view has been changed on the event handler
                 (holder.view as GridLayout).addChild(args.view);
