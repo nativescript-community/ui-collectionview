@@ -428,7 +428,7 @@ function initCollectionViewScrollListener() {
 
         public onScrolled(view: androidx.recyclerview.widget.RecyclerView, dx: number, dy: number) {
             const owner: CollectionView = this.owner.get();
-            if (!owner) {
+            if (!owner || !this.scrolling) {
                 return;
             }
 
@@ -452,8 +452,26 @@ function initCollectionViewScrollListener() {
             }
         }
 
+
+        scrolling = false
         public onScrollStateChanged(view: androidx.recyclerview.widget.RecyclerView, newState: number) {
-            // Not Needed
+            if (this.scrolling && newState === 0){ // SCROLL_STATE_IDLE
+                this.scrolling = false;
+                const owner: CollectionView = this.owner.get();
+                if (!owner) {
+                    return;
+                }
+                if (owner.hasListeners(CollectionViewBase.scrollEndEvent)) {
+                    owner.notify({
+                        object: owner,
+                        eventName: CollectionViewBase.scrollEndEvent,
+                        scrollOffset: (owner.isHorizontal() ? view.computeHorizontalScrollOffset() : view.computeVerticalScrollOffset()) / utils.layout.getDisplayDensity(),
+                    });
+                }
+            } else if (!this.scrolling && newState === 1) { //SCROLL_STATE_DRAGGING
+                this.scrolling = true;
+            }
+            
         }
     }
 

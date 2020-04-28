@@ -8,7 +8,7 @@ import { GridLayout } from '@nativescript/core/ui/layouts/grid-layout';
 import { ProxyViewContainer } from '@nativescript/core/ui/proxy-view-container';
 import * as util from '@nativescript/core/utils/utils';
 import { CollectionViewItemEventData, Orientation } from './collectionview';
-import { CLog, CLogTypes, CollectionViewBase, isBounceEnabledProperty, isScrollEnabledProperty, itemTemplatesProperty, ListViewViewTypes, orientationProperty } from './collectionview-common';
+import { CLog, CLogTypes, CollectionViewBase, isBounceEnabledProperty, isScrollEnabledProperty, itemTemplatesProperty, ListViewViewTypes, orientationProperty, } from './collectionview-common';
 
 const utilLayout = util.layout;
 
@@ -636,7 +636,17 @@ class UICollectionViewDelegateImpl extends NSObject implements UICollectionViewD
         if (owner) {
             owner.notify({
                 object: owner,
-                eventName: 'scroll',
+                eventName: CollectionViewBase.scrollEvent,
+                scrollOffset: owner.isHorizontal() ? scrollView.contentOffset.x : scrollView.contentOffset.y,
+            });
+        }
+    }
+    public scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        const owner = this._owner.get();
+        if (owner) {
+            owner.notify({
+                object: owner,
+                eventName: CollectionViewBase.scrollEndEvent,
                 scrollOffset: owner.isHorizontal() ? scrollView.contentOffset.x : scrollView.contentOffset.y,
             });
         }
