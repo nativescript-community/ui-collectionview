@@ -62,6 +62,7 @@ export class CollectionView extends CollectionViewBase {
         // initGridLayoutManager();
         const layoutManager = new com.nativescript.collectionview.PreCachingGridLayoutManager(this._context, 1);
         nativeView.setLayoutManager(layoutManager);
+        layoutManager.isScrollEnabled = this.isScrollEnabled;
         layoutManager.setOrientation(orientation);
         nativeView.layoutManager = layoutManager;
 
@@ -241,6 +242,9 @@ export class CollectionView extends CollectionViewBase {
     isScrollEnabled = true;
     public [isScrollEnabledProperty.setNative](value: boolean) {
         this.isScrollEnabled = value;
+        if (this.layoutManager) {
+            this.layoutManager.isScrollEnabled = value;
+        }
     }
     public [extraLayoutSpaceProperty.setNative](value: number) {
         this.layoutManager.setExtraLayoutSpace(value);
