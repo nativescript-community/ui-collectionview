@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.17](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.16...v2.0.17) (2020-04-28)
+
+
+### Bug Fixes
+
+* **android:** isScrollEnabled was not working ([f3c02dd](https://github.com/Akylas/nativescript-collectionview/commit/f3c02dd389cdfb22601f69ca1c277044a83d5fe0))
+
+
+### Features
+
+* scrollEnd event ([f88f7ef](https://github.com/Akylas/nativescript-collectionview/commit/f88f7ef0f6a3f4172f9d1522d3529eadab12d22d))
+
+
+
+
+
 ## [2.0.16](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.15...v2.0.16) (2020-04-27)
 
 
