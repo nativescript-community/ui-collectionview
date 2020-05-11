@@ -2,15 +2,13 @@
     "compilerOptions": {
         "target": "es5",
         "module": "commonjs",
+        "moduleResolution": "node",
         "declaration": true,
-        "removeComments": true,
+        "removeComments": false,
         "noLib": false,
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
-        "lib": [
-            "es6",
-            "dom"
-        ],
+        "lib": ["es6", "dom"],
         "sourceMap": true,
         "pretty": true,
         "allowUnreachableCode": false,
@@ -23,24 +21,18 @@
         "noFallthroughCasesInSwitch": true,
         "baseUrl": ".",
         "outDir": "./plugin",
-        "rootDir": "src",
         "paths": {
-            "*": [
-                "./node_modules/*"
-            ],
             "tns-core-modules": ["./node_modules/@nativescript/core"],
-            "tns-core-modules/*": ["./node_modules/@nativescript/core/*"]
+            "tns-core-modules/*": ["./node_modules/@nativescript/core/*"],
+            "nativescript-collectionview": ["src/collectionview"],
+            "nativescript-collectionview/*": ["src/*"],
+            "*": ["node_modules/*"]
         }
     },
-    "include": [
-        "src/**/*.ts",
-        "references.d.ts",
-        "src/references.d.ts"
-    ],
-    "exclude": [
-        "node_modules",
-        ".git",
-        "dist"
-    ],
-    "compileOnSave": false
+    "include": ["src/**/*", "src/**/*.ts", "./references.d.ts", "./src/references.d.ts"],
+    "exclude": ["platforms"],
+    "compileOnSave": false,
+    "angularCompilerOptions": {
+        "skipTemplateCodegen": true
+    }
 }
