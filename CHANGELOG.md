@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.19](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.18...v2.0.19) (2020-05-11)
+
+
+### Bug Fixes
+
+* **android:** null itemIdGenerator by default or it will break some apps ([a18a161](https://github.com/Akylas/nativescript-collectionview/commit/a18a1614a945e4e616617e7fa39ce4feb41324e9))
+
+
+
+
+
 ## [2.0.18](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.17...v2.0.18) (2020-05-11)
 
 
