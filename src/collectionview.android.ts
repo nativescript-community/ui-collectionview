@@ -3,15 +3,56 @@ import { profile } from '@nativescript/core/profiling';
 import { isEnabled } from '@nativescript/core/trace';
 import { Length, paddingBottomProperty, paddingLeftProperty, paddingRightProperty, paddingTopProperty, View, Property } from '@nativescript/core/ui/core/view';
 import { GridLayout } from '@nativescript/core/ui/layouts/grid-layout';
-import { StackLayout } from '@nativescript/core/ui/layouts/stack-layout';
 import { ProxyViewContainer } from '@nativescript/core/ui/proxy-view-container';
-import { screen } from '@nativescript/core/platform';
 import * as utils from '@nativescript/core/utils/utils';
-import { CollectionViewItemEventData, Orientation } from './collectionview';
+import { Orientation, CollectionViewItemEventData } from './collectionview';
 import { CLog, CLogTypes, CollectionViewBase, isScrollEnabledProperty, ListViewViewTypes, orientationProperty } from './collectionview-common';
 
 export * from './collectionview-common';
 
+
+// Snapshot friendly GridViewAdapter
+interface CellViewHolder extends com.nativescript.collectionview.CollectionViewCellHolder {
+    // tslint:disable-next-line:no-misused-new
+    new(owner: WeakRef<View>,  collectionView: WeakRef<CollectionView>): CellViewHolder;
+}
+let CellViewHolder: CellViewHolder;
+
+function initCellViewHolder() {
+    if (CellViewHolder) {
+        return;
+    }
+    @Interfaces([android.view.View.OnClickListener])
+    class CellViewHolderImpl extends com.nativescript.collectionview.CollectionViewCellHolder implements android.view.View.OnClickListener {
+        constructor(private owner: WeakRef<View>, private collectionView: WeakRef<CollectionView>) {
+            super(owner.get().android);
+
+            const nativeThis = global.__native(this);
+            const nativeView = owner.get().android as android.view.View;
+            nativeView.setOnClickListener(nativeThis);
+
+            return nativeThis;
+        }
+
+        get view(): View {
+            return this.owner ? this.owner.get() : null;
+        }
+
+        public onClick(v: android.view.View) {
+            const owner = this.owner.get();
+            const collectionView = this.collectionView.get();
+
+            collectionView.notify<CollectionViewItemEventData>({
+                eventName: CollectionViewBase.itemTapEvent,
+                object: collectionView,
+                index: this.getAdapterPosition(),
+                view: this.view
+            });
+        }
+
+    }
+    CellViewHolder = CellViewHolderImpl as any;
+}
 const extraLayoutSpaceProperty = new Property<CollectionViewBase, number>({
     name: 'extraLayoutSpace',
 });
