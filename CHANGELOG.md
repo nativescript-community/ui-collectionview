@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.18](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.17...v2.0.18) (2020-05-11)
+
+
+### Bug Fixes
+
+* **android:** bring back itemTap ([a285013](https://github.com/Akylas/nativescript-collectionview/commit/a2850139533d4fa97b424d4e7944ccb593b14d68))
+* **android:** itemIdGenerator support, fixes stableIds ([03546cb](https://github.com/Akylas/nativescript-collectionview/commit/03546cbcfe05d7d50cd1a2d7b516ef8c42a8092c))
+
+
+
+
+
 ## [2.0.17](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.16...v2.0.17) (2020-04-28)
 
 
