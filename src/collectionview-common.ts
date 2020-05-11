@@ -247,7 +247,8 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
         }
     }
     private _itemIdGeneratorBindable;
-    public _itemIdGenerator: (item: any, index: number, items: any) => number = (_item: any, index: number) => index;
+    // public _itemIdGenerator: (item: any, index: number, items: any) => number = (_item: any, index: number) => index;
+    public _itemIdGenerator: (item: any, index: number, items: any) => number = null;
     onItemIdGeneratorChanged(oldValue, newValue) {
         if (typeof newValue === 'string') {
             if (!this._itemIdGeneratorBindable) {
