@@ -1,0 +1,56 @@
+
+
+apply plugin: 'com.android.library'
+
+
+def computeTargetSdkVersion() {
+    if(project.hasProperty("targetSdk")) {
+        return targetSdk
+    }
+    else {
+        return 28
+    }
+}
+
+android {
+    compileSdkVersion = 28
+    buildToolsVersion = '28.0.3'
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion computeTargetSdkVersion()
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
+}
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+
+    def androidXRecyclerViewVersion =  project.hasProperty("androidXRecyclerViewVersion") ? project.androidXRecyclerViewVersion : "1.1.0"
+    implementation "androidx.recyclerview:recyclerview:$androidXRecyclerViewVersion"
+}
+
+task cleanBuildDir (type: Delete) {
+    delete "../build/"
+}
+
+task copyAar << {
+    copy {
+        from "build/outputs/aar/label-release.aar"
+        into "../build/"
+    }
+}
+
+assemble.dependsOn(cleanBuildDir)
+copyAar.dependsOn(assemble)
+build.dependsOn(copyAar)
