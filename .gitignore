@@ -74,3 +74,4 @@ plugin/**/*.d.ts
 pnpm-lock.yaml
 /plugin/README.md
 *.aar
+times.html

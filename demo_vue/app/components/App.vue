@@ -3,8 +3,8 @@
         <StackLayout>
             <CollectionView width="100%" height="100%" rowHeight="80" ref="listView" :items="itemList" @itemTap="onItemTap" backgroundColor="blue">
                 <v-template>
-                    <GridLayout columns="16,auto,*,auto,16" rows="12,auto,*,auto" rippleColor="red" backgroundColor="white" @tap="$emit('tap', $event)">
-                        <!-- <Label
+                    <GridLayout columns="16,auto,*,auto,16" rows="12,auto,*,auto" rippleColor="red" backgroundColor="white">
+                        <Label
                             v-show="!!item.leftIcon"
                             col="1"
                             row="0"
@@ -17,7 +17,7 @@
                             verticalAlignment="center"
                             color="gray"
                             class="mdi"
-                        /> -->
+                        />
                         <Image
                             v-show="item.avatar"
                             backgroundColor="gray"
@@ -35,16 +35,16 @@
                         />
 
                         <StackLayout col="2" row="1" rowSpan="2" verticalAlignment="center">
-                            <!-- <Label col="2" row="1" :fontSize="10" v-show="!!item.overText" :text="item.overText | uppercase" verticalAlignment="center" color="gray" /> -->
+                            <Label col="2" row="1" :fontSize="10" v-show="!!item.overText" :text="item.overText | uppercase" verticalAlignment="center" color="gray" />
                             <Label :fontSize="17" :text="item.title" textWrap="true" verticalTextAlignment="top" maxLines="2" lineBreak="end" />
                             <Label v-show="!!item.subtitle" :fontSize="14" :text="item.subtitle" verticalTextAlignment="top" color="gray" maxLines="2" lineBreak="end" />
                         </StackLayout>
 
                         <Label col="3" row="1" fontSize="10" v-show="!!item.date" :text="item.date" verticalAlignment="top" />
-                        <!-- <GridLayout col="3" row="1" rowSpan="2" verticalAlignment="center">
+                        <GridLayout col="3" row="1" rowSpan="2" verticalAlignment="center">
                             <Label v-show="!!item.rightIcon" class="mdi" :fontSize="24" textAlignment="right" color="gray" :text="item.rightIcon" verticalAlignment="center" />
                             <Button variant="flat" v-show="!!item.rightButton" class="icon-themed-btn" :text="item.rightButton" verticalAlignment="center" @tap="$emit('rightTap')" />
-                        </GridLayout> -->
+                        </GridLayout>
 
                         <AbsoluteLayout row="3" colSpan="5" marginTop="12" marginLeft="20" backgroundColor="gray" height="1" verticalAlignment="bottom" />
                     </GridLayout>
@@ -83,7 +83,7 @@ export default {
     data() {
         const items = [];
         for (let loop = 0; loop < 1000; loop++) {
-            items.push({ leftIcon: 'mdi-magnify', title: 'title ' + loop.toString(), subtitle: 'subtitle ' + loop.toString() });
+            items.push({ index:loop, leftIcon: 'mdi-magnify', title: 'title ' + loop.toString(), subtitle: 'subtitle ' + loop.toString() });
         }
         return {
             itemList: items
@@ -93,7 +93,10 @@ export default {
         onItemTap({ item }) {
             console.log(`Tapped on ${item.name}`);
             this.$navigateTo(DetailsPage);
-        }
+        },
+        // itemIdGenerator(item, i) {
+        //   return item.index;
+        // }
     }
 };
 </script>
