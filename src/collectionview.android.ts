@@ -407,6 +407,7 @@ export class CollectionView extends CollectionViewBase {
         let adapter = this._listViewAdapter;
         if (!adapter) {
             adapter = this._listViewAdapter = this.createComposedAdapter(this.nativeViewProtected);
+            adapter.setHasStableIds(!!this._itemIdGenerator);
             view.setAdapter(adapter);
         } else if (!view.getAdapter()) {
             view.setAdapter(adapter);

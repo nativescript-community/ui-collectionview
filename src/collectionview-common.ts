@@ -9,6 +9,7 @@ import { ItemsSource } from '@nativescript/core/ui/list-view';
 import { CollectionView as CollectionViewDefinition, Orientation } from './collectionview';
 import { profile } from '@nativescript/core/profiling';
 import { write, messageType, isEnabled } from '@nativescript/core/trace';
+import { ProxyViewContainer } from '@nativescript/core/ui/proxy-view-container';
 
 export const CollectionViewTraceCategory = 'NativescriptCollectionView';
 
@@ -96,7 +97,6 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
 
     protected _itemTemplatesInternal: Map<string, KeyedTemplate>;
     protected _defaultTemplate: KeyedTemplate;
-    private _itemTemplateSelectorBindable = new Label();
 
     constructor() {
         super();
@@ -113,7 +113,6 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
         this._itemTemplatesInternal.set(this._defaultTemplate.key, this._defaultTemplate);
     }
 
-    public itemIdGenerator: (item: any, index: number, items: any) => number = (_item: any, index: number) => index;
 
     public abstract refresh();
     public abstract scrollToIndex(index: number, animated: boolean);
@@ -157,7 +156,14 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
         return context;
     }
 
+
+    @profile
+    public notifyLoading(args) {
+        this.notify(args);
+    }
+
     public getItemAtIndex(index: number): any {
+        // will be overriden in onItemsChangedInternal
         const thisItems = this.items as ItemsSource;
         return thisItems.getItem ? thisItems.getItem(index) : thisItems[index];
     }
@@ -219,9 +225,13 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
         }
         return templateString === undefined ? undefined : this.resolveTemplateView(templateString);
     }
+    private _itemTemplateSelectorBindable;
     _itemTemplateSelector: Function;
     onItemTemplateSelectorChanged(oldValue, newValue) {
         if (typeof newValue === 'string') {
+            if (!this._itemTemplateSelectorBindable) {
+                this._itemTemplateSelectorBindable = new ProxyViewContainer()
+            }
             this._itemTemplateSelectorBindable.bind({
                 sourceProperty: null,
                 targetProperty: 'templateKey',
@@ -234,6 +244,27 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
             };
         } else if (typeof newValue === 'function') {
             this._itemTemplateSelector = newValue;
+        }
+    }
+    private _itemIdGeneratorBindable;
+    public _itemIdGenerator: (item: any, index: number, items: any) => number = (_item: any, index: number) => index;
+    onItemIdGeneratorChanged(oldValue, newValue) {
+        if (typeof newValue === 'string') {
+            if (!this._itemIdGeneratorBindable) {
+                this._itemIdGeneratorBindable = new ProxyViewContainer()
+            }
+            this._itemIdGeneratorBindable.bind({
+                sourceProperty: null,
+                targetProperty: 'itemId',
+                expression: newValue,
+            });
+            this._itemIdGenerator = function (item, index, items) {
+                item['$index'] = index;
+                this._itemIdGeneratorBindable.bindingContext = item;
+                return this._itemIdGeneratorBindable.get('itemId');
+            };
+        } else if (typeof newValue === 'function') {
+            this._itemIdGenerator = newValue;
         }
     }
     onTemplateAdded(t) {}
@@ -268,9 +299,9 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
         }
     }
     onItemTemplateChanged(oldValue, newValue) {}
-    onItemTemplateSelectorPropertyChanged(oldValue, newValue) {
-        this.onItemTemplateSelectorChanged(oldValue, newValue);
-    }
+    // onItemTemplateSelectorPropertyChanged(oldValue, newValue) {
+    //     this.onItemTemplateSelectorChanged(oldValue, newValue);
+    // }
     onItemTemplatesPropertyChanged(oldValue, newValue) {
         this.onItemTemplatesChanged(oldValue, newValue);
     }
@@ -305,9 +336,9 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     onSourceCollectionChangedInternal(event: ChangedData<any>) {
         this.onSourceCollectionChanged(event);
     }
-    onItemsChanged(oldValue, newValue) {
-        this.onItemsChangedInternal(oldValue, newValue);
-    }
+    // onItemsChanged(oldValue, newValue) {
+    //     this.onItemsChangedInternal(oldValue, newValue);
+    // }
 
     [widthProperty.getDefault]() {
         return '100%';
@@ -391,16 +422,24 @@ export const itemTemplateSelectorProperty = new Property<CollectionViewBase, Fun
     name: 'itemTemplateSelector',
     defaultValue: undefined,
     valueChanged(target, oldValue, newValue) {
-        target.onItemTemplateSelectorPropertyChanged(oldValue, newValue);
+        target.onItemTemplateSelectorChanged(oldValue, newValue);
     },
 });
 itemTemplateSelectorProperty.register(CollectionViewBase);
+export const itemIdGeneratorProperty = new Property<CollectionViewBase, Function>({
+    name: 'itemIdGenerator',
+    defaultValue: undefined,
+    valueChanged(target, oldValue, newValue) {
+        target.onItemIdGeneratorChanged(oldValue, newValue);
+    },
+});
+itemIdGeneratorProperty.register(CollectionViewBase);
 
 export const itemsProperty = new Property<CollectionViewBase, Function>({
     name: 'items',
     defaultValue: undefined,
     valueChanged(target, oldValue, newValue) {
-        target.onItemsChanged(oldValue, newValue);
+        target.onItemsChangedInternal(oldValue, newValue);
     },
 });
 itemsProperty.register(CollectionViewBase);
