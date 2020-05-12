@@ -1,7 +1,7 @@
 <template>
     <Page>
         <StackLayout>
-            <CollectionView width="100%" height="100%" rowHeight="80" ref="listView" :items="itemList" @itemTap="onItemTap" backgroundColor="blue">
+            <CollectionView width="100%" height="100%" rowHeight="80" ref="listView" :items="itemList" @itemTap="onItemTap" itemIdGenerator="index">
                 <v-template>
                     <GridLayout columns="16,auto,*,auto,16" rows="12,auto,*,auto" rippleColor="red" backgroundColor="white">
                         <Label
@@ -90,10 +90,13 @@ export default {
         };
     },
     methods: {
-        onItemTap({ item }) {
-            console.log(`Tapped on ${item.name}`);
+        onItemTap({ index, item }) {
+            console.log(`Tapped on ${index} ${item.title}`);
             this.$navigateTo(DetailsPage);
         },
+        logEvent(e) {
+            console.log('logEvent', e.eventName, e.extraData);
+        }
         // itemIdGenerator(item, i) {
         //   return item.index;
         // }

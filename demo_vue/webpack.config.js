@@ -234,7 +234,6 @@ module.exports = env => {
                                 search: 'mdi-([a-z-]+)',
                                 replace: (match, p1, offset, string) => {
                                     if (mdiIcons[p1]) {
-                                        console.log('replace mdi icon', p1, mdiIcons[p1], String.fromCharCode(parseInt(mdiIcons[p1], 16)));
                                         return String.fromCharCode(parseInt(mdiIcons[p1], 16));
                                     }
                                     return match;
