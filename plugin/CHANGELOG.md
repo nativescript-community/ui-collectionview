@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.20](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.19...v2.0.20) (2020-05-12)
+
+**Note:** Version bump only for package nativescript-collectionview
+
+
+
+
+
 ## [2.0.19](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.18...v2.0.19) (2020-05-11)
 
 **Note:** Version bump only for package nativescript-collectionview

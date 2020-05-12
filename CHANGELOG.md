@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.20](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.19...v2.0.20) (2020-05-12)
+
+
+### Bug Fixes
+
+* return item in itemtap event ([1688116](https://github.com/Akylas/nativescript-collectionview/commit/1688116bc4eb36e8c2c39f6a4ee6b8ce30bed985))
+
+
+
+
+
 ## [2.0.19](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.18...v2.0.19) (2020-05-11)
 
 
