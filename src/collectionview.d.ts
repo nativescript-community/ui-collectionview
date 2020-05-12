@@ -37,6 +37,7 @@ export interface CollectionViewItemEventData extends EventData {
     object: CollectionView;
     index: number;
     view: View;
+    item:any,
     bindingContext?: any;
 }
 

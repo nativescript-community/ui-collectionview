@@ -39,13 +39,13 @@ function initCellViewHolder() {
         }
 
         public onClick(v: android.view.View) {
-            const owner = this.owner.get();
             const collectionView = this.collectionView.get();
-
+            const position = this.getAdapterPosition();
             collectionView.notify<CollectionViewItemEventData>({
                 eventName: CollectionViewBase.itemTapEvent,
                 object: collectionView,
-                index: this.getAdapterPosition(),
+                index: position,
+                item: collectionView.getItem(position),
                 view: this.view
             });
         }

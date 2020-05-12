@@ -583,11 +583,12 @@ class UICollectionViewDelegateImpl extends NSObject implements UICollectionViewD
     public collectionViewDidSelectItemAtIndexPath(collectionView: UICollectionView, indexPath: NSIndexPath) {
         const cell = collectionView.cellForItemAtIndexPath(indexPath);
         const owner = this._owner.get();
-
+        const position = indexPath.row;
         owner.notify<CollectionViewItemEventData>({
             eventName: CollectionViewBase.itemTapEvent,
             object: owner,
-            index: indexPath.row,
+            item: owner.getItemAtIndex(position),
+            index: position,
             view: (cell as CollectionViewCell).view,
         });
 
