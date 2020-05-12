@@ -75,3 +75,4 @@ pnpm-lock.yaml
 /plugin/README.md
 *.aar
 times.html
+/.vscode/settings.json
