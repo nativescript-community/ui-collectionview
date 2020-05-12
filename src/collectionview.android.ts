@@ -407,6 +407,7 @@ export class CollectionView extends CollectionViewBase {
         let adapter = this._listViewAdapter;
         if (!adapter) {
             adapter = this._listViewAdapter = this.createComposedAdapter(this.nativeViewProtected);
+            console.log('refresh setHasStableIds', !!this._itemIdGenerator);
             adapter.setHasStableIds(!!this._itemIdGenerator);
             view.setAdapter(adapter);
         } else if (!view.getAdapter()) {
@@ -490,6 +491,7 @@ export class CollectionView extends CollectionViewBase {
     onItemIdGeneratorChanged(oldValue, newValue) {
         super.onItemIdGeneratorChanged(oldValue, newValue);
         if (this._listViewAdapter) {
+            console.log('onItemIdGeneratorChanged setHasStableIds', !!newValue);
             this._listViewAdapter.setHasStableIds(!!newValue);
         }
     }
