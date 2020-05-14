@@ -171,8 +171,9 @@ export class CollectionView extends CollectionViewBase {
         if (isEnabled()) {
             CLog(CLogTypes.log, 'onItemsChanged', event.action, event.index, event.addedCount, event.removed && event.removed.length);
         }
+        // we need to clear stored cell sizes and it wont be correct anymore
+        this.clearCellSize();
 
-        // return;
         switch (event.action) {
             case ChangeType.Delete: {
                 const indexes = NSMutableArray.new<NSIndexPath>();
@@ -280,7 +281,9 @@ export class CollectionView extends CollectionViewBase {
         if (isEnabled()) {
             CLog(CLogTypes.info, 'refresh');
         }
-
+        // we need to clear stored cell sizes and it wont be correct anymore
+        this.clearCellSize();
+        
         // clear bindingContext when it is not observable because otherwise bindings to items won't reevaluate
         this._map.forEach((view, nativeView, map) => {
             if (!(view.bindingContext instanceof Observable)) {
@@ -412,6 +415,9 @@ export class CollectionView extends CollectionViewBase {
     }
     public storeCellSize(index: number, value) {
         this._sizes[index] = value;
+    }
+    public clearCellSize() {
+        this._sizes = new Array<number[]>();
     }
     private measureCell(cell: CollectionViewCell, cellView: View, index: NSIndexPath): [number, number] {
         if (cellView) {
