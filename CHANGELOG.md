@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.22](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.21...v2.0.22) (2020-05-14)
+
+
+### Bug Fixes
+
+* **android:** colSpan not working ([aec27a3](https://github.com/Akylas/nativescript-collectionview/commit/aec27a31a0755198989368ae823cd94c1b4bb270))
+
+
+
+
+
 ## [2.0.21](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.20...v2.0.21) (2020-05-14)
 
 
