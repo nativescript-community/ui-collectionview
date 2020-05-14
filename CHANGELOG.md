@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.21](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.20...v2.0.21) (2020-05-14)
+
+
+### Bug Fixes
+
+* **ios:** wrong cell size on refresh/insert/remove ([46f936e](https://github.com/Akylas/nativescript-collectionview/commit/46f936ecf27a17e0d26bfed4605b1c578f68a501))
+
+
+
+
+
 ## [2.0.20](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.19...v2.0.20) (2020-05-12)
 
 
