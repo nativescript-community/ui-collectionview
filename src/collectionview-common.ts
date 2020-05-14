@@ -2,7 +2,7 @@ import * as observable from '@nativescript/core/data/observable';
 import { ChangedData, ObservableArray } from '@nativescript/core/data/observable-array';
 import * as builder from '@nativescript/core/ui/builder';
 import { booleanConverter, heightProperty, makeParser, makeValidator, widthProperty, ViewBase } from '@nativescript/core/ui/content-view';
-import { CoercibleProperty, KeyedTemplate, Length, PercentLength, Property, Template, View } from '@nativescript/core/ui/core/view';
+import { CoercibleProperty, KeyedTemplate, layout, Length, PercentLength, Property, Template, View } from '@nativescript/core/ui/core/view';
 import { addWeakEventListener, removeWeakEventListener } from '@nativescript/core/ui/core/weak-event-listener';
 import { Label } from '@nativescript/core/ui/label';
 import { ItemsSource } from '@nativescript/core/ui/list-view';
@@ -20,6 +20,7 @@ declare module '@nativescript/core/ui/core/view-base' {
         _recursiveBatchUpdates<T>(callback: () => T): T;
     }
 }
+
 ViewBase.prototype._recursiveSuspendNativeUpdates = profile('_recursiveSuspendNativeUpdates', function (type) {
     // console.log('_recursiveSuspendNativeUpdates', this, this._suspendNativeUpdatesCount);
     this._suspendNativeUpdates(type);
@@ -117,20 +118,25 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     public abstract refresh();
     public abstract scrollToIndex(index: number, animated: boolean);
 
+
+    _onSizeChanged() {
+        super._onSizeChanged();
+        this.onSizeChanged(layout.toDeviceIndependentPixels(this.getMeasuredWidth()), layout.toDeviceIndependentPixels(this.getMeasuredHeight()));
+    }
     @profile
-    public setMeasuredDimension(measuredWidth: number, measuredHeight: number) {
-        super.setMeasuredDimension(measuredWidth, measuredHeight);
+    public onSizeChanged(measuredWidth: number, measuredHeight: number) {
         let changed = false;
-        this._innerWidth = measuredWidth - this.effectivePaddingLeft - this.effectivePaddingRight;
+        this._innerWidth = layout.toDevicePixels(measuredWidth) - this.effectivePaddingLeft - this.effectivePaddingRight;
         if (this.colWidth) {
             const newValue = PercentLength.toDevicePixels(this.colWidth, autoEffectiveColWidth, this._innerWidth); // We cannot use 0 for auto as it throws for android.
             if (newValue !== this._effectiveColWidth) {
+                
                 this._effectiveColWidth = newValue;
                 changed = true;
             }
         }
 
-        this._innerHeight = measuredHeight - this.effectivePaddingTop - this.effectivePaddingBottom;
+        this._innerHeight = layout.toDevicePixels(measuredHeight) - this.effectivePaddingTop - this.effectivePaddingBottom;
         if (this.rowHeight) {
             const newValue = PercentLength.toDevicePixels(this.rowHeight, autoEffectiveRowHeight, this._innerHeight);
             if (newValue !== this._effectiveRowHeight) {

@@ -1,7 +1,7 @@
 ﻿import { ChangedData, ChangeType } from '@nativescript/core/data/observable-array';
 import { profile } from '@nativescript/core/profiling';
 import { isEnabled } from '@nativescript/core/trace';
-import { Length, paddingBottomProperty, paddingLeftProperty, paddingRightProperty, paddingTopProperty, View, Property } from '@nativescript/core/ui/core/view';
+import { layout, Length, paddingBottomProperty, paddingLeftProperty, paddingRightProperty, paddingTopProperty, View, Property } from '@nativescript/core/ui/core/view';
 import { GridLayout } from '@nativescript/core/ui/layouts/grid-layout';
 import { ProxyViewContainer } from '@nativescript/core/ui/proxy-view-container';
 import * as utils from '@nativescript/core/utils/utils';
@@ -107,6 +107,11 @@ export class CollectionView extends CollectionViewBase {
 
         const nativeView = this.nativeView;
         nativeView.owner = new WeakRef(this);
+        this.nativeViewProtected.sizeChangedListener = new com.nativescript.collectionview.SizeChangedListener({
+            onSizeChanged: (w, h, oldW, oldH) => {
+                this.onSizeChanged(layout.toDeviceIndependentPixels(w), layout.toDeviceIndependentPixels(h));
+            },
+        });
 
         const orientation = this._getLayoutManagarOrientation();
 
@@ -692,7 +697,7 @@ interface CollectionViewCellHolder extends com.nativescript.collectionview.Colle
 
 let CollectionViewCellHolder: CollectionViewCellHolder;
 
-export interface CollectionViewRecyclerView extends androidx.recyclerview.widget.RecyclerView {
+export interface CollectionViewRecyclerView extends com.nativescript.collectionview.RecyclerView {
     // tslint:disable-next-line:no-misused-new
     // new (context: any, owner: WeakRef<CollectionView>): CollectionViewRecyclerView;
     new (context: any): CollectionViewRecyclerView;

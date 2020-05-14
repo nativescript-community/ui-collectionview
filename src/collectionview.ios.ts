@@ -2,7 +2,7 @@ import { EventData, Observable } from '@nativescript/core/data/observable';
 import { ChangeType } from '@nativescript/core/data/observable-array';
 import { profile } from '@nativescript/core/profiling';
 import { isEnabled } from '@nativescript/core/trace';
-import { KeyedTemplate, Length, paddingBottomProperty, paddingLeftProperty, paddingRightProperty, paddingTopProperty, View } from '@nativescript/core/ui/core/view';
+import { KeyedTemplate, layout, Length, paddingBottomProperty, paddingLeftProperty, paddingRightProperty, paddingTopProperty, View } from '@nativescript/core/ui/core/view';
 import { StackLayout } from '@nativescript/core/ui/layouts/stack-layout';
 import { GridLayout } from '@nativescript/core/ui/layouts/grid-layout';
 import { ProxyViewContainer } from '@nativescript/core/ui/proxy-view-container';
@@ -15,6 +15,14 @@ const utilLayout = util.layout;
 export * from './collectionview-common';
 
 const infinity = utilLayout.makeMeasureSpec(0, utilLayout.UNSPECIFIED);
+
+
+declare module '@nativescript/core/ui/core/view' {
+    interface View {
+        _onSizeChanged();
+
+    }
+}
 
 export class CollectionView extends CollectionViewBase {
     private _layout: UICollectionViewFlowLayout;
@@ -77,6 +85,12 @@ export class CollectionView extends CollectionViewBase {
         this._dataSource = null;
         this._layout = null;
         super.disposeNativeView();
+    }
+
+
+    _onSizeChanged() {
+        super._onSizeChanged();
+        this.onSizeChanged(layout.toDeviceIndependentPixels(this.getMeasuredWidth()), layout.toDeviceIndependentPixels(this.getMeasuredHeight()));
     }
 
     // get ios(): UICollectionView {

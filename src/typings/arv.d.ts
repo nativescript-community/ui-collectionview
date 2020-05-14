@@ -34,6 +34,11 @@ declare module com {
             export class RecyclerView extends androidx.recyclerview.widget.RecyclerView {
                 static createRecyclerView(context): RecyclerView;
                 static inflate(context): RecyclerView;
+                sizeChangedListener?: SizeChangedListener;
+            }
+            export class SizeChangedListener {
+                constructor(impl?: { onSizeChanged(w: number, h: number, oldw: number, oldh: number) });
+                onSizeChanged(w: number, h: number, oldw: number, oldh: number);
             }
         }
     }

@@ -7,6 +7,7 @@ import android.util.Log;
 
 public class RecyclerView extends androidx.recyclerview.widget.RecyclerView {
     static final String TAG = "RecyclerView";
+    public SizeChangedListener sizeChangedListener = null;
     public RecyclerView(Context context) {
         this(context, null);
     }
@@ -33,4 +34,10 @@ public class RecyclerView extends androidx.recyclerview.widget.RecyclerView {
             return  android.view.LayoutInflater.from(context).inflate(R.layout.collectionview, null, false);
     }
 
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        if (sizeChangedListener != null) {
+            sizeChangedListener.onSizeChanged(w, h, oldw, oldh);
+        }
+    }
 }
