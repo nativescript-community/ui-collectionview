@@ -10,49 +10,47 @@ import { CLog, CLogTypes, CollectionViewBase, isScrollEnabledProperty, ListViewV
 
 export * from './collectionview-common';
 
-
 // Snapshot friendly GridViewAdapter
 interface CellViewHolder extends com.nativescript.collectionview.CollectionViewCellHolder {
     // tslint:disable-next-line:no-misused-new
-    new(owner: WeakRef<View>,  collectionView: WeakRef<CollectionView>): CellViewHolder;
+    new (owner: WeakRef<View>, collectionView: WeakRef<CollectionView>): CellViewHolder;
 }
 let CellViewHolder: CellViewHolder;
 
-function initCellViewHolder() {
-    if (CellViewHolder) {
-        return;
-    }
-    @Interfaces([android.view.View.OnClickListener])
-    class CellViewHolderImpl extends com.nativescript.collectionview.CollectionViewCellHolder implements android.view.View.OnClickListener {
-        constructor(private owner: WeakRef<View>, private collectionView: WeakRef<CollectionView>) {
-            super(owner.get().android);
+// function initCellViewHolder() {
+//     if (CellViewHolder) {
+//         return;
+//     }
+//     @Interfaces([android.view.View.OnClickListener])
+//     class CellViewHolderImpl extends com.nativescript.collectionview.CollectionViewCellHolder implements android.view.View.OnClickListener {
+//         constructor(private owner: WeakRef<View>, private collectionView: WeakRef<CollectionView>) {
+//             super(owner.get().android);
 
-            const nativeThis = global.__native(this);
-            const nativeView = owner.get().android as android.view.View;
-            nativeView.setOnClickListener(nativeThis);
+//             const nativeThis = global.__native(this);
+//             const nativeView = owner.get().android as android.view.View;
+//             nativeView.setOnClickListener(nativeThis);
 
-            return nativeThis;
-        }
+//             return nativeThis;
+//         }
 
-        get view(): View {
-            return this.owner ? this.owner.get() : null;
-        }
+//         get view(): View {
+//             return this.owner ? this.owner.get() : null;
+//         }
 
-        public onClick(v: android.view.View) {
-            const collectionView = this.collectionView.get();
-            const position = this.getAdapterPosition();
-            collectionView.notify<CollectionViewItemEventData>({
-                eventName: CollectionViewBase.itemTapEvent,
-                object: collectionView,
-                index: position,
-                item: collectionView.getItem(position),
-                view: this.view
-            });
-        }
-
-    }
-    CellViewHolder = CellViewHolderImpl as any;
-}
+//         public onClick(v: android.view.View) {
+//             const collectionView = this.collectionView.get();
+//             const position = this.getAdapterPosition();
+//             collectionView.notify<CollectionViewItemEventData>({
+//                 eventName: CollectionViewBase.itemTapEvent,
+//                 object: collectionView,
+//                 index: position,
+//                 item: collectionView.getItem(position),
+//                 view: this.view,
+//             });
+//         }
+//     }
+//     CellViewHolder = CellViewHolderImpl as any;
+// }
 const extraLayoutSpaceProperty = new Property<CollectionViewBase, number>({
     name: 'extraLayoutSpace',
 });
@@ -73,7 +71,7 @@ export class CollectionView extends CollectionViewBase {
     _currentNativeItemType = 0;
 
     // used to store viewHolder and make sure they are not garbaged
-    _viewHolders = new Array();
+    _viewHolders = new Array<CollectionViewCellHolder>();
 
     // used to "destroy" cells when possible
     _viewHolderChildren = new Array();
@@ -534,6 +532,10 @@ export class CollectionView extends CollectionViewBase {
 
     @profile
     disposeViewHolderViews() {
+        this._viewHolders.forEach(v=>{
+            v.view = null;
+            v.clickListener = null;
+        })
         this._viewHolders = new Array();
         this._viewHolderChildren.forEach(this._removeViewCore);
     }
@@ -541,6 +543,8 @@ export class CollectionView extends CollectionViewBase {
     getKeyByValue(viewType: number) {
         return this.templateStringTypeNumber.get(viewType);
     }
+
+    private onClickListener;
 
     @profile
     public onCreateViewHolder(parent: android.view.ViewGroup, viewType: number) {
@@ -554,12 +558,29 @@ export class CollectionView extends CollectionViewBase {
         }
         this._viewHolderChildren.push(view);
         this._addView(view);
-        // if (!CollectionViewCellHolder) {
-        //     CollectionViewCellHolder = com.nativescript.collectionview.CollectionViewCellHolder as any;
-        // }
-        initCellViewHolder();
-        const holder = new CellViewHolder(new WeakRef(view), new WeakRef(this));
-        // holder.view = view;
+        if (!CollectionViewCellHolder) {
+            CollectionViewCellHolder = com.nativescript.collectionview.CollectionViewCellHolder as any;
+        }
+        // initCellViewHolder();
+        
+        const holder = new CollectionViewCellHolder(view.nativeView);
+
+        const collectionView = this;
+        const clickListener = new android.view.View.OnClickListener({
+            onClick: () => {
+                const position = holder.getAdapterPosition();
+                collectionView.notify<CollectionViewItemEventData>({
+                    eventName: CollectionViewBase.itemTapEvent,
+                    object: collectionView,
+                    index: position,
+                    item: collectionView.getItem(position),
+                    view: holder.view,
+                });
+            },
+        })
+        view.nativeView.setOnClickListener(clickListener);
+        holder.clickListener = clickListener;
+        holder.view = view;
         const layoutParams = this._getViewLayoutParams();
         view.nativeView.setLayoutParams(layoutParams);
         if (isNonSync) {
@@ -693,6 +714,7 @@ interface CollectionViewCellHolder extends com.nativescript.collectionview.Colle
     // tslint:disable-next-line:no-misused-new
     new (androidView: android.view.View): CollectionViewCellHolder;
     view: View;
+    clickListener: android.view.View.OnClickListener;
 }
 
 let CollectionViewCellHolder: CollectionViewCellHolder;
