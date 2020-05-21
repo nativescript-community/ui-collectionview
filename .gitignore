@@ -17,8 +17,8 @@ bin
 build/
 Pods
 /plugin/
-!plugin/platforms
-!plugin/package.json
-!plugin/CHANGELOG.md
+!/plugin/platforms
+!/plugin/package.json
+!/plugin/CHANGELOG.md
 /plugin/platforms/android/*.aar
 *.xcuserdatad
