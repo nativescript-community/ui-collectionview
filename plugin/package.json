@@ -4,6 +4,7 @@
     "description": "Your awesome NativeScript plugin.",
     "main": "./collectionview",
     "module": "./collectionview.mjs",
+    "sideEffects": false,
     "typings": "./collectionview.d.ts",
     "nativescript": {
         "platforms": {
