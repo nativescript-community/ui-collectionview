@@ -1,9 +1,0 @@
-{
-    "android": {
-        "v8Flags": "--expose_gc",
-        "markingMode": "none"
-    },
-    "main": "main.js",
-    "name": "com.akylas.nativescript.collectionviewdemo",
-    "version": "4.0.1"
-}
