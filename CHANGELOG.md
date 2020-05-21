@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.25](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.24...v2.0.25) (2020-05-21)
+
+
+### Bug Fixes
+
+* esm using import for tree shaking ([6981133](https://github.com/Akylas/nativescript-collectionview/commit/69811338a59607ec2bc6002d3bb56e54f263de32))
+* sideEffects for tree shacking ([cda3a55](https://github.com/Akylas/nativescript-collectionview/commit/cda3a55cbb0a4706badd9067c7378de932794bbc))
+
+
+
+
+
 ## [2.0.24](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.22...v2.0.24) (2020-05-21)
 
 
