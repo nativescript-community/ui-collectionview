@@ -37,7 +37,7 @@
     "scripts": {
         "ngc": "NODE_OPTIONS=--max_old_space_size=8192 ./node_modules/.bin/ngc --project tsconfig.aot.json",
         "tsc": "cpy '**/*.d.ts' '../plugin' --parents --cwd=src && cp README.md plugin && tsc -skipLibCheck -d",
-        "build.esm": "tsc -skipLibCheck --target es2015 --removeComments --outDir build/esm",
+        "build.esm": "tsc -skipLibCheck --target es2015 --module esnext --removeComments --outDir build/esm",
         "clean": "rimraf ./plugin/**/*.d.ts ./plugin/**/*.js ./plugin/**/*.js.map ./plugin/**/*.metadata.json plugin/node_modules plugin/package-lock.json",
         "build": "rm -f .tsbuildinfo && npm run tsc && npm run build.esm && node ./build.esm.js && npm run ngc",
         "publish": "npm run build && lerna publish",
