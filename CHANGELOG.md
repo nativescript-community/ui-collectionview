@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.24](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.22...v2.0.24) (2020-05-21)
+
+
+### Bug Fixes
+
+* full esm support ([469e1e1](https://github.com/Akylas/nativescript-collectionview/commit/469e1e1dfebd36f359303a5fd4a8a3146396863d))
+
+
+### Features
+
+* svelte support ([910a7fb](https://github.com/Akylas/nativescript-collectionview/commit/910a7fb87f5aa19626a095fe0071cc1f117f95f0))
+
+
+
+
+
 ## [2.0.23](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.22...v2.0.23) (2020-05-21)
 
 
