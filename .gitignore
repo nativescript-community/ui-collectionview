@@ -19,8 +19,6 @@ Pods
 /plugin/
 !/plugin/platforms
 !/plugin/package.json
-!plugin/package.json
 !/plugin/CHANGELOG.md
-!plugin/CHANGELOG.md
 /plugin/platforms/android/*.aar
 *.xcuserdatad
