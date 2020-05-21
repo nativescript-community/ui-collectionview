@@ -16,9 +16,7 @@ plugin/**/*.d.ts
 bin
 build
 Pods
+/plugin/
 !plugin/platforms
 /plugin/platforms/android/*.aar
 *.xcuserdatad
-/plugin/README.md
-plugin/**/*js.map
-plugin/**/*js
