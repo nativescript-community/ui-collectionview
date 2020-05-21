@@ -1,78 +1,24 @@
-# Windows image file caches
-Thumbs.db
-ehthumbs.db
-
-# Folder config file
-Desktop.ini
-
-# Recycle Bin used on file shares
-$RECYCLE.BIN/
-
-# Windows Installer files
-*.cab
-*.msi
-*.msm
-*.msp
-
-# Windows shortcuts
-*.lnk
-
-# =========================
-# Operating System Files
-# =========================
-
-# OSX
-# =========================
-
-.DS_Store
-.AppleDouble
-.LSOverride
-
-# Thumbnails
-._*
-
-# Files that might appear on external disk
-.Spotlight-V100
-.Trashes
-
-# Directories potentially created on remote AFP share
-.AppleDB
-.AppleDesktop
-Network Trash Folder
-Temporary Items
-.apdisk
-
-bin
-obj
-.vs
-.tscache
-*.user
-*.js
-*.map
-!gruntfile.js
+.idea
+.vscode
 node_modules
-*.tmp.*
 platforms
-!plugin/platforms
-lib
-*.css
-!webpack.*.js
-report
-*.log
+hooks
+package-lock.json
+.DS_Store
+npm-debug.log.*
+demo*/app/**/*.js
+demo*/typings
+*.framework
+**/*.js.map
+src/**/*.js
+plugin/**/*.js
 plugin/**/*.d.ts
-/plugin/collectionview-common.metadata.json
-/plugin/collectionview-common.ngsummary.json
-/plugin/collectionview.android.metadata.json
-/plugin/collectionview.android.ngsummary.json
-/plugin/collectionview.ios.metadata.json
-/plugin/collectionview.ios.ngsummary.json
-/plugin/collectionview.ngsummary.json
-/plugin/references.ngsummary.json
-/plugin/angular
-/plugin/typings
-/plugin/vue
-pnpm-lock.yaml
+bin
+build
+Pods
+!plugin/platforms
+/plugin/platforms/android/*.aar
+*.xcuserdatad
 /plugin/README.md
-*.aar
-times.html
-/.vscode/settings.json
+plugin/**/*js.map
+plugin/**/*js
