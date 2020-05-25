@@ -84,6 +84,7 @@ export class CollectionView extends CollectionViewBase {
         nativeView.dataSource = null;
         this._dataSource = null;
         this._layout = null;
+        this.clearRealizedCells();
         super.disposeNativeView();
     }
 
