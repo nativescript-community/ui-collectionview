@@ -636,11 +636,11 @@ class UICollectionViewDelegateImpl extends NSObject implements UICollectionViewD
             }
             const templateType = owner._getItemTemplateType(indexPath);
             if (templateType) {
-                let cell = owner._measureCellMap.get(templateType);
+                let cell = this._measureCellMap.get(templateType);
                 if (!cell) {
                     // cell = CollectionViewCell.new();
                     cell = (collectionView.dequeueReusableCellWithReuseIdentifierForIndexPath(templateType, indexPath) as CollectionViewCell) || CollectionViewCell.new();
-                    owner._measureCellMap.set(templateType, cell);
+                    this._measureCellMap.set(templateType, cell);
                 }
                 measuredSize = owner._prepareCell(cell, indexPath, templateType, false);
             }
