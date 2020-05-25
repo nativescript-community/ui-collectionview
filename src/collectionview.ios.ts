@@ -308,7 +308,7 @@ export class CollectionView extends CollectionViewBase {
 
         // TODO: this is ugly look here: https://github.com/nativescript-vue/nativescript-vue/issues/525
         // this.clearRealizedCells();
-        this.nativeView.reloadData();
+        this.nativeViewProtected.reloadData();
 
         const args = {
             eventName: CollectionViewBase.dataPopulatedEvent,
@@ -359,7 +359,7 @@ export class CollectionView extends CollectionViewBase {
     getItemTemplateContent(index, templateType) {
         return this.getViewForViewType(ListViewViewTypes.ItemView, templateType);
     }
-    public _prepareCell(cell: CollectionViewCell, indexPath: NSIndexPath, templateType: string) {
+    public _prepareCell(cell: CollectionViewCell, indexPath: NSIndexPath, templateType: string, addToMap = true) {
         let cellSize: [number, number];
         try {
             this._preparingCell = true;
@@ -394,8 +394,9 @@ export class CollectionView extends CollectionViewBase {
             if (oldBindingContext !== bindingContext) {
                 view.requestLayout();
             }
-
-            this._map.set(cell, view);
+            if (addToMap) {
+                this._map.set(cell, view);
+            }
 
             if (view && !view.parent) {
                 this._addView(view);
