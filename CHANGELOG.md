@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.26](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.25...v2.0.26) (2020-05-25)
+
+
+### Bug Fixes
+
+* **ios:** clearRealizedCells on view disposal ([daf47a4](https://github.com/Akylas/nativescript-collectionview/commit/daf47a4462bd18ef992d5918b6bbe0d83df5d088))
+* **ios:** correctly reuse cell for view measurement ([ce96117](https://github.com/Akylas/nativescript-collectionview/commit/ce96117228cbadd237546d2fa9e2f0d1ea09c1c0))
+* esm fix ([59a843c](https://github.com/Akylas/nativescript-collectionview/commit/59a843c8df6cc31e5c9f9a3f8cc4ff74f986df4e))
+
+
+
+
+
 ## [2.0.25](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.24...v2.0.25) (2020-05-21)
 
 
