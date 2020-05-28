@@ -61,8 +61,7 @@ export class CollectionView extends CollectionViewBase {
     public static DEFAULT_TEMPLATE_VIEW_TYPE = 0;
     public static CUSTOM_TEMPLATE_ITEM_TYPE = 1;
     public nativeViewProtected: CollectionViewRecyclerView & {
-        scrollListener: CollectionViewScrollListener;
-        owner: WeakRef<CollectionView>;
+        scrollListener: com.nativescript.collectionview.OnScrollListener;
         layoutManager: com.nativescript.collectionview.GridLayoutManager;
     };
 
@@ -142,18 +141,64 @@ export class CollectionView extends CollectionViewBase {
     }
 
     _scrollOrLoadMoreChangeCount = 0;
+    _nScrollListener:  com.nativescript.collectionview.OnScrollListener.Listener
     private attach() {
         if (this._scrollOrLoadMoreChangeCount > 0 && this.isLoaded) {
             const nativeView = this.nativeViewProtected;
             if (!nativeView.scrollListener) {
-                initCollectionViewScrollListener();
-                const scrollListener = new CollectionViewScrollListener(new WeakRef(this));
+                this._nScrollListener = new com.nativescript.collectionview.OnScrollListener.Listener({
+                    onScrollStateChanged:this.onScrollStateChanged.bind(this),
+                    onScrolled:this.onScrolled.bind(this),
+                })
+                const scrollListener = new com.nativescript.collectionview.OnScrollListener(this._nScrollListener);
                 nativeView.addOnScrollListener(scrollListener);
                 nativeView.scrollListener = scrollListener;
             }
         }
     }
+    public onScrolled(view: androidx.recyclerview.widget.RecyclerView, dx: number, dy: number) {
+        if (!this || !this.scrolling) {
+            return;
+        }
 
+        const lastVisibleItemPos = (view.getLayoutManager() as com.nativescript.collectionview.GridLayoutManager).findLastCompletelyVisibleItemPosition();
+        if (this.hasListeners(CollectionViewBase.scrollEvent)) {
+            this.notify({
+                object: this,
+                eventName: CollectionViewBase.scrollEvent,
+                scrollOffset: (this.isHorizontal() ? view.computeHorizontalScrollOffset() : view.computeVerticalScrollOffset()) / utils.layout.getDisplayDensity(),
+            });
+        }
+
+        if (this.hasListeners(CollectionViewBase.loadMoreItemsEvent) && this.items) {
+            const itemCount = this.items.length - 1;
+            if (lastVisibleItemPos === itemCount) {
+                this.notify({
+                    eventName: CollectionViewBase.loadMoreItemsEvent,
+                    object: this,
+                });
+            }
+        }
+    }
+
+    scrolling = false;
+    public onScrollStateChanged(view: androidx.recyclerview.widget.RecyclerView, newState: number) {
+        if (this.scrolling && newState === 0) {
+            // SCROLL_STATE_IDLE
+            this.scrolling = false;
+ 
+            if (this.hasListeners(CollectionViewBase.scrollEndEvent)) {
+                this.notify({
+                    object: this,
+                    eventName: CollectionViewBase.scrollEndEvent,
+                    scrollOffset: (this.isHorizontal() ? view.computeHorizontalScrollOffset() : view.computeVerticalScrollOffset()) / utils.layout.getDisplayDensity(),
+                });
+            }
+        } else if (!this.scrolling && newState === 1) {
+            //SCROLL_STATE_DRAGGING
+            this.scrolling = true;
+        }
+    }
     private dettach() {
         if (this._scrollOrLoadMoreChangeCount === 0 && this.isLoaded) {
             const nativeView = this.nativeViewProtected;
@@ -628,77 +673,6 @@ export class CollectionView extends CollectionViewBase {
             CLog(CLogTypes.log, 'onBindViewHolder done ', position);
         }
     }
-}
-
-export interface CollectionViewScrollListener extends androidx.recyclerview.widget.RecyclerView.OnScrollListener {
-    // tslint:disable-next-line:no-misused-new
-    new (owner: WeakRef<CollectionView>): CollectionViewScrollListener;
-}
-
-let CollectionViewScrollListener: CollectionViewScrollListener;
-
-function initCollectionViewScrollListener() {
-    if (CollectionViewScrollListener) {
-        return;
-    }
-
-    class CollectionViewScrollListenerImpl extends androidx.recyclerview.widget.RecyclerView.OnScrollListener {
-        constructor(private owner: WeakRef<CollectionView>) {
-            super();
-
-            return global.__native(this);
-        }
-
-        public onScrolled(view: androidx.recyclerview.widget.RecyclerView, dx: number, dy: number) {
-            const owner: CollectionView = this.owner.get();
-            if (!owner || !this.scrolling) {
-                return;
-            }
-
-            const lastVisibleItemPos = (view.getLayoutManager() as com.nativescript.collectionview.GridLayoutManager).findLastCompletelyVisibleItemPosition();
-            if (owner.hasListeners(CollectionViewBase.scrollEvent)) {
-                owner.notify({
-                    object: owner,
-                    eventName: CollectionViewBase.scrollEvent,
-                    scrollOffset: (owner.isHorizontal() ? view.computeHorizontalScrollOffset() : view.computeVerticalScrollOffset()) / utils.layout.getDisplayDensity(),
-                });
-            }
-
-            if (owner.hasListeners(CollectionViewBase.loadMoreItemsEvent) && owner.items) {
-                const itemCount = owner.items.length - 1;
-                if (lastVisibleItemPos === itemCount) {
-                    owner.notify({
-                        eventName: CollectionViewBase.loadMoreItemsEvent,
-                        object: owner,
-                    });
-                }
-            }
-        }
-
-        scrolling = false;
-        public onScrollStateChanged(view: androidx.recyclerview.widget.RecyclerView, newState: number) {
-            if (this.scrolling && newState === 0) {
-                // SCROLL_STATE_IDLE
-                this.scrolling = false;
-                const owner: CollectionView = this.owner.get();
-                if (!owner) {
-                    return;
-                }
-                if (owner.hasListeners(CollectionViewBase.scrollEndEvent)) {
-                    owner.notify({
-                        object: owner,
-                        eventName: CollectionViewBase.scrollEndEvent,
-                        scrollOffset: (owner.isHorizontal() ? view.computeHorizontalScrollOffset() : view.computeVerticalScrollOffset()) / utils.layout.getDisplayDensity(),
-                    });
-                }
-            } else if (!this.scrolling && newState === 1) {
-                //SCROLL_STATE_DRAGGING
-                this.scrolling = true;
-            }
-        }
-    }
-
-    CollectionViewScrollListener = CollectionViewScrollListenerImpl as any;
 }
 
 // interface CollectionViewAdapter extends androidx.recyclerview.widget.RecyclerView.Adapter<any> {

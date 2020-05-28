@@ -40,6 +40,21 @@ declare module com {
                 constructor(impl?: { onSizeChanged(w: number, h: number, oldw: number, oldh: number) });
                 onSizeChanged(w: number, h: number, oldw: number, oldh: number);
             }
+            export class OnScrollListener extends androidx.recyclerview.widget.RecyclerView.OnScrollListener {
+                constructor(listener: OnScrollListener.Listener);
+                setListener(listener: OnScrollListener.Listener);
+            }
+            export namespace OnScrollListener {
+                export class Listener {
+                    constructor(implementation:{
+                        onScrolled(param0: androidx.recyclerview.widget.RecyclerView, param1: number, param2: number): void;
+					 onScrollStateChanged(param0: androidx.recyclerview.widget.RecyclerView, param1: number): void;
+                    })
+                    onScrolled(param0: androidx.recyclerview.widget.RecyclerView, param1: number, param2: number): void;
+                    onScrollStateChanged(param0: androidx.recyclerview.widget.RecyclerView, param1: number): void;
+                }
+					 
+            }
         }
     }
 }
