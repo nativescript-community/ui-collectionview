@@ -78,6 +78,9 @@ export class CollectionView extends CollectionViewBase {
     }
 
     public disposeNativeView() {
+        if (isEnabled()) {
+            CLog(CLogTypes.log, 'disposeNativeView');
+        }
         const nativeView = this.nativeView;
         nativeView.delegate = null;
         this._delegate = null;
@@ -170,7 +173,9 @@ export class CollectionView extends CollectionViewBase {
             layout.estimatedItemSize = layout.itemSize = CGSizeMake(utilLayout.toDeviceIndependentPixels(this._effectiveColWidth), utilLayout.toDeviceIndependentPixels(this._effectiveRowHeight));
         }
         this._map.forEach((cellView, cell) => {
-            // CLog(CLogTypes.log, 'onLayout', 'cell', cellView._listViewItemIndex);
+            if (isEnabled()) {
+                CLog(CLogTypes.log, 'onLayout', 'cell', cellView._listViewItemIndex);
+            }
             this.layoutCell(cellView._listViewItemIndex, cell, cellView);
         });
     }
@@ -365,14 +370,18 @@ export class CollectionView extends CollectionViewBase {
             this._preparingCell = true;
             let view = cell.view;
             const index = indexPath.row;
+            let needsLayout = false;
             if (!view) {
+                needsLayout = true;
                 view = this.getItemTemplateContent(index, templateType);
-            }
-            if (isEnabled()) {
-                CLog(CLogTypes.log, '_prepareCell', index);
             }
             const oldBindingContext = view && view.bindingContext;
             const bindingContext = this._prepareItem(view, index);
+            needsLayout = needsLayout || oldBindingContext !== bindingContext;
+
+            if (isEnabled()) {
+                CLog(CLogTypes.log, '_prepareCell', index, !!cell.view, !!view, cell.view !== view, needsLayout);
+            }
             const args = this.notifyForItemAtIndex(this, cell, view, CollectionViewBase.itemLoadingEvent, indexPath, bindingContext);
             view = args.view;
 
@@ -390,10 +399,7 @@ export class CollectionView extends CollectionViewBase {
                 cell.owner = new WeakRef(view);
             }
             view._listViewItemIndex = index;
-
-            if (oldBindingContext !== bindingContext) {
-                view.requestLayout();
-            }
+            
             if (addToMap) {
                 this._map.set(cell, view);
             }
@@ -404,6 +410,10 @@ export class CollectionView extends CollectionViewBase {
             }
 
             cellSize = this.measureCell(cell, view, indexPath);
+
+            if (needsLayout) {
+                view.requestLayout();
+            }
 
             if (isEnabled()) {
                 CLog(CLogTypes.log, '_prepareCell done', index, cellSize);
@@ -559,7 +569,9 @@ class CollectionViewDataSource extends NSObject implements UICollectionViewDataS
         const owner = this._owner.get();
         const templateType = owner._getItemTemplateType(indexPath);
         const cell: any = collectionView.dequeueReusableCellWithReuseIdentifierForIndexPath(templateType, indexPath) || CollectionViewCell.new();
-
+        if (isEnabled()) {
+            CLog(CLogTypes.log, 'collectionViewCellForItemAtIndexPath', indexPath.row, templateType, !!cell.view, cell);
+        }
         owner._prepareCell(cell, indexPath, templateType);
 
         const cellView: View = cell.view;
