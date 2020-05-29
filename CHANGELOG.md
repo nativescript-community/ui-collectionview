@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.28](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.27...v2.0.28) (2020-05-29)
+
+
+### Bug Fixes
+
+* dont use vue-property-decorator (overkill) ([ec1b883](https://github.com/Akylas/nativescript-collectionview/commit/ec1b883428077e5e02b95208173cff162c02f3b3))
+* trying to fix validation warning on items ([2e4759e](https://github.com/Akylas/nativescript-collectionview/commit/2e4759e90ed448fafc49deacc43aa33d03e6c715))
+
+
+
+
+
 ## [2.0.27](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.26...v2.0.27) (2020-05-28)
 
 
