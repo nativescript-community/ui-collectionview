@@ -16,7 +16,6 @@ const VUE_VIEW = '__vueVNodeRef__';
 export default  {
     props: {
         items: {
-            type: [Object, Array],
             validator: (val) => !val || Array.isArray(val) || val instanceof ObservableArray,
             required: true,
         },
