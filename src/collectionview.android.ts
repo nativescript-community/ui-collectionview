@@ -210,7 +210,7 @@ export class CollectionView extends CollectionViewBase {
     }
     public addEventListener(arg: string, callback: any, thisArg?: any) {
         super.addEventListener(arg, callback, thisArg);
-        if (arg === CollectionViewBase.scrollEvent) {
+        if (arg === CollectionViewBase.scrollEvent || arg === CollectionViewBase.loadMoreItemsEvent) {
             this._scrollOrLoadMoreChangeCount++;
             this.attach();
         }
