@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.29](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.28...v2.0.29) (2020-05-29)
+
+
+### Bug Fixes
+
+* **android:** trying to fix loadMore event ([2c132cf](https://github.com/Akylas/nativescript-collectionview/commit/2c132cf12c3f403f3d3c51547fca77251d5a7fcf))
+
+
+
+
+
 ## [2.0.28](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.27...v2.0.28) (2020-05-29)
 
 
