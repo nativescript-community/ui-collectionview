@@ -585,10 +585,11 @@ class UICollectionViewDelegateImpl extends NSObject implements UICollectionViewD
     public static initWithOwner(owner: WeakRef<CollectionView>): UICollectionViewDelegateImpl {
         const delegate = UICollectionViewDelegateImpl.new() as UICollectionViewDelegateImpl;
         delegate._owner = owner;
-        delegate._measureCellMap = new Map<string, CollectionViewCell>();
+
+        delegate._measureCellMap = new Map<string, {cell:CollectionViewCell, view:View}>();
         return delegate;
     }
-    private _measureCellMap: Map<string, CollectionViewCell>;
+    private _measureCellMap: Map<string, {cell:CollectionViewCell, view:View}>;
 
     private _owner: WeakRef<CollectionView>;
 
@@ -638,20 +639,21 @@ class UICollectionViewDelegateImpl extends NSObject implements UICollectionViewD
         }
 
         let measuredSize = owner.getCellSize(row);
-        // if (measuredSize === undefined) {
         if (!measuredSize) {
             if (isEnabled()) {
                 CLog(CLogTypes.log, 'collectionViewLayoutSizeForItemAtIndexPath', row);
             }
             const templateType = owner._getItemTemplateType(indexPath);
             if (templateType) {
-                let cell = this._measureCellMap.get(templateType);
+                let measureData: any = this._measureCellMap.get(templateType);
+                let cell: any = measureData && measureData.cell;
                 if (!cell) {
-                    // cell = CollectionViewCell.new();
-                    cell = (collectionView.dequeueReusableCellWithReuseIdentifierForIndexPath(templateType, indexPath) as CollectionViewCell) || CollectionViewCell.new();
-                    this._measureCellMap.set(templateType, cell);
+                    cell = CollectionViewCell.new();
+                } else if(!cell.view) {
+                    cell.owner = new WeakRef(measureData.view);
                 }
                 measuredSize = owner._prepareCell(cell, indexPath, templateType, false);
+                this._measureCellMap.set(templateType, {cell, view:cell.view});
             }
         }
         if (isEnabled()) {
