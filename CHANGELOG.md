@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.30](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.29...v2.0.30) (2020-06-16)
+
+
+### Bug Fixes
+
+* **ios:** wrongly creates a UICollectionViewCell instead of CollectionViewCell ([eb49ec2](https://github.com/Akylas/nativescript-collectionview/commit/eb49ec2661a460e26d538883ada9bd8cac863ef1))
+
+
+
+
+
 ## [2.0.29](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.28...v2.0.29) (2020-05-29)
 
 
