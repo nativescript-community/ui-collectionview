@@ -531,9 +531,6 @@ interface ViewItemIndex {
 
 type ItemView = View & ViewItemIndex;
 export class CollectionViewCell extends UICollectionViewCell {
-    public static new(): CollectionViewCell {
-        return UICollectionViewCell.new() as CollectionViewCell;
-    }
     public static class(): any {
         return CollectionViewCell;
     }
