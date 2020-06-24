@@ -474,6 +474,9 @@ export class CollectionView extends CollectionViewBase {
     }
 
     public scrollToIndex(index: number, animated: boolean = true) {
+        if (!this.nativeView) {
+            return;
+        }
         if (animated) {
             this.nativeView.smoothScrollToPosition(index);
         } else {
