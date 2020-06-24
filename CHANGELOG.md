@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.31](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.30...v2.0.31) (2020-06-24)
+
+
+### Bug Fixes
+
+* **android:** fix dynamic insertion of items ([bee69ac](https://github.com/Akylas/nativescript-collectionview/commit/bee69acca79bbb32ba12153872dad2c9c150ebfb))
+* **android:** prevent error on scrollToIndex when no nativeView ([3dcab97](https://github.com/Akylas/nativescript-collectionview/commit/3dcab97c8a861de4456eec211b0516433ec50f5d))
+
+
+
+
+
 ## [2.0.30](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.29...v2.0.30) (2020-06-16)
 
 
