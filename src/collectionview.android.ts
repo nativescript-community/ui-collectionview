@@ -395,7 +395,7 @@ export class CollectionView extends CollectionViewBase {
             }
             case ChangeType.Add: {
                 if (event.addedCount > 0) {
-                    this._listViewAdapter.notifyItemRangeChanged(event.index, event.addedCount);
+                    this._listViewAdapter.notifyItemRangeInserted(event.index, event.addedCount);
                     return;
                 }
                 // Reload the items to avoid duplicate Load on Demand indicators:
