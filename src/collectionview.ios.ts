@@ -8,7 +8,7 @@ import { GridLayout } from '@nativescript/core/ui/layouts/grid-layout';
 import { ProxyViewContainer } from '@nativescript/core/ui/proxy-view-container';
 import * as util from '@nativescript/core/utils/utils';
 import { CollectionViewItemEventData, Orientation } from './collectionview';
-import { CLog, CLogTypes, CollectionViewBase, isBounceEnabledProperty, isScrollEnabledProperty, itemTemplatesProperty, ListViewViewTypes, orientationProperty, } from './collectionview-common';
+import { CLog, CLogTypes, CollectionViewBase, isBounceEnabledProperty, isScrollEnabledProperty, itemTemplatesProperty, ListViewViewTypes, orientationProperty } from './collectionview-common';
 
 const utilLayout = util.layout;
 
@@ -16,18 +16,16 @@ export * from './collectionview-common';
 
 const infinity = utilLayout.makeMeasureSpec(0, utilLayout.UNSPECIFIED);
 
-
 declare module '@nativescript/core/ui/core/view' {
     interface View {
         _onSizeChanged();
-
     }
 }
 
 export class CollectionView extends CollectionViewBase {
     private _layout: UICollectionViewFlowLayout;
-    private _dataSource: CollectionViewDataSource;
-    private _delegate: UICollectionViewDelegateImpl;
+    private _dataSource: ICollectionViewDataSource;
+    private _delegate: IUICollectionViewDelegateImpl;
     private _preparingCell: boolean = false;
     private _sizes: number[][];
     private _map: Map<CollectionViewCell, ItemView>;
@@ -68,10 +66,13 @@ export class CollectionView extends CollectionViewBase {
         super.initNativeView();
 
         const nativeView = this.nativeView;
-        this._dataSource = CollectionViewDataSource.initWithOwner(new WeakRef(this));
+        this._dataSource = CollectionViewDataSource.new();
+        this._dataSource._owner = new WeakRef(this);
         nativeView.dataSource = this._dataSource;
 
-        this._delegate = UICollectionViewDelegateImpl.initWithOwner(new WeakRef(this));
+        this._delegate = UICollectionViewDelegateImpl.new();
+        this._delegate._owner = new WeakRef(this);
+        this._delegate._measureCellMap = new Map<string, { cell: CollectionViewCell; view: View }>();
         this.nativeView.delegate = this._delegate;
 
         this._setNativeClipToBounds();
@@ -90,7 +91,6 @@ export class CollectionView extends CollectionViewBase {
         this.clearRealizedCells();
         super.disposeNativeView();
     }
-
 
     _onSizeChanged() {
         super._onSizeChanged();
@@ -303,7 +303,7 @@ export class CollectionView extends CollectionViewBase {
         }
         // we need to clear stored cell sizes and it wont be correct anymore
         this.clearCellSize();
-        
+
         // clear bindingContext when it is not observable because otherwise bindings to items won't reevaluate
         this._map.forEach((view, nativeView, map) => {
             if (!(view.bindingContext instanceof Observable)) {
@@ -399,7 +399,7 @@ export class CollectionView extends CollectionViewBase {
                 cell.owner = new WeakRef(view);
             }
             view._listViewItemIndex = index;
-            
+
             if (addToMap) {
                 this._map.set(cell, view);
             }
@@ -542,147 +542,159 @@ export class CollectionViewCell extends UICollectionViewCell {
     }
 }
 
-@ObjCClass(UICollectionViewDataSource)
-class CollectionViewDataSource extends NSObject implements UICollectionViewDataSource {
-    public static initWithOwner(owner: WeakRef<CollectionView>): CollectionViewDataSource {
-        const dataSource = CollectionViewDataSource.new() as CollectionViewDataSource;
-        dataSource._owner = owner;
-        return dataSource;
-    }
-
-    private _owner: WeakRef<CollectionView>;
-
-    public numberOfSectionsInCollectionView(collectionView: UICollectionView) {
-        return 1;
-    }
-
-    public collectionViewNumberOfItemsInSection(collectionView: UICollectionView, section: number) {
-        const owner = this._owner.get();
-        return owner.items ? owner.items.length : 0;
-    }
-
-    @profile
-    public collectionViewCellForItemAtIndexPath(collectionView: UICollectionView, indexPath: NSIndexPath): UICollectionViewCell {
-        const owner = this._owner.get();
-        const templateType = owner._getItemTemplateType(indexPath);
-        const cell: any = collectionView.dequeueReusableCellWithReuseIdentifierForIndexPath(templateType, indexPath) || CollectionViewCell.new();
-        if (isEnabled()) {
-            CLog(CLogTypes.log, 'collectionViewCellForItemAtIndexPath', indexPath.row, templateType, !!cell.view, cell);
-        }
-        owner._prepareCell(cell, indexPath, templateType);
-
-        const cellView: View = cell.view;
-        if (cellView && cellView['isLayoutRequired']) {
-            owner.layoutCell(indexPath.row, cell, cellView);
-        }
-
-        return cell;
-    }
+declare class ICollectionViewDataSource extends NSObject {
+    static new(): ICollectionViewDataSource;
+    _owner: WeakRef<CollectionView>;
 }
+const CollectionViewDataSource = (NSObject as any).extend(
+    {
+        // public static initWithOwner(owner: WeakRef<CollectionView>): CollectionViewDataSource {
+        //     const dataSource = CollectionViewDataSource.new() as CollectionViewDataSource;
+        //     dataSource._owner = owner;
+        //     return dataSource;
+        // }
 
-@ObjCClass(UICollectionViewDelegate, UICollectionViewDelegateFlowLayout)
-class UICollectionViewDelegateImpl extends NSObject implements UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-    public static initWithOwner(owner: WeakRef<CollectionView>): UICollectionViewDelegateImpl {
-        const delegate = UICollectionViewDelegateImpl.new() as UICollectionViewDelegateImpl;
-        delegate._owner = owner;
+        // private _owner: WeakRef<CollectionView>;
 
-        delegate._measureCellMap = new Map<string, {cell:CollectionViewCell, view:View}>();
-        return delegate;
-    }
-    private _measureCellMap: Map<string, {cell:CollectionViewCell, view:View}>;
+        numberOfSectionsInCollectionView(collectionView: UICollectionView) {
+            return 1;
+        },
 
-    private _owner: WeakRef<CollectionView>;
+        collectionViewNumberOfItemsInSection(collectionView: UICollectionView, section: number) {
+            const owner = this._owner.get();
+            return owner.items ? owner.items.length : 0;
+        },
 
-    public collectionViewWillDisplayCellForItemAtIndexPath(collectionView: UICollectionView, cell: UICollectionViewCell, indexPath: NSIndexPath) {
-        const owner = this._owner.get();
-
-        if (indexPath.row === owner.items.length - 1) {
-            owner.notify<EventData>({
-                eventName: CollectionViewBase.loadMoreItemsEvent,
-                object: owner,
-            });
-        }
-
-        if (cell.preservesSuperviewLayoutMargins) {
-            cell.preservesSuperviewLayoutMargins = false;
-        }
-
-        if (cell.layoutMargins) {
-            cell.layoutMargins = UIEdgeInsetsZero;
-        }
-    }
-
-    public collectionViewDidSelectItemAtIndexPath(collectionView: UICollectionView, indexPath: NSIndexPath) {
-        const cell = collectionView.cellForItemAtIndexPath(indexPath);
-        const owner = this._owner.get();
-        const position = indexPath.row;
-        owner.notify<CollectionViewItemEventData>({
-            eventName: CollectionViewBase.itemTapEvent,
-            object: owner,
-            item: owner.getItemAtIndex(position),
-            index: position,
-            view: (cell as CollectionViewCell).view,
-        });
-
-        cell.highlighted = false;
-
-        return indexPath;
-    }
-
-    @profile
-    public collectionViewLayoutSizeForItemAtIndexPath(collectionView: UICollectionView, collectionViewLayout: UICollectionViewLayout, indexPath: NSIndexPath) {
-        const owner = this._owner.get();
-        const row = indexPath.row;
-        const dataItem = owner.getItemAtIndex(row);
-        if (dataItem.visible === false) {
-            return CGSizeZero;
-        }
-
-        let measuredSize = owner.getCellSize(row);
-        if (!measuredSize) {
-            if (isEnabled()) {
-                CLog(CLogTypes.log, 'collectionViewLayoutSizeForItemAtIndexPath', row);
-            }
+        collectionViewCellForItemAtIndexPath(collectionView: UICollectionView, indexPath: NSIndexPath): UICollectionViewCell {
+            const owner = this._owner.get();
             const templateType = owner._getItemTemplateType(indexPath);
-            if (templateType) {
-                let measureData: any = this._measureCellMap.get(templateType);
-                let cell: any = measureData && measureData.cell;
-                if (!cell) {
-                    cell = CollectionViewCell.new();
-                } else if(!cell.view) {
-                    cell.owner = new WeakRef(measureData.view);
-                }
-                measuredSize = owner._prepareCell(cell, indexPath, templateType, false);
-                this._measureCellMap.set(templateType, {cell, view:cell.view});
+            const cell: any = collectionView.dequeueReusableCellWithReuseIdentifierForIndexPath(templateType, indexPath) || CollectionViewCell.new();
+            if (isEnabled()) {
+                CLog(CLogTypes.log, 'collectionViewCellForItemAtIndexPath', indexPath.row, templateType, !!cell.view, cell);
             }
-        }
-        if (isEnabled()) {
-            CLog(CLogTypes.log, 'collectionViewLayoutSizeForItemAtIndexPath', row, measuredSize);
-        }
-        if (measuredSize) {
-            return CGSizeMake(utilLayout.toDeviceIndependentPixels(measuredSize[0]), utilLayout.toDeviceIndependentPixels(measuredSize[1]));
-        }
-        return CGSizeZero;
-    }
+            owner._prepareCell(cell, indexPath, templateType);
 
-    public scrollViewDidScroll(scrollView: UIScrollView): void {
-        const owner = this._owner.get();
-        if (owner) {
-            owner.notify({
-                object: owner,
-                eventName: CollectionViewBase.scrollEvent,
-                scrollOffset: owner.isHorizontal() ? scrollView.contentOffset.x : scrollView.contentOffset.y,
-            });
-        }
+            const cellView: View = cell.view;
+            if (cellView && cellView['isLayoutRequired']) {
+                owner.layoutCell(indexPath.row, cell, cellView);
+            }
+
+            return cell;
+        },
+    },
+    {
+        protocols: [UICollectionViewDataSource],
     }
-    public scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        const owner = this._owner.get();
-        if (owner) {
-            owner.notify({
-                object: owner,
-                eventName: CollectionViewBase.scrollEndEvent,
-                scrollOffset: owner.isHorizontal() ? scrollView.contentOffset.x : scrollView.contentOffset.y,
-            });
-        }
-    }
+) as typeof ICollectionViewDataSource;
+
+declare class IUICollectionViewDelegateImpl extends NSObject {
+    static new(): IUICollectionViewDelegateImpl;
+    _owner: WeakRef<CollectionView>;
+    _measureCellMap: Map<string, { cell: CollectionViewCell; view: View }>;
 }
+const UICollectionViewDelegateImpl = (NSObject as any).extend(
+    {
+        // public static initWithOwner(owner: WeakRef<CollectionView>): UICollectionViewDelegateImpl {
+        //     const delegate = UICollectionViewDelegateImpl.new() as UICollectionViewDelegateImpl;
+        //     delegate._owner = owner;
+
+        //     delegate._measureCellMap = new Map<string, {cell:CollectionViewCell, view:View}>();
+        //     return delegate;
+        // }
+        // private _measureCellMap: Map<string, {cell:CollectionViewCell, view:View}>;
+
+        // private _owner: WeakRef<CollectionView>;
+
+        collectionViewWillDisplayCellForItemAtIndexPath(collectionView: UICollectionView, cell: UICollectionViewCell, indexPath: NSIndexPath) {
+            const owner = this._owner.get() as CollectionView;
+
+            if (indexPath.row === owner.items.length - 1) {
+                owner.notify<EventData>({
+                    eventName: CollectionViewBase.loadMoreItemsEvent,
+                    object: owner,
+                });
+            }
+
+            if (cell.preservesSuperviewLayoutMargins) {
+                cell.preservesSuperviewLayoutMargins = false;
+            }
+
+            if (cell.layoutMargins) {
+                cell.layoutMargins = UIEdgeInsetsZero;
+            }
+        },
+        collectionViewDidSelectItemAtIndexPath(collectionView: UICollectionView, indexPath: NSIndexPath) {
+            const cell = collectionView.cellForItemAtIndexPath(indexPath);
+            const owner = this._owner.get() as CollectionView;
+            const position = indexPath.row;
+            owner.notify<CollectionViewItemEventData>({
+                eventName: CollectionViewBase.itemTapEvent,
+                object: owner,
+                item: owner.getItemAtIndex(position),
+                index: position,
+                view: (cell as CollectionViewCell).view,
+            });
+
+            cell.highlighted = false;
+
+            return indexPath;
+        },
+        collectionViewLayoutSizeForItemAtIndexPath(collectionView: UICollectionView, collectionViewLayout: UICollectionViewLayout, indexPath: NSIndexPath) {
+            const owner = this._owner.get();
+            const row = indexPath.row;
+            const dataItem = owner.getItemAtIndex(row);
+            if (dataItem.visible === false) {
+                return CGSizeZero;
+            }
+
+            let measuredSize = owner.getCellSize(row);
+            if (!measuredSize) {
+                if (isEnabled()) {
+                    CLog(CLogTypes.log, 'collectionViewLayoutSizeForItemAtIndexPath', row);
+                }
+                const templateType = owner._getItemTemplateType(indexPath);
+                if (templateType) {
+                    let measureData: any = this._measureCellMap.get(templateType);
+                    let cell: any = measureData && measureData.cell;
+                    if (!cell) {
+                        cell = CollectionViewCell.new();
+                    } else if (!cell.view) {
+                        cell.owner = new WeakRef(measureData.view);
+                    }
+                    measuredSize = owner._prepareCell(cell, indexPath, templateType, false);
+                    this._measureCellMap.set(templateType, { cell, view: cell.view });
+                }
+            }
+            if (isEnabled()) {
+                CLog(CLogTypes.log, 'collectionViewLayoutSizeForItemAtIndexPath', row, measuredSize);
+            }
+            if (measuredSize) {
+                return CGSizeMake(utilLayout.toDeviceIndependentPixels(measuredSize[0]), utilLayout.toDeviceIndependentPixels(measuredSize[1]));
+            }
+            return CGSizeZero;
+        },
+        scrollViewDidScroll(scrollView: UIScrollView): void {
+            const owner = this._owner.get();
+            if (owner) {
+                owner.notify({
+                    object: owner,
+                    eventName: CollectionViewBase.scrollEvent,
+                    scrollOffset: owner.isHorizontal() ? scrollView.contentOffset.x : scrollView.contentOffset.y,
+                });
+            }
+        },
+        scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+            const owner = this._owner.get();
+            if (owner) {
+                owner.notify({
+                    object: owner,
+                    eventName: CollectionViewBase.scrollEndEvent,
+                    scrollOffset: owner.isHorizontal() ? scrollView.contentOffset.x : scrollView.contentOffset.y,
+                });
+            }
+        },
+    },
+    {
+        protocols: [UICollectionViewDelegate, UICollectionViewDelegateFlowLayout],
+    }
+) as typeof IUICollectionViewDelegateImpl;
