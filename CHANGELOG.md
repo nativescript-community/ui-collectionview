@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.32](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.31...v2.0.32) (2020-07-06)
+
+
+### Bug Fixes
+
+* **ios:** esm fix using extend ([021c176](https://github.com/Akylas/nativescript-collectionview/commit/021c17660966af021844ee150d3753c1f231bfaf))
+
+
+
+
+
 ## [2.0.31](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.30...v2.0.31) (2020-06-24)
 
 
