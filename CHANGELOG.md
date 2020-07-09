@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.36](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.35...v2.0.36) (2020-07-09)
+
+
+### Bug Fixes
+
+* **ios:** fixed custom view cell ([26f056b](https://github.com/Akylas/nativescript-collectionview/commit/26f056b8fe3b29d3bde0a53b21468a9f2c989939))
+
+
+
+
+
 ## [2.0.35](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.34...v2.0.35) (2020-07-09)
 
 
