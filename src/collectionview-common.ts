@@ -83,6 +83,7 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
 
     public isBounceEnabled: boolean;
     public isScrollEnabled: boolean;
+    public reverseLayout: boolean;
     public orientation: Orientation;
     public itemTemplate: string | Template;
     public itemTemplates: string | KeyedTemplate[];
@@ -463,3 +464,9 @@ export const isBounceEnabledProperty = new Property<CollectionViewBase, boolean>
     valueConverter: booleanConverter,
 });
 isBounceEnabledProperty.register(CollectionViewBase);
+export const reverseLayoutProperty = new Property<CollectionViewBase, boolean>({
+    name: 'reverseLayout',
+    defaultValue: false,
+    valueConverter: booleanConverter,
+});
+reverseLayoutProperty.register(CollectionViewBase);

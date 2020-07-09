@@ -5,7 +5,7 @@ import { layout, Length, paddingBottomProperty, paddingLeftProperty, paddingRigh
 import { GridLayout } from '@nativescript/core/ui/layouts/grid-layout';
 import { ProxyViewContainer } from '@nativescript/core/ui/proxy-view-container';
 import * as utils from '@nativescript/core/utils/utils';
-import { Orientation, CollectionViewItemEventData } from './collectionview';
+import { Orientation, CollectionViewItemEventData, reverseLayoutProperty } from './collectionview';
 import { CLog, CLogTypes, CollectionViewBase, isScrollEnabledProperty, ListViewViewTypes, orientationProperty } from './collectionview-common';
 
 export * from './collectionview-common';
@@ -341,6 +341,13 @@ export class CollectionView extends CollectionViewBase {
         this.isScrollEnabled = value;
         if (this.layoutManager) {
             this.layoutManager.isScrollEnabled = value;
+    public [reverseLayoutProperty.setNative](value: boolean) {
+        // this.isScrollEnabled = value;
+        const layoutManager = this.layoutManager;
+        console.log('reverseLayoutProperty', value, layoutManager, layoutManager['setReverseLayout']);
+        if (layoutManager && layoutManager['setReverseLayout']) {
+            layoutManager['setReverseLayout'](value);
+            // layoutManager['setStackFromEnd'](value);
         }
     }
     public [extraLayoutSpaceProperty.setNative](value: number) {

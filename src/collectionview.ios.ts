@@ -7,7 +7,7 @@ import { StackLayout } from '@nativescript/core/ui/layouts/stack-layout';
 import { GridLayout } from '@nativescript/core/ui/layouts/grid-layout';
 import { ProxyViewContainer } from '@nativescript/core/ui/proxy-view-container';
 import * as util from '@nativescript/core/utils/utils';
-import { CollectionViewItemEventData, Orientation } from './collectionview';
+import { CollectionViewItemEventData, Orientation, reverseLayoutProperty } from './collectionview';
 import { CLog, CLogTypes, CollectionViewBase, isBounceEnabledProperty, isScrollEnabledProperty, itemTemplatesProperty, ListViewViewTypes, orientationProperty } from './collectionview-common';
 
 const utilLayout = util.layout;
@@ -157,6 +157,9 @@ export class CollectionView extends CollectionViewBase {
 
     public [itemTemplatesProperty.getDefault](): KeyedTemplate[] {
         return null;
+    }
+    public [reverseLayoutProperty.setNative](value: boolean) {
+        this.nativeViewProtected.transform = value ? CGAffineTransformMakeRotation(-Math.PI) : null;
     }
 
     public eachChildView(callback: (child: View) => boolean): void {
@@ -607,6 +610,9 @@ const UICollectionViewDelegateImpl = (NSObject as any).extend(
 
         collectionViewWillDisplayCellForItemAtIndexPath(collectionView: UICollectionView, cell: UICollectionViewCell, indexPath: NSIndexPath) {
             const owner = this._owner.get() as CollectionView;
+            if (owner.reverseLayout) {
+                cell.transform = CGAffineTransformMakeRotation(-Math.PI);
+            }
 
             if (indexPath.row === owner.items.length - 1) {
                 owner.notify<EventData>({
