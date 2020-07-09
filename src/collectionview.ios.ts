@@ -28,14 +28,14 @@ export class CollectionView extends CollectionViewBase {
     private _delegate: IUICollectionViewDelegateImpl;
     private _preparingCell: boolean = false;
     private _sizes: number[][];
-    private _map: Map<CollectionViewCell, ItemView>;
-    _measureCellMap: Map<string, { cell: CollectionViewCell; view: View }>;
+    private _map: Map<ICollectionViewCell, ItemView>;
+    _measureCellMap: Map<string, { cell: ICollectionViewCell; view: View }>;
 
     nativeViewProtected: UICollectionView;
 
     constructor() {
         super();
-        this._map = new Map<CollectionViewCell, View>();
+        this._map = new Map<ICollectionViewCell, View>();
         this._sizes = new Array<number[]>();
     }
 
@@ -83,10 +83,9 @@ export class CollectionView extends CollectionViewBase {
             this._delegate = layoutStyle.createDelegate();
         } else {
             this._delegate = UICollectionViewDelegateImpl.new();
-
         }
         this._delegate._owner = new WeakRef(this);
-        this._measureCellMap = new Map<string, { cell: CollectionViewCell; view: View }>();
+        this._measureCellMap = new Map<string, { cell: ICollectionViewCell; view: View }>();
         this.nativeView.delegate = this._delegate;
 
         this._setNativeClipToBounds();
@@ -187,7 +186,7 @@ export class CollectionView extends CollectionViewBase {
 
     public onLayout(left: number, top: number, right: number, bottom: number) {
         super.onLayout(left, top, right, bottom);
-        
+
         const p = CollectionViewBase.plugins[this.layoutStyle];
         if (p && p.onLayout) {
             p.onLayout(this, left, top, right, bottom);
@@ -393,7 +392,7 @@ export class CollectionView extends CollectionViewBase {
     getItemTemplateContent(index, templateType) {
         return this.getViewForViewType(ListViewViewTypes.ItemView, templateType);
     }
-    public _prepareCell(cell: CollectionViewCell, indexPath: NSIndexPath, templateType: string, addToMap = true) {
+    public _prepareCell(cell: ICollectionViewCell, indexPath: NSIndexPath, templateType: string, addToMap = true) {
         let cellSize: [number, number];
         try {
             this._preparingCell = true;
@@ -474,7 +473,7 @@ export class CollectionView extends CollectionViewBase {
     public clearCellSize() {
         this._sizes = new Array<number[]>();
     }
-    private measureCell(cell: CollectionViewCell, cellView: View, index: NSIndexPath): [number, number] {
+    private measureCell(cell: ICollectionViewCell, cellView: View, index: NSIndexPath): [number, number] {
         if (cellView) {
             let result: [number, number];
             const width = this._effectiveColWidth;
@@ -509,14 +508,14 @@ export class CollectionView extends CollectionViewBase {
 
     private clearRealizedCells() {
         const that = new WeakRef<CollectionView>(this);
-        this._map.forEach(function (value, key: CollectionViewCell) {
+        this._map.forEach(function (value, key: ICollectionViewCell) {
             that.get()._removeContainer(key);
             that.get()._clearCellViews(key);
         }, that);
         this._map.clear();
     }
 
-    private _clearCellViews(cell: CollectionViewCell) {
+    private _clearCellViews(cell: ICollectionViewCell) {
         if (cell && cell.view) {
             if (cell.view.nativeViewProtected) {
                 (cell.view.nativeViewProtected as UIView).removeFromSuperview();
@@ -526,7 +525,7 @@ export class CollectionView extends CollectionViewBase {
         }
     }
 
-    private _removeContainer(cell: CollectionViewCell): void {
+    private _removeContainer(cell: ICollectionViewCell): void {
         const view = cell.view;
         // This is to clear the StackLayout that is used to wrap ProxyViewContainer instances.
         if (!(view.parent instanceof CollectionView)) {
@@ -610,7 +609,7 @@ export class CollectionView extends CollectionViewBase {
             object: this,
             item: this.getItemAtIndex(position),
             index: position,
-            view: (cell as CollectionViewCell).view,
+            view: (cell as ICollectionViewCell).view,
         });
 
         cell.highlighted = false;
@@ -671,17 +670,28 @@ interface ViewItemIndex {
 }
 
 type ItemView = View & ViewItemIndex;
-export class CollectionViewCell extends UICollectionViewCell {
-    public static class(): any {
-        return CollectionViewCell;
-    }
-
-    public owner: WeakRef<ItemView>;
-
+declare class ICollectionViewCell extends UICollectionViewCell {
+    static new(): ICollectionViewCell;
+    owner: WeakRef<ItemView>;
+    view:ItemView
+}
+const CollectionViewCell = (UICollectionViewCell as any).extend({
     get view(): ItemView {
         return this.owner ? this.owner.get() : null;
     }
-}
+}) as typeof ICollectionViewCell;
+
+// export class CollectionViewCell extends UICollectionViewCell {
+//     public static class(): any {
+//         return CollectionViewCell;
+//     }
+
+//     public owner: WeakRef<ItemView>;
+
+//     get view(): ItemView {
+//         return this.owner ? this.owner.get() : null;
+//     }
+// }
 
 declare class ICollectionViewDataSource extends NSObject {
     static new(): ICollectionViewDataSource;
