@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.33](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.32...v2.0.33) (2020-07-09)
+
+
+### Bug Fixes
+
+* missing prop defs ([c3c4cc2](https://github.com/Akylas/nativescript-collectionview/commit/c3c4cc2e0e82b548322cae58ef0fbaa221850aae))
+
+
+### Features
+
+* added reverseLayout ([da34e3e](https://github.com/Akylas/nativescript-collectionview/commit/da34e3eb4baf2cb222f69db2a129ed7fafcd5cf2))
+* base support for plugin defining custom layout ([6def6f2](https://github.com/Akylas/nativescript-collectionview/commit/6def6f2b085fec7ab906d3760f615d98f65c8b4a))
+
+
+
+
+
 ## [2.0.32](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.31...v2.0.32) (2020-07-06)
 
 

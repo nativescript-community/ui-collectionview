@@ -1,6 +1,6 @@
 {
     "name": "nativescript-collectionview",
-    "version": "2.0.32",
+    "version": "2.0.33",
     "description": "Your awesome NativeScript plugin.",
     "main": "./collectionview",
     "module": "./collectionview.mjs",
