@@ -23,7 +23,7 @@ declare module '@nativescript/core/ui/core/view' {
 }
 
 export class CollectionView extends CollectionViewBase {
-    private _layout: UICollectionViewFlowLayout;
+    private _layout: UICollectionViewLayout;
     private _dataSource: ICollectionViewDataSource;
     private _delegate: IUICollectionViewDelegateImpl;
     private _preparingCell: boolean = false;
@@ -39,9 +39,16 @@ export class CollectionView extends CollectionViewBase {
     }
 
     public createNativeView() {
-        this._layout = UICollectionViewFlowLayout.alloc().init();
-        this._layout.minimumLineSpacing = 0;
-        this._layout.minimumInteritemSpacing = 0;
+        let layout: UICollectionViewLayout;
+        if (this.layoutStyles[this.layoutStyle]) {
+            layout = this.layoutStyles[this.layoutStyle](this);
+        } else {
+            layout = (this._layout = UICollectionViewFlowLayout.alloc().init());
+        }
+        if (layout instanceof UICollectionViewFlowLayout) {
+            layout.minimumLineSpacing = 0;
+            layout.minimumInteritemSpacing = 0;
+        }
 
         const view = UICollectionView.alloc().initWithFrameCollectionViewLayout(CGRectMake(0, 0, 0, 0), this._layout);
         view.backgroundColor = UIColor.clearColor;

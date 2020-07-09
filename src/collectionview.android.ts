@@ -62,7 +62,8 @@ export class CollectionView extends CollectionViewBase {
     public static CUSTOM_TEMPLATE_ITEM_TYPE = 1;
     public nativeViewProtected: CollectionViewRecyclerView & {
         scrollListener: com.nativescript.collectionview.OnScrollListener;
-        layoutManager: com.nativescript.collectionview.GridLayoutManager;
+        layoutManager: androidx.recyclerview.widget.RecyclerView.LayoutManager;
+        owner?: WeakRef<CollectionView>;
     };
 
     templateTypeNumberString = new Map<string, number>();
@@ -102,21 +103,28 @@ export class CollectionView extends CollectionViewBase {
     public initNativeView() {
         super.initNativeView();
 
-        const nativeView = this.nativeView;
+        const nativeView = this.nativeViewProtected;
         nativeView.owner = new WeakRef(this);
-        this.nativeViewProtected.sizeChangedListener = new com.nativescript.collectionview.SizeChangedListener({
+        nativeView.sizeChangedListener = new com.nativescript.collectionview.SizeChangedListener({
             onSizeChanged: (w, h, oldW, oldH) => {
                 this.onSizeChanged(layout.toDeviceIndependentPixels(w), layout.toDeviceIndependentPixels(h));
             },
         });
 
-        const orientation = this._getLayoutManagarOrientation();
+        // const orientation = this._getLayoutManagarOrientation();
 
         // initGridLayoutManager();
-        const layoutManager = new com.nativescript.collectionview.PreCachingGridLayoutManager(this._context, 1);
+        let layoutManager: androidx.recyclerview.widget.RecyclerView.LayoutManager;
+        if (this.layoutStyles[this.layoutStyle]) {
+            layoutManager = this.layoutStyles[this.layoutStyle](this);
+        } else {
+            layoutManager = new com.nativescript.collectionview.PreCachingGridLayoutManager(this._context, 1);
+        }
         nativeView.setLayoutManager(layoutManager);
-        layoutManager.isScrollEnabled = this.isScrollEnabled;
-        layoutManager.setOrientation(orientation);
+        // layoutManager.isScrollEnabled = this.isScrollEnabled;
+        // if (layoutManager && layoutManager['setOrientation']) {
+        //     layoutManager['setOrientation'](orientation);
+        // }
         nativeView.layoutManager = layoutManager;
 
         // tslint:disable-next-line:no-unused-expression
@@ -137,25 +145,37 @@ export class CollectionView extends CollectionViewBase {
 
     onLoaded() {
         super.onLoaded();
-        this.attach();
+        this.attachScrollListener();
     }
 
     _scrollOrLoadMoreChangeCount = 0;
-    _nScrollListener:  com.nativescript.collectionview.OnScrollListener.Listener
-    private attach() {
+    _nScrollListener: com.nativescript.collectionview.OnScrollListener.Listener;
+    scrolling = false;
+    private attachScrollListener() {
         if (this._scrollOrLoadMoreChangeCount > 0 && this.isLoaded) {
             const nativeView = this.nativeViewProtected;
             if (!nativeView.scrollListener) {
                 this._nScrollListener = new com.nativescript.collectionview.OnScrollListener.Listener({
-                    onScrollStateChanged:this.onScrollStateChanged.bind(this),
-                    onScrolled:this.onScrolled.bind(this),
-                })
+                    onScrollStateChanged: this.onScrollStateChanged.bind(this),
+                    onScrolled: this.onScrolled.bind(this),
+                });
                 const scrollListener = new com.nativescript.collectionview.OnScrollListener(this._nScrollListener);
                 nativeView.addOnScrollListener(scrollListener);
                 nativeView.scrollListener = scrollListener;
             }
         }
     }
+
+    private dettachScrollListener() {
+        if (this._scrollOrLoadMoreChangeCount === 0 && this.isLoaded) {
+            const nativeView = this.nativeViewProtected;
+            if (nativeView.scrollListener) {
+                this.nativeView.removeOnScrollListener(nativeView.scrollListener);
+                nativeView.scrollListener = null;
+            }
+        }
+    }
+
     public onScrolled(view: androidx.recyclerview.widget.RecyclerView, dx: number, dy: number) {
         if (!this || !this.scrolling) {
             return;
@@ -181,12 +201,11 @@ export class CollectionView extends CollectionViewBase {
         }
     }
 
-    scrolling = false;
     public onScrollStateChanged(view: androidx.recyclerview.widget.RecyclerView, newState: number) {
         if (this.scrolling && newState === 0) {
             // SCROLL_STATE_IDLE
             this.scrolling = false;
- 
+
             if (this.hasListeners(CollectionViewBase.scrollEndEvent)) {
                 this.notify({
                     object: this,
@@ -199,29 +218,21 @@ export class CollectionView extends CollectionViewBase {
             this.scrolling = true;
         }
     }
-    private dettach() {
-        if (this._scrollOrLoadMoreChangeCount === 0 && this.isLoaded) {
-            const nativeView = this.nativeViewProtected;
-            if (nativeView.scrollListener) {
-                this.nativeView.removeOnScrollListener(nativeView.scrollListener);
-                nativeView.scrollListener = null;
-            }
-        }
-    }
+
     public addEventListener(arg: string, callback: any, thisArg?: any) {
         super.addEventListener(arg, callback, thisArg);
         if (arg === CollectionViewBase.scrollEvent || arg === CollectionViewBase.loadMoreItemsEvent) {
             this._scrollOrLoadMoreChangeCount++;
-            this.attach();
+            this.attachScrollListener();
         }
     }
 
     public removeEventListener(arg: string, callback: any, thisArg?: any) {
         super.removeEventListener(arg, callback, thisArg);
 
-        if (arg === CollectionViewBase.scrollEvent) {
+        if (arg === CollectionViewBase.scrollEvent || arg === CollectionViewBase.loadMoreItemsEvent) {
             this._scrollOrLoadMoreChangeCount--;
-            this.dettach();
+            this.dettachScrollListener();
         }
     }
 
@@ -247,8 +258,8 @@ export class CollectionView extends CollectionViewBase {
     get android(): androidx.recyclerview.widget.RecyclerView {
         return this.nativeView;
     }
-    get layoutManager(): com.nativescript.collectionview.PreCachingGridLayoutManager {
-        return this.nativeView.getLayoutManager() as com.nativescript.collectionview.PreCachingGridLayoutManager;
+    get layoutManager() {
+        return this.nativeViewProtected.layoutManager;
     }
     _layoutParams: org.nativescript.widgets.CommonLayoutParams;
     _getViewLayoutParams() {
@@ -320,38 +331,46 @@ export class CollectionView extends CollectionViewBase {
         this._setPadding({ left: this.effectivePaddingLeft });
     }
 
-    public [orientationProperty.getDefault](): Orientation {
-        const layoutManager = this.nativeView.getLayoutManager() as com.nativescript.collectionview.GridLayoutManager;
-        if (layoutManager.getOrientation() === androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL) {
-            return 'horizontal';
-        }
+    // public [orientationProperty.getDefault](): Orientation {
+    //     const layoutManager = this.layoutManager;
+    //     if (layoutManager.getOrientation() === androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL) {
+    //         return 'horizontal';
+    //     }
 
-        return 'vertical';
-    }
+    //     return 'vertical';
+    // }
     public [orientationProperty.setNative](value: Orientation) {
-        const layoutManager = this.nativeView.getLayoutManager() as com.nativescript.collectionview.GridLayoutManager;
+        const layoutManager = this.layoutManager;
+        if (!layoutManager || !layoutManager['setOrientation']) {
+            return;
+        }
         if (this.isHorizontal()) {
-            layoutManager.setOrientation(androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL);
+            layoutManager['setOrientation'](0);
         } else {
-            layoutManager.setOrientation(androidx.recyclerview.widget.LinearLayoutManager.VERTICAL);
+            layoutManager['setOrientation'](1);
         }
     }
-    isScrollEnabled = true;
+    // isScrollEnabled = true;
     public [isScrollEnabledProperty.setNative](value: boolean) {
-        this.isScrollEnabled = value;
-        if (this.layoutManager) {
-            this.layoutManager.isScrollEnabled = value;
+        // this.isScrollEnabled = value;
+        const layoutManager = this.layoutManager;
+        if (layoutManager && layoutManager['isScrollEnabled']) {
+            layoutManager['isScrollEnabled'] = value;
+        }
+    }
     public [reverseLayoutProperty.setNative](value: boolean) {
         // this.isScrollEnabled = value;
         const layoutManager = this.layoutManager;
-        console.log('reverseLayoutProperty', value, layoutManager, layoutManager['setReverseLayout']);
         if (layoutManager && layoutManager['setReverseLayout']) {
             layoutManager['setReverseLayout'](value);
             // layoutManager['setStackFromEnd'](value);
         }
     }
     public [extraLayoutSpaceProperty.setNative](value: number) {
-        this.layoutManager.setExtraLayoutSpace(value);
+        const layoutManager = this.layoutManager;
+        if (layoutManager && layoutManager['setExtraLayoutSpace']) {
+            layoutManager['setExtraLayoutSpace'](value);
+        }
     }
     public [itemViewCacheSizeProperty.setNative](value: number) {
         this.nativeViewProtected.setItemViewCacheSize(value);
@@ -384,8 +403,8 @@ export class CollectionView extends CollectionViewBase {
 
     public onLayout(left: number, top: number, right: number, bottom: number) {
         super.onLayout(left, top, right, bottom);
-        if (this.nativeView) {
-            this.layoutManager.setSpanCount(this.computeSpanCount());
+        if (this.layoutManager && this.layoutManager['setSpanCount']) {
+            this.layoutManager['setSpanCount'](this.computeSpanCount());
         }
     }
     public onSourceCollectionChanged(event: ChangedData<any>) {
@@ -504,14 +523,14 @@ export class CollectionView extends CollectionViewBase {
         nativeView.setPadding(newValue.left, newValue.top, newValue.right, newValue.bottom);
     }
 
-    private _getLayoutManagarOrientation() {
-        let orientation = androidx.recyclerview.widget.LinearLayoutManager.VERTICAL;
-        if (this.isHorizontal()) {
-            orientation = androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL;
-        }
+    // private _getLayoutManagarOrientation() {
+    //     let orientation = androidx.recyclerview.widget.LinearLayoutManager.VERTICAL;
+    //     if (this.isHorizontal()) {
+    //         orientation = androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL;
+    //     }
 
-        return orientation;
-    }
+    //     return orientation;
+    // }
     private createComposedAdapter(recyclerView: CollectionViewRecyclerView) {
         const adapter = new com.nativescript.collectionview.Adapter();
         adapter.adapterInterface = new com.nativescript.collectionview.AdapterInterface({
@@ -587,10 +606,10 @@ export class CollectionView extends CollectionViewBase {
 
     @profile
     disposeViewHolderViews() {
-        this._viewHolders.forEach(v=>{
+        this._viewHolders.forEach((v) => {
             v.view = null;
             v.clickListener = null;
-        })
+        });
         this._viewHolders = new Array();
         this._viewHolderChildren.forEach(this._removeViewCore);
     }
@@ -599,7 +618,7 @@ export class CollectionView extends CollectionViewBase {
         return this.templateStringTypeNumber.get(viewType);
     }
 
-    private onClickListener;
+    // private onClickListener;
 
     @profile
     public onCreateViewHolder(parent: android.view.ViewGroup, viewType: number) {
@@ -617,7 +636,7 @@ export class CollectionView extends CollectionViewBase {
             CollectionViewCellHolder = com.nativescript.collectionview.CollectionViewCellHolder as any;
         }
         // initCellViewHolder();
-        
+
         const holder = new CollectionViewCellHolder(view.nativeView);
 
         const collectionView = this;
@@ -632,7 +651,7 @@ export class CollectionView extends CollectionViewBase {
                     view: holder.view,
                 });
             },
-        })
+        });
         view.nativeView.setOnClickListener(clickListener);
         holder.clickListener = clickListener;
         holder.view = view;

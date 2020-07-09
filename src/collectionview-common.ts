@@ -97,6 +97,12 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     public _effectiveRowHeight: number;
     public _effectiveColWidth: number;
 
+    public layoutStyle: string = 'grid';
+    public layoutStyles: { [k: string]: Function } = {};
+    public registerLayoutStyle(style: string, generator: Function) {
+        this.layoutStyles[style] = generator
+    }
+
     protected _itemTemplatesInternal: Map<string, KeyedTemplate>;
     protected _defaultTemplate: KeyedTemplate;
 
@@ -115,10 +121,8 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
         this._itemTemplatesInternal.set(this._defaultTemplate.key, this._defaultTemplate);
     }
 
-
     public abstract refresh();
     public abstract scrollToIndex(index: number, animated: boolean);
-
 
     _onSizeChanged() {
         super._onSizeChanged();
@@ -131,7 +135,6 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
         if (this.colWidth) {
             const newValue = PercentLength.toDevicePixels(this.colWidth, autoEffectiveColWidth, this._innerWidth); // We cannot use 0 for auto as it throws for android.
             if (newValue !== this._effectiveColWidth) {
-                
                 this._effectiveColWidth = newValue;
                 changed = true;
             }
@@ -162,7 +165,6 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
         }
         return context;
     }
-
 
     @profile
     public notifyLoading(args) {
@@ -237,7 +239,7 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     onItemTemplateSelectorChanged(oldValue, newValue) {
         if (typeof newValue === 'string') {
             if (!this._itemTemplateSelectorBindable) {
-                this._itemTemplateSelectorBindable = new ProxyViewContainer()
+                this._itemTemplateSelectorBindable = new ProxyViewContainer();
             }
             this._itemTemplateSelectorBindable.bind({
                 sourceProperty: null,
@@ -259,7 +261,7 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     onItemIdGeneratorChanged(oldValue, newValue) {
         if (typeof newValue === 'string') {
             if (!this._itemIdGeneratorBindable) {
-                this._itemIdGeneratorBindable = new ProxyViewContainer()
+                this._itemIdGeneratorBindable = new ProxyViewContainer();
             }
             this._itemIdGeneratorBindable.bind({
                 sourceProperty: null,
@@ -470,3 +472,9 @@ export const reverseLayoutProperty = new Property<CollectionViewBase, boolean>({
     valueConverter: booleanConverter,
 });
 reverseLayoutProperty.register(CollectionViewBase);
+
+// export const layoutStyleProperty = new Property<CollectionViewBase, string>({
+//     name: 'layoutStyle',
+//     defaultValue: 'grid'
+// });
+// layoutStyleProperty.register(CollectionViewBase);
