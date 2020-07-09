@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.34](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.33...v2.0.34) (2020-07-09)
+
+
+### Features
+
+* basic plugin support ([ff014f7](https://github.com/Akylas/nativescript-collectionview/commit/ff014f7a326124cb0c726bfda427517ef1fbe62d))
+
+
+
+
+
 ## [2.0.33](https://github.com/Akylas/nativescript-collectionview/compare/v2.0.32...v2.0.33) (2020-07-09)
 
 
