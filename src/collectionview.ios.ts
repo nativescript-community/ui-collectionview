@@ -673,13 +673,17 @@ type ItemView = View & ViewItemIndex;
 declare class ICollectionViewCell extends UICollectionViewCell {
     static new(): ICollectionViewCell;
     owner: WeakRef<ItemView>;
-    view:ItemView
+    view: ItemView;
+    static class(): any;
 }
 const CollectionViewCell = (UICollectionViewCell as any).extend({
     get view(): ItemView {
         return this.owner ? this.owner.get() : null;
-    }
+    },
 }) as typeof ICollectionViewCell;
+CollectionViewCell.class = function () {
+    return CollectionViewCell;
+};
 
 // export class CollectionViewCell extends UICollectionViewCell {
 //     public static class(): any {
