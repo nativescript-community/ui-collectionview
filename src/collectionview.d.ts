@@ -19,6 +19,8 @@ export class CollectionView extends View {
     public orientation: Orientation;
     public isBounceEnabled: boolean;
     public isScrollEnabled: boolean;
+    public reverseLayout: boolean;
+    public layoutStyle: string;
 
     // public ios: any; /* UICollectionView */
     // public android: any; /* android.support.v7.widget.RecyclerView */
