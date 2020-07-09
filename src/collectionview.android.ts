@@ -115,8 +115,8 @@ export class CollectionView extends CollectionViewBase {
 
         // initGridLayoutManager();
         let layoutManager: androidx.recyclerview.widget.RecyclerView.LayoutManager;
-        if (this.layoutStyles[this.layoutStyle]) {
-            layoutManager = this.layoutStyles[this.layoutStyle](this);
+        if (CollectionViewBase.layoutStyles[this.layoutStyle]) {
+            layoutManager = CollectionViewBase.layoutStyles[this.layoutStyle].createLayout(this);
         } else {
             layoutManager = new com.nativescript.collectionview.PreCachingGridLayoutManager(this._context, 1);
         }
@@ -403,6 +403,14 @@ export class CollectionView extends CollectionViewBase {
 
     public onLayout(left: number, top: number, right: number, bottom: number) {
         super.onLayout(left, top, right, bottom);
+        const p = CollectionViewBase.plugins[this.layoutStyle];
+        if (p && p.onLayout) {
+            p.onLayout(this, left, top, right, bottom);
+        }
+        this.plugins.forEach((k) => {
+            const p = CollectionViewBase.plugins[k];
+            p.onLayout && p.onLayout(this, left, top, right, bottom);
+        });
         if (this.layoutManager && this.layoutManager['setSpanCount']) {
             this.layoutManager['setSpanCount'](this.computeSpanCount());
         }
@@ -450,23 +458,7 @@ export class CollectionView extends CollectionViewBase {
         }
         this._listViewAdapter.notifyDataSetChanged();
     }
-    public isHorizontal() {
-        return this.orientation === 'horizontal';
-    }
 
-    private computeSpanCount() {
-        let spanCount = 1;
-        if (this.isHorizontal()) {
-            if (this._effectiveRowHeight) {
-                spanCount = Math.max(Math.floor(this._innerHeight / this._effectiveRowHeight), 1) || 1;
-            }
-        } else {
-            if (this._effectiveColWidth) {
-                spanCount = Math.max(Math.floor(this._innerWidth / this._effectiveColWidth), 1) || 1;
-            }
-        }
-        return spanCount;
-    }
     @profile
     public refresh() {
         if (!this.nativeViewProtected) {
@@ -635,7 +627,6 @@ export class CollectionView extends CollectionViewBase {
         if (!CollectionViewCellHolder) {
             CollectionViewCellHolder = com.nativescript.collectionview.CollectionViewCellHolder as any;
         }
-        // initCellViewHolder();
 
         const holder = new CollectionViewCellHolder(view.nativeView);
 

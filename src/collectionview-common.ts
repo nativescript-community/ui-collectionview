@@ -71,6 +71,8 @@ export namespace knownMultiTemplates {
     export const itemTemplates = 'itemTemplates';
 }
 
+export interface Plugin { onLayout?: Function }
+
 export abstract class CollectionViewBase extends View implements CollectionViewDefinition {
     public static itemLoadingEvent = 'itemLoading';
     public static cellCreateEvent = 'cellCreate';
@@ -98,9 +100,14 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     public _effectiveColWidth: number;
 
     public layoutStyle: string = 'grid';
-    public layoutStyles: { [k: string]: Function } = {};
-    public registerLayoutStyle(style: string, generator: Function) {
-        this.layoutStyles[style] = generator
+    public plugins: string[] = [];
+    public static plugins: { [k: string]: Plugin} = {};
+    public static registerPlugin(key: string, plugin: Plugin) {
+        this.plugins[key] = plugin;
+    }
+    public static layoutStyles: { [k: string]: { createLayout: Function; createDelegate?: Function } } = {};
+    public static registerLayoutStyle(style: string, generator: { createLayout: Function; createDelegate?: Function }) {
+        this.layoutStyles[style] = generator;
     }
 
     protected _itemTemplatesInternal: Map<string, KeyedTemplate>;
@@ -176,7 +183,22 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
         const thisItems = this.items as ItemsSource;
         return thisItems.getItem ? thisItems.getItem(index) : thisItems[index];
     }
-
+    public isHorizontal() {
+        return this.orientation === 'horizontal';
+    }
+    computeSpanCount() {
+        let spanCount = 1;
+        if (this.isHorizontal()) {
+            if (this._effectiveRowHeight) {
+                spanCount = Math.max(Math.floor(this._innerHeight / this._effectiveRowHeight), 1) || 1;
+            }
+        } else {
+            if (this._effectiveColWidth) {
+                spanCount = Math.max(Math.floor(this._innerWidth / this._effectiveColWidth), 1) || 1;
+            }
+        }
+        return spanCount;
+    }
     public _onRowHeightPropertyChanged(oldValue: PercentLength, newValue: PercentLength) {
         this.refresh();
     }
