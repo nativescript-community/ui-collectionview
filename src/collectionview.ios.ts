@@ -43,7 +43,7 @@ export class CollectionView extends CollectionViewBase {
         if (this.layoutStyles[this.layoutStyle]) {
             layout = this.layoutStyles[this.layoutStyle](this);
         } else {
-            layout = (this._layout = UICollectionViewFlowLayout.alloc().init());
+            layout = this._layout = UICollectionViewFlowLayout.alloc().init();
         }
         if (layout instanceof UICollectionViewFlowLayout) {
             layout.minimumLineSpacing = 0;
@@ -112,47 +112,51 @@ export class CollectionView extends CollectionViewBase {
         return this._map.size;
     }
 
-    public [paddingTopProperty.getDefault](): number {
-        return this._layout.sectionInset.top;
-    }
+    // public [paddingTopProperty.getDefault](): number {
+    //     return this._layout.sectionInset.top;
+    // }
     public [paddingTopProperty.setNative](value: Length) {
         this._setPadding({ top: utilLayout.toDeviceIndependentPixels(this.effectivePaddingTop) });
     }
 
-    public [paddingRightProperty.getDefault](): number {
-        return this._layout.sectionInset.right;
-    }
+    // public [paddingRightProperty.getDefault](): number {
+    //     return this._layout.sectionInset.right;
+    // }
     public [paddingRightProperty.setNative](value: Length) {
         this._setPadding({ right: utilLayout.toDeviceIndependentPixels(this.effectivePaddingRight) });
     }
 
-    public [paddingBottomProperty.getDefault](): number {
-        return this._layout.sectionInset.bottom;
-    }
+    // public [paddingBottomProperty.getDefault](): number {
+    //     return this._layout.sectionInset.bottom;
+    // }
     public [paddingBottomProperty.setNative](value: Length) {
         this._setPadding({ bottom: utilLayout.toDeviceIndependentPixels(this.effectivePaddingBottom) });
     }
 
-    public [paddingLeftProperty.getDefault](): number {
-        return this._layout.sectionInset.left;
-    }
+    // public [paddingLeftProperty.getDefault](): number {
+    //     return this._layout.sectionInset.left;
+    // }
     public [paddingLeftProperty.setNative](value: Length) {
         this._setPadding({ left: utilLayout.toDeviceIndependentPixels(this.effectivePaddingLeft) });
     }
 
-    public [orientationProperty.getDefault](): Orientation {
-        if (this.isHorizontal()) {
-            return 'horizontal';
-        }
+    // public [orientationProperty.getDefault](): Orientation {
+    //     if (this.isHorizontal()) {
+    //         return 'horizontal';
+    //     }
 
-        return 'vertical';
-    }
+    //     return 'vertical';
+    // }
     public [orientationProperty.setNative](value: Orientation) {
-        if (value === 'horizontal') {
-            this._layout.scrollDirection = UICollectionViewScrollDirection.Horizontal;
-        } else {
-            this._layout.scrollDirection = UICollectionViewScrollDirection.Vertical;
+        const layout = this._layout;
+        if (layout instanceof UICollectionViewFlowLayout) {
+            if (value === 'horizontal') {
+                layout.scrollDirection = UICollectionViewScrollDirection.Horizontal;
+            } else {
+                layout.scrollDirection = UICollectionViewScrollDirection.Vertical;
+            }
         }
+        
     }
     public [isScrollEnabledProperty.setNative](value: boolean) {
         this.nativeViewProtected.scrollEnabled = value;
@@ -191,7 +195,7 @@ export class CollectionView extends CollectionViewBase {
     }
 
     public isHorizontal() {
-        return this._layout.scrollDirection === UICollectionViewScrollDirection.Horizontal;
+        return this.orientation === 'horizontal';
     }
 
     public onSourceCollectionChanged(event /*: ChangedData<any>*/) {
@@ -523,15 +527,18 @@ export class CollectionView extends CollectionViewBase {
     }
 
     private _setPadding(newPadding: { top?: number; right?: number; bottom?: number; left?: number }) {
-        const padding = {
-            top: this._layout.sectionInset.top,
-            right: this._layout.sectionInset.right,
-            bottom: this._layout.sectionInset.bottom,
-            left: this._layout.sectionInset.left,
-        };
-        // tslint:disable-next-line:prefer-object-spread
-        const newValue = Object.assign(padding, newPadding);
-        this._layout.sectionInset = UIEdgeInsetsFromString(`{${newValue.top},${newValue.left},${newValue.bottom},${newValue.right}}`);
+        const layout = this._layout;
+        if (layout instanceof UICollectionViewFlowLayout) {
+            const padding = {
+                top: layout.sectionInset.top,
+                right: layout.sectionInset.right,
+                bottom: layout.sectionInset.bottom,
+                left: layout.sectionInset.left,
+            };
+            // tslint:disable-next-line:prefer-object-spread
+            const newValue = Object.assign(padding, newPadding);
+            layout.sectionInset = UIEdgeInsetsFromString(`{${newValue.top},${newValue.left},${newValue.bottom},${newValue.right}}`);
+        }
     }
 }
 
