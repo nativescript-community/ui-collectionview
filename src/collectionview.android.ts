@@ -1,12 +1,8 @@
-﻿import { ChangedData, ChangeType } from '@nativescript/core/data/observable-array';
-import { profile } from '@nativescript/core/profiling';
-import { isEnabled } from '@nativescript/core/trace';
-import { layout, Length, paddingBottomProperty, paddingLeftProperty, paddingRightProperty, paddingTopProperty, View, Property } from '@nativescript/core/ui/core/view';
-import { GridLayout } from '@nativescript/core/ui/layouts/grid-layout';
-import { ProxyViewContainer } from '@nativescript/core/ui/proxy-view-container';
-import * as utils from '@nativescript/core/utils/utils';
-import { Orientation, CollectionViewItemEventData, reverseLayoutProperty } from './collectionview';
-import { CLog, CLogTypes, CollectionViewBase, isScrollEnabledProperty, ListViewViewTypes, orientationProperty } from './collectionview-common';
+﻿import { ChangeType, ChangedData, GridLayout, Length, Property, ProxyViewContainer, Trace, View, paddingBottomProperty, paddingLeftProperty, paddingRightProperty, paddingTopProperty, profile } from '@nativescript/core';
+import { WeakRef } from '@nativescript/core/debugger/dom-node';
+import { layout } from '@nativescript/core/utils/utils';
+import { CollectionViewItemEventData, Orientation, reverseLayoutProperty } from './collectionview';
+import { CLog, CLogTypes, CollectionViewBase, ListViewViewTypes, isScrollEnabledProperty, orientationProperty } from './collectionview-common';
 
 export * from './collectionview-common';
 
@@ -107,7 +103,7 @@ export class CollectionView extends CollectionViewBase {
         nativeView.owner = new WeakRef(this);
         nativeView.sizeChangedListener = new com.nativescript.collectionview.SizeChangedListener({
             onSizeChanged: (w, h, oldW, oldH) => {
-                this.onSizeChanged(layout.toDeviceIndependentPixels(w), layout.toDeviceIndependentPixels(h));
+                this.onSizeChanged(w, h);
             },
         });
 
@@ -120,15 +116,10 @@ export class CollectionView extends CollectionViewBase {
         } else {
             layoutManager = new com.nativescript.collectionview.PreCachingGridLayoutManager(this._context, 1);
         }
+        // this.spanSize
         nativeView.setLayoutManager(layoutManager);
-        // layoutManager.isScrollEnabled = this.isScrollEnabled;
-        // if (layoutManager && layoutManager['setOrientation']) {
-        //     layoutManager['setOrientation'](orientation);
-        // }
         nativeView.layoutManager = layoutManager;
-
-        // tslint:disable-next-line:no-unused-expression
-        // new CollectionViewCellHolder(new android.widget.TextView(this._context));
+        this.spanSize = this._getSpanSize;
 
         const animator = new com.h6ah4i.android.widget.advrecyclerview.animator.RefactoredDefaultItemAnimator();
 
@@ -142,7 +133,25 @@ export class CollectionView extends CollectionViewBase {
         // colWidthProperty.coerce(this);
         // rowHeightProperty.coerce(this);
     }
-
+    _getSpanSize: (position: number) => number;
+    set spanSize(inter: (position: number) => number) {
+        this._getSpanSize = inter;
+        const layoutManager = this.layoutManager;
+        if (layoutManager && layoutManager['setSpanSizeLookup']) {
+            layoutManager['setSpanSizeLookup'](
+                inter
+                    ? new com.nativescript.collectionview.SpanSizeLookup(
+                        new com.nativescript.collectionview.SpanSizeLookup.Interface({
+                            getSpanSize: inter,
+                        })
+                    )
+                    : null
+            );
+        }
+    }
+    get spanSize() {
+        return this._getSpanSize;
+    }
     onLoaded() {
         super.onLoaded();
         this.attachScrollListener();
@@ -181,22 +190,25 @@ export class CollectionView extends CollectionViewBase {
             return;
         }
 
-        const lastVisibleItemPos = (view.getLayoutManager() as com.nativescript.collectionview.GridLayoutManager).findLastCompletelyVisibleItemPosition();
         if (this.hasListeners(CollectionViewBase.scrollEvent)) {
             this.notify({
                 object: this,
                 eventName: CollectionViewBase.scrollEvent,
-                scrollOffset: (this.isHorizontal() ? view.computeHorizontalScrollOffset() : view.computeVerticalScrollOffset()) / utils.layout.getDisplayDensity(),
+                scrollOffset: (this.isHorizontal() ? view.computeHorizontalScrollOffset() : view.computeVerticalScrollOffset()) / layout.getDisplayDensity(),
             });
         }
 
         if (this.hasListeners(CollectionViewBase.loadMoreItemsEvent) && this.items) {
-            const itemCount = this.items.length - 1;
-            if (lastVisibleItemPos === itemCount) {
-                this.notify({
-                    eventName: CollectionViewBase.loadMoreItemsEvent,
-                    object: this,
-                });
+            const layoutManager = view.getLayoutManager();
+            if (layoutManager['findLastCompletelyVisibleItemPosition']) {
+                const lastVisibleItemPos = layoutManager['findLastCompletelyVisibleItemPosition']();
+                const itemCount = this.items.length - 1;
+                if (lastVisibleItemPos === itemCount) {
+                    this.notify({
+                        eventName: CollectionViewBase.loadMoreItemsEvent,
+                        object: this,
+                    });
+                }
             }
         }
     }
@@ -210,7 +222,7 @@ export class CollectionView extends CollectionViewBase {
                 this.notify({
                     object: this,
                     eventName: CollectionViewBase.scrollEndEvent,
-                    scrollOffset: (this.isHorizontal() ? view.computeHorizontalScrollOffset() : view.computeVerticalScrollOffset()) / utils.layout.getDisplayDensity(),
+                    scrollOffset: (this.isHorizontal() ? view.computeHorizontalScrollOffset() : view.computeVerticalScrollOffset()) / layout.getDisplayDensity(),
                 });
             }
         } else if (!this.scrolling && newState === 1) {
@@ -259,7 +271,7 @@ export class CollectionView extends CollectionViewBase {
         return this.nativeView;
     }
     get layoutManager() {
-        return this.nativeViewProtected.layoutManager;
+        return this.nativeViewProtected && this.nativeViewProtected.layoutManager;
     }
     _layoutParams: org.nativescript.widgets.CommonLayoutParams;
     _getViewLayoutParams() {
@@ -419,7 +431,7 @@ export class CollectionView extends CollectionViewBase {
         if (!this._listViewAdapter) {
             return;
         }
-        if (isEnabled()) {
+        if (Trace.isEnabled()) {
             CLog(CLogTypes.log, 'onItemsChanged', event.action, event.index, event.addedCount, event.removed);
         }
         switch (event.action) {
@@ -481,8 +493,10 @@ export class CollectionView extends CollectionViewBase {
 
         // nativeView.adapter.owner = new WeakRef(this);
 
-        const layoutManager = view.getLayoutManager() as com.nativescript.collectionview.GridLayoutManager;
-        layoutManager.setSpanCount(this.computeSpanCount());
+        const layoutManager = view.getLayoutManager();
+        if (layoutManager['setSpanCount']) {
+            layoutManager['setSpanCount'](this.computeSpanCount());
+        }
         adapter.notifyDataSetChanged();
         const args = {
             eventName: CollectionViewBase.dataPopulatedEvent,
@@ -658,7 +672,7 @@ export class CollectionView extends CollectionViewBase {
 
     @profile
     public onBindViewHolder(holder: CollectionViewCellHolder, position: number) {
-        if (isEnabled()) {
+        if (Trace.isEnabled()) {
             CLog(CLogTypes.log, 'onBindViewHolder', position);
         }
         let view = holder.view;
@@ -682,14 +696,32 @@ export class CollectionView extends CollectionViewBase {
             // the view has been changed on the event handler
             (holder.view as GridLayout).addChild(args.view);
         }
+        let width = this._effectiveColWidth;
+        let height = this._effectiveRowHeight;
+        if (this._getSpanSize) {
+            const spanSize = this._getSpanSize(position);
+            const horizontal = this.isHorizontal();
+            if (horizontal) {
+                height *= spanSize;
+            } else {
+                width *= spanSize;
+            }
+        }
+        if (width || !view.width) {
+            view.width = layout.toDeviceIndependentPixels(width);
+        }
+        if (height || !view.height) {
+            view.height = layout.toDeviceIndependentPixels(height);
+        }
 
-        if (this._effectiveColWidth || !view.width) {
-            view.width = utils.layout.toDeviceIndependentPixels(this._effectiveColWidth);
-        }
-        if (this._effectiveRowHeight || !view.height) {
-            view.height = utils.layout.toDeviceIndependentPixels(this._effectiveRowHeight);
-        }
-        if (isEnabled()) {
+        // if (this.hasListeners(CollectionViewBase.displayItemEvent) ) {
+        //     this.notify<CollectionViewItemDisplayEventData>({
+        //         eventName: CollectionViewBase.displayItemEvent,
+        //         index:position,
+        //         object: this,
+        //     });
+        // }
+        if (Trace.isEnabled()) {
             CLog(CLogTypes.log, 'onBindViewHolder done ', position);
         }
     }

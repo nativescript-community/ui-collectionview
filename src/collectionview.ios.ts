@@ -1,26 +1,28 @@
-import { EventData, Observable } from '@nativescript/core/data/observable';
-import { ChangeType } from '@nativescript/core/data/observable-array';
-import { profile } from '@nativescript/core/profiling';
-import { isEnabled } from '@nativescript/core/trace';
-import { KeyedTemplate, layout, Length, paddingBottomProperty, paddingLeftProperty, paddingRightProperty, paddingTopProperty, View } from '@nativescript/core/ui/core/view';
-import { StackLayout } from '@nativescript/core/ui/layouts/stack-layout';
-import { GridLayout } from '@nativescript/core/ui/layouts/grid-layout';
-import { ProxyViewContainer } from '@nativescript/core/ui/proxy-view-container';
-import * as util from '@nativescript/core/utils/utils';
+import {
+    ChangeType,
+    ChangedData,
+    EventData,
+    GridLayout,
+    KeyedTemplate,
+    Length,
+    Observable,
+    ProxyViewContainer,
+    Trace,
+    View,
+    paddingBottomProperty,
+    paddingLeftProperty,
+    paddingRightProperty,
+    paddingTopProperty,
+    profile,
+} from '@nativescript/core';
+import { WeakRef } from '@nativescript/core/debugger/dom-node';
+import { layout } from '@nativescript/core/utils/utils';
 import { CollectionViewItemEventData, Orientation, reverseLayoutProperty } from './collectionview';
-import { CLog, CLogTypes, CollectionViewBase, isBounceEnabledProperty, isScrollEnabledProperty, itemTemplatesProperty, ListViewViewTypes, orientationProperty } from './collectionview-common';
-
-const utilLayout = util.layout;
+import { CLog, CLogTypes, CollectionViewBase, ListViewViewTypes, isBounceEnabledProperty, isScrollEnabledProperty, itemTemplatesProperty, orientationProperty } from './collectionview-common';
 
 export * from './collectionview-common';
 
-const infinity = utilLayout.makeMeasureSpec(0, utilLayout.UNSPECIFIED);
-
-declare module '@nativescript/core/ui/core/view' {
-    interface View {
-        _onSizeChanged();
-    }
-}
+const infinity = layout.makeMeasureSpec(0, layout.UNSPECIFIED);
 
 export class CollectionView extends CollectionViewBase {
     private _layout: UICollectionViewLayout;
@@ -50,10 +52,8 @@ export class CollectionView extends CollectionViewBase {
             layout.minimumLineSpacing = 0;
             layout.minimumInteritemSpacing = 0;
         }
-        console.log('createNativeView', layout);
         const view = UICollectionView.alloc().initWithFrameCollectionViewLayout(CGRectMake(0, 0, 0, 0), layout);
         view.backgroundColor = UIColor.clearColor;
-        // view.registerClassForCellWithReuseIdentifier(CollectionViewCell.class(), this._defaultTemplate.key);
         this._itemTemplatesInternal.forEach((t) => {
             view.registerClassForCellWithReuseIdentifier(CollectionViewCell.class(), t.key.toLowerCase());
         });
@@ -92,7 +92,7 @@ export class CollectionView extends CollectionViewBase {
     }
 
     public disposeNativeView() {
-        if (isEnabled()) {
+        if (Trace.isEnabled()) {
             CLog(CLogTypes.log, 'disposeNativeView');
         }
         const nativeView = this.nativeView;
@@ -107,52 +107,29 @@ export class CollectionView extends CollectionViewBase {
 
     _onSizeChanged() {
         super._onSizeChanged();
-        this.onSizeChanged(layout.toDeviceIndependentPixels(this.getMeasuredWidth()), layout.toDeviceIndependentPixels(this.getMeasuredHeight()));
+        this.onSizeChanged(this.getMeasuredWidth(), this.getMeasuredHeight());
     }
-
-    // get ios(): UICollectionView {
-    //     return this.nativeView;
-    // }
 
     get _childrenCount(): number {
         return this._map.size;
     }
 
-    // public [paddingTopProperty.getDefault](): number {
-    //     return this._layout.sectionInset.top;
-    // }
     public [paddingTopProperty.setNative](value: Length) {
-        this._setPadding({ top: utilLayout.toDeviceIndependentPixels(this.effectivePaddingTop) });
+        this._setPadding({ top: layout.toDeviceIndependentPixels(this.effectivePaddingTop) });
     }
 
-    // public [paddingRightProperty.getDefault](): number {
-    //     return this._layout.sectionInset.right;
-    // }
     public [paddingRightProperty.setNative](value: Length) {
-        this._setPadding({ right: utilLayout.toDeviceIndependentPixels(this.effectivePaddingRight) });
+        this._setPadding({ right: layout.toDeviceIndependentPixels(this.effectivePaddingRight) });
     }
 
-    // public [paddingBottomProperty.getDefault](): number {
-    //     return this._layout.sectionInset.bottom;
-    // }
     public [paddingBottomProperty.setNative](value: Length) {
-        this._setPadding({ bottom: utilLayout.toDeviceIndependentPixels(this.effectivePaddingBottom) });
+        this._setPadding({ bottom: layout.toDeviceIndependentPixels(this.effectivePaddingBottom) });
     }
 
-    // public [paddingLeftProperty.getDefault](): number {
-    //     return this._layout.sectionInset.left;
-    // }
     public [paddingLeftProperty.setNative](value: Length) {
-        this._setPadding({ left: utilLayout.toDeviceIndependentPixels(this.effectivePaddingLeft) });
+        this._setPadding({ left: layout.toDeviceIndependentPixels(this.effectivePaddingLeft) });
     }
 
-    // public [orientationProperty.getDefault](): Orientation {
-    //     if (this.isHorizontal()) {
-    //         return 'horizontal';
-    //     }
-
-    //     return 'vertical';
-    // }
     public [orientationProperty.setNative](value: Orientation) {
         const layout = this._layout;
         if (layout instanceof UICollectionViewFlowLayout) {
@@ -196,12 +173,16 @@ export class CollectionView extends CollectionViewBase {
             p.onLayout && p.onLayout(this, left, top, right, bottom);
         });
 
-        const layout = this.nativeViewProtected.collectionViewLayout as UICollectionViewFlowLayout;
-        if (this._effectiveColWidth || this._effectiveRowHeight) {
-            layout.estimatedItemSize = layout.itemSize = CGSizeMake(utilLayout.toDeviceIndependentPixels(this._effectiveColWidth), utilLayout.toDeviceIndependentPixels(this._effectiveRowHeight));
+        const layoutView = this.nativeViewProtected.collectionViewLayout;
+        if ((layoutView instanceof UICollectionViewFlowLayout && this._effectiveColWidth) || this._effectiveRowHeight) {
+            // @ts-ignore
+            (layoutView).estimatedItemSize = (layoutView).itemSize = CGSizeMake(
+                layout.toDeviceIndependentPixels(this._effectiveColWidth),
+                layout.toDeviceIndependentPixels(this._effectiveRowHeight)
+            );
         }
         this._map.forEach((cellView, cell) => {
-            if (isEnabled()) {
+            if (Trace.isEnabled()) {
                 CLog(CLogTypes.log, 'onLayout', 'cell', cellView._listViewItemIndex);
             }
             this.layoutCell(cellView._listViewItemIndex, cell, cellView);
@@ -212,11 +193,11 @@ export class CollectionView extends CollectionViewBase {
         return this.orientation === 'horizontal';
     }
 
-    public onSourceCollectionChanged(event /*: ChangedData<any>*/) {
+    public onSourceCollectionChanged(event: ChangedData<any>) {
         if (!this.nativeViewProtected) {
             return;
         }
-        if (isEnabled()) {
+        if (Trace.isEnabled()) {
             CLog(CLogTypes.log, 'onItemsChanged', event.action, event.index, event.addedCount, event.removed && event.removed.length);
         }
         // we need to clear stored cell sizes and it wont be correct anymore
@@ -229,7 +210,7 @@ export class CollectionView extends CollectionViewBase {
                     indexes.addObject(NSIndexPath.indexPathForRowInSection(event.index + index, 0));
                 }
                 this.unbindUnusedCells(event.removed);
-                if (isEnabled()) {
+                if (Trace.isEnabled()) {
                     CLog(CLogTypes.info, 'deleteItemsAtIndexPaths', indexes.count);
                 }
                 this.nativeViewProtected.performBatchUpdatesCompletion(() => {
@@ -240,7 +221,7 @@ export class CollectionView extends CollectionViewBase {
             case ChangeType.Update: {
                 const indexes = NSMutableArray.new<NSIndexPath>();
                 indexes.addObject(NSIndexPath.indexPathForRowInSection(event.index, 0));
-                if (isEnabled()) {
+                if (Trace.isEnabled()) {
                     CLog(CLogTypes.info, 'reloadItemsAtIndexPaths', indexes.count);
                 }
                 this.nativeViewProtected.performBatchUpdatesCompletion(() => {
@@ -253,12 +234,11 @@ export class CollectionView extends CollectionViewBase {
                 for (let index = 0; index < event.addedCount; index++) {
                     indexes.addObject(NSIndexPath.indexPathForRowInSection(event.index + index, 0));
                 }
-                if (isEnabled()) {
+                if (Trace.isEnabled()) {
                     CLog(CLogTypes.info, 'insertItemsAtIndexPaths', indexes.count);
                 }
                 this.nativeViewProtected.performBatchUpdatesCompletion(() => {
                     this.nativeViewProtected.insertItemsAtIndexPaths(indexes);
-                    // this.nativeViewProtected.reloadItemsAtIndexPaths(nativeSource);
                 }, null);
                 // Reload the items to avoid duplicate Load on Demand indicators:
                 return;
@@ -278,7 +258,7 @@ export class CollectionView extends CollectionViewBase {
                             indexes.addObject(NSIndexPath.indexPathForItemInSection(event.index + index, 0));
                         }
                         this.unbindUnusedCells(event.removed);
-                        if (isEnabled()) {
+                        if (Trace.isEnabled()) {
                             CLog(CLogTypes.info, 'deleteItemsAtIndexPaths', indexes.count);
                         }
                         this.nativeViewProtected.performBatchUpdatesCompletion(() => {
@@ -296,7 +276,6 @@ export class CollectionView extends CollectionViewBase {
 
     onItemTemplatesChanged(oldValue, newValue) {
         super.onItemTemplatesChanged(oldValue, newValue);
-        // CLog(CLogTypes.log, 'onItemTemplatesChanged');
         if (!this.nativeViewProtected) {
             return;
         }
@@ -304,9 +283,6 @@ export class CollectionView extends CollectionViewBase {
         this._itemTemplatesInternal.forEach((t) => {
             view.registerClassForCellWithReuseIdentifier(CollectionViewCell.class(), t.key.toLowerCase());
         });
-        // for (let i = 0, length_1 = this._itemTemplatesInternal.length; i < length_1; i++) {
-        //     this.nativeViewProtected.registerClassForCellWithReuseIdentifier(CollectionViewCell.class(), this._itemTemplatesInternal[i].key.toLowerCase());
-        // }
     }
 
     private unbindUnusedCells(removedDataItems) {
@@ -326,7 +302,7 @@ export class CollectionView extends CollectionViewBase {
             return;
         }
         this._isDataDirty = false;
-        if (isEnabled()) {
+        if (Trace.isEnabled()) {
             CLog(CLogTypes.info, 'refresh');
         }
         // we need to clear stored cell sizes and it wont be correct anymore
@@ -407,14 +383,14 @@ export class CollectionView extends CollectionViewBase {
             const bindingContext = this._prepareItem(view, index);
             needsLayout = needsLayout || oldBindingContext !== bindingContext;
 
-            if (isEnabled()) {
+            if (Trace.isEnabled()) {
                 CLog(CLogTypes.log, '_prepareCell', index, !!cell.view, !!view, cell.view !== view, needsLayout);
             }
             const args = this.notifyForItemAtIndex(this, cell, view, CollectionViewBase.itemLoadingEvent, indexPath, bindingContext);
             view = args.view;
 
             if (view instanceof ProxyViewContainer) {
-                let sp = new GridLayout();
+                const sp = new GridLayout();
                 sp.addChild(view);
                 view = sp;
             }
@@ -443,7 +419,7 @@ export class CollectionView extends CollectionViewBase {
                 view.requestLayout();
             }
 
-            if (isEnabled()) {
+            if (Trace.isEnabled()) {
                 CLog(CLogTypes.log, '_prepareCell done', index, cellSize);
             }
         } finally {
@@ -455,12 +431,23 @@ export class CollectionView extends CollectionViewBase {
         let result = this._sizes[index];
         // CLog(CLogTypes.log, 'getCellSize', index, result, this._effectiveColWidth, this._effectiveRowHeight, this.getMeasuredWidth(), this.getMeasuredHeight());
         if (!result) {
-            if (this._effectiveColWidth && this._effectiveRowHeight) {
-                result = [this._effectiveColWidth, this._effectiveRowHeight];
-            } else if (this._effectiveRowHeight && this.orientation === 'vertical') {
-                result = [this.getMeasuredWidth(), this._effectiveRowHeight];
-            } else if (this._effectiveColWidth && this.orientation === 'horizontal') {
-                result = [this._effectiveColWidth, this.getMeasuredHeight()];
+            let width = this._effectiveColWidth;
+            let height = this._effectiveRowHeight;
+            if (this.spanSize) {
+                const spanSize = this.spanSize(index);
+                const horizontal = this.isHorizontal();
+                if (horizontal) {
+                    height *= spanSize;
+                } else {
+                    width *= spanSize;
+                }
+            }
+            if (width && height) {
+                result = [width, height];
+            } else if (height && this.orientation === 'vertical') {
+                result = [this.getMeasuredWidth(), height];
+            } else if (width && this.orientation === 'horizontal') {
+                result = [width, this.getMeasuredHeight()];
             }
         }
 
@@ -475,18 +462,25 @@ export class CollectionView extends CollectionViewBase {
     }
     private measureCell(cell: ICollectionViewCell, cellView: View, index: NSIndexPath): [number, number] {
         if (cellView) {
-            let result: [number, number];
-            const width = this._effectiveColWidth;
-            const height = this._effectiveRowHeight;
-
+            let width = this._effectiveColWidth;
+            let height = this._effectiveRowHeight;
             const horizontal = this.isHorizontal();
-            const widthMeasureSpec = width ? utilLayout.makeMeasureSpec(width, utilLayout.EXACTLY) : horizontal ? infinity : utilLayout.makeMeasureSpec(this._innerWidth, utilLayout.UNSPECIFIED);
-            const heightMeasureSpec = height ? utilLayout.makeMeasureSpec(height, utilLayout.EXACTLY) : horizontal ? utilLayout.makeMeasureSpec(this._innerHeight, utilLayout.UNSPECIFIED) : infinity;
-            if (isEnabled()) {
+            if (this.spanSize) {
+                const spanSize = this.spanSize(index.row);
+                if (horizontal) {
+                    height *= spanSize;
+                } else {
+                    width *= spanSize;
+                }
+            }
+
+            const widthMeasureSpec = width ? layout.makeMeasureSpec(width, layout.EXACTLY) : horizontal ? infinity : layout.makeMeasureSpec(this._innerWidth, layout.UNSPECIFIED);
+            const heightMeasureSpec = height ? layout.makeMeasureSpec(height, layout.EXACTLY) : horizontal ? layout.makeMeasureSpec(this._innerHeight, layout.UNSPECIFIED) : infinity;
+            if (Trace.isEnabled()) {
                 CLog(CLogTypes.log, 'measureCell', width, height, widthMeasureSpec, heightMeasureSpec);
             }
             const measuredSize = View.measureChild(this, cellView, widthMeasureSpec, heightMeasureSpec);
-            result = [measuredSize.measuredWidth, measuredSize.measuredHeight];
+            const result: [number, number] = [measuredSize.measuredWidth, measuredSize.measuredHeight];
 
             this.storeCellSize(index.row, result);
             return result;
@@ -494,15 +488,11 @@ export class CollectionView extends CollectionViewBase {
         return undefined;
     }
     layoutCell(index: number, cell: any, cellView: View): any {
-        const rowHeight = this._effectiveRowHeight;
-        const colWidth = this._effectiveColWidth;
         const cellSize = this.getCellSize(index);
-        const cellWidth = colWidth > 0 ? colWidth : cellSize[0];
-        const cellHeight = rowHeight > 0 ? rowHeight : cellSize[1];
         cellView.iosOverflowSafeAreaEnabled = false;
-        View.layoutChild(this, cellView, 0, 0, cellWidth, cellHeight);
-        if (isEnabled()) {
-            CLog(CLogTypes.log, 'layoutCell', index, colWidth, rowHeight, cellWidth, cellHeight, cellView.getMeasuredWidth(), cellView.getMeasuredHeight());
+        View.layoutChild(this, cellView, 0, 0, cellSize[0], cellSize[1]);
+        if (Trace.isEnabled()) {
+            CLog(CLogTypes.log, 'layoutCell', index, cellSize[0], cellSize[1], cellView.getMeasuredWidth(), cellView.getMeasuredHeight());
         }
     }
 
@@ -569,7 +559,7 @@ export class CollectionView extends CollectionViewBase {
         if (!cell) {
             cell = CollectionViewCell.new();
         }
-        if (isEnabled()) {
+        if (Trace.isEnabled()) {
             CLog(CLogTypes.log, 'collectionViewCellForItemAtIndexPath', indexPath.row, templateType, !!cell.view, cell);
         }
         this._prepareCell(cell, indexPath, templateType);
@@ -586,12 +576,19 @@ export class CollectionView extends CollectionViewBase {
             cell.transform = CGAffineTransformMakeRotation(-Math.PI);
         }
 
-        if (indexPath.row === this.items.length - 1) {
+        if (this.hasListeners(CollectionViewBase.loadMoreItemsEvent) && indexPath.row === this.items.length - 1) {
             this.notify<EventData>({
                 eventName: CollectionViewBase.loadMoreItemsEvent,
                 object: this,
             });
         }
+        // if (this.hasListeners(CollectionViewBase.displayItemEvent) ) {
+        //     this.notify<CollectionViewItemDisplayEventData>({
+        //         eventName: CollectionViewBase.displayItemEvent,
+        //         index:indexPath.row,
+        //         object: this,
+        //     });
+        // }
 
         if (cell.preservesSuperviewLayoutMargins) {
             cell.preservesSuperviewLayoutMargins = false;
@@ -619,18 +616,18 @@ export class CollectionView extends CollectionViewBase {
     collectionViewLayoutSizeForItemAtIndexPath(collectionView: UICollectionView, collectionViewLayout: UICollectionViewLayout, indexPath: NSIndexPath) {
         const row = indexPath.row;
         const dataItem = this.getItemAtIndex(row);
-        if (dataItem.visible === false) {
-            return CGSizeZero;
-        }
+        // if (dataItem.visible === false) {
+        //     return CGSizeZero;
+        // }
 
         let measuredSize = this.getCellSize(row);
         if (!measuredSize) {
-            if (isEnabled()) {
+            if (Trace.isEnabled()) {
                 CLog(CLogTypes.log, 'collectionViewLayoutSizeForItemAtIndexPath', row);
             }
             const templateType = this._getItemTemplateType(indexPath);
             if (templateType) {
-                let measureData: any = this._measureCellMap.get(templateType);
+                const measureData: any = this._measureCellMap.get(templateType);
                 let cell: any = measureData && measureData.cell;
                 if (!cell) {
                     cell = CollectionViewCell.new();
@@ -641,11 +638,11 @@ export class CollectionView extends CollectionViewBase {
                 this._measureCellMap.set(templateType, { cell, view: cell.view });
             }
         }
-        if (isEnabled()) {
+        if (Trace.isEnabled()) {
             CLog(CLogTypes.log, 'collectionViewLayoutSizeForItemAtIndexPath', row, measuredSize);
         }
         if (measuredSize) {
-            return CGSizeMake(utilLayout.toDeviceIndependentPixels(measuredSize[0]), utilLayout.toDeviceIndependentPixels(measuredSize[1]));
+            return CGSizeMake(layout.toDeviceIndependentPixels(measuredSize[0]), layout.toDeviceIndependentPixels(measuredSize[1]));
         }
         return CGSizeZero;
     }
@@ -684,18 +681,6 @@ const CollectionViewCell = (UICollectionViewCell as any).extend({
 CollectionViewCell.class = function () {
     return CollectionViewCell;
 };
-
-// export class CollectionViewCell extends UICollectionViewCell {
-//     public static class(): any {
-//         return CollectionViewCell;
-//     }
-
-//     public owner: WeakRef<ItemView>;
-
-//     get view(): ItemView {
-//         return this.owner ? this.owner.get() : null;
-//     }
-// }
 
 declare class ICollectionViewDataSource extends NSObject {
     static new(): ICollectionViewDataSource;

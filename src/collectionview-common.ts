@@ -1,15 +1,16 @@
+import { Trace, ViewBase, booleanConverter } from '@nativescript/core';
 import * as observable from '@nativescript/core/data/observable';
 import { ChangedData, ObservableArray } from '@nativescript/core/data/observable-array';
-import * as builder from '@nativescript/core/ui/builder';
-import { booleanConverter, heightProperty, makeParser, makeValidator, widthProperty, ViewBase } from '@nativescript/core/ui/content-view';
-import { CoercibleProperty, KeyedTemplate, layout, Length, PercentLength, Property, Template, View } from '@nativescript/core/ui/core/view';
+import { profile } from '@nativescript/core/profiling';
+import { parse, parseMultipleTemplates } from '@nativescript/core/ui/builder';
+import { Property, makeParser, makeValidator } from '@nativescript/core/ui/core/properties';
+import { KeyedTemplate, Template, View } from '@nativescript/core/ui/core/view';
 import { addWeakEventListener, removeWeakEventListener } from '@nativescript/core/ui/core/weak-event-listener';
 import { Label } from '@nativescript/core/ui/label';
 import { ItemsSource } from '@nativescript/core/ui/list-view';
-import { CollectionView as CollectionViewDefinition, Orientation } from './collectionview';
-import { profile } from '@nativescript/core/profiling';
-import { write, messageType, isEnabled } from '@nativescript/core/trace';
 import { ProxyViewContainer } from '@nativescript/core/ui/proxy-view-container';
+import { Length, PercentLength, heightProperty, widthProperty } from '@nativescript/core/ui/styling/style-properties';
+import { CollectionView as CollectionViewDefinition, Orientation } from './collectionview';
 
 export const CollectionViewTraceCategory = 'NativescriptCollectionView';
 
@@ -22,12 +23,10 @@ declare module '@nativescript/core/ui/core/view-base' {
 }
 
 ViewBase.prototype._recursiveSuspendNativeUpdates = profile('_recursiveSuspendNativeUpdates', function (type) {
-    // console.log('_recursiveSuspendNativeUpdates', this, this._suspendNativeUpdatesCount);
     this._suspendNativeUpdates(type);
     this.eachChild((c) => c._recursiveSuspendNativeUpdates(type));
 });
 ViewBase.prototype._recursiveResumeNativeUpdates = profile('_recursiveResumeNativeUpdates', function (type) {
-    // console.log('_recursiveResumeNativeUpdates', this, this._suspendNativeUpdatesCount);
     this._resumeNativeUpdates(type);
     this.eachChild((c) => c._recursiveResumeNativeUpdates(type));
 });
@@ -44,14 +43,14 @@ ViewBase.prototype._recursiveBatchUpdates = profile('_recursiveBatchUpdates', fu
 });
 
 export enum CLogTypes {
-    log = messageType.log,
-    info = messageType.info,
-    warning = messageType.warn,
-    error = messageType.error,
+    log = Trace.messageType.log,
+    info = Trace.messageType.info,
+    warning = Trace.messageType.warn,
+    error = Trace.messageType.error,
 }
 
 export const CLog = (type: CLogTypes, ...args) => {
-    write(args.join(' '), CollectionViewTraceCategory, type);
+    Trace.write(args.join(' '), CollectionViewTraceCategory, type);
 };
 
 const autoEffectiveRowHeight = 0;
@@ -71,7 +70,9 @@ export namespace knownMultiTemplates {
     export const itemTemplates = 'itemTemplates';
 }
 
-export interface Plugin { onLayout?: Function }
+export interface Plugin {
+    onLayout?: Function;
+}
 
 export abstract class CollectionViewBase extends View implements CollectionViewDefinition {
     public static itemLoadingEvent = 'itemLoading';
@@ -79,6 +80,7 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     public static scrollEvent = 'scroll';
     public static scrollEndEvent = 'scrollEnd';
     public static itemTapEvent = 'itemTap';
+    public static displayItemEvent = 'displayItem';
     public static loadMoreItemsEvent = 'loadMoreItems';
     public static dataPopulatedEvent = 'dataPopulated';
     public static knownFunctions = ['itemTemplateSelector', 'itemIdGenerator']; // See component-builder.ts isKnownFunction
@@ -101,7 +103,7 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
 
     public layoutStyle: string = 'grid';
     public plugins: string[] = [];
-    public static plugins: { [k: string]: Plugin} = {};
+    public static plugins: { [k: string]: Plugin } = {};
     public static registerPlugin(key: string, plugin: Plugin) {
         this.plugins[key] = plugin;
     }
@@ -119,7 +121,7 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
             key: 'default',
             createView: () => {
                 if (this.itemTemplate) {
-                    return builder.parse(this.itemTemplate, this);
+                    return parse(this.itemTemplate, this);
                 }
                 return undefined;
             },
@@ -133,12 +135,12 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
 
     _onSizeChanged() {
         super._onSizeChanged();
-        this.onSizeChanged(layout.toDeviceIndependentPixels(this.getMeasuredWidth()), layout.toDeviceIndependentPixels(this.getMeasuredHeight()));
+        this.onSizeChanged(this.getMeasuredWidth(), this.getMeasuredHeight());
     }
     @profile
     public onSizeChanged(measuredWidth: number, measuredHeight: number) {
         let changed = false;
-        this._innerWidth = layout.toDevicePixels(measuredWidth) - this.effectivePaddingLeft - this.effectivePaddingRight;
+        this._innerWidth = measuredWidth - this.effectivePaddingLeft - this.effectivePaddingRight;
         if (this.colWidth) {
             const newValue = PercentLength.toDevicePixels(this.colWidth, autoEffectiveColWidth, this._innerWidth); // We cannot use 0 for auto as it throws for android.
             if (newValue !== this._effectiveColWidth) {
@@ -147,7 +149,7 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
             }
         }
 
-        this._innerHeight = layout.toDevicePixels(measuredHeight) - this.effectivePaddingTop - this.effectivePaddingBottom;
+        this._innerHeight = measuredHeight - this.effectivePaddingTop - this.effectivePaddingBottom;
         if (this.rowHeight) {
             const newValue = PercentLength.toDevicePixels(this.rowHeight, autoEffectiveRowHeight, this._innerHeight);
             if (newValue !== this._effectiveRowHeight) {
@@ -218,7 +220,7 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
         }
     }
     resolveTemplateView(template) {
-        return builder.parse(template, this);
+        return parse(template, this);
     }
     _getDefaultItemContent() {
         const lbl = new Label();
@@ -355,6 +357,11 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
         }
         this.refresh();
     };
+    spanSize: (position: number) => number;
+    onSpanSizeChangedInternal = (oldValue, newValue) => {
+        this.spanSize = newValue;
+        this.refresh();
+    };
     _isDataDirty = false;
     onLoaded() {
         super.onLoaded();
@@ -439,7 +446,7 @@ export const itemTemplatesProperty = new Property<CollectionViewBase, KeyedTempl
     name: 'itemTemplates',
     valueConverter: (value) => {
         if (typeof value === 'string') {
-            return builder.parseMultipleTemplates(value);
+            return parseMultipleTemplates(value);
         }
 
         return value;
@@ -471,10 +478,19 @@ export const itemsProperty = new Property<CollectionViewBase, Function>({
     name: 'items',
     defaultValue: undefined,
     valueChanged(target, oldValue, newValue) {
-        target.onItemsChangedInternal(oldValue, newValue);
+        target.onSpanSizeChangedInternal(oldValue, newValue);
     },
 });
 itemsProperty.register(CollectionViewBase);
+
+export const spanSizeProperty = new Property<CollectionViewBase, Function>({
+    name: 'spanSize',
+    defaultValue: undefined,
+    valueChanged(target, oldValue, newValue) {
+        target.onItemsChangedInternal(oldValue, newValue);
+    },
+});
+spanSizeProperty.register(CollectionViewBase);
 
 export const isScrollEnabledProperty = new Property<CollectionViewBase, boolean>({
     name: 'isScrollEnabled',

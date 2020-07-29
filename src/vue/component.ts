@@ -1,9 +1,6 @@
-import { CollectionView } from '../collectionview';
-// import Vue from 'nativescript-vue';
 import { Observable } from '@nativescript/core/data/observable';
-import { ObservableArray } from '@nativescript/core/data/observable-array/observable-array';
-// import { View } from '@nativescript/core/ui/page/page';
-// import { Component, Prop, Watch } from 'vue-property-decorator';
+import { ObservableArray } from '@nativescript/core/data/observable-array';
+import { CollectionView } from '../collectionview';
 
 function extend(to, _from): any {
     for (const key in _from) {
@@ -13,7 +10,7 @@ function extend(to, _from): any {
 }
 
 const VUE_VIEW = '__vueVNodeRef__';
-export default  {
+export default {
     props: {
         items: {
             validator: (val) => !val || Array.isArray(val) || val instanceof ObservableArray,
@@ -61,9 +58,9 @@ export default  {
         const itemTemplateSelector = this.itemTemplateSelector
             ? this.itemTemplateSelector // custom template selector if any
             : (item, index, items) => {
-                  const isSelected = false;
-                  return this.$templates.selectorFn(this.getItemContext(item, index, isSelected));
-              };
+                const isSelected = false;
+                return this.$templates.selectorFn(this.getItemContext(item, index, isSelected));
+            };
         listView.setAttribute('itemTemplateSelector', itemTemplateSelector);
     },
     methods: {

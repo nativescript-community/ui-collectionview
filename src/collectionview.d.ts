@@ -1,7 +1,5 @@
-import { KeyedTemplate, PercentLength, Template, View } from '@nativescript/core/ui/core/view';
-import { ItemsSource } from '@nativescript/core/ui/list-view';
-import { EventData } from '@nativescript/core/data/observable';
-import { CollectionViewBase, Plugin } from './collectionview-common';
+import { EventData, View } from '@nativescript/core';
+import { CollectionViewBase } from './collectionview-common';
 export * from './collectionview-common';
 
 export type Orientation = 'horizontal' | 'vertical';
@@ -16,8 +14,14 @@ export interface CollectionViewItemEventData extends EventData {
     object: CollectionView;
     index: number;
     view: View;
-    item:any,
+    item: any;
     bindingContext?: any;
+}
+
+export interface CollectionViewItemDisplayEventData extends EventData {
+    eventName: string;
+    object: CollectionView;
+    index: number;
 }
 
 /**

@@ -1,7 +1,7 @@
 import Vue from 'nativescript-vue';
 import App from './components/App.vue';
 
-import { Label as HTMLLabel } from 'nativescript-htmllabel'; // require first to get Font res loading override
+// import { Label as HTMLLabel } from 'nativescript-htmllabel'; // require first to get Font res loading override
 // Vue.registerElement('Label', () => HTMLLabel);
 
 import { install as installGestures } from 'nativescript-gesturehandler';

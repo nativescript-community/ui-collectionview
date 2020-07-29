@@ -46,14 +46,23 @@ declare module com {
             }
             export namespace OnScrollListener {
                 export class Listener {
-                    constructor(implementation:{
+                    constructor(implementation: {
                         onScrolled(param0: androidx.recyclerview.widget.RecyclerView, param1: number, param2: number): void;
-					 onScrollStateChanged(param0: androidx.recyclerview.widget.RecyclerView, param1: number): void;
-                    })
+                        onScrollStateChanged(param0: androidx.recyclerview.widget.RecyclerView, param1: number): void;
+                    });
                     onScrolled(param0: androidx.recyclerview.widget.RecyclerView, param1: number, param2: number): void;
                     onScrollStateChanged(param0: androidx.recyclerview.widget.RecyclerView, param1: number): void;
                 }
-					 
+            }
+            export class SpanSizeLookup extends androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup {
+                constructor(inter: SpanSizeLookup.Interface);
+                setListener(inter: SpanSizeLookup.Interface);
+            }
+            export namespace SpanSizeLookup {
+                export class Interface {
+                    constructor(implementation: { getSpanSize(param0: number): number });
+                    getSpanSize(param0: number): number;
+                }
             }
         }
     }

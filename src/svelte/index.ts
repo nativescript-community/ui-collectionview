@@ -1,39 +1,17 @@
-import { ItemEventData } from '@nativescript/core/ui/list-view';
-import { View } from '@nativescript/core/ui/core/view';
-import { ViewBase } from '@nativescript/core/ui/core/view-base';
-import { NativeViewElementNode, TemplateElement, ViewNode, createElement, logger, registerElement } from 'svelte-native/dom';
+import { ItemEventData, View } from '@nativescript/core';
+import { profile } from '@nativescript/core/profiling';
+import { LayoutBase, ViewBase } from '@nativescript/core/ui';
+import { NativeViewElementNode, TemplateElement, ViewNode, createElement, registerElement } from 'svelte-native/dom';
 import { flush } from 'svelte/internal';
 import { CollectionView } from '../collectionview';
-import { profile } from '@nativescript/core/profiling';
 
 declare module '@nativescript/core/ui/core/view-base' {
     interface ViewBase {
-        _recursiveSuspendNativeUpdates(type);
-        _recursiveResumeNativeUpdates(type);
-        _recursiveBatchUpdates<T>(callback: () => T): T;
+        __SvelteComponent__?: any;
+        __SvelteComponentBuilder__?: any;
+        __CollectionViewCurrentIndex__?: number;
     }
 }
-ViewBase.prototype._recursiveSuspendNativeUpdates = profile('_recursiveSuspendNativeUpdates', function (type) {
-    // console.log('_recursiveSuspendNativeUpdates', this, this._suspendNativeUpdatesCount);
-    this._suspendNativeUpdates(type);
-    this.eachChild((c) => c._recursiveSuspendNativeUpdates(type));
-});
-ViewBase.prototype._recursiveResumeNativeUpdates = profile('_recursiveResumeNativeUpdates', function (type) {
-    // console.log('_recursiveResumeNativeUpdates', this, this._suspendNativeUpdatesCount);
-    this._resumeNativeUpdates(type);
-    this.eachChild((c) => c._recursiveResumeNativeUpdates(type));
-});
-
-// right now _recursiveBatchUpdates suppose no view is added in the callback. If so it will crash from _resumeNativeUpdates
-ViewBase.prototype._recursiveBatchUpdates = profile('_recursiveBatchUpdates', function <T>(callback: () => T): T {
-    try {
-        this._recursiveSuspendNativeUpdates(0);
-
-        return callback();
-    } finally {
-        this._recursiveResumeNativeUpdates(0);
-    }
-});
 
 class SvelteKeyedTemplate {
     _key: string;
@@ -138,7 +116,7 @@ export default class CollectionViewViewElement extends NativeViewElementNode<Col
         }
     }
     private updateListItem(args: ItemEventData & { bindingContext }) {
-        const _view = args.view as any;
+        const _view = args.view;
         const props = { item: args.bindingContext };
         const componentInstance = _view.__SvelteComponent__;
         if (!componentInstance) {
@@ -148,7 +126,7 @@ export default class CollectionViewViewElement extends NativeViewElementNode<Col
                 _view.__SvelteComponentBuilder__ = null;
                 _view.__CollectionViewCurrentIndex__ = args.index;
                 const nativeEl = (dummy.firstElement() as NativeViewElementNode<View>).nativeView;
-                _view.addChild(nativeEl);
+                (_view as LayoutBase).addChild(nativeEl);
             }
         } else {
             // ensure we dont do unnecessary tasks if index did not change

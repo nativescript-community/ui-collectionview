@@ -1,9 +1,13 @@
 <template>
     <Page>
         <StackLayout>
-            <CollectionView width="100%" height="100%" rowHeight="80" ref="listView" :items="itemList" @itemTap="onItemTap" itemIdGenerator="index">
-                <v-template>
-                    <GridLayout columns="16,auto,*,auto,16" rows="12,auto,*,auto" rippleColor="red" backgroundColor="white">
+            <Label :text="currentSection" height="60" width="100%" backgroundColor="red"/>
+            <CollectionView width="100%" height="100%" colWidth="50%" ref="listView" :items="itemList" @itemTap="onItemTap" itemIdGenerator="index" :spanSize="index => (index % 5 === 0 ? 2 : 1)">
+                <v-template if="$index % 5 === 0">
+                    <Label fontSize="17" :text="item.title" verticalAlignment="center" height="30"/>
+                </v-template>
+                <v-template >
+                    <GridLayout columns="16,auto,*,auto,16" rows="12,auto,*,auto" rippleColor="red" backgroundColor="white" height="80">
                         <Label
                             v-show="!!item.leftIcon"
                             col="1"
@@ -83,9 +87,17 @@ export default {
     data() {
         const items = [];
         for (let loop = 0; loop < 1000; loop++) {
-            items.push({ index:loop, leftIcon: 'mdi-magnify', title: 'title ' + loop.toString(), subtitle: 'subtitle ' + loop.toString() });
+            items.push({
+                // width: loop % 5 === 0 ? '100%' : '50%',
+                index: loop,
+                leftIcon: 'mdi-magnify',
+                title: 'title ' + loop.toString(),
+                subtitle: 'subtitle ' + loop.toString()
+                // visible: loop % 10 !== 0
+            });
         }
         return {
+            currentSection:0,
             itemList: items
         };
     },
@@ -96,7 +108,13 @@ export default {
         },
         logEvent(e) {
             console.log('logEvent', e.eventName, e.extraData);
-        }
+        },
+        // onDisplayEvent(e) {
+        //     console.log('onDisplayEvent', e.eventName, e.index);
+        //     if (e.index % 5 === 0 && this.currentSection !== e.index) {
+        //         // this.currentSection = e.index;
+        //     }
+        // }
         // itemIdGenerator(item, i) {
         //   return item.index;
         // }

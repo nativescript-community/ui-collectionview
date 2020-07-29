@@ -4,14 +4,14 @@ const CollectionViewPlugin = {
     install(Vue, options) {
         Vue.registerElement(
             'CollectionView',
-            function() {
+            function () {
                 return CollectionView;
             },
             {
-                component: require('./component').default
+                component: require('./component').default,
             }
         );
-    }
+    },
 };
 
 export default CollectionViewPlugin;
