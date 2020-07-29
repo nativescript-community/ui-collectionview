@@ -1,5 +1,4 @@
 ﻿import { ChangeType, ChangedData, GridLayout, Length, Property, ProxyViewContainer, Trace, View, paddingBottomProperty, paddingLeftProperty, paddingRightProperty, paddingTopProperty, profile } from '@nativescript/core';
-import { WeakRef } from '@nativescript/core/debugger/dom-node';
 import { layout } from '@nativescript/core/utils/utils';
 import { CollectionViewItemEventData, Orientation, reverseLayoutProperty } from './collectionview';
 import { CLog, CLogTypes, CollectionViewBase, ListViewViewTypes, isScrollEnabledProperty, orientationProperty } from './collectionview-common';

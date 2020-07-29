@@ -15,7 +15,6 @@ import {
     paddingTopProperty,
     profile,
 } from '@nativescript/core';
-import { WeakRef } from '@nativescript/core/debugger/dom-node';
 import { layout } from '@nativescript/core/utils/utils';
 import { CollectionViewItemEventData, Orientation, reverseLayoutProperty } from './collectionview';
 import { CLog, CLogTypes, CollectionViewBase, ListViewViewTypes, isBounceEnabledProperty, isScrollEnabledProperty, itemTemplatesProperty, orientationProperty } from './collectionview-common';
