@@ -8,7 +8,7 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 const { NativeScriptWorkerPlugin } = require("nativescript-worker-loader/NativeScriptWorkerPlugin");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
-const gridViewMangleExcludes = require("nativescript-collectionview/uglify-mangle-excludes").default;
+const gridViewMangleExcludes = require("@nativescript-community/ui-collectionview/uglify-mangle-excludes").default;
 
 module.exports = env => {
     const platform = env && (env.android && "android" || env.ios && "ios");

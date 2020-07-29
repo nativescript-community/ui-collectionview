@@ -19,4 +19,4 @@ require("@nativescript/angular/platform-static");
 require("@nativescript/angular/forms");
 require("@nativescript/angular/router");
 
-require("nativescript-collectionview"); // Added for snapshots
+require("@nativescript-community/ui-collectionview"); // Added for snapshots

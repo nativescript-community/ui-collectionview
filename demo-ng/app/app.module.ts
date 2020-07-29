@@ -13,7 +13,7 @@ import { ItemDetailComponent } from "./item/item-detail.component";
 // Uncomment and add to NgModule imports  if you need to use the HTTP wrapper
 // import { NativeScriptHttpModule } from "@nativescript/angular/http";
 
-import { CollectionViewModule } from 'nativescript-collectionview/angular';
+import { CollectionViewModule } from '@nativescript-community/ui-collectionview/angular';
 import * as trace from '@nativescript/core/trace';
 trace.setCategories('ns-collectionview');
 // trace.enable();

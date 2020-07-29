@@ -79,8 +79,8 @@ module.exports = env => {
         const srcFullPath = resolve(projectRoot, '..', 'src');
         alias = Object.assign(alias, {
             '#': srcFullPath,
-            'nativescript-collectionview$': '#/collectionview.' + platform,
-            'nativescript-collectionview/vue$': '#/vue/index'
+            '@nativescript-community/ui-collectionview$': '#/collectionview.' + platform,
+            '@nativescript-community/ui-collectionview/vue$': '#/vue/index'
         });
     }
 

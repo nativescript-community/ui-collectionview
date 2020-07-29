@@ -1,0 +1,12 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "paths": {
+        }
+    },
+    "include": ["src/angular/**/*.ts", "./references.d.ts"],
+    "exclude": ["node_modules", "platforms"],
+    "angularCompilerOptions": {
+        "disableTypeScriptVersionCheck": true
+    }
+}

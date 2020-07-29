@@ -24,16 +24,14 @@
         "paths": {
             "tns-core-modules": ["./node_modules/@nativescript/core"],
             "tns-core-modules/*": ["./node_modules/@nativescript/core/*"],
-            "nativescript-collectionview": ["src/collectionview"],
-            "nativescript-collectionview/*": ["src/*"],
+            "@nativescript-community/ui-collectionview": ["src/collectionview"],
+            "@nativescript-community/ui-collectionview/*": ["src/*"],
             "*": ["node_modules/*"]
         },
-        "plugins": [{ "transform": "node_modules/@nativescript/webpack/transformers/ns-transform-native-classes", "type": "raw" }]
+        "plugins": [{ "transform": "./node_modules/@nativescript/webpack/transformers/ns-transform-native-classes.js", "type": "raw" }]
     },
     "include": ["src/**/*", "./references.d.ts"],
-    "exclude": ["node_modules", "platforms"],
-    "compileOnSave": false,
-    "angularCompilerOptions": {
-        "skipTemplateCodegen": true
-    }
+    "exclude": ["node_modules", "platforms", "src/angular/**/*"],
+    "compileOnSave": false
+    
 }

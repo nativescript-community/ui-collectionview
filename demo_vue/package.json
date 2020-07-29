@@ -22,7 +22,7 @@
   "dependencies": {
     "@mdi/font": "4.9.95",
     "@nativescript/core": "^6.5.1",
-    "nativescript-collectionview": "../plugin",
+    "@nativescript-community/ui-collectionview": "../plugin",
     "nativescript-gesturehandler": "^0.1.8",
     "nativescript-htmllabel": "^1.0.32",
     "nativescript-vue": "^2.6.1"
