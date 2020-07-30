@@ -134,6 +134,9 @@ export class CollectionView extends CollectionViewBase {
     }
     _getSpanSize: (position: number) => number;
     set spanSize(inter: (position: number) => number) {
+        if (!(typeof inter === 'function')) {
+            return;
+        }
         this._getSpanSize = inter;
         const layoutManager = this.layoutManager;
         if (layoutManager && layoutManager['setSpanSizeLookup']) {
