@@ -38,9 +38,8 @@
         "setup": "ts-patch install",
         "build.angular": "cd src/angular && npm run build",
         "tsc": "cpy '**/*.d.ts' '../plugin' --parents --cwd=src && cp README.md plugin && tsc -skipLibCheck -d",
-        "build.esm": "tsc -skipLibCheck --target es2015 --module esnext --removeComments --outDir build/esm && node ./build.esm.js",
         "clean": "rimraf ./plugin/**/*.d.ts ./plugin/**/*.js ./plugin/**/*.js.map ./plugin/**/*.metadata.json plugin/node_modules plugin/package-lock.json",
-        "build": "rm -f .tsbuildinfo && npm run tsc && npm run build.esm && npm run ngc",
+        "build": "rm -f .tsbuildinfo && npm run tsc  && npm run ngc",
         "publish": "npm run build && lerna publish",
         "commitmsg": "commitlint -e $GIT_PARAMS"
     },
