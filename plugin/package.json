@@ -1,6 +1,6 @@
 {
     "name": "@nativescript-community/ui-collectionview",
-    "version": "3.0.3",
+    "version": "3.0.4",
     "description": "Your awesome NativeScript plugin.",
     "main": "./collectionview",
     "module": "./collectionview.mjs",

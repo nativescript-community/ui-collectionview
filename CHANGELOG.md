@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.4](https://github.com/Akylas/nativescript-collectionview/compare/v3.0.3...v3.0.4) (2020-08-08)
+
+
+### Bug Fixes
+
+* svelte allow let:index ([36ac329](https://github.com/Akylas/nativescript-collectionview/commit/36ac32991fefd367314d39c1b1d36de8e1448134))
+* **android:** item update fix ([bde37ec](https://github.com/Akylas/nativescript-collectionview/commit/bde37ec5f30c2bc0ad71590c10c58e99e67c1653))
+
+
+
+
+
 ## [3.0.3](https://github.com/Akylas/nativescript-collectionview/compare/v3.0.2...v3.0.3) (2020-07-30)
 
 
