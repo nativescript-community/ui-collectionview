@@ -439,12 +439,11 @@ export class CollectionView extends CollectionViewBase {
         switch (event.action) {
             case ChangeType.Delete: {
                 this._listViewAdapter.notifyItemRangeRemoved(event.index, event.removed.length);
-                break;
+                return;
             }
             case ChangeType.Add: {
                 if (event.addedCount > 0) {
                     this._listViewAdapter.notifyItemRangeInserted(event.index, event.addedCount);
-                    return;
                 }
                 // Reload the items to avoid duplicate Load on Demand indicators:
                 return;
@@ -452,13 +451,11 @@ export class CollectionView extends CollectionViewBase {
             case ChangeType.Update: {
                 if (event.addedCount > 0) {
                     this._listViewAdapter.notifyItemRangeChanged(event.index, event.addedCount);
-                    return;
                 }
                 if (event.removed && event.removed.length > 0) {
                     this._listViewAdapter.notifyItemRangeRemoved(event.index, event.removed.length);
-                    return;
                 }
-                break;
+                return;
             }
             case ChangeType.Splice: {
                 if (event.addedCount > 0) {
