@@ -478,7 +478,7 @@ export const itemsProperty = new Property<CollectionViewBase, Function>({
     name: 'items',
     defaultValue: undefined,
     valueChanged(target, oldValue, newValue) {
-        target.onSpanSizeChangedInternal(oldValue, newValue);
+        target.onItemsChangedInternal(oldValue, newValue);
     },
 });
 itemsProperty.register(CollectionViewBase);
@@ -487,7 +487,7 @@ export const spanSizeProperty = new Property<CollectionViewBase, Function>({
     name: 'spanSize',
     defaultValue: undefined,
     valueChanged(target, oldValue, newValue) {
-        target.onItemsChangedInternal(oldValue, newValue);
+        target.onSpanSizeChangedInternal(oldValue, newValue);
     },
 });
 spanSizeProperty.register(CollectionViewBase);
