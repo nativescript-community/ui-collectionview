@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.5](https://github.com/Akylas/nativescript-collectionview/compare/v3.0.4...v3.0.5) (2020-08-08)
+
+
+### Bug Fixes
+
+* items update not working ([63a82a4](https://github.com/Akylas/nativescript-collectionview/commit/63a82a4331aa5e8de6b8611a1ac0414fc23be7d9))
+
+
+
+
+
 ## [3.0.4](https://github.com/Akylas/nativescript-collectionview/compare/v3.0.3...v3.0.4) (2020-08-08)
 
 
