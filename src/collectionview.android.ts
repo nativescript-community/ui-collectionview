@@ -434,7 +434,7 @@ export class CollectionView extends CollectionViewBase {
             return;
         }
         if (Trace.isEnabled()) {
-            CLog(CLogTypes.log, 'onItemsChanged', event.action, event.index, event.addedCount, event.removed);
+            CLog(CLogTypes.log, 'onItemsChanged', event.action, event.index, event.addedCount, event.removed, event.removed && event.removed.length);
         }
         switch (event.action) {
             case ChangeType.Delete: {
@@ -452,9 +452,9 @@ export class CollectionView extends CollectionViewBase {
                 if (event.addedCount > 0) {
                     this._listViewAdapter.notifyItemRangeChanged(event.index, event.addedCount);
                 }
-                if (event.removed && event.removed.length > 0) {
-                    this._listViewAdapter.notifyItemRangeRemoved(event.index, event.removed.length);
-                }
+                // if (event.removed && event.removed.length > 0) {
+                //     this._listViewAdapter.notifyItemRangeRemoved(event.index, event.removed.length);
+                // }
                 return;
             }
             case ChangeType.Splice: {
