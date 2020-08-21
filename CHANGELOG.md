@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.6](https://github.com/Akylas/nativescript-collectionview/compare/v3.0.5...v3.0.6) (2020-08-21)
+
+
+### Bug Fixes
+
+* **android:** correctly handle observablearray update ([5ade14e](https://github.com/Akylas/nativescript-collectionview/commit/5ade14e0a027a1c77bda2b36eb329c8ccaedf4ed))
+
+
+
+
+
 ## [3.0.5](https://github.com/Akylas/nativescript-collectionview/compare/v3.0.4...v3.0.5) (2020-08-08)
 
 

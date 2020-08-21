@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.6](https://github.com/nativescript-community/nativescript-collectionview/compare/v3.0.5...v3.0.6) (2020-08-21)
+
+**Note:** Version bump only for package @nativescript-community/ui-collectionview
+
+
+
+
+
 ## [3.0.5](https://github.com/Akylas/nativescript-collectionview/compare/v3.0.4...v3.0.5) (2020-08-08)
 
 **Note:** Version bump only for package @nativescript-community/ui-collectionview
