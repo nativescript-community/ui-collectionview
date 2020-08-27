@@ -1,0 +1,38 @@
+{
+	"name": "nativescript-community-ui-collectionview-angular",
+	"ngPackage": {
+		"lib": {
+			"entryFile": "index.ts",
+			"umdModuleIds": {
+				"@nativescript/core": "ns-core",
+				"@nativescript/angular": "ns-angular",
+				"@nativescript-community/ui-collectionview": "ns-ui-collectionview"
+			}
+		},
+		"whitelistedNonPeerDependencies": [
+			"."
+		]
+	},
+	"scripts": {
+		"build": "npm i && ng-packagr -p package.json && cd dist && cpy '**/*' '../../plugin/angular' --parents"
+	},
+	"devDependencies": {
+		"@angular/animations": "~10.0.0",
+		"@angular/compiler-cli": "~10.0.0",
+		"@angular/common": "~10.0.0",
+		"@angular/compiler": "~10.0.0",
+		"@angular/core": "~10.0.0",
+		"@angular/forms": "~10.0.0",
+		"@angular/platform-browser": "~10.0.0",
+		"@angular/platform-browser-dynamic": "~10.0.0",
+		"@angular/router": "~10.0.0",
+		"@nativescript/angular": "~10.0.3",
+		"@nativescript/core": "rc",
+		"cpy-cli": "~3.1.1",
+		"@nativescript-community/ui-collectionview": "file:../plugin",
+		"ng-packagr": "~10.0.0",
+		"rxjs": "^6.6.0",
+		"typescript": "~3.9.0",
+		"zone.js": "^0.10.3"
+	}
+}

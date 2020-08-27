@@ -21,10 +21,10 @@ import {
     ɵisListLikeIterable as isListLikeIterable
 } from '@angular/core';
 import { ObservableArray, KeyedTemplate, View } from '@nativescript/core';
-import { CollectionView, CollectionViewItemEventData, ListViewViewTypes } from '../collectionview';
+import { getSingleViewRecursive, isKnownView, registerElement } from '@nativescript/angular';
+import { CollectionView, CollectionViewItemEventData, ListViewViewTypes } from '@nativescript-community/ui-collectionview';
 import { collectionViewLog } from './trace';
 
-import { getSingleViewRecursive, isKnownView, registerElement } from '@nativescript/angular';
 
 const NG_VIEW = '_ngViewRef';
 

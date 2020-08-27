@@ -24,3 +24,5 @@ plugin/**/*js.map
 plugin/**/*js
 plugin/*.ngsummary.json
 plugin/*.metadata.json
+plugin/angular
+src-angular/dist
