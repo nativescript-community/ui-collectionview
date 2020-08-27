@@ -1,5 +1,4 @@
-﻿import { ChangeType, ChangedData, GridLayout, Length, Property, ProxyViewContainer, Trace, View, paddingBottomProperty, paddingLeftProperty, paddingRightProperty, paddingTopProperty, profile } from '@nativescript/core';
-import { layout } from '@nativescript/core/utils/utils';
+﻿import { ChangeType, ChangedData, GridLayout, Length, Property, ProxyViewContainer, Trace, View, paddingBottomProperty, paddingLeftProperty, paddingRightProperty, paddingTopProperty, profile, Utils } from '@nativescript/core';
 import { CollectionViewItemEventData, Orientation, reverseLayoutProperty } from './collectionview';
 import { CLog, CLogTypes, CollectionViewBase, ListViewViewTypes, isScrollEnabledProperty, orientationProperty } from './collectionview-common';
 
@@ -196,7 +195,7 @@ export class CollectionView extends CollectionViewBase {
             this.notify({
                 object: this,
                 eventName: CollectionViewBase.scrollEvent,
-                scrollOffset: (this.isHorizontal() ? view.computeHorizontalScrollOffset() : view.computeVerticalScrollOffset()) / layout.getDisplayDensity(),
+                scrollOffset: (this.isHorizontal() ? view.computeHorizontalScrollOffset() : view.computeVerticalScrollOffset()) / Utils.layout.getDisplayDensity(),
             });
         }
 
@@ -224,7 +223,7 @@ export class CollectionView extends CollectionViewBase {
                 this.notify({
                     object: this,
                     eventName: CollectionViewBase.scrollEndEvent,
-                    scrollOffset: (this.isHorizontal() ? view.computeHorizontalScrollOffset() : view.computeVerticalScrollOffset()) / layout.getDisplayDensity(),
+                    scrollOffset: (this.isHorizontal() ? view.computeHorizontalScrollOffset() : view.computeVerticalScrollOffset()) / Utils.layout.getDisplayDensity(),
                 });
             }
         } else if (!this.scrolling && newState === 1) {
@@ -707,10 +706,10 @@ export class CollectionView extends CollectionViewBase {
             }
         }
         if (width || !view.width) {
-            view.width = layout.toDeviceIndependentPixels(width);
+            view.width = Utils.layout.toDeviceIndependentPixels(width);
         }
         if (height || !view.height) {
-            view.height = layout.toDeviceIndependentPixels(height);
+            view.height = Utils.layout.toDeviceIndependentPixels(height);
         }
 
         // if (this.hasListeners(CollectionViewBase.displayItemEvent) ) {

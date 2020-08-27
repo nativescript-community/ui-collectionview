@@ -14,14 +14,14 @@ import {
     paddingRightProperty,
     paddingTopProperty,
     profile,
+    Utils
 } from '@nativescript/core';
-import { layout } from '@nativescript/core/utils/utils';
 import { CollectionViewItemEventData, Orientation, reverseLayoutProperty } from './collectionview';
 import { CLog, CLogTypes, CollectionViewBase, ListViewViewTypes, isBounceEnabledProperty, isScrollEnabledProperty, itemTemplatesProperty, orientationProperty } from './collectionview-common';
 
 export * from './collectionview-common';
 
-const infinity = layout.makeMeasureSpec(0, layout.UNSPECIFIED);
+const infinity = Utils.layout.makeMeasureSpec(0, Utils.layout.UNSPECIFIED);
 
 export class CollectionView extends CollectionViewBase {
     private _layout: UICollectionViewLayout;
@@ -54,7 +54,7 @@ export class CollectionView extends CollectionViewBase {
         const view = UICollectionView.alloc().initWithFrameCollectionViewLayout(CGRectMake(0, 0, 0, 0), layout);
         view.backgroundColor = UIColor.clearColor;
         this._itemTemplatesInternal.forEach((t) => {
-            view.registerClassForCellWithReuseIdentifier(CollectionViewCell.class(), t.key.toLowerCase());
+            view.registerClassForCellWithReuseIdentifier(<any>CollectionViewCell.class(), t.key.toLowerCase());
         });
         view.autoresizesSubviews = false;
         view.autoresizingMask = UIViewAutoresizing.None;
@@ -65,7 +65,7 @@ export class CollectionView extends CollectionViewBase {
     onTemplateAdded(t) {
         super.onTemplateAdded(t);
         if (this.nativeViewProtected) {
-            this.nativeViewProtected.registerClassForCellWithReuseIdentifier(CollectionViewCell.class(), t.key.toLowerCase());
+            this.nativeViewProtected.registerClassForCellWithReuseIdentifier(<any>CollectionViewCell.class(), t.key.toLowerCase());
         }
     }
 
@@ -113,28 +113,28 @@ export class CollectionView extends CollectionViewBase {
     }
 
     public [paddingTopProperty.setNative](value: Length) {
-        this._setPadding({ top: layout.toDeviceIndependentPixels(this.effectivePaddingTop) });
+        this._setPadding({ top: Utils.layout.toDeviceIndependentPixels(this.effectivePaddingTop) });
     }
 
     public [paddingRightProperty.setNative](value: Length) {
-        this._setPadding({ right: layout.toDeviceIndependentPixels(this.effectivePaddingRight) });
+        this._setPadding({ right: Utils.layout.toDeviceIndependentPixels(this.effectivePaddingRight) });
     }
 
     public [paddingBottomProperty.setNative](value: Length) {
-        this._setPadding({ bottom: layout.toDeviceIndependentPixels(this.effectivePaddingBottom) });
+        this._setPadding({ bottom: Utils.layout.toDeviceIndependentPixels(this.effectivePaddingBottom) });
     }
 
     public [paddingLeftProperty.setNative](value: Length) {
-        this._setPadding({ left: layout.toDeviceIndependentPixels(this.effectivePaddingLeft) });
+        this._setPadding({ left: Utils.layout.toDeviceIndependentPixels(this.effectivePaddingLeft) });
     }
 
     public [orientationProperty.setNative](value: Orientation) {
         const layout = this._layout;
         if (layout instanceof UICollectionViewFlowLayout) {
             if (value === 'horizontal') {
-                layout.scrollDirection = UICollectionViewScrollDirection.Horizontal;
+              layout.scrollDirection = UICollectionViewScrollDirection.Horizontal;
             } else {
-                layout.scrollDirection = UICollectionViewScrollDirection.Vertical;
+              layout.scrollDirection = UICollectionViewScrollDirection.Vertical;
             }
         }
     }
@@ -174,7 +174,7 @@ export class CollectionView extends CollectionViewBase {
         const layoutView = this.nativeViewProtected.collectionViewLayout;
         if ((layoutView instanceof UICollectionViewFlowLayout && this._effectiveColWidth) || this._effectiveRowHeight) {
             // @ts-ignore
-            layoutView.estimatedItemSize = layoutView.itemSize = CGSizeMake(layout.toDeviceIndependentPixels(this._effectiveColWidth), layout.toDeviceIndependentPixels(this._effectiveRowHeight));
+            layoutView.estimatedItemSize = layoutView.itemSize = CGSizeMake(Utils.layout.toDeviceIndependentPixels(this._effectiveColWidth), Utils.layout.toDeviceIndependentPixels(this._effectiveRowHeight));
         }
         this._map.forEach((cellView, cell) => {
             if (Trace.isEnabled()) {
@@ -276,7 +276,7 @@ export class CollectionView extends CollectionViewBase {
         }
         const view = this.nativeViewProtected;
         this._itemTemplatesInternal.forEach((t) => {
-            view.registerClassForCellWithReuseIdentifier(CollectionViewCell.class(), t.key.toLowerCase());
+            view.registerClassForCellWithReuseIdentifier(<any>CollectionViewCell.class(), t.key.toLowerCase());
         });
     }
 
@@ -469,8 +469,8 @@ export class CollectionView extends CollectionViewBase {
                 }
             }
 
-            const widthMeasureSpec = width ? layout.makeMeasureSpec(width, layout.EXACTLY) : horizontal ? infinity : layout.makeMeasureSpec(this._innerWidth, layout.UNSPECIFIED);
-            const heightMeasureSpec = height ? layout.makeMeasureSpec(height, layout.EXACTLY) : horizontal ? layout.makeMeasureSpec(this._innerHeight, layout.UNSPECIFIED) : infinity;
+            const widthMeasureSpec = width ? Utils.layout.makeMeasureSpec(width, Utils.layout.EXACTLY) : horizontal ? infinity : Utils.layout.makeMeasureSpec(this._innerWidth, Utils.layout.UNSPECIFIED);
+            const heightMeasureSpec = height ? Utils.layout.makeMeasureSpec(height, Utils.layout.EXACTLY) : horizontal ? Utils.layout.makeMeasureSpec(this._innerHeight, Utils.layout.UNSPECIFIED) : infinity;
             if (Trace.isEnabled()) {
                 CLog(CLogTypes.log, 'measureCell', width, height, widthMeasureSpec, heightMeasureSpec);
             }
@@ -527,7 +527,7 @@ export class CollectionView extends CollectionViewBase {
 
     private _setPadding(newPadding: { top?: number; right?: number; bottom?: number; left?: number }) {
         const layout = this._layout;
-        if (layout.hasOwnProperty('sectionInset')) {
+        if (Utils.layout.hasOwnProperty('sectionInset')) {
             const padding = {
                 top: layout['sectionInset'].top,
                 right: layout['sectionInset'].right,
@@ -637,7 +637,7 @@ export class CollectionView extends CollectionViewBase {
             CLog(CLogTypes.log, 'collectionViewLayoutSizeForItemAtIndexPath', row, measuredSize);
         }
         if (measuredSize) {
-            return CGSizeMake(layout.toDeviceIndependentPixels(measuredSize[0]), layout.toDeviceIndependentPixels(measuredSize[1]));
+            return CGSizeMake(Utils.layout.toDeviceIndependentPixels(measuredSize[0]), Utils.layout.toDeviceIndependentPixels(measuredSize[1]));
         }
         return CGSizeZero;
     }
@@ -665,8 +665,8 @@ type ItemView = View & ViewItemIndex;
 @NativeClass
 class CollectionViewCell extends UICollectionViewCell {
     owner: WeakRef<ItemView>;
-    static class() {
-        return CollectionViewCell.class();
+    static class(): any {
+      return CollectionViewCell;
     }
     get view(): ItemView {
         return this.owner ? this.owner.get() : null;

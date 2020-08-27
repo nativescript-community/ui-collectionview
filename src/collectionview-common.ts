@@ -1,38 +1,19 @@
-import { Trace, ViewBase, booleanConverter } from '@nativescript/core';
-import * as observable from '@nativescript/core/data/observable';
-import { ChangedData, ObservableArray } from '@nativescript/core/data/observable-array';
-import { profile } from '@nativescript/core/profiling';
-import { parse, parseMultipleTemplates } from '@nativescript/core/ui/builder';
-import { Property, makeParser, makeValidator } from '@nativescript/core/ui/core/properties';
-import { KeyedTemplate, Template, View } from '@nativescript/core/ui/core/view';
-import { addWeakEventListener, removeWeakEventListener } from '@nativescript/core/ui/core/weak-event-listener';
-import { Label } from '@nativescript/core/ui/label';
-import { ItemsSource } from '@nativescript/core/ui/list-view';
-import { ProxyViewContainer } from '@nativescript/core/ui/proxy-view-container';
-import { Length, PercentLength, heightProperty, widthProperty } from '@nativescript/core/ui/styling/style-properties';
+import { Trace, ViewBase, booleanConverter, Observable, ChangedData, ObservableArray, profile, Builder, Property, makeParser, makeValidator, KeyedTemplate, Template, View, addWeakEventListener, removeWeakEventListener, Label, ItemsSource, ProxyViewContainer, Length, PercentLength, heightProperty, widthProperty } from '@nativescript/core';
 import { CollectionView as CollectionViewDefinition, Orientation } from './collectionview';
 
 export const CollectionViewTraceCategory = 'NativescriptCollectionView';
 
-declare module '@nativescript/core/ui/core/view-base' {
-    interface ViewBase {
-        _recursiveSuspendNativeUpdates(type);
-        _recursiveResumeNativeUpdates(type);
-        _recursiveBatchUpdates<T>(callback: () => T): T;
-    }
-}
-
-ViewBase.prototype._recursiveSuspendNativeUpdates = profile('_recursiveSuspendNativeUpdates', function (type) {
+(<any>ViewBase.prototype)._recursiveSuspendNativeUpdates = profile('_recursiveSuspendNativeUpdates', function (type) {
     this._suspendNativeUpdates(type);
-    this.eachChild((c) => c._recursiveSuspendNativeUpdates(type));
+    this.eachChild((c: any) => c._recursiveSuspendNativeUpdates(type));
 });
-ViewBase.prototype._recursiveResumeNativeUpdates = profile('_recursiveResumeNativeUpdates', function (type) {
+(<any>ViewBase.prototype)._recursiveResumeNativeUpdates = profile('_recursiveResumeNativeUpdates', function (type) {
     this._resumeNativeUpdates(type);
-    this.eachChild((c) => c._recursiveResumeNativeUpdates(type));
+    this.eachChild((c: any) => c._recursiveResumeNativeUpdates(type));
 });
 
 // right now _recursiveBatchUpdates suppose no view is added in the callback. If so it will crash from _resumeNativeUpdates
-ViewBase.prototype._recursiveBatchUpdates = profile('_recursiveBatchUpdates', function <T>(callback: () => T): T {
+(<any>ViewBase.prototype)._recursiveBatchUpdates = profile('_recursiveBatchUpdates', function <T>(callback: () => T): T {
     try {
         this._recursiveSuspendNativeUpdates(0);
 
@@ -60,14 +41,6 @@ const autoEffectiveColWidth = 0;
 
 export enum ListViewViewTypes {
     ItemView,
-}
-
-export namespace knownTemplates {
-    export const itemTemplate = 'itemTemplate';
-}
-
-export namespace knownMultiTemplates {
-    export const itemTemplates = 'itemTemplates';
 }
 
 export interface Plugin {
@@ -121,7 +94,7 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
             key: 'default',
             createView: () => {
                 if (this.itemTemplate) {
-                    return parse(this.itemTemplate, this);
+                    return Builder.parse(this.itemTemplate, this);
                 }
                 return undefined;
             },
@@ -220,7 +193,7 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
         }
     }
     resolveTemplateView(template) {
-        return parse(template, this);
+        return Builder.parse(template, this);
     }
     _getDefaultItemContent() {
         const lbl = new Label();
@@ -348,11 +321,11 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
         this.isItemsSourceIn = typeof getItem === 'function';
         // we override the method to prevent the test on every getItem
         this.getItemAtIndex = this.isItemsSourceIn ? (index: number) => (this.items as ItemsSource).getItem(index) : (index: number) => this.items[index];
-        if (oldValue instanceof observable.Observable) {
+        if (oldValue instanceof Observable) {
             removeWeakEventListener(oldValue, ObservableArray.changeEvent, this.onSourceCollectionChangedInternal, this);
         }
 
-        if (newValue instanceof observable.Observable) {
+        if (newValue instanceof Observable) {
             addWeakEventListener(newValue, ObservableArray.changeEvent, this.onSourceCollectionChangedInternal, this);
         }
         this.refresh();
@@ -446,7 +419,7 @@ export const itemTemplatesProperty = new Property<CollectionViewBase, KeyedTempl
     name: 'itemTemplates',
     valueConverter: (value) => {
         if (typeof value === 'string') {
-            return parseMultipleTemplates(value);
+            return Builder.parseMultipleTemplates(value);
         }
 
         return value;

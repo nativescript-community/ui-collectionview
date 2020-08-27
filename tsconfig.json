@@ -28,7 +28,10 @@
             "@nativescript-community/ui-collectionview/*": ["src/*"],
             "*": ["node_modules/*"]
         },
-        "plugins": [{ "transform": "./node_modules/@nativescript/webpack/transformers/ns-transform-native-classes.js", "type": "raw" }]
+        "plugins": [{
+          "transform": "@nativescript/webpack/transformers/ns-transform-native-classes",
+          "type": "raw"
+        }]
     },
     "include": ["src/**/*", "./references.d.ts"],
     "exclude": ["node_modules", "platforms", "src/angular/**/*"],

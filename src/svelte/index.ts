@@ -1,17 +1,7 @@
-import { ItemEventData, View } from '@nativescript/core';
-import { profile } from '@nativescript/core/profiling';
-import { LayoutBase, ViewBase } from '@nativescript/core/ui';
+import { ItemEventData, View, profile, LayoutBase, ViewBase } from '@nativescript/core';
 import { NativeViewElementNode, TemplateElement, ViewNode, createElement, registerElement } from 'svelte-native/dom';
 import { flush } from 'svelte/internal';
 import { CollectionView } from '../collectionview';
-
-declare module '@nativescript/core/ui/core/view-base' {
-    interface ViewBase {
-        __SvelteComponent__?: any;
-        __SvelteComponentBuilder__?: any;
-        __CollectionViewCurrentIndex__?: number;
-    }
-}
 
 class SvelteKeyedTemplate {
     _key: string;
@@ -116,7 +106,7 @@ export default class CollectionViewViewElement extends NativeViewElementNode<Col
         }
     }
     private updateListItem(args: ItemEventData & { bindingContext }) {
-        const _view = args.view;
+        const _view: any = args.view;
         const props = { item: args.bindingContext, index: args.index };
         const componentInstance = _view.__SvelteComponent__;
         if (!componentInstance) {
