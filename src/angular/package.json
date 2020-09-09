@@ -1,0 +1,18 @@
+{
+  "name": "@nativescript-community/ui-collectionview-angular",
+  "main": "index.js",
+  "ngPackage": {
+    "dest": "../../plugin/angular",
+    "lib": {
+      "entryFile": "index.ts",
+      "umdModuleIds": {
+        "@nativescript/core": "ns-core",
+        "@nativescript/angular": "ns-angular",
+        "@nativescript-community/ui-collectionview": "ns-ui-collectionview"
+      }
+    },
+    "whitelistedNonPeerDependencies": [
+      "."
+    ]
+  }
+}

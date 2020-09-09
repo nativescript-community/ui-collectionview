@@ -1,11 +1,11 @@
-import { messageType, write } from "@nativescript/core/trace";
+import { Trace } from '@nativescript/core';
 
-const collectionViewTraceCategory = "ns-collectionview";
+const collectionViewTraceCategory = 'ui-collectionview';
 
 export function collectionViewLog(message: string): void {
-    write(message, collectionViewTraceCategory);
+    Trace.write(message, collectionViewTraceCategory);
 }
 
 export function collectionViewError(message: string): void {
-    write(message, collectionViewTraceCategory, messageType.error);
+    Trace.write(message, collectionViewTraceCategory, Trace.messageType.error);
 }

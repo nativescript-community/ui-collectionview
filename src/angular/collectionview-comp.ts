@@ -18,14 +18,14 @@ import {
     TemplateRef,
     ViewChild,
     ViewContainerRef,
-    ɵisListLikeIterable as isListLikeIterable
+    ɵisListLikeIterable as isListLikeIterable,
 } from '@angular/core';
 import { ObservableArray } from '@nativescript/core/data/observable-array';
 import { KeyedTemplate, View } from '@nativescript/core/ui/core/view';
-import { CollectionView, CollectionViewItemEventData, ListViewViewTypes } from '../collectionview';
+import { CollectionView, CollectionViewItemEventData, ListViewViewTypes } from '@nativescript-community/ui-collectionview';
 import { collectionViewLog } from './trace';
 
-import { getSingleViewRecursive, isKnownView, registerElement } from '@nativescript/angular/element-registry';
+import { getSingleViewRecursive, isKnownView, registerElement } from '@nativescript/angular';
 
 const NG_VIEW = '_ngViewRef';
 
@@ -47,7 +47,7 @@ export interface SetupItemViewArgs {
             <Placeholder #loader></Placeholder>
         </DetachedContainer>
     `,
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CollectionViewComponent implements DoCheck, OnDestroy, AfterContentInit {
     public get nativeElement(): any {
@@ -99,7 +99,7 @@ export class CollectionViewComponent implements DoCheck, OnDestroy, AfterContent
         this._collectionView.itemViewLoader = this.itemViewLoader;
     }
 
-    private itemViewLoader = viewType => {
+    private itemViewLoader = (viewType) => {
         switch (viewType) {
             case ListViewViewTypes.ItemView:
                 if (this._itemTemplate && this.loader) {
@@ -111,7 +111,7 @@ export class CollectionViewComponent implements DoCheck, OnDestroy, AfterContent
                 break;
         }
         return null;
-    }
+    };
 
     public ngAfterContentInit() {
         collectionViewLog('CollectionView.ngAfterContentInit()');
@@ -142,7 +142,7 @@ export class CollectionViewComponent implements DoCheck, OnDestroy, AfterContent
 
         const keyedTemplate = {
             key,
-            createView: this.createNativeViewFactoryFromTemplate(template)
+            createView: this.createNativeViewFactoryFromTemplate(template),
         };
 
         this._templateMap.set(key, keyedTemplate);
@@ -171,7 +171,7 @@ export class CollectionViewComponent implements DoCheck, OnDestroy, AfterContent
             context,
             data,
             index,
-            view
+            view,
         });
     }
 
@@ -194,7 +194,7 @@ export class CollectionViewComponent implements DoCheck, OnDestroy, AfterContent
             collectionViewLog('Setting templates');
 
             const templates: KeyedTemplate[] = [];
-            this._templateMap.forEach(value => {
+            this._templateMap.forEach((value) => {
                 templates.push(value);
             });
             this._collectionView.itemTemplates = templates;
