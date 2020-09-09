@@ -97,7 +97,7 @@ module.exports = env => {
     }
     console.log(`Bundling application for entryPath ${entryPath}...`);
 
-    let sourceMapFilename = nsWebpack.getSourceMapFilename(hiddenSourceMap, __dirname, dist);
+    const sourceMapFilename = nsWebpack.getSourceMapFilename(hiddenSourceMap, __dirname, dist);
 
     const itemsToClean = [`${dist}/**/*`];
     if (platform === 'android') {
@@ -111,7 +111,7 @@ module.exports = env => {
 
     nsWebpack.processAppComponents(appComponents, platform);
     const config = {
-        mode: mode,
+        mode,
         context: appFullPath,
         externals,
         watchOptions: {
@@ -373,8 +373,8 @@ module.exports = env => {
                 analyzerMode: 'static',
                 openAnalyzer: false,
                 generateStatsFile: true,
-                reportFilename: resolve(projectRoot, 'report', `report.html`),
-                statsFilename: resolve(projectRoot, 'report', `stats.json`)
+                reportFilename: resolve(projectRoot, 'report', 'report.html'),
+                statsFilename: resolve(projectRoot, 'report', 'stats.json')
             })
         );
     }
