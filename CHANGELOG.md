@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.1](https://github.com/Akylas/nativescript-collectionview/compare/v3.0.7...v4.0.1) (2020-09-09)
+
+
+### Bug Fixes
+
+* angular fix ([5b46b3f](https://github.com/Akylas/nativescript-collectionview/commit/5b46b3f7b294dcdb020941e775c53c65a8b53848))
+
+
+### Features
+
+* N7 ([28563f3](https://github.com/Akylas/nativescript-collectionview/commit/28563f38fcfa1311db5fe2981df3eda760d7e5ed))
+
+
+
+
+
 ## [3.0.7](https://github.com/Akylas/nativescript-collectionview/compare/v3.0.6...v3.0.7) (2020-08-21)
 
 **Note:** Version bump only for package @nativescript-community/ui-collectionview
