@@ -665,9 +665,9 @@ type ItemView = View & ViewItemIndex;
 @NativeClass
 class CollectionViewCell extends UICollectionViewCell {
     owner: WeakRef<ItemView>;
-    static class() {
-        return CollectionViewCell.class();
-    }
+    // static class() {
+    //     return CollectionViewCell.class();
+    // }
     get view(): ItemView {
         return this.owner ? this.owner.get() : null;
     }
