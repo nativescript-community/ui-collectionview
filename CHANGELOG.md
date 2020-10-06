@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.2](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.1...v4.0.2) (2020-10-06)
+
+
+### Bug Fixes
+
+* **android:** margin fix ([ed016ca](https://github.com/Akylas/nativescript-collectionview/commit/ed016ca62dde5e8a3d80a4682aa2b7b3ef484920))
+
+
+
+
+
 ## [4.0.1](https://github.com/Akylas/nativescript-collectionview/compare/v3.0.7...v4.0.1) (2020-09-09)
 
 
