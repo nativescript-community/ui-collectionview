@@ -1,10 +1,13 @@
-﻿import {
+﻿/* eslint-disable no-redeclare */
+import {
     ChangeType,
     ChangedData,
+    FlexboxLayout,
     GridLayout,
     Length,
     Property,
     ProxyViewContainer,
+    StackLayout,
     Trace,
     View,
     paddingBottomProperty,
@@ -24,7 +27,10 @@ interface CellViewHolder extends com.nativescript.collectionview.CollectionViewC
     // tslint:disable-next-line:no-misused-new
     new (owner: WeakRef<View>, collectionView: WeakRef<CollectionView>): CellViewHolder;
 }
+// eslint-disable-next-line no-redeclare
 let CellViewHolder: CellViewHolder;
+
+let LayoutParams: typeof android.view.ViewGroup.LayoutParams;
 
 // function initCellViewHolder() {
 //     if (CellViewHolder) {
@@ -289,47 +295,23 @@ export class CollectionView extends CollectionViewBase {
     get layoutManager() {
         return this.nativeViewProtected && this.nativeViewProtected.layoutManager;
     }
-    _layoutParams: org.nativescript.widgets.CommonLayoutParams;
+    _hlayoutParams: android.view.ViewGroup.LayoutParams;
+    _vlayoutParams: android.view.ViewGroup.LayoutParams;
     _getViewLayoutParams() {
-        if (!this._layoutParams) {
-            const layoutParams = (this._layoutParams = new org.nativescript.widgets.CommonLayoutParams());
-            // if (this.listViewLayout instanceof ListViewLinearLayout) {
-            // if (this.listViewLayout.scrollDirection.toLowerCase() === listViewCommonModule.ListViewScrollDirection.Vertical.toLowerCase()) {
-            layoutParams.width = org.nativescript.widgets.CommonLayoutParams.WRAP_CONTENT;
-            layoutParams.height = org.nativescript.widgets.CommonLayoutParams.WRAP_CONTENT;
+        if (this.isHorizontal()) {
+            if (!this._hlayoutParams) {
+                LayoutParams = LayoutParams || android.view.ViewGroup.LayoutParams;
+                this._hlayoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
+            }
+            return this._hlayoutParams;
+        } else {
+            if (!this._vlayoutParams) {
+                LayoutParams = LayoutParams || android.view.ViewGroup.LayoutParams;
+                this._vlayoutParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+            }
+            return this._vlayoutParams;
         }
-        // }
-        // else if (this.listViewLayout.scrollDirection.toLowerCase() === listViewCommonModule.ListViewScrollDirection.Horizontal.toLowerCase()) {
-        //     layoutParams.width = org.nativescript.widgets.CommonLayoutParams.WRAP_CONTENT;
-        //     layoutParams.height = org.nativescript.widgets.CommonLayoutParams.MATCH_PARENT;
-        // }
-        // }
-        return this._layoutParams;
     }
-    //     private listViewItemHeights = new java.util.Hashtable<java.util.Integer, Integer>();
-    //    private listViewItemWidth = new java.util.Hashtable<Integer, Integer>();
-    //     getScroll() {
-    //         const firstVisibleItem = this.layoutManager.findFirstVisibleItemPosition();
-
-    //         const c = this.nativeViewProtected.getChildAt(0); //this is the first visible row
-    //         let scrollX = -c.getLeft();
-    //         let scrollY = -c.getTop();
-    //         listViewItemHeights.put(firstVisibleItem, c.getHeight());
-    //         listViewItemWidth.put(firstVisibleItem, c.getWidth());
-    //         for (let i = 0; i < firstVisibleItem; ++i) {
-    //             if (this.listViewItemWidth.get(i) != null) { // (this is a sanity check)
-    //                 scrollX += this.listViewItemWidth.get(i); //add all heights of the views that are gone
-    //             }
-    //             if (this.listViewItemHeights.get(i) != null) { // (this is a sanity check)
-    //                 scrollY += this.listViewItemHeights.get(i); //add all heights of the views that are gone
-    //             }
-    //         }
-    //         return [scrollX, scrollY];
-    //     }
-
-    // get _childrenCount(): number {
-    //     return this._realizedItems.size;
-    // }
 
     public [paddingTopProperty.getDefault](): number {
         return (this.nativeView as android.view.View).getPaddingTop();
@@ -645,7 +627,7 @@ export class CollectionView extends CollectionViewBase {
         const isNonSync = view === undefined;
         // dont create unecessary StackLayout if template.createView returns. Will happend when not using Vue or angular
         if (isNonSync || view instanceof ProxyViewContainer) {
-            const parentView = new GridLayout();
+            const parentView = new FlexboxLayout();
             parentView.id = 'collectionViewHolder';
             view = parentView;
         }
@@ -690,9 +672,10 @@ export class CollectionView extends CollectionViewBase {
         }
         let view = holder.view;
         const bindingContext = this._prepareItem(view, position);
-        const isNonSync = !!holder['defaultItemView'];
+        const isNonSync = holder['defaultItemView'] === true;
 
         view = isNonSync ? (view as GridLayout).getChildAt(0) : view;
+        console.log('test view to gridlayout1', view);
 
         const args = {
             eventName: CollectionViewBase.itemLoadingEvent,
@@ -707,6 +690,7 @@ export class CollectionView extends CollectionViewBase {
         if (isNonSync && args.view !== view) {
             view = args.view;
             // the view has been changed on the event handler
+            console.log('adding view to gridlayout', args.view, args.view.margin);
             (holder.view as GridLayout).addChild(args.view);
         }
         let width = this._effectiveColWidth;
