@@ -675,7 +675,6 @@ export class CollectionView extends CollectionViewBase {
         const isNonSync = holder['defaultItemView'] === true;
 
         view = isNonSync ? (view as GridLayout).getChildAt(0) : view;
-        console.log('test view to gridlayout1', view);
 
         const args = {
             eventName: CollectionViewBase.itemLoadingEvent,
@@ -690,7 +689,6 @@ export class CollectionView extends CollectionViewBase {
         if (isNonSync && args.view !== view) {
             view = args.view;
             // the view has been changed on the event handler
-            console.log('adding view to gridlayout', args.view, args.view.margin);
             (holder.view as GridLayout).addChild(args.view);
         }
         let width = this._effectiveColWidth;
