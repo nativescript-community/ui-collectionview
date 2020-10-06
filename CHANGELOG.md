@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.3](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.2...v4.0.3) (2020-10-06)
+
+
+### Bug Fixes
+
+* removed logs ([6690bd3](https://github.com/Akylas/nativescript-collectionview/commit/6690bd39ade2541957e6837da6128fda261b75ab))
+
+
+
+
+
 ## [4.0.2](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.1...v4.0.2) (2020-10-06)
 
 
