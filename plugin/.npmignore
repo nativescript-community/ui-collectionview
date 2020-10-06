@@ -6,3 +6,5 @@ hooks/
 *.old
 tsconfig.json
 !*.d.ts
+*.aar
+*.jar
