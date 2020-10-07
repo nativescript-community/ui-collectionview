@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.4](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.3...v4.0.4) (2020-10-07)
+
+
+### Features
+
+* loadMoreThreshold support ([d897e64](https://github.com/Akylas/nativescript-collectionview/commit/d897e640d1dbf79bb6edbbd266f8957b7a130855))
+
+
+
+
+
 ## [4.0.3](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.2...v4.0.3) (2020-10-06)
 
 
