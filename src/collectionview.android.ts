@@ -3,11 +3,9 @@ import {
     ChangeType,
     ChangedData,
     FlexboxLayout,
-    GridLayout,
     Length,
     Property,
     ProxyViewContainer,
-    StackLayout,
     Trace,
     View,
     paddingBottomProperty,
@@ -224,8 +222,8 @@ export class CollectionView extends CollectionViewBase {
             const layoutManager = view.getLayoutManager();
             if (layoutManager['findLastCompletelyVisibleItemPosition']) {
                 const lastVisibleItemPos = layoutManager['findLastCompletelyVisibleItemPosition']();
-                const itemCount = this.items.length - 1;
-                if (lastVisibleItemPos === itemCount) {
+                const loadMoreItemIndex = this.items.length - this.loadMoreThreshold;
+                if (lastVisibleItemPos === loadMoreItemIndex) {
                     this.notify({
                         eventName: CollectionViewBase.loadMoreItemsEvent,
                         object: this,
@@ -674,7 +672,7 @@ export class CollectionView extends CollectionViewBase {
         const bindingContext = this._prepareItem(view, position);
         const isNonSync = holder['defaultItemView'] === true;
 
-        view = isNonSync ? (view as GridLayout).getChildAt(0) : view;
+        view = isNonSync ? (view as FlexboxLayout).getChildAt(0) : view;
 
         const args = {
             eventName: CollectionViewBase.itemLoadingEvent,
@@ -689,7 +687,7 @@ export class CollectionView extends CollectionViewBase {
         if (isNonSync && args.view !== view) {
             view = args.view;
             // the view has been changed on the event handler
-            (holder.view as GridLayout).addChild(args.view);
+            (holder.view as FlexboxLayout).addChild(args.view);
         }
         let width = this._effectiveColWidth;
         let height = this._effectiveRowHeight;

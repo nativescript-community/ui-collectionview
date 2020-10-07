@@ -101,6 +101,8 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     public _effectiveRowHeight: number;
     public _effectiveColWidth: number;
 
+    public loadMoreThreshold: number;
+
     public layoutStyle: string = 'grid';
     public plugins: string[] = [];
     public static plugins: { [k: string]: Plugin } = {};
@@ -393,11 +395,6 @@ export const rowHeightProperty = new Property<CollectionViewBase, PercentLength>
     defaultValue: defaultRowHeight,
     equalityComparer: PercentLength.equals,
     valueConverter: PercentLength.parse,
-    // coerceValue: (target, value) => {
-    //     console.log('coerceValue', !!target.nativeView, value, defaultRowHeight);
-    //     // We coerce to default value if we don't have display density.
-    //     return target.nativeView ? value : defaultRowHeight;
-    // },
     valueChanged: (target, oldValue, newValue) => {
         target._effectiveRowHeight = PercentLength.toDevicePixels(newValue, autoEffectiveRowHeight, target._innerHeight);
         target._onRowHeightPropertyChanged(oldValue, newValue);
@@ -411,10 +408,6 @@ export const colWidthProperty = new Property<CollectionViewBase, PercentLength>(
     defaultValue: defaultColWidth,
     equalityComparer: PercentLength.equals,
     valueConverter: PercentLength.parse,
-    // coerceValue: (target, value) => {
-    //     // We coerce to default value if we don't have display density.
-    //     return target.nativeView ? value : defaultColWidth;
-    // },
     valueChanged: (target, oldValue, newValue) => {
         target._effectiveColWidth = PercentLength.toDevicePixels(newValue, autoEffectiveColWidth, target._innerWidth);
         target._onColWidthPropertyChanged(oldValue, newValue);
@@ -511,8 +504,9 @@ export const reverseLayoutProperty = new Property<CollectionViewBase, boolean>({
 });
 reverseLayoutProperty.register(CollectionViewBase);
 
-// export const layoutStyleProperty = new Property<CollectionViewBase, string>({
-//     name: 'layoutStyle',
-//     defaultValue: 'grid'
-// });
-// layoutStyleProperty.register(CollectionViewBase);
+export const loadMoreThresholdProperty = new Property<CollectionViewBase, number>({
+    name: 'loadMoreThreshold',
+    defaultValue: 1,
+    valueConverter: parseInt
+});
+loadMoreThresholdProperty.register(CollectionViewBase);

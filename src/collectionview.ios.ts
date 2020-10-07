@@ -570,12 +570,14 @@ export class CollectionView extends CollectionViewBase {
         if (this.reverseLayout) {
             cell.transform = CGAffineTransformMakeRotation(-Math.PI);
         }
-
-        if (this.hasListeners(CollectionViewBase.loadMoreItemsEvent) && indexPath.row === this.items.length - 1) {
-            this.notify<EventData>({
-                eventName: CollectionViewBase.loadMoreItemsEvent,
-                object: this,
-            });
+        if (this.items) {
+            const loadMoreItemIndex = this.items.length - this.loadMoreThreshold;
+            if (indexPath.row === loadMoreItemIndex && this.hasListeners(CollectionViewBase.loadMoreItemsEvent)) {
+                this.notify<EventData>({
+                    eventName: CollectionViewBase.loadMoreItemsEvent,
+                    object: this
+                });
+            }
         }
         // if (this.hasListeners(CollectionViewBase.displayItemEvent) ) {
         //     this.notify<CollectionViewItemDisplayEventData>({
