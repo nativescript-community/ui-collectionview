@@ -150,6 +150,10 @@ export class CollectionViewComponent implements DoCheck, OnDestroy, AfterContent
 
     // @HostListener('itemLoadingInternal', ['$event'])
     public onItemLoading(args: CollectionViewItemEventData) {
+        if (!args.view && !this.itemTemplate) {
+            return;
+        }
+        if (!this.items) return;
         const index = args.index;
         const currentItem = args.bindingContext;
         const ngView = args.view[NG_VIEW];
