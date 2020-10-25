@@ -20,10 +20,8 @@ import {
     ViewContainerRef,
     ɵisListLikeIterable as isListLikeIterable,
 } from '@angular/core';
-import { ObservableArray } from '@nativescript/core/data/observable-array';
-import { KeyedTemplate, View } from '@nativescript/core/ui/core/view';
-import { CollectionView, CollectionViewItemEventData, ListViewViewTypes } from '@nativescript-community/ui-collectionview';
-import { collectionViewLog } from './trace';
+import { KeyedTemplate, ObservableArray, Trace, View } from '@nativescript/core';
+import { CLog, CLogTypes, CollectionView, CollectionViewItemEventData, ListViewViewTypes } from '@nativescript-community/ui-collectionview';
 
 import { getSingleViewRecursive, isKnownView, registerElement } from '@nativescript/angular';
 
@@ -114,7 +112,9 @@ export class CollectionViewComponent implements DoCheck, OnDestroy, AfterContent
     };
 
     public ngAfterContentInit() {
-        collectionViewLog('CollectionView.ngAfterContentInit()');
+        if (Trace.isEnabled()) {
+            CLog(CLogTypes.info, 'CollectionView.ngAfterContentInit()');
+        }
         this.setItemTemplates();
     }
 
@@ -123,19 +123,27 @@ export class CollectionViewComponent implements DoCheck, OnDestroy, AfterContent
     }
 
     public ngDoCheck() {
-        collectionViewLog('ngDoCheck() - execute differ? ' + this._differ);
+        if (Trace.isEnabled()) {
+            CLog(CLogTypes.info, 'ngDoCheck() - execute differ? ' + this._differ);
+        }
         if (this._differ) {
-            collectionViewLog('ngDoCheck() - execute differ');
+            if (Trace.isEnabled()) {
+                CLog(CLogTypes.info, 'ngDoCheck() - execute differ');
+            }
             const changes = this._differ.diff(this._items);
             if (changes) {
-                collectionViewLog('ngDoCheck() - refresh');
+                if (Trace.isEnabled()) {
+                    CLog(CLogTypes.info, 'ngDoCheck() - refresh');
+                }
                 this.refresh();
             }
         }
     }
 
     public registerTemplate(key: string, template: TemplateRef<GridItemContext>) {
-        collectionViewLog('registerTemplate for key: ' + key);
+        if (Trace.isEnabled()) {
+            CLog(CLogTypes.info, 'registerTemplate for key: ' + key);
+        }
         if (!this._templateMap) {
             this._templateMap = new Map<string, KeyedTemplate>();
         }
@@ -195,7 +203,9 @@ export class CollectionViewComponent implements DoCheck, OnDestroy, AfterContent
         this.itemTemplate = this.itemTemplateQuery;
 
         if (this._templateMap) {
-            collectionViewLog('Setting templates');
+            if (Trace.isEnabled()) {
+                CLog(CLogTypes.info, 'Setting templates');
+            }
 
             const templates: KeyedTemplate[] = [];
             this._templateMap.forEach((value) => {
@@ -209,7 +219,9 @@ export class CollectionViewComponent implements DoCheck, OnDestroy, AfterContent
     }
 
     private detectChangesOnChild(viewRef: EmbeddedViewRef<GridItemContext>, index: number) {
-        collectionViewLog('Manually detect changes in child: ' + index);
+        if (Trace.isEnabled()) {
+            CLog(CLogTypes.info, 'Manually detect changes in child: ' + index);
+        }
         viewRef.markForCheck();
         viewRef.detectChanges();
     }
@@ -239,7 +251,9 @@ export class TemplateKeyDirective {
 
     @Input()
     set cvTemplateKey(value: any) {
-        collectionViewLog('cvTemplateKey: ' + value);
+        if (Trace.isEnabled()) {
+            CLog(CLogTypes.info, 'cvTemplateKey: ' + value);
+        }
         if (this.collectionView && this.templateRef) {
             this.collectionView.registerTemplate(value.toLowerCase(), this.templateRef);
         }
