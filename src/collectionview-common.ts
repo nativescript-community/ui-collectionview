@@ -1,4 +1,28 @@
-import { Builder, ChangedData, ItemsSource, KeyedTemplate, Label, Length, Observable, ObservableArray, PercentLength, Property, ProxyViewContainer, Template, Trace, View, ViewBase, addWeakEventListener, booleanConverter, heightProperty, makeParser, makeValidator, profile, removeWeakEventListener, widthProperty } from '@nativescript/core';
+import {
+    Builder,
+    ChangedData,
+    ItemsSource,
+    KeyedTemplate,
+    Label,
+    Length,
+    Observable,
+    ObservableArray,
+    PercentLength,
+    Property,
+    ProxyViewContainer,
+    Template,
+    Trace,
+    View,
+    ViewBase,
+    addWeakEventListener,
+    booleanConverter,
+    heightProperty,
+    makeParser,
+    makeValidator,
+    profile,
+    removeWeakEventListener,
+    widthProperty
+} from '@nativescript/core';
 import { CollectionView as CollectionViewDefinition, Orientation } from './collectionview';
 
 export const CollectionViewTraceCategory = 'NativescriptCollectionView';
