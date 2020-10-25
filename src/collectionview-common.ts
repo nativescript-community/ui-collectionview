@@ -1,15 +1,4 @@
-import { Trace, ViewBase, booleanConverter } from '@nativescript/core';
-import * as observable from '@nativescript/core/data/observable';
-import { ChangedData, ObservableArray } from '@nativescript/core/data/observable-array';
-import { profile } from '@nativescript/core/profiling';
-import { parse, parseMultipleTemplates } from '@nativescript/core/ui/builder';
-import { Property, makeParser, makeValidator } from '@nativescript/core/ui/core/properties';
-import { KeyedTemplate, Template, View } from '@nativescript/core/ui/core/view';
-import { addWeakEventListener, removeWeakEventListener } from '@nativescript/core/ui/core/weak-event-listener';
-import { Label } from '@nativescript/core/ui/label';
-import { ItemsSource } from '@nativescript/core/ui/list-view';
-import { ProxyViewContainer } from '@nativescript/core/ui/proxy-view-container';
-import { Length, PercentLength, heightProperty, widthProperty } from '@nativescript/core/ui/styling/style-properties';
+import { Builder, ChangedData, ItemsSource, KeyedTemplate, Label, Length, Observable, ObservableArray, PercentLength, Property, ProxyViewContainer, Template, Trace, View, ViewBase, addWeakEventListener, booleanConverter, heightProperty, makeParser, makeValidator, profile, removeWeakEventListener, widthProperty } from '@nativescript/core';
 import { CollectionView as CollectionViewDefinition, Orientation } from './collectionview';
 
 export const CollectionViewTraceCategory = 'NativescriptCollectionView';
@@ -123,7 +112,7 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
             key: 'default',
             createView: () => {
                 if (this.itemTemplate) {
-                    return parse(this.itemTemplate, this);
+                    return Builder.parse(this.itemTemplate, this);
                 }
                 return undefined;
             },
@@ -222,7 +211,7 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
         }
     }
     resolveTemplateView(template) {
-        return parse(template, this);
+        return Builder.parse(template, this);
     }
     _getDefaultItemContent() {
         const lbl = new Label();
@@ -350,11 +339,11 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
         this.isItemsSourceIn = typeof getItem === 'function';
         // we override the method to prevent the test on every getItem
         this.getItemAtIndex = this.isItemsSourceIn ? (index: number) => (this.items as ItemsSource).getItem(index) : (index: number) => this.items[index];
-        if (oldValue instanceof observable.Observable) {
+        if (oldValue instanceof Observable) {
             removeWeakEventListener(oldValue, ObservableArray.changeEvent, this.onSourceCollectionChangedInternal, this);
         }
 
-        if (newValue instanceof observable.Observable) {
+        if (newValue instanceof Observable) {
             addWeakEventListener(newValue, ObservableArray.changeEvent, this.onSourceCollectionChangedInternal, this);
         }
         this.refresh();
@@ -439,7 +428,7 @@ export const itemTemplatesProperty = new Property<CollectionViewBase, KeyedTempl
     name: 'itemTemplates',
     valueConverter: (value) => {
         if (typeof value === 'string') {
-            return parseMultipleTemplates(value);
+            return Builder.parseMultipleTemplates(value);
         }
 
         return value;
