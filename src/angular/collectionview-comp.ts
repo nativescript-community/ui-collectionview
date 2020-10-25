@@ -241,7 +241,7 @@ export class TemplateKeyDirective {
     set cvTemplateKey(value: any) {
         collectionViewLog('cvTemplateKey: ' + value);
         if (this.collectionView && this.templateRef) {
-            this.collectionView.registerTemplate(value, this.templateRef);
+            this.collectionView.registerTemplate(value.toLowerCase(), this.templateRef);
         }
     }
 }
