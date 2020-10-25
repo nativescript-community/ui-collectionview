@@ -20,24 +20,30 @@ import {
     ViewContainerRef,
     ɵisListLikeIterable as isListLikeIterable,
 } from '@angular/core';
-import { ObservableArray } from '@nativescript/core/data/observable-array';
-import { KeyedTemplate, View } from '@nativescript/core/ui/core/view';
-import { CollectionView, CollectionViewItemEventData, ListViewViewTypes } from '@nativescript-community/ui-collectionview';
-import { collectionViewLog } from './trace';
+import { KeyedTemplate, LayoutBase, ObservableArray, Trace, View } from '@nativescript/core';
+import { CLog, CLogTypes, CollectionView, CollectionViewItemEventData, ListViewViewTypes } from '@nativescript-community/ui-collectionview';
 
 import { getSingleViewRecursive, isKnownView, registerElement } from '@nativescript/angular';
 
+registerElement('CollectionView', () => CollectionView);
+
 const NG_VIEW = '_ngViewRef';
 
-export class GridItemContext {
-    constructor(public $implicit?: any, public item?: any, public index?: number, public even?: boolean, public odd?: boolean) {}
+export class ItemContext {
+    constructor(
+        public $implicit?: any,
+        public item?: any,
+        public index?: number,
+        public even?: boolean,
+        public odd?: boolean
+    ) {}
 }
 
 export interface SetupItemViewArgs {
     view: EmbeddedViewRef<any>;
     data: any;
     index: number;
-    context: GridItemContext;
+    context: ItemContext;
 }
 
 @Component({
@@ -59,7 +65,7 @@ export class CollectionViewComponent implements DoCheck, OnDestroy, AfterContent
 
     @ViewChild('loader', { read: ViewContainerRef, static: true }) public loader: ViewContainerRef;
     @Output() public setupItemView = new EventEmitter<SetupItemViewArgs>();
-    @ContentChild(TemplateRef, { read: TemplateRef, static: true }) public itemTemplateQuery: TemplateRef<GridItemContext>;
+    @ContentChild(TemplateRef, { read: TemplateRef, static: true }) public itemTemplateQuery: TemplateRef<ItemContext>;
 
     @Input()
     public get itemTemplate() {
@@ -89,7 +95,7 @@ export class CollectionViewComponent implements DoCheck, OnDestroy, AfterContent
     private _collectionView: CollectionView;
     private _items: any;
     private _differ: IterableDiffer<KeyedTemplate>;
-    private _itemTemplate: TemplateRef<GridItemContext>;
+    private _itemTemplate: TemplateRef<ItemContext>;
     private _templateMap: Map<string, KeyedTemplate>;
 
     constructor(@Inject(ElementRef) _elementRef: ElementRef, @Inject(IterableDiffers) private _iterableDiffers: IterableDiffers) {
@@ -103,7 +109,7 @@ export class CollectionViewComponent implements DoCheck, OnDestroy, AfterContent
         switch (viewType) {
             case ListViewViewTypes.ItemView:
                 if (this._itemTemplate && this.loader) {
-                    const nativeItem = this.loader.createEmbeddedView(this._itemTemplate, new GridItemContext(), 0);
+                    const nativeItem = this.loader.createEmbeddedView(this._itemTemplate, new ItemContext(), 0);
                     const typedView = getItemViewRoot(nativeItem);
                     typedView[NG_VIEW] = nativeItem;
                     return typedView;
@@ -114,7 +120,9 @@ export class CollectionViewComponent implements DoCheck, OnDestroy, AfterContent
     };
 
     public ngAfterContentInit() {
-        collectionViewLog('CollectionView.ngAfterContentInit()');
+        if (Trace.isEnabled()) {
+            CLog(CLogTypes.info, 'CollectionView.ngAfterContentInit()');
+        }
         this.setItemTemplates();
     }
 
@@ -123,26 +131,34 @@ export class CollectionViewComponent implements DoCheck, OnDestroy, AfterContent
     }
 
     public ngDoCheck() {
-        collectionViewLog('ngDoCheck() - execute differ? ' + this._differ);
+        if (Trace.isEnabled()) {
+            CLog(CLogTypes.info, 'ngDoCheck() - execute differ? ' + this._differ);
+        }
         if (this._differ) {
-            collectionViewLog('ngDoCheck() - execute differ');
+            if (Trace.isEnabled()) {
+                CLog(CLogTypes.info, 'ngDoCheck() - execute differ');
+            }
             const changes = this._differ.diff(this._items);
             if (changes) {
-                collectionViewLog('ngDoCheck() - refresh');
+                if (Trace.isEnabled()) {
+                    CLog(CLogTypes.info, 'ngDoCheck() - refresh');
+                }
                 this.refresh();
             }
         }
     }
 
-    public registerTemplate(key: string, template: TemplateRef<GridItemContext>) {
-        collectionViewLog('registerTemplate for key: ' + key);
+    public registerTemplate(key: string, template: TemplateRef<ItemContext>) {
+        if (Trace.isEnabled()) {
+            CLog(CLogTypes.info, 'registerTemplate for key: ' + key);
+        }
         if (!this._templateMap) {
             this._templateMap = new Map<string, KeyedTemplate>();
         }
 
         const keyedTemplate = {
             key,
-            createView: this.createNativeViewFactoryFromTemplate(template),
+            createView: this.getItemTemplateViewFactory(template),
         };
 
         this._templateMap.set(key, keyedTemplate);
@@ -155,15 +171,54 @@ export class CollectionViewComponent implements DoCheck, OnDestroy, AfterContent
         }
         if (!this.items) return;
         const index = args.index;
-        const currentItem = args.bindingContext;
-        const ngView = args.view[NG_VIEW];
-        if (ngView) {
-            this.setupViewRef(ngView, currentItem, index);
-            this.detectChangesOnChild(ngView, index);
+        const items = (args.object as any).items;
+        const currentItem =
+            typeof items.getItem === 'function'
+                ? items.getItem(index)
+                : items[index];
+        let viewRef: EmbeddedViewRef<ItemContext>;
+
+        if (Trace.isEnabled()) {
+            CLog(CLogTypes.info, `onItemLoading: ${index} - Reusing existing view`);
         }
+
+        viewRef = args.view[NG_VIEW];
+        // Getting angular view from original element (in cases when ProxyViewContainer
+        // is used NativeScript internally wraps it in a StackLayout)
+        if (
+            !viewRef &&
+            args.view instanceof LayoutBase &&
+            args.view.getChildrenCount() > 0
+        ) {
+            viewRef = args.view.getChildAt(0)[NG_VIEW];
+        }
+
+        if (!viewRef && Trace.isEnabled()) {
+            if (Trace.isEnabled()) {
+                CLog(CLogTypes.info, `ViewReference not found for item ${index}. View recycling is not working`);
+            }
+        }
+
+        if (!viewRef) {
+            if (Trace.isEnabled()) {
+                CLog(CLogTypes.info, `onItemLoading: ${index} - Creating view from template`);
+            }
+
+            viewRef = this.loader.createEmbeddedView(
+                this.itemTemplate,
+                new ItemContext(),
+                0
+            );
+            args.view = getItemViewRoot(viewRef);
+            args.view[NG_VIEW] = viewRef;
+        }
+
+        this.setupViewRef(viewRef, currentItem, index);
+
+        this.detectChangesOnChild(viewRef, index);
     }
 
-    public setupViewRef(view: EmbeddedViewRef<GridItemContext>, data: any, index: number): void {
+    public setupViewRef(view: EmbeddedViewRef<ItemContext>, data: any, index: number): void {
         const context = view.context;
         context.$implicit = data;
         context.item = data;
@@ -179,9 +234,15 @@ export class CollectionViewComponent implements DoCheck, OnDestroy, AfterContent
         });
     }
 
-    private createNativeViewFactoryFromTemplate(template: TemplateRef<GridItemContext>) {
+    protected getItemTemplateViewFactory(
+        template: TemplateRef<ItemContext>
+    ): () => View {
         return () => {
-            const viewRef = this.loader.createEmbeddedView(template, new GridItemContext(), 0);
+            const viewRef = this.loader.createEmbeddedView(
+                template,
+                new ItemContext(),
+                0
+            );
             const resultView = getItemViewRoot(viewRef);
             resultView[NG_VIEW] = viewRef;
 
@@ -195,7 +256,9 @@ export class CollectionViewComponent implements DoCheck, OnDestroy, AfterContent
         this.itemTemplate = this.itemTemplateQuery;
 
         if (this._templateMap) {
-            collectionViewLog('Setting templates');
+            if (Trace.isEnabled()) {
+                CLog(CLogTypes.info, 'Setting templates');
+            }
 
             const templates: KeyedTemplate[] = [];
             this._templateMap.forEach((value) => {
@@ -204,12 +267,14 @@ export class CollectionViewComponent implements DoCheck, OnDestroy, AfterContent
             this._collectionView.itemTemplates = templates;
         } else {
             // If the map was not initialized this means that there are no named templates, so we register the default one.
-            this._collectionView.itemTemplate = this.createNativeViewFactoryFromTemplate(this.itemTemplate);
+            this._collectionView.itemTemplate = this.getItemTemplateViewFactory(this.itemTemplate);
         }
     }
 
-    private detectChangesOnChild(viewRef: EmbeddedViewRef<GridItemContext>, index: number) {
-        collectionViewLog('Manually detect changes in child: ' + index);
+    private detectChangesOnChild(viewRef: EmbeddedViewRef<ItemContext>, index: number) {
+        if (Trace.isEnabled()) {
+            CLog(CLogTypes.info, 'Manually detect changes in child: ' + index);
+        }
         viewRef.markForCheck();
         viewRef.detectChanges();
     }
@@ -239,13 +304,11 @@ export class TemplateKeyDirective {
 
     @Input()
     set cvTemplateKey(value: any) {
-        collectionViewLog('cvTemplateKey: ' + value);
+        if (Trace.isEnabled()) {
+            CLog(CLogTypes.info, 'cvTemplateKey: ' + value);
+        }
         if (this.collectionView && this.templateRef) {
-            this.collectionView.registerTemplate(value, this.templateRef);
+            this.collectionView.registerTemplate(value.toLowerCase(), this.templateRef);
         }
     }
-}
-
-if (!isKnownView('CollectionView')) {
-    registerElement('CollectionView', () => CollectionView);
 }
