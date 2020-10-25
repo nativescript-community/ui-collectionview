@@ -12,9 +12,9 @@ A NativeScript CollectionView widget. The CollectionView displays data in separa
 ## Installation
 Run the following command from the root of your project:
 
-`tns plugin add nativescript-collectionview`
+`ns plugin add @nativescript-community/ui-collectionview`
 
-This command automatically installs the necessary files, as well as stores nativescript-collectionview as a dependency in your project's package.json file.
+This command automatically installs the necessary files, as well as stores @nativescript-community/ui-collectionview as a dependency in your project's package.json file.
 
 ## Configuration
 There is no additional configuration needed!
@@ -68,11 +68,11 @@ Forces the CollectionView to reload all its items.
 Scrolls the CollectionView to the item with the given index. This can be either animated or not. Defaults to animated.
 
 ## Usage
-You need to add `xmlns:gv="nativescript-collectionview"` to your page tag, and then simply use `<gv:CollectionView/>` in order to add the widget to your page. Use `<gv:Gridview.itemTemplate/>` to specify the template for each cell:
+You need to add `xmlns:gv="@nativescript-community/ui-collectionview"` to your page tag, and then simply use `<gv:CollectionView/>` in order to add the widget to your page. Use `<gv:Gridview.itemTemplate/>` to specify the template for each cell:
 
 ```xml
 <!-- test-page.xml -->
-<Page xmlns="http://schemas.nativescript.org/tns.xsd" xmlns:gv="nativescript-collectionview" loaded="pageLoaded">
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" xmlns:gv="@nativescript-community/ui-collectionview" loaded="pageLoaded">
   <GridLayout>
     <gv:CollectionView items="{{ items }}" colWidth="24%" rowHeight="15%" padding="5" itemTap="gridViewItemTap" itemLoading="gridViewItemLoading" loadMoreItems="gridViewLoadMoreItems">
       <gv:CollectionView.itemTemplate>
@@ -91,7 +91,7 @@ import { EventData, Observable } from "data/observable";
 import { ObservableArray } from "data/observable-array";
 import { Page } from "ui/page";
 
-import { CollectionViewItemEventData } from "nativescript-collectionview";
+import { CollectionViewItemEventData } from "@nativescript-community/ui-collectionview";
 
 let viewModel: Observable;
 
@@ -153,7 +153,7 @@ export function templateSelector(item: any, index: number, items: any) {
 Import `CollectionViewModule` in your `NgModule`:
 
 ```typescript
-import { CollectionViewModule } from 'nativescript-collectionview/angular';
+import { CollectionViewModule } from '@nativescript-community/ui-collectionview/angular';
 
 @NgModule({
     //......
@@ -169,7 +169,7 @@ import { CollectionViewModule } from 'nativescript-collectionview/angular';
 #### Example Usage
 ```ts
 // app.module.ts
-import { CollectionViewModule } from "nativescript-collectionview/angular";
+import { CollectionViewModule } from "@nativescript-community/ui-collectionview/angular";
 
 @NgModule({
     bootstrap: [
@@ -240,7 +240,7 @@ If you want to use multiple item templates, you can do that very similarly to ho
 ## Working with Webpack+Uglify
 In case you are uing webpack and also are minifying/uglifying your code, there are some specific names that should be excluded from the uglification for the widget to work properly. The CollectionView widget exports those and you need to add them to the mangle exclude option of the uglifyjs plugin in the `webpack.common.js` file:
 ```js
-var gridViewMangleExcludes = require("nativescript-collectionview/uglify-mangle-excludes").default;
+var gridViewMangleExcludes = require("@nativescript-community/ui-collectionview/uglify-mangle-excludes").default;
 //......
 module.exports = function (platform, destinationApp) {
     //......
