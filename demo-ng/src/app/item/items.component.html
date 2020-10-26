@@ -1,0 +1,22 @@
+<ActionBar title="Angular Demo">
+</ActionBar>
+
+<GridLayout>
+    <CollectionView 
+        iosOverflowSafeArea="true"
+        [items]="items"  
+        (itemTap)="onItemTap($event)" 
+        (loadMoreItems)="onLoadMoreItems()"
+        colWidth="50%" 
+        rowHeight="200"
+    >
+        <ng-template let-item="item">
+            <GridLayout rows="*, auto" [backgroundColor]="item.color" class="item">
+                <StackLayout row="1">
+                    <Label row="1" [text]="item.name" class="title"></Label>
+                    <Label row="1" [text]="item.color" class="subtitle"></Label>
+                </StackLayout>
+            </GridLayout>
+        </ng-template>
+    </CollectionView>
+</GridLayout>
