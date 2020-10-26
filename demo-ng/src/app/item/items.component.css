@@ -1,0 +1,18 @@
+ActionBar {
+    background-color: #b52e31;
+    color: white;
+}
+
+.item {
+    padding: 10;
+    color: white;
+}
+
+.title {
+    font-size: 17;
+    font-weight: bold;            
+}
+
+.subtitle {
+    font-size: 14;
+}

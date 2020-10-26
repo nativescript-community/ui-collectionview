@@ -1,9 +1,0 @@
-{
-  "android": {
-    "markingMode": "none"
-  },
-  "main": "main",
-  "profiling": "none",
-  "name": "dev_demo_vue",
-  "version": "1.0.0"
-}
