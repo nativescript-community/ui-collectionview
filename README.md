@@ -1,13 +1,22 @@
-﻿# NativeScript CollectionView widget
-[![Build Status](https://travis-ci.org/PeterStaev/NativeScript-Grid-View.svg?branch=master)](https://travis-ci.org/PeterStaev/NativeScript-Grid-View)
-[![npm downloads](https://img.shields.io/npm/dm/nativescript-collectionview.svg)](https://www.npmjs.com/package/nativescript-collectionview)
-[![npm downloads](https://img.shields.io/npm/dt/nativescript-collectionview.svg)](https://www.npmjs.com/package/nativescript-collectionview)
-[![npm](https://img.shields.io/npm/v/nativescript-collectionview.svg)](https://www.npmjs.com/package/nativescript-collectionview)
+﻿# NativeScript CollectionView
+[![npm downloads](https://img.shields.io/npm/dm/@nativescript-community/ui-collectionview.svg)](https://www.npmjs.com/package/@nativescript-community/ui-collectionview)
+[![npm downloads](https://img.shields.io/npm/dt/@nativescript-community/ui-collectionview.svg)](https://www.npmjs.com/package/@nativescript-community/ui-collectionview)
+[![npm](https://img.shields.io/npm/v/@nativescript-community/ui-collectionview.svg)](https://www.npmjs.com/package/@nativescript-community/ui-collectionview)
 
 A NativeScript CollectionView widget. The CollectionView displays data in separate cells, each cell representing one data item. For iOS wraps up [UICollectionView](https://developer.apple.com/library/ios/documentation/UIKit/Reference/UICollectionView_class/) and for Android wraps up [RecyclerView](https://developer.android.com/reference/android/support/v7/widget/RecyclerView.html)
 
-## Screenshot
-![Screenshot of Android](https://raw.githubusercontent.com/PeterStaev/NativeScript-Grid-View/master/docs/screenshot.png)
+| <img src="https://i.imgur.com/YrzOchx.gif" height="500" /> | <img src="https://i.imgur.com/bSdqhoE.gif" height="500" /> |
+| --- | ----------- |
+| iOS Demo | Android Demo |
+
+---
+## Table of Contents
+1. [Installation](#installation)
+2. [Configuration](#configuration)
+3. [API](#api)
+4. [Usage](#usage)
+5. [Usage in Angular](#usage-in-angular)
+6. [Demos](#demos)
 
 ## Installation
 Run the following command from the root of your project:
@@ -237,46 +246,10 @@ If you want to use multiple item templates, you can do that very similarly to ho
 </CollectionView>
 ```
 
-## Working with Webpack+Uglify
-In case you are uing webpack and also are minifying/uglifying your code, there are some specific names that should be excluded from the uglification for the widget to work properly. The CollectionView widget exports those and you need to add them to the mangle exclude option of the uglifyjs plugin in the `webpack.common.js` file:
-```js
-var gridViewMangleExcludes = require("@nativescript-community/ui-collectionview/uglify-mangle-excludes").default;
-//......
-module.exports = function (platform, destinationApp) {
-    //......
-    if (process.env.npm_config_uglify) {
-        plugins.push(new webpack.LoaderOptionsPlugin({
-            minimize: true
-        }));
-
-        //Work around an Android issue by setting compress = false
-        var compress = platform !== "android";
-        plugins.push(new webpack.optimize.UglifyJsPlugin({
-            mangle: {
-                except: nsWebpack.uglifyMangleExcludes.concat(gridViewMangleExcludes),
-            },
-            compress: compress,
-        }));
-    }
-   //......
-}
-```
-
 ## Demos
-This repository includes both Angular and plain NativeScript demos. In order to run those execute the following in your shell:
+This repository includes Angular, Vue.js, and Svelte demos. In order to run these execute the following in your shell:
 ```shell
-$ git clone https://github.com/peterstaev/nativescript-collectionview
-$ cd nativescript-collectionview
-$ npm install
-$ npm run demo-ios
+$ git clone https://github.com/@nativescript-community/ui-collectionview
+$ cd ui-collectionview/demo-ng # or demo-vue or demo-svelte
+$ ns run ios|android
 ```
-This will run the plain NativeScript demo project on iOS. If you want to run it on Android simply use the `-android` instead of the `-ios` sufix. 
-
-If you want to run the Angular demo simply use the `demo-ng-` prefix instead of `demo-`. 
-
-## Donate
-[![Donate](https://img.shields.io/badge/paypal-donate-brightgreen.svg)](https://bit.ly/2AS9QKB)
-
-`bitcoin:14fjysmpwLvSsAskvLASw6ek5XfhTzskHC`
-
-![Donate](https://www.tangrainc.com/qr.png)
