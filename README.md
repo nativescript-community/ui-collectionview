@@ -250,6 +250,9 @@ If you want to use multiple item templates, you can do that very similarly to ho
 This repository includes Angular, Vue.js, and Svelte demos. In order to run these execute the following in your shell:
 ```shell
 $ git clone https://github.com/@nativescript-community/ui-collectionview
-$ cd ui-collectionview/demo-ng # or demo-vue or demo-svelte
+$ cd ui-collectionview
+$ npm run setup
+$ npm run build
+$ cd demo-ng # or demo-vue or demo-svelte
 $ ns run ios|android
 ```
