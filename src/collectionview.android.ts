@@ -151,6 +151,8 @@ export class CollectionView extends CollectionViewBase {
         // rowHeightProperty.coerce(this);
     }
     _getSpanSize: (position: number) => number;
+
+    //@ts-ignore
     set spanSize(inter: (position: number) => number) {
         if (!(typeof inter === 'function')) {
             return;
@@ -287,6 +289,7 @@ export class CollectionView extends CollectionViewBase {
         super.disposeNativeView();
     }
 
+    //@ts-ignore
     get android(): androidx.recyclerview.widget.RecyclerView {
         return this.nativeView;
     }
