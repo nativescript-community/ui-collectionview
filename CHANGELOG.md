@@ -3,6 +3,34 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.5](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.4...v4.0.5) (2020-10-28)
+
+
+### Bug Fixes
+
+* bump @nativescript/core version ([0d3b55f](https://github.com/Akylas/nativescript-collectionview/commit/0d3b55f9752f46b74ea937256ba97c6be590dace))
+* change demo run commands ([e7a282e](https://github.com/Akylas/nativescript-collectionview/commit/e7a282e4881df574ab80bb64900d735711d42709))
+* force Angular template key to lower case ([ed91acf](https://github.com/Akylas/nativescript-collectionview/commit/ed91acfa0395cf68f77e62e5f4369bfae7ac0c67))
+* implement Angular practices from Pager plugin ([719a3e8](https://github.com/Akylas/nativescript-collectionview/commit/719a3e86720b014d8a8611b5dbd8da4e8666e60a))
+* NS7 import locations ([d05225d](https://github.com/Akylas/nativescript-collectionview/commit/d05225d9fc0dc119a9c411af53a2af3fb3cd75bf))
+* remove .vscode directory ([f98c4e5](https://github.com/Akylas/nativescript-collectionview/commit/f98c4e53d54900eabd6a0c2443dfdd29883a04f5))
+* remove old Vue demo ([3363ff4](https://github.com/Akylas/nativescript-collectionview/commit/3363ff4a7ef4a3cd03d41318b80b36c8c9fef57a))
+* try to fix angular error ([01689f7](https://github.com/Akylas/nativescript-collectionview/commit/01689f7f49fbf444bab908fe7f9df29571efd1f3))
+* update Angular demo ([179b0c6](https://github.com/Akylas/nativescript-collectionview/commit/179b0c6d1b5a0fad4adc37cfb7a4c573bdd83f3a))
+* update package name in README ([aaa175b](https://github.com/Akylas/nativescript-collectionview/commit/aaa175ba0f7d95fcc933f6b95fa4f4f70fd84d13))
+* update README with demo gifs ([858908e](https://github.com/Akylas/nativescript-collectionview/commit/858908eacccd6f831519dc5c55ecc3a341a0d086))
+
+
+### Features
+
+* add new Angular demo ([5d9c684](https://github.com/Akylas/nativescript-collectionview/commit/5d9c684c5b73141f941c5a950a224c41542252d0))
+* add new Svelte demo ([e4ebeab](https://github.com/Akylas/nativescript-collectionview/commit/e4ebeabcdf5c12d5715cf5308cb46263a6d4d870))
+* add new Vue demo ([e0e8e57](https://github.com/Akylas/nativescript-collectionview/commit/e0e8e57ff290844ac9dd2bcfa0fd8298ae8f63a3))
+
+
+
+
+
 ## [4.0.4](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.3...v4.0.4) (2020-10-07)
 
 
