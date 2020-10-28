@@ -41,7 +41,7 @@
         "tsc": "cpy '**/*.d.ts' '../plugin' --parents --cwd=src && cp README.md plugin && tsc -skipLibCheck -d",
         "clean": "rimraf ./plugin/**/*.d.ts ./plugin/**/*.js ./plugin/**/*.js.map ./plugin/**/*.metadata.json plugin/node_modules plugin/package-lock.json",
         "build": "rm -f .tsbuildinfo && npm run tsc",
-        "publish": "npm run setup && npm run build && npm run build.angular && lerna publish --github-release",
+        "publish": "npm run setup && npm run build && npm run build.angular && lerna publish --create-release=github",
         "commitmsg": "commitlint -e $GIT_PARAMS"
     },
     "repository": {
