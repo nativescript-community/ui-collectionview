@@ -36,7 +36,7 @@
         "vue": "^2.6.12"
     },
     "scripts": {
-        "setup": "ts-patch install",
+        "setup": "npm i && ts-patch install",
         "build.angular": "ng-packagr -p src/angular/package.json -c src/angular/tsconfig.json",
         "tsc": "cpy '**/*.d.ts' '../plugin' --parents --cwd=src && cp README.md plugin && tsc -skipLibCheck -d",
         "clean": "rimraf ./plugin/**/*.d.ts ./plugin/**/*.js ./plugin/**/*.js.map ./plugin/**/*.metadata.json plugin/node_modules plugin/package-lock.json",
