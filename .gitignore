@@ -24,3 +24,4 @@ plugin/**/*js.map
 plugin/**/*js
 plugin/*.ngsummary.json
 plugin/*.metadata.json
+pnpm-lock.yaml
