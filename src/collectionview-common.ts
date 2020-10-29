@@ -231,7 +231,6 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
                 spanCount = Math.max(Math.floor(this._innerWidth / this._effectiveColWidth), 1) || 1;
             }
         }
-        console.log('computeSpanCount', this._innerWidth, this._innerHeight, this._effectiveRowHeight, this._effectiveColWidth, spanCount);
         return spanCount;
     }
     public _onRowHeightPropertyChanged(oldValue: PercentLength, newValue: PercentLength) {
