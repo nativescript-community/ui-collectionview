@@ -5,17 +5,17 @@
         </ActionBar>
 
         <GridLayout>
-            <CollectionView 
+            <CollectionView
                 iosOverflowSafeArea="true"
-                :items="itemList"  
-                @itemTap="onItemTap" 
+                :items="itemList"
+                @itemTap="onItemTap"
                 @loadMoreItems="onLoadMoreItems"
                 @itemLoadingEvent="onItemLoadingEvent"
-                itemIdGenerator="index" 
-                colWidth="50%" 
+                itemIdGenerator="index"
+                colWidth="50%"
                 rowHeight="200"
             >
-                <v-template >
+                <v-template>
                     <GridLayout rows="*, auto" :backgroundColor="item.color" class="item">
                         <StackLayout row="1">
                             <Label row="1" :text="item.name" class="title" />
@@ -29,7 +29,7 @@
 </template>
 
 <script>
-  export default {
+export default {
     data() {
         const items = [
             { index: 0, name: 'TURQUOISE', color: '#1abc9c' },
@@ -68,28 +68,25 @@
             console.log('logEvent', e.eventName, e.extraData);
         }
     }
-
-  };
+};
 </script>
 
 <style scoped lang="scss">
+ActionBar {
+    background-color: #42b883;
+}
 
-    ActionBar {
-        background-color: #42b883;
+.item {
+    padding: 10;
+    color: white;
+
+    .title {
+        font-size: 17;
+        font-weight: bold;
     }
 
-    .item {
-        padding: 10;
-        color: white;
-
-        .title {
-            font-size: 17;
-            font-weight: bold;            
-        }
-
-        .subtitle {
-            font-size: 14;
-        }
+    .subtitle {
+        font-size: 14;
     }
-
+}
 </style>

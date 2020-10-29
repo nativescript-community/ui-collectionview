@@ -14,6 +14,9 @@
   "publishConfig": {
     "access": "public"
   },
+  "scripts": {
+    "run.android.production": "cross-var tns run android --clean --bundle --release --key-store-path $KEYSTORE_PATH --key-store-password $KEYSTORE_PASSWORD --key-store-alias $KEYSTORE_ALIAS --key-store-alias-password $KEYSTORE_ALIAS_PASSWORD  --env.adhoc"
+  },
   "keywords": [
     "nstudio",
     "nativescript",
@@ -28,21 +31,22 @@
     "category-general"
   ],
   "dependencies": {
-    "@nativescript/core": "~7.0.0",
-    "@nativescript/theme": "~2.3.0",
     "@nativescript-community/ui-collectionview": "../plugin",
-    "nativescript-vue": "~2.8.0"
+    "@nativescript/core": "~7.0.13",
+    "@nativescript/theme": "~3.0.0",
+    "nativescript-vue": "~2.8.1"
   },
   "devDependencies": {
-    "@babel/core": "~7.1.0",
-    "@babel/preset-env": "~7.1.0",
+    "@babel/core": "~7.1.6",
+    "@babel/preset-env": "~7.1.6",
     "@nativescript/android": "7.0.1",
     "@nativescript/ios": "7.0.4",
-    "@nativescript/webpack": "~3.0.0",
-    "babel-loader": "~8.0.0",
-    "nativescript-vue-template-compiler": "~2.8.0",
-    "node-sass": "^4.7.1",
-    "vue-loader": "~15.9.3"
+    "@nativescript/webpack": "~3.0.8",
+    "babel-loader": "~8.1.0",
+    "cross-var": "^1.1.0",
+    "nativescript-vue-template-compiler": "~2.8.1",
+    "node-sass": "^4.14.1",
+    "vue-loader": "~15.9.4"
   },
   "gitHead": "f282c57dc05817a655bca5e81ce9d7228ae70d4c",
   "private": "true",
