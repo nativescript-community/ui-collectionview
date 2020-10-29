@@ -103,10 +103,10 @@ export class CollectionView extends CollectionViewBase {
         super.disposeNativeView();
     }
 
-    _onSizeChanged() {
-        super._onSizeChanged();
-        this.onSizeChanged(this.getMeasuredWidth(), this.getMeasuredHeight());
-    }
+    // _onSizeChanged() {
+    //     super._onSizeChanged();
+    //     this.onSizeChanged(this.getMeasuredWidth(), this.getMeasuredHeight());
+    // }
 
     get _childrenCount(): number {
         return this._map.size;
@@ -182,6 +182,7 @@ export class CollectionView extends CollectionViewBase {
             }
             this.layoutCell(cellView._listViewItemIndex, cell, cellView);
         });
+        this.refresh();
     }
 
     public isHorizontal() {

@@ -147,35 +147,52 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
 
     public abstract refresh();
     public abstract scrollToIndex(index: number, animated: boolean);
-
-    _onSizeChanged() {
-        super._onSizeChanged();
-        this.onSizeChanged(this.getMeasuredWidth(), this.getMeasuredHeight());
-    }
-    @profile
-    public onSizeChanged(measuredWidth: number, measuredHeight: number) {
-        let changed = false;
-        this._innerWidth = measuredWidth - this.effectivePaddingLeft - this.effectivePaddingRight;
+    public onLayout(left: number, top: number, right: number, bottom: number) {
+        super.onLayout(left, top, right, bottom);
+        this._innerWidth = this.getMeasuredWidth() - this.effectivePaddingLeft - this.effectivePaddingRight;
         if (this.colWidth) {
             const newValue = PercentLength.toDevicePixels(this.colWidth, autoEffectiveColWidth, this._innerWidth); // We cannot use 0 for auto as it throws for android.
             if (newValue !== this._effectiveColWidth) {
                 this._effectiveColWidth = newValue;
-                changed = true;
             }
         }
 
-        this._innerHeight = measuredHeight - this.effectivePaddingTop - this.effectivePaddingBottom;
+        this._innerHeight = this.getMeasuredHeight() - this.effectivePaddingTop - this.effectivePaddingBottom;
         if (this.rowHeight) {
             const newValue = PercentLength.toDevicePixels(this.rowHeight, autoEffectiveRowHeight, this._innerHeight);
             if (newValue !== this._effectiveRowHeight) {
                 this._effectiveRowHeight = newValue;
-                changed = true;
             }
         }
-        if (changed) {
-            this.refresh();
-        }
     }
+    // _onSizeChanged() {
+    //     super._onSizeChanged();
+    //     this.onSizeChanged(this.getMeasuredWidth(), this.getMeasuredHeight());
+    // }
+    // @profile
+    // public onSizeChanged(measuredWidth: number, measuredHeight: number) {
+    //     let changed = false;
+    //     this._innerWidth = measuredWidth - this.effectivePaddingLeft - this.effectivePaddingRight;
+    //     if (this.colWidth) {
+    //         const newValue = PercentLength.toDevicePixels(this.colWidth, autoEffectiveColWidth, this._innerWidth); // We cannot use 0 for auto as it throws for android.
+    //         if (newValue !== this._effectiveColWidth) {
+    //             this._effectiveColWidth = newValue;
+    //             changed = true;
+    //         }
+    //     }
+
+    //     this._innerHeight = measuredHeight - this.effectivePaddingTop - this.effectivePaddingBottom;
+    //     if (this.rowHeight) {
+    //         const newValue = PercentLength.toDevicePixels(this.rowHeight, autoEffectiveRowHeight, this._innerHeight);
+    //         if (newValue !== this._effectiveRowHeight) {
+    //             this._effectiveRowHeight = newValue;
+    //             changed = true;
+    //         }
+    //     }
+    //     if (changed) {
+    //         this.refresh();
+    //     }
+    // }
     // public onLayout(left: number, top: number, right: number, bottom: number) {
     //   super.onLayout(left, top, right, bottom);
     // }
@@ -214,6 +231,7 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
                 spanCount = Math.max(Math.floor(this._innerWidth / this._effectiveColWidth), 1) || 1;
             }
         }
+        console.log('computeSpanCount', this._innerWidth, this._innerHeight, this._effectiveRowHeight, this._effectiveColWidth, spanCount);
         return spanCount;
     }
     public _onRowHeightPropertyChanged(oldValue: PercentLength, newValue: PercentLength) {
@@ -380,7 +398,7 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     _isDataDirty = false;
     onLoaded() {
         super.onLoaded();
-        if (this._isDataDirty) {
+        if (this._isDataDirty && this._effectiveColWidth !== undefined && this._effectiveRowHeight !== undefined) {
             this.refresh();
         }
     }
@@ -422,7 +440,9 @@ export const colWidthProperty = new Property<CollectionViewBase, PercentLength>(
     equalityComparer: PercentLength.equals,
     valueConverter: PercentLength.parse,
     valueChanged: (target, oldValue, newValue) => {
-        target._effectiveColWidth = PercentLength.toDevicePixels(newValue, autoEffectiveColWidth, target._innerWidth);
+        if (target._innerWidth !== 0) {
+            target._effectiveColWidth = PercentLength.toDevicePixels(newValue, autoEffectiveColWidth, target._innerWidth);
+        }
         target._onColWidthPropertyChanged(oldValue, newValue);
     },
 });

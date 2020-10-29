@@ -20,6 +20,15 @@ import { CLog, CLogTypes, CollectionViewBase, ListViewViewTypes, isScrollEnabled
 
 export * from './collectionview-common';
 
+
+declare module '@nativescript/core/ui/core/view' {
+    interface View {
+        layoutChangeListenerIsSet: boolean;
+        layoutChangeListener: android.view.View.OnLayoutChangeListener;
+        _raiseLayoutChangedEvent();
+    }
+}
+
 // Snapshot friendly GridViewAdapter
 interface CellViewHolder extends com.nativescript.collectionview.CollectionViewCellHolder {
     // tslint:disable-next-line:no-misused-new
@@ -114,15 +123,13 @@ export class CollectionView extends CollectionViewBase {
 
     @profile
     public initNativeView() {
+        this.setOnLayoutChangeListener();
         super.initNativeView();
-
         const nativeView = this.nativeViewProtected;
         nativeView.owner = new WeakRef(this);
-        nativeView.sizeChangedListener = new com.nativescript.collectionview.SizeChangedListener({
-            onSizeChanged: (w, h, oldW, oldH) => {
-                this.onSizeChanged(w, h);
-            },
-        });
+        // nativeView.sizeChangedListener = new com.nativescript.collectionview.SizeChangedListener({
+        //     onSizeChanged: (w, h, oldW, oldH) => this.onSizeChanged(w, h),
+        // });
 
         // const orientation = this._getLayoutManagarOrientation();
 
@@ -412,6 +419,26 @@ export class CollectionView extends CollectionViewBase {
     //     });
     // }
 
+    private setOnLayoutChangeListener() {
+        if (this.nativeViewProtected) {
+            const owner = this;
+            this.layoutChangeListenerIsSet = true;
+            this.layoutChangeListener =
+				this.layoutChangeListener ||
+				new android.view.View.OnLayoutChangeListener({
+				    onLayoutChange(v: android.view.View, left: number, top: number, right: number, bottom: number, oldLeft: number, oldTop: number, oldRight: number, oldBottom: number): void {
+				        if (left !== oldLeft || top !== oldTop || right !== oldRight || bottom !== oldBottom) {
+				            owner.onLayout(left, top, right, bottom);
+				            if (owner.hasListeners(View.layoutChangedEvent)) {
+				                owner._raiseLayoutChangedEvent();
+				            }
+				        }
+				    },
+				});
+
+            this.nativeViewProtected.addOnLayoutChangeListener(this.layoutChangeListener);
+        }
+    }
     public onLayout(left: number, top: number, right: number, bottom: number) {
         super.onLayout(left, top, right, bottom);
         const p = CollectionViewBase.plugins[this.layoutStyle];
@@ -425,6 +452,7 @@ export class CollectionView extends CollectionViewBase {
         if (this.layoutManager && this.layoutManager['setSpanCount']) {
             this.layoutManager['setSpanCount'](this.computeSpanCount());
         }
+        setTimeout(()=>this.refresh(),0);
     }
     public onSourceCollectionChanged(event: ChangedData<any>) {
         if (!this._listViewAdapter) {
@@ -488,7 +516,7 @@ export class CollectionView extends CollectionViewBase {
         }
 
         // nativeView.adapter.owner = new WeakRef(this);
-
+        console.log('refresh', new Error().stack);
         const layoutManager = view.getLayoutManager();
         if (layoutManager['setSpanCount']) {
             layoutManager['setSpanCount'](this.computeSpanCount());
