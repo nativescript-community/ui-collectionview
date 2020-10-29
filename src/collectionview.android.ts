@@ -516,7 +516,6 @@ export class CollectionView extends CollectionViewBase {
         }
 
         // nativeView.adapter.owner = new WeakRef(this);
-        console.log('refresh', new Error().stack);
         const layoutManager = view.getLayoutManager();
         if (layoutManager['setSpanCount']) {
             layoutManager['setSpanCount'](this.computeSpanCount());
