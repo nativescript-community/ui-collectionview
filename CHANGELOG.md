@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.6](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.5...v4.0.6) (2020-10-29)
+
+
+### Bug Fixes
+
+* refactoring for faster loading time on android ([3c25475](https://github.com/Akylas/nativescript-collectionview/commit/3c2547547514a084ce8e7b12005365a75e7aba84))
+
+
+
+
+
 ## [4.0.5](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.4...v4.0.5) (2020-10-28)
 
 
