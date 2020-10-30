@@ -1,4 +1,5 @@
 ﻿# NativeScript CollectionView
+
 [![npm downloads](https://img.shields.io/npm/dm/@nativescript-community/ui-collectionview.svg)](https://www.npmjs.com/package/@nativescript-community/ui-collectionview)
 [![npm downloads](https://img.shields.io/npm/dt/@nativescript-community/ui-collectionview.svg)](https://www.npmjs.com/package/@nativescript-community/ui-collectionview)
 [![npm](https://img.shields.io/npm/v/@nativescript-community/ui-collectionview.svg)](https://www.npmjs.com/package/@nativescript-community/ui-collectionview)
