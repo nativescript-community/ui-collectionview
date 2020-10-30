@@ -47,7 +47,7 @@ There is no additional configuration needed!
 | ------------- | ------------------------------------------------ | ------------------------------------------------------- |
 | ios           | [UICollectionView](https://tinyurl.com/y4ugbfgc) | Gets the native iOS view that represents the user interface for this component. Valid only when running on iOS.    |
 | android       | [android.support.v7.widget.RecyclerView](https://tinyurl.com/lvqebpq) | Gets the native android widget that represents the user interface for this component. Valid only when running on Android OS.    |
-| items         | `array | ItemsSource`  | Gets or sets the items collection of the CollectionView. The items property can be set to an array or an object defining length and getItem(index) method.    |
+| items         | `array` or `ItemsSource`  | Gets or sets the items collection of the CollectionView. The items property can be set to an array or an object defining length and getItem(index) method.    |
 | itemTemplate  | `string`  | Gets or sets the item template of the CollectionView.    |
 | rowHeight     | `PercentLength`  | Gets or sets the height for every row in the CollectionView.    |
 | colWidth      | `PercentLength`  | Gets or sets the width for every column in the CollectionView.    |
