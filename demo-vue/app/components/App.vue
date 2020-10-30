@@ -1,137 +1,92 @@
 <template>
     <Page>
-        <StackLayout>
-            <Label :text="currentSection" height="60" width="100%" backgroundColor="red" />
-            <CollectionView width="100%" height="100%" colWidth="50%" ref="listView" :items="itemList" @itemTap="onItemTap" itemIdGenerator="index" :spanSize="index => (index % 5 === 0 ? 2 : 1)">
-                <v-template if="$index % 5 === 0">
-                    <Label fontSize="17" :text="item.title" verticalAlignment="center" height="30" />
-                </v-template>
+        <ActionBar>
+            <Label text="Vue.js Demo" />
+        </ActionBar>
+
+        <GridLayout>
+            <CollectionView
+                iosOverflowSafeArea="true"
+                :items="itemList"
+                @itemTap="onItemTap"
+                @loadMoreItems="onLoadMoreItems"
+                @itemLoadingEvent="onItemLoadingEvent"
+                itemIdGenerator="index"
+                colWidth="50%"
+                rowHeight="200"
+            >
                 <v-template>
-                    <GridLayout columns="16,auto,*,auto,16" rows="12,auto,*,auto" rippleColor="red" backgroundColor="white" height="80">
-                        <Label
-                            v-show="!!item.leftIcon"
-                            col="1"
-                            row="0"
-                            rowSpan="5"
-                            fontSize="24"
-                            marginRight="16"
-                            textAlignment="left"
-                            :text="item.leftIcon"
-                            horizontalAlignment="left"
-                            verticalAlignment="center"
-                            color="gray"
-                            class="mdi"
-                        />
-                        <Image
-                            v-show="item.avatar"
-                            backgroundColor="gray"
-                            col="1"
-                            row="1"
-                            rowSpan="3"
-                            width="40"
-                            height="40"
-                            stretch="aspectFill"
-                            marginRight="16"
-                            :src="item.avatar"
-                            verticalAlignment="center"
-                            borderRadius="20"
-                            android:roundAsCircle="true"
-                        />
-
-                        <StackLayout col="2" row="1" rowSpan="2" verticalAlignment="center">
-                            <Label col="2" row="1" :fontSize="10" v-show="!!item.overText" :text="item.overText | uppercase" verticalAlignment="center" color="gray" />
-                            <Label :fontSize="17" :text="item.title" textWrap="true" verticalTextAlignment="top" maxLines="2" lineBreak="end" />
-                            <Label v-show="!!item.subtitle" :fontSize="14" :text="item.subtitle" verticalTextAlignment="top" color="gray" maxLines="2" lineBreak="end" />
+                    <GridLayout rows="*, auto" :backgroundColor="item.color" class="item">
+                        <StackLayout row="1">
+                            <Label row="1" :text="item.name" class="title" />
+                            <Label row="1" :text="item.color" class="subtitle" />
                         </StackLayout>
-
-                        <Label col="3" row="1" fontSize="10" v-show="!!item.date" :text="item.date" verticalAlignment="top" />
-                        <GridLayout col="3" row="1" rowSpan="2" verticalAlignment="center">
-                            <Label v-show="!!item.rightIcon" class="mdi" :fontSize="24" textAlignment="right" color="gray" :text="item.rightIcon" verticalAlignment="center" />
-                            <Button variant="flat" v-show="!!item.rightButton" class="icon-themed-btn" :text="item.rightButton" verticalAlignment="center" @tap="$emit('rightTap')" />
-                        </GridLayout>
-
-                        <AbsoluteLayout row="3" colSpan="5" marginTop="12" marginLeft="20" backgroundColor="gray" height="1" verticalAlignment="bottom" />
                     </GridLayout>
                 </v-template>
             </CollectionView>
-        </StackLayout>
+        </GridLayout>
     </Page>
 </template>
 
-<script lang="ts">
-const DetailsPage = {
-    template: `
-  <Page>
-    <ActionBar class="action-bar" title="Details Page">
-      <ActionItem text="Action"></ActionItem>
-    </ActionBar>
-    <StackLayout>
-      <Label :text="'Details ' + Math.random()" />
-      <Button text="another" @tap="openDetails" />
-      <Button text="back" @tap="goBack" />
-    </StackLayout>
-  </Page>
-  `,
-
-    methods: {
-        openDetails() {
-            this.$navigateTo(DetailsPage);
-        },
-        goBack() {
-            this.$navigateBack();
-        }
-    }
-};
-
+<script>
 export default {
     data() {
-        const items = [];
-        for (let loop = 0; loop < 1000; loop++) {
-            items.push({
-                // width: loop % 5 === 0 ? '100%' : '50%',
-                index: loop,
-                leftIcon: 'mdi-magnify',
-                title: 'title ' + loop.toString(),
-                subtitle: 'subtitle ' + loop.toString()
-                // visible: loop % 10 !== 0
-            });
-        }
+        const items = [
+            { index: 0, name: 'TURQUOISE', color: '#1abc9c' },
+            { index: 1, name: 'EMERALD', color: '#2ecc71' },
+            { index: 2, name: 'PETER RIVER', color: '#3498db' },
+            { index: 3, name: 'AMETHYST', color: '#9b59b6' },
+            { index: 4, name: 'WET ASPHALT', color: '#34495e' },
+            { index: 5, name: 'GREEN SEA', color: '#16a085' },
+            { index: 6, name: 'NEPHRITIS', color: '#27ae60' },
+            { index: 7, name: 'BELIZE HOLE', color: '#2980b9' },
+            { index: 8, name: 'WISTERIA', color: '#8e44ad' },
+            { index: 9, name: 'MIDNIGHT BLUE', color: '#2c3e50' },
+            { index: 10, name: 'SUN FLOWER', color: '#f1c40f' },
+            { index: 11, name: 'CARROT', color: '#e67e22' },
+            { index: 12, name: 'ALIZARIN', color: '#e74c3c' },
+            { index: 13, name: 'CLOUDS', color: '#ecf0f1' },
+            { index: 14, name: 'CONCRETE', color: '#95a5a6' },
+            { index: 15, name: 'ORANGE', color: '#f39c12' },
+            { index: 16, name: 'PUMPKIN', color: '#d35400' },
+            { index: 17, name: 'POMEGRANATE', color: '#c0392b' },
+            { index: 18, name: 'SILVER', color: '#bdc3c7' },
+            { index: 19, name: 'ASBESTOS', color: '#7f8c8d' }
+        ];
         return {
-            currentSection: 0,
             itemList: items
         };
     },
     methods: {
         onItemTap({ index, item }) {
-            console.log(`Tapped on ${index} ${item.title}`);
-            this.$navigateTo(DetailsPage);
+            console.log(`EVENT TRIGGERED: Tapped on ${index} ${item.name}`);
+        },
+        onLoadMoreItems() {
+            console.log('EVENT TRIGGERED: onLoadMoreItems()');
         },
         logEvent(e) {
             console.log('logEvent', e.eventName, e.extraData);
         }
-        // onDisplayEvent(e) {
-        //     console.log('onDisplayEvent', e.eventName, e.index);
-        //     if (e.index % 5 === 0 && this.currentSection !== e.index) {
-        //         // this.currentSection = e.index;
-        //     }
-        // }
-        // itemIdGenerator(item, i) {
-        //   return item.index;
-        // }
     }
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 ActionBar {
-    background-color: #53ba82;
-    color: #ffffff;
+    background-color: #42b883;
 }
 
-.message {
-    vertical-align: center;
-    text-align: center;
-    font-size: 20;
-    color: #333333;
+.item {
+    padding: 10;
+    color: white;
+
+    .title {
+        font-size: 17;
+        font-weight: bold;
+    }
+
+    .subtitle {
+        font-size: 14;
+    }
 }
 </style>
