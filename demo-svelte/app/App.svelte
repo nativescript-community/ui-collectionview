@@ -42,6 +42,7 @@
             rowHeight="200"
             on:itemTap="{onItemTap}"
             on:loadMoreItems="{onLoadMoreItems}"
+            automationText="collectionView"
         >
             <Template let:item>
                 <gridlayout rows="*, auto" backgroundColor="{item.color}" class="item">
