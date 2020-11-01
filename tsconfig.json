@@ -7,6 +7,7 @@
         "noLib": false,
         "emitDecoratorMetadata": false,
         "experimentalDecorators": true,
+        "jsx": "react",
         "lib": ["es6", "dom"],
         "sourceMap": true,
         "pretty": true,
