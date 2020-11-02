@@ -19,7 +19,8 @@ A NativeScript CollectionView widget. The CollectionView displays data in separa
 5. [Usage in Angular](#usage-in-angular)
 6. [Usage in Vue](#usage-in-vue)
 7. [Usage in Svelte](#usage-in-svelte)
-8. [Demos](#demos)
+8. [Usage in React](#usage-in-react)
+9. [Demos](#demos)
 
 ## Installation
 Run the following command from the root of your project:
@@ -293,6 +294,54 @@ Then add the following XML to your component:
 ```
 
 For a more complete example, look in the `demo-svelte` directory.
+
+## Usage in React
+
+Register the plugin in your `app.ts`.
+
+```typescript
+import { registerCollectionView } from '@nativescript-community/ui-collectionview/react';
+registerCollectionView();
+```
+
+### Simple Example:
+
+In your component, add the following code to create a simple list.
+
+```tsx
+import { CollectionView } from '@nativescript-community/ui-collectionview/react';
+
+const items = [
+    { index: 0, name: 'TURQUOISE', color: '#1abc9c' },
+    { index: 1, name: 'EMERALD', color: '#2ecc71' },
+    { index: 2, name: 'PETER RIVER', color: '#3498db' },
+    { index: 3, name: 'AMETHYST', color: '#9b59b6' },
+    { index: 4, name: 'WET ASPHALT', color: '#34495e' },
+    { index: 5, name: 'GREEN SEA', color: '#16a085' },
+    { index: 6, name: 'NEPHRITIS', color: '#27ae60' },
+    { index: 7, name: 'BELIZE HOLE', color: '#2980b9' },
+    { index: 8, name: 'WISTERIA', color: '#8e44ad' },
+    { index: 9, name: 'MIDNIGHT BLUE', color: '#2c3e50' }
+];
+
+interface Item {
+    index: number;
+    name: string;
+    color: string;
+}
+
+const cellFactory = (item: Item) => (
+    <label text={item.name} />
+);
+
+export function First() {
+    return (
+        <CollectionView items={items} colWidth="50%" rowHeight="100" cellFactory={cellFactory} width="100%" height="100%" />
+    );
+}
+```
+
+For a more complete example, look in the `demo-react` directory.
 
 ## Demos
 This repository includes Angular, Vue.js, and Svelte demos. In order to run these execute the following in your shell:
