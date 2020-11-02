@@ -34,7 +34,6 @@
         "ng-packagr": "~10.1.0",
         "react-nativescript": "^2.1.0",
         "rimraf": "^3.0.2",
-        "react-nativescript": "^2.1.0",
         "rxjs": "^6.6.3",
         "svelte": "^3.24.1",
         "svelte-native": "0.9.3",

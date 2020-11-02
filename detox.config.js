@@ -52,5 +52,21 @@ module.exports = {
                 avdName: devices.android,
             },
         },
+        'react.ios': {
+            binaryPath: 'demo-react/platforms/ios/build/Debug-iphonesimulator/demoreact.app',
+            build: 'cd demo-react && ns build ios',
+            type: 'ios.simulator',
+            device: {
+                type: devices.ios,
+            },
+        },
+        'react.android': {
+            binaryPath: 'demo-react/platforms/android/app/build/outputs/apk/debug/app-debug.apk',
+            build: 'cd demo-react && ns build android --detox',
+            type: 'android.emulator',
+            device: {
+                avdName: devices.android,
+            },
+        },
     },
 };
