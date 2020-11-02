@@ -50,6 +50,6 @@ const cellFactory = (item: Item) => (
 
 export function First() {
     return (
-        <CollectionView items={items} colWidth="50%" rowHeight="200" cellFactory={cellFactory} width="100%" height="100%" />
+        <CollectionView iosOverflowSafeArea={true} automationText="collectionView" items={items} colWidth="50%" rowHeight="200" cellFactory={cellFactory} width="100%" height="100%" />
     );
 }
