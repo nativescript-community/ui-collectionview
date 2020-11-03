@@ -28,6 +28,7 @@
   ],
   "dependencies": {
     "@nativescript/core": "^7.0.13",
+    "@nativescript/detox": "~1.0.0",
     "@react-navigation/core": "^5.13.2",
     "@nativescript-community/ui-collectionview": "../plugin",
     "react": "^16.13.1",
@@ -43,6 +44,7 @@
     "@pmmmwh/react-refresh-webpack-plugin": "^0.4.0-beta.5",
     "@types/react": "16.9.34",
     "babel-loader": "8.0.6",
+    "detox": "~17.10.6",
     "fork-ts-checker-webpack-plugin": "^5.1.0",
     "patch-package": "^6.2.2",
     "react-refresh": "^0.8.3",

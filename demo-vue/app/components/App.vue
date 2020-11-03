@@ -6,6 +6,7 @@
 
         <GridLayout>
             <CollectionView
+                automationText="collectionView"
                 iosOverflowSafeArea="true"
                 :items="itemList"
                 @itemTap="onItemTap"
