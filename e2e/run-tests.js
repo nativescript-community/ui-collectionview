@@ -65,7 +65,7 @@ function generateDetoxCommand(platforms, frameworks, build, run) {
     }
     else if(run) {
         for (const configuration of configurations) {
-            commands.push(`detox run -c ${configuration}`);
+            commands.push(`detox test -c ${configuration}`);
         }
     }
     else {
