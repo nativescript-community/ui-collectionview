@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "@nativescript/core": "~7.0.0",
+    "@nativescript/detox": "~1.0.0",
     "@nativescript/theme": "~2.3.0",
     "@nativescript-community/ui-collectionview": "../plugin",
     "svelte-native": "~0.9.4"
@@ -36,6 +37,7 @@
     "@nativescript/android": "7.0.1",
     "@nativescript/ios": "7.0.4",
     "@nativescript/webpack": "~3.0.0",
+    "detox": "~17.10.6",
     "svelte": "~3.24.1",
     "svelte-loader-hot": "~0.3.1",
     "svelte-native-preprocessor": "^0.2.0",

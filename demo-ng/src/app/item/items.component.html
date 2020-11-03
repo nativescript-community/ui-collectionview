@@ -9,6 +9,7 @@
         (loadMoreItems)="onLoadMoreItems()"
         colWidth="50%" 
         rowHeight="200"
+        automationText="collectionView"
     >
         <ng-template let-item="item">
             <GridLayout rows="*, auto" [backgroundColor]="item.color" class="item">

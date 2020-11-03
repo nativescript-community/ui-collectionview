@@ -33,6 +33,7 @@
   "dependencies": {
     "@nativescript-community/ui-collectionview": "../plugin",
     "@nativescript/core": "~7.0.13",
+    "@nativescript/detox": "~1.0.0",
     "@nativescript/theme": "~3.0.0",
     "nativescript-vue": "~2.8.1"
   },
@@ -44,6 +45,7 @@
     "@nativescript/webpack": "~3.0.8",
     "babel-loader": "~8.1.0",
     "cross-var": "^1.1.0",
+    "detox": "~17.10.6",
     "nativescript-vue-template-compiler": "~2.8.1",
     "node-sass": "^4.14.1",
     "vue-loader": "~15.9.4"

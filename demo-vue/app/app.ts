@@ -1,10 +1,11 @@
 import Vue from 'nativescript-vue';
-import Home from './components/Home.vue';
+import App from './components/App.vue';
 
 import CollectionView from '@nativescript-community/ui-collectionview/vue';
 Vue.use(CollectionView);
+
 Vue.config.silent = true;
 
 new Vue({
-    render: h => h(Home)
+    render: h => h('frame', [h(App)]),
 }).$start();
