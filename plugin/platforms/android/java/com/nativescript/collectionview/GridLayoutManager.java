@@ -37,6 +37,9 @@ public class GridLayoutManager extends androidx.recyclerview.widget.GridLayoutMa
         return Math.round(scrolledY);
     }
 
+    public void setScrollEnabled(boolean value) {
+         isScrollEnabled = value;
+    }
     public boolean canScrollVertically() {
 
         return isScrollEnabled && super.canScrollVertically();

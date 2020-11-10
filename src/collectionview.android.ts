@@ -370,17 +370,16 @@ export class CollectionView extends CollectionViewBase {
     }
     // isScrollEnabled = true;
     public [isScrollEnabledProperty.setNative](value: boolean) {
-        // this.isScrollEnabled = value;
         const layoutManager = this.layoutManager;
-        if (layoutManager && layoutManager['isScrollEnabled']) {
-            layoutManager['isScrollEnabled'] = value;
+        if (layoutManager && (layoutManager as any).setScrollEnabled ) {
+            (layoutManager as any).setScrollEnabled(value);
         }
     }
     public [reverseLayoutProperty.setNative](value: boolean) {
         // this.isScrollEnabled = value;
         const layoutManager = this.layoutManager;
-        if (layoutManager && layoutManager['setReverseLayout']) {
-            layoutManager['setReverseLayout'](value);
+        if (layoutManager && (layoutManager as any).setReverseLayout) {
+            (layoutManager as any).setReverseLayout(value);
             // layoutManager['setStackFromEnd'](value);
         }
     }
