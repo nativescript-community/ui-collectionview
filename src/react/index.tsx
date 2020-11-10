@@ -139,7 +139,6 @@ export class _CollectionView extends React.Component<Props, State> {
 
             if (onCellFirstLoad) onCellFirstLoad(rootKeyAndRef.nativeView);
         } else {
-            console.log('[CollectionView] existing view: ', view);
             if (onCellRecycle) onCellRecycle(view);
 
             const { rootKey, nativeView } = this.argsViewToRootKeyAndRef.get(view);
@@ -175,7 +174,6 @@ export class _CollectionView extends React.Component<Props, State> {
             throw new Error('Unable to get ref to CollectionView');
         }
 
-        console.log('[CollectionView] no existing view.');
         const rootKey: string = `CollectionView-${node._domId}-${this.roots.size.toString()}`;
 
         const root = new NSVRoot<View>();
@@ -211,7 +209,6 @@ export class _CollectionView extends React.Component<Props, State> {
                 itemTemplates.push({
                     key,
                     createView: () => {
-                        console.log(`[CollectionView] item template "${key}"`);
                         const rootKeyAndRef: RootKeyAndTNSView = this.renderNewRoot(placeholderItem, cellFactory);
                         this.argsViewToRootKeyAndRef.set(rootKeyAndRef.nativeView, rootKeyAndRef);
 
@@ -236,7 +233,6 @@ export class _CollectionView extends React.Component<Props, State> {
     }
 
     render() {
-        console.log('CollectionView\'s render()');
         const {
             // Only used by the class component; not the JSX element.
             forwardedRef,
