@@ -321,7 +321,27 @@ export class CollectionView extends CollectionViewBase {
         };
         this.notify(args);
     }
-
+    get scrollOffset() {
+        const view = this.nativeViewProtected;
+        if (!view) {
+            return 0;
+        }
+        return (this.isHorizontal() ? view.contentOffset.x : view.contentOffset.y);
+    }
+    get verticalOffsetX() {
+        const view = this.nativeViewProtected;
+        if (!view) {
+            return 0;
+        }
+        return view.contentOffset.x;
+    }
+    get verticalOffsetY() {
+        const view = this.nativeViewProtected;
+        if (!view) {
+            return 0;
+        }
+        return view.contentOffset.y;
+    }
     public scrollToIndex(index: number, animated: boolean = true) {
         this.nativeViewProtected.scrollToItemAtIndexPathAtScrollPositionAnimated(
             NSIndexPath.indexPathForItemInSection(index, 0),
@@ -329,6 +349,7 @@ export class CollectionView extends CollectionViewBase {
             animated
         );
     }
+
 
     public requestLayout(): void {
         // When preparing cell don't call super - no need to invalidate our measure when cell desiredSize is changed.
@@ -658,6 +679,13 @@ export class CollectionView extends CollectionViewBase {
             scrollOffset: this.isHorizontal() ? scrollView.contentOffset.x : scrollView.contentOffset.y,
         });
     }
+    scrollViewWillEndDraggingWithVelocityTargetContentOffset?(scrollView: UIScrollView, velocity: CGPoint, targetContentOffset: interop.Pointer | interop.Reference<CGPoint>): void {
+        // this.notify({
+        //     object: this,
+        //     eventName: CollectionViewBase.scrollEndEvent,
+        //     scrollOffset: this.isHorizontal() ? scrollView.contentOffset.x : scrollView.contentOffset.y,
+        // });
+    }
 }
 
 interface ViewItemIndex {
@@ -750,6 +778,12 @@ class UICollectionViewDelegateImpl extends NSObject implements UICollectionViewD
         const owner = this._owner.get();
         if (owner) {
             owner.scrollViewDidEndDecelerating(scrollView);
+        }
+    }
+    scrollViewWillEndDraggingWithVelocityTargetContentOffset?(scrollView: UIScrollView, velocity: CGPoint, targetContentOffset: interop.Pointer | interop.Reference<CGPoint>): void {
+        const owner = this._owner.get();
+        if (owner) {
+            owner.scrollViewWillEndDraggingWithVelocityTargetContentOffset(scrollView, velocity, targetContentOffset);
         }
     }
 }

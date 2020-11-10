@@ -527,19 +527,40 @@ export class CollectionView extends CollectionViewBase {
         this.notify(args);
     }
 
+    get scrollOffset() {
+        const view = this.nativeViewProtected;
+        if (!view) {
+            return 0;
+        }
+        return (this.isHorizontal() ? view.computeHorizontalScrollOffset() : view.computeVerticalScrollOffset()) / layout.getDisplayDensity();
+    }
+    get verticalOffsetX() {
+        const view = this.nativeViewProtected;
+        if (!view) {
+            return 0;
+        }
+        return view.computeHorizontalScrollOffset() / layout.getDisplayDensity();
+    }
+    get verticalOffsetY() {
+        const view = this.nativeViewProtected;
+        if (!view) {
+            return 0;
+        }
+        return view.computeVerticalScrollOffset() / layout.getDisplayDensity();
+    }
     public scrollToIndex(index: number, animated: boolean = true) {
-        if (!this.nativeView) {
+        if (!this.nativeViewProtected) {
             return;
         }
         if (animated) {
-            this.nativeView.smoothScrollToPosition(index);
+            this.nativeViewProtected.smoothScrollToPosition(index);
         } else {
-            this.nativeView.scrollToPosition(index);
+            this.nativeViewProtected.scrollToPosition(index);
         }
     }
 
     private _setPadding(newPadding: { top?: number; right?: number; bottom?: number; left?: number }) {
-        const nativeView: android.view.View = this.nativeView;
+        const nativeView = this.nativeViewProtected;
         const padding = {
             top: nativeView.getPaddingTop(),
             right: nativeView.getPaddingRight(),
@@ -711,7 +732,7 @@ export class CollectionView extends CollectionViewBase {
             bindingContext,
             android: holder,
         };
-        this.notifyLoading(args);
+        this.notify(args);
 
         if (isNonSync && args.view !== view) {
             view = args.view;
