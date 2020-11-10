@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.9](https://github.com/nativescript-community/nativescript-collectionview/compare/v4.0.8...v4.0.9) (2020-11-10)
+
+
+### Bug Fixes
+
+* android fix for isScrollEnabled ([1a3d69c](https://github.com/nativescript-community/nativescript-collectionview/commit/1a3d69cbefc9b5b1198835171a0a3b0280767a26))
+* package json syntax error and format ([9b5551f](https://github.com/nativescript-community/nativescript-collectionview/commit/9b5551fcbd17e330c81a3fed30400cbc7f63780c))
+
+
+
+
+
 ## [4.0.8](https://github.com/nativescript-community/nativescript-collectionview/compare/v4.0.7...v4.0.8) (2020-10-29)
 
 **Note:** Version bump only for package @nativescript-community/ui-collectionview

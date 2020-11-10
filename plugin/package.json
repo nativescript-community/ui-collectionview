@@ -1,6 +1,6 @@
 {
     "name": "@nativescript-community/ui-collectionview",
-    "version": "4.0.8",
+    "version": "4.0.9",
     "description": "NativeScript plugin that allows you to easily add a collection view (grid list view) to your projects.",
     "main": "./collectionview",
     "module": "./collectionview.mjs",

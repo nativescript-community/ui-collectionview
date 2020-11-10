@@ -3,6 +3,34 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.9](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.8...v4.0.9) (2020-11-10)
+
+
+### Bug Fixes
+
+* android fix for isScrollEnabled ([1a3d69c](https://github.com/Akylas/nativescript-collectionview/commit/1a3d69cbefc9b5b1198835171a0a3b0280767a26))
+* make Vue demo consistent with others ([317cc0c](https://github.com/Akylas/nativescript-collectionview/commit/317cc0c3ab881a03d3fdf1379c545eeccab379ce))
+* package json syntax error and format ([9b5551f](https://github.com/Akylas/nativescript-collectionview/commit/9b5551fcbd17e330c81a3fed30400cbc7f63780c))
+* readme format ([5df6613](https://github.com/Akylas/nativescript-collectionview/commit/5df66136f00ad97523d2f0b748dc35cb9e476d2b))
+* remove leftover zip file ([b8152e9](https://github.com/Akylas/nativescript-collectionview/commit/b8152e96679cc70293aff5c4f0947282e0518d77))
+* typo detox test not detox run ([8bc82a4](https://github.com/Akylas/nativescript-collectionview/commit/8bc82a4b83b31e88b9cf5b758eb4264471fb9184))
+* Vue demo to get actionbar ([96af995](https://github.com/Akylas/nativescript-collectionview/commit/96af99506a3e38906d4e76f9d89bdf6de582cc16))
+
+
+### Features
+
+* add Detox packages to demos ([90dfbb8](https://github.com/Akylas/nativescript-collectionview/commit/90dfbb81a11a12bafade93128adf30c63a36a967))
+* add Detox testing to React demo ([1ea0a28](https://github.com/Akylas/nativescript-collectionview/commit/1ea0a28485cc03492a95161a670033ef14b8101a))
+* add e2e script to package json ([814e052](https://github.com/Akylas/nativescript-collectionview/commit/814e052c40112a8268104b9f4f5a137306a1e371))
+* add initial Detox setup ([ad97677](https://github.com/Akylas/nativescript-collectionview/commit/ad97677677de9fba50d63a03d63724f364eb41a9))
+* add React plugin typings and demo ([a514801](https://github.com/Akylas/nativescript-collectionview/commit/a514801569777c50c48cb5aa6cfe10273e119938))
+* create Detox runner script ([8f6b091](https://github.com/Akylas/nativescript-collectionview/commit/8f6b09134ffd4031c337eba247d312aeae7982b4))
+* Update readme for React ([e025492](https://github.com/Akylas/nativescript-collectionview/commit/e02549227da6c90a77d030ba9416b29014cd84d1))
+
+
+
+
+
 ## [4.0.8](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.7...v4.0.8) (2020-10-29)
 
 
