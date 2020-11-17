@@ -190,11 +190,12 @@ export class CollectionView extends CollectionViewBase {
     }
 
     public onSourceCollectionChanged(event: ChangedData<any>) {
-        if (!this.nativeViewProtected) {
+        const view = this.nativeViewProtected;
+        if (!view) {
             return;
         }
         if (Trace.isEnabled()) {
-            CLog(CLogTypes.log, 'onItemsChanged', event.action, event.index, event.addedCount, event.removed && event.removed.length);
+            CLog(CLogTypes.log, 'onItemsChanged',ChangeType.Update,  event.action, event.index, event.addedCount, event.removed && event.removed.length);
         }
         // we need to clear stored cell sizes and it wont be correct anymore
         this.clearCellSize();
@@ -209,8 +210,8 @@ export class CollectionView extends CollectionViewBase {
                 if (Trace.isEnabled()) {
                     CLog(CLogTypes.info, 'deleteItemsAtIndexPaths', indexes.count);
                 }
-                this.nativeViewProtected.performBatchUpdatesCompletion(() => {
-                    this.nativeViewProtected.deleteItemsAtIndexPaths(indexes);
+                view.performBatchUpdatesCompletion(() => {
+                    view.deleteItemsAtIndexPaths(indexes);
                 }, null);
                 return;
             }
@@ -220,9 +221,12 @@ export class CollectionView extends CollectionViewBase {
                 if (Trace.isEnabled()) {
                     CLog(CLogTypes.info, 'reloadItemsAtIndexPaths', indexes.count);
                 }
-                this.nativeViewProtected.performBatchUpdatesCompletion(() => {
-                    this.nativeViewProtected.reloadItemsAtIndexPaths(indexes);
-                }, null);
+                UIView.performWithoutAnimation(()=>{
+                    view.performBatchUpdatesCompletion(() => {
+                        view.reloadItemsAtIndexPaths(indexes);
+                    }, null);
+                });
+
                 return;
             }
             case ChangeType.Add: {
@@ -233,20 +237,20 @@ export class CollectionView extends CollectionViewBase {
                 if (Trace.isEnabled()) {
                     CLog(CLogTypes.info, 'insertItemsAtIndexPaths', indexes.count);
                 }
-                this.nativeViewProtected.performBatchUpdatesCompletion(() => {
-                    this.nativeViewProtected.insertItemsAtIndexPaths(indexes);
+                view.performBatchUpdatesCompletion(() => {
+                    view.insertItemsAtIndexPaths(indexes);
                 }, null);
                 // Reload the items to avoid duplicate Load on Demand indicators:
                 return;
             }
             case ChangeType.Splice: {
-                this.nativeViewProtected.performBatchUpdatesCompletion(() => {
+                view.performBatchUpdatesCompletion(() => {
                     if (event.addedCount > 0) {
                         const indexes = NSMutableArray.alloc<NSIndexPath>().init();
                         for (let index = 0; index < event.addedCount; index++) {
                             indexes.addObject(NSIndexPath.indexPathForItemInSection(event.index + index, 0));
                         }
-                        this.nativeViewProtected.insertItemsAtIndexPaths(indexes);
+                        view.insertItemsAtIndexPaths(indexes);
                     }
                     if (event.removed && event.removed.length > 0) {
                         const indexes = NSMutableArray.new<NSIndexPath>();
@@ -257,15 +261,14 @@ export class CollectionView extends CollectionViewBase {
                         if (Trace.isEnabled()) {
                             CLog(CLogTypes.info, 'deleteItemsAtIndexPaths', indexes.count);
                         }
-                        this.nativeViewProtected.performBatchUpdatesCompletion(() => {
-                            this.nativeViewProtected.deleteItemsAtIndexPaths(indexes);
+                        view.performBatchUpdatesCompletion(() => {
+                            view.deleteItemsAtIndexPaths(indexes);
                         }, null);
                     }
                 }, null);
 
                 return;
             }
-            // break;
         }
         this.refresh();
     }
