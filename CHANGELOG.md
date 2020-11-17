@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.10](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.9...v4.0.10) (2020-11-17)
+
+
+### Bug Fixes
+
+* ios fix for cell update (disabling animations) ([52ffe5c](https://github.com/Akylas/nativescript-collectionview/commit/52ffe5c8be9003aecf3dbab7ec0522759569c619))
+
+
+
+
+
 ## [4.0.9](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.8...v4.0.9) (2020-11-10)
 
 
