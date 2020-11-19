@@ -43,7 +43,10 @@
     "bugs": {
         "url": "https://github.com/nativescript-community/ui-collectionview/issues"
     },
+    "repository": {
+        "type" : "git",
+        "url" : "https://github.com/nativescript-community/ui-collectionview"
+    },
     "license": "Apache-2.0",
-    "homepage": "https://github.com/nativescript-community/ui-collectionvieww",
     "readmeFilename": "README.md"
 }
