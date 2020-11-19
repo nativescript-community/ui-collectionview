@@ -1,7 +1,7 @@
 {
     "name": "@nativescript-community/ui-collectionview",
     "version": "4.0.10",
-    "description": "NativeScript plugin that allows you to easily add a collection view (grid list view) to your projects.",
+    "description": "Allows you to easily add a collection view (grid list view) to your projects. Supports vertical and horizontal modes, templating, and more.",
     "main": "./collectionview",
     "module": "./collectionview.mjs",
     "sideEffects": false,
@@ -30,7 +30,11 @@
         "Vue.js Native",
         "Vue Native",
         "Svelte",
-        "Svelte Native"
+        "Svelte Native",
+        "React",
+        "React NativeScript",
+        "preview|https://raw.githubusercontent.com/nativescript-community/ui-collectionview/master/images/demo-ios.gif|iOS Demo",
+        "preview|https://raw.githubusercontent.com/nativescript-community/ui-collectionview/master/images/demo-android.gif|Android Demo"
     ],
     "author": {
         "name": "Martin Guillon",
