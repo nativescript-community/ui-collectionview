@@ -6,7 +6,7 @@
 
 A NativeScript CollectionView widget. The CollectionView displays data in separate cells, each cell representing one data item. For iOS wraps up [UICollectionView](https://developer.apple.com/library/ios/documentation/UIKit/Reference/UICollectionView_class/) and for Android wraps up [RecyclerView](https://developer.android.com/reference/android/support/v7/widget/RecyclerView.html). This can be used as an Open Source alternative to [RadListView](https://docs.nativescript.org/ui/components/radlistview/overview).
 
-| <img src="https://i.imgur.com/YrzOchx.gif" height="500" /> | <img src="https://i.imgur.com/bSdqhoE.gif" height="500" /> |
+| <img src="images/demo-ios.gif" height="500" /> | <img src="images/demo-android.gif" height="500" /> |
 | --- | ----------- |
 | iOS Demo | Android Demo |
 
