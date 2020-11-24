@@ -171,11 +171,11 @@ export class CollectionView extends CollectionViewBase {
             p.onLayout && p.onLayout(this, left, top, right, bottom);
         });
 
-        // const layoutView = this.nativeViewProtected.collectionViewLayout;
-        // if ((layoutView instanceof UICollectionViewFlowLayout && this._effectiveColWidth) || this._effectiveRowHeight) {
-        //     // @ts-ignore
-        //     layoutView.estimatedItemSize = layoutView.itemSize = CGSizeMake(layout.toDeviceIndependentPixels(this._effectiveColWidth), layout.toDeviceIndependentPixels(this._effectiveRowHeight));
-        // }
+        const layoutView = this.nativeViewProtected.collectionViewLayout;
+        if ((layoutView instanceof UICollectionViewFlowLayout && this._effectiveColWidth) || this._effectiveRowHeight) {
+            // @ts-ignore
+            layoutView.estimatedItemSize = layoutView.itemSize = CGSizeMake(layout.toDeviceIndependentPixels(this._effectiveColWidth), layout.toDeviceIndependentPixels(this._effectiveRowHeight));
+        }
         this._map.forEach((cellView, cell) => {
             if (Trace.isEnabled()) {
                 CLog(CLogTypes.log, 'onLayout', 'cell', cellView._listViewItemIndex);
@@ -432,23 +432,10 @@ export class CollectionView extends CollectionViewBase {
                 this._addView(view);
                 cell.contentView.addSubview(view.nativeViewProtected);
             }
-            (view as any).performLayout = () =>{};
             if (needsLayout) {
                 view.requestLayout();
             }
             cellSize = this.measureCell(cell, view, indexPath);
-
-            //performlayout will ask the whole page to relayout which will break us as it goes downward
-            // and calls onLayout which layouts the cells ...
-            (view as any).performLayout = () =>{
-                // this is really ugly!
-                console.log('performLayout', view._listViewItemIndex, index);
-                const widthSpec = layout.makeMeasureSpec(cellSize[0], layout.EXACTLY);
-		        const heightSpec = layout.makeMeasureSpec(cellSize[1], layout.EXACTLY);
-                View.measureChild(this, view, widthSpec, heightSpec);
-                View.layoutChild(this, view, 0, 0, cellSize[0], cellSize[1]);
-                console.log('performLayout done ', view._listViewItemIndex, index);
-            };
 
             if (Trace.isEnabled()) {
                 CLog(CLogTypes.log, '_prepareCell done', index, cellSize);
