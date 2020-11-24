@@ -88,9 +88,9 @@ module.exports = env => {
     entries.bundle = entryPath;
 
     const areCoreModulesExternal = Array.isArray(env.externals) && env.externals.some(e => e.indexOf("@nativescript") > -1);
-    if (platform === "ios" && !areCoreModulesExternal && !testing) {
-        entries["tns_modules/@nativescript/core/inspector_modules"] = "inspector_modules";
-    };
+    // if (platform === "ios" && !areCoreModulesExternal && !testing) {
+        // entries["tns_modules/@nativescript/core/inspector_modules"] = "inspector_modules";
+    // };
     console.log(`Bundling application for entryPath ${entryPath}...`);
 
     let sourceMapFilename = nsWebpack.getSourceMapFilename(hiddenSourceMap, __dirname, dist);
