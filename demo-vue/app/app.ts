@@ -5,8 +5,8 @@ import {CollectionViewTraceCategory } from '@nativescript-community/ui-collectio
 
 import CollectionView from '@nativescript-community/ui-collectionview/vue';
 Vue.use(CollectionView);
-Trace.addCategories(CollectionViewTraceCategory);
-Trace.enable();
+// Trace.addCategories(CollectionViewTraceCategory);
+// Trace.enable();
 
 Vue.config.silent = true;
 
