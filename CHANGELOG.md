@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.12](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.11...v4.0.12) (2020-11-27)
+
+
+### Bug Fixes
+
+* ios go back to old implementation. fix comming in Vue ([f657afa](https://github.com/Akylas/nativescript-collectionview/commit/f657afa2d44eddaec03ed71df783be2c08d2a499))
+* vue remove uneeded refresh ([43aff7f](https://github.com/Akylas/nativescript-collectionview/commit/43aff7fc068978b7e8147aa9fa8a6167cc121884))
+
+
+### Features
+
+* new contentInsetAdjustmentBehavior for iOS ([a8a2fe4](https://github.com/Akylas/nativescript-collectionview/commit/a8a2fe466f2d188469a99d06c95f9dda95d35154))
+
+
+
+
+
 ## [4.0.11](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.10...v4.0.11) (2020-11-19)
 
 **Note:** Version bump only for package @nativescript-community/ui-collectionview
