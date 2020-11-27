@@ -631,7 +631,6 @@ export class CollectionView extends CollectionViewBase {
     //     super.notifyDataSetChanged();
     // }
 
-    @profile
     public getItemViewType(position: number) {
         let resultType = 0;
         let selectorType: string = 'default';
@@ -653,7 +652,6 @@ export class CollectionView extends CollectionViewBase {
         return resultType;
     }
 
-    @profile
     disposeViewHolderViews() {
         this._viewHolders.forEach((v) => {
             v.view = null;
@@ -662,7 +660,6 @@ export class CollectionView extends CollectionViewBase {
         this._viewHolders = new Array();
         this._viewHolderChildren.forEach(this._removeViewCore);
     }
-    @profile
     getKeyByValue(viewType: number) {
         return this.templateStringTypeNumber.get(viewType);
     }

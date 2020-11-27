@@ -6,6 +6,7 @@ import {
     KeyedTemplate,
     Length,
     Observable,
+    Property,
     ProxyViewContainer,
     Trace,
     View,
@@ -22,6 +23,37 @@ import { CLog, CLogTypes, CollectionViewBase, ListViewViewTypes, isBounceEnabled
 export * from './collectionview-common';
 
 const infinity = layout.makeMeasureSpec(0, layout.UNSPECIFIED);
+
+
+export enum ContentInsetAdjustmentBehavior {
+    Always = UIScrollViewContentInsetAdjustmentBehavior.Always,
+    Automatic = UIScrollViewContentInsetAdjustmentBehavior.Automatic,
+    Never = UIScrollViewContentInsetAdjustmentBehavior.Never,
+    ScrollableAxes = UIScrollViewContentInsetAdjustmentBehavior.ScrollableAxes
+}
+
+function parseContentInsetAdjustmentBehavior(value: string |  number) {
+    if (typeof value === 'string') {
+        switch(value) {
+            case 'always':
+                return ContentInsetAdjustmentBehavior.Always;
+            case 'never':
+                return ContentInsetAdjustmentBehavior.Never;
+            case 'ccrollableAxes':
+                return ContentInsetAdjustmentBehavior.ScrollableAxes;
+            default:
+            case 'automatic':
+                return ContentInsetAdjustmentBehavior.Automatic;
+        }
+    } else {
+        return value;
+    }
+}
+export const contentInsetAdjustmentBehaviorProperty = new Property<CollectionView, ContentInsetAdjustmentBehavior>({
+    name: 'contentInsetAdjustmentBehavior',
+    valueConverter: parseContentInsetAdjustmentBehavior,
+    defaultValue: ContentInsetAdjustmentBehavior.Automatic
+});
 
 export class CollectionView extends CollectionViewBase {
     private _layout: UICollectionViewLayout;
@@ -110,6 +142,10 @@ export class CollectionView extends CollectionViewBase {
 
     get _childrenCount(): number {
         return this._map.size;
+    }
+
+    public [contentInsetAdjustmentBehaviorProperty.setNative](value: ContentInsetAdjustmentBehavior) {
+        this.nativeViewProtected.contentInsetAdjustmentBehavior = value as any;
     }
 
     public [paddingTopProperty.setNative](value: Length) {
@@ -505,12 +541,12 @@ export class CollectionView extends CollectionViewBase {
         }
         return undefined;
     }
-    layoutCell(index: number, cell: any, cellView: View): any {
+    layoutCell(index: number, cell: CollectionViewCell, cellView: View): any {
         const cellSize = this.getCellSize(index);
         cellView.iosOverflowSafeAreaEnabled = false;
         View.layoutChild(this, cellView, 0, 0, cellSize[0], cellSize[1]);
         if (Trace.isEnabled()) {
-            CLog(CLogTypes.log, 'layoutCell', index, cellSize[0], cellSize[1], cellView.getMeasuredWidth(), cellView.getMeasuredHeight());
+            CLog(CLogTypes.log, 'layoutCell', index, cellView.getMeasuredWidth(), cellView.getMeasuredHeight());
         }
     }
 
@@ -787,3 +823,5 @@ class UICollectionViewDelegateImpl extends NSObject implements UICollectionViewD
         }
     }
 }
+
+contentInsetAdjustmentBehaviorProperty.register(CollectionView);

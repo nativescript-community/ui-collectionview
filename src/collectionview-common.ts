@@ -27,6 +27,13 @@ import { CollectionView as CollectionViewDefinition, Orientation } from './colle
 
 export const CollectionViewTraceCategory = 'NativescriptCollectionView';
 
+// iOS only
+export enum ContentInsetAdjustmentBehavior {
+    Always,
+    Automatic,
+    Never,
+    ScrollableAxes
+}
 declare module '@nativescript/core/ui/core/view-base' {
     interface ViewBase {
         _recursiveSuspendNativeUpdates(type);
@@ -539,6 +546,6 @@ reverseLayoutProperty.register(CollectionViewBase);
 export const loadMoreThresholdProperty = new Property<CollectionViewBase, number>({
     name: 'loadMoreThreshold',
     defaultValue: 1,
-    valueConverter: parseInt
+    valueConverter: v => parseInt(v, 10)
 });
 loadMoreThresholdProperty.register(CollectionViewBase);
