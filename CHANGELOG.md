@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.13](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.12...v4.0.13) (2020-11-27)
+
+
+### Bug Fixes
+
+* for collectionview with iosOverflowSafeArea ([ad504d7](https://github.com/Akylas/nativescript-collectionview/commit/ad504d70f01632b49812db8963e826f6ca96b390))
+
+
+
+
+
 ## [4.0.12](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.11...v4.0.12) (2020-11-27)
 
 
