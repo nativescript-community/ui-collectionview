@@ -36,7 +36,6 @@ export default {
             handler(newVal, oldVal) {
                 if (!(oldVal instanceof Observable)) {
                     this.$refs.listView.setAttribute('items', newVal);
-                    this.refresh();
                 }
             },
             deep: true,
