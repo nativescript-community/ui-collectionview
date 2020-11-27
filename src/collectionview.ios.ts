@@ -9,6 +9,7 @@ import {
     Property,
     ProxyViewContainer,
     Trace,
+    Utils,
     View,
     paddingBottomProperty,
     paddingLeftProperty,
@@ -25,6 +26,7 @@ export * from './collectionview-common';
 const infinity = layout.makeMeasureSpec(0, layout.UNSPECIFIED);
 
 
+
 export enum ContentInsetAdjustmentBehavior {
     Always = UIScrollViewContentInsetAdjustmentBehavior.Always,
     Automatic = UIScrollViewContentInsetAdjustmentBehavior.Automatic,
@@ -39,7 +41,7 @@ function parseContentInsetAdjustmentBehavior(value: string |  number) {
                 return ContentInsetAdjustmentBehavior.Always;
             case 'never':
                 return ContentInsetAdjustmentBehavior.Never;
-            case 'ccrollableAxes':
+            case 'scrollableAxes':
                 return ContentInsetAdjustmentBehavior.ScrollableAxes;
             default:
             case 'automatic':
@@ -466,7 +468,15 @@ export class CollectionView extends CollectionViewBase {
 
             if (view && !view.parent) {
                 this._addView(view);
-                cell.contentView.addSubview(view.nativeViewProtected);
+                if (this.iosOverflowSafeArea) {
+                    const innerView = UICellView.new() as UICellView;
+                    innerView.view = new WeakRef(view);
+                    innerView.addSubview(view.nativeViewProtected);
+                    cell.contentView.addSubview(innerView);
+                } else {
+                    cell.contentView.addSubview(view.nativeViewProtected);
+                }
+
             }
             if (needsLayout) {
                 view.requestLayout();
@@ -543,10 +553,9 @@ export class CollectionView extends CollectionViewBase {
     }
     layoutCell(index: number, cell: CollectionViewCell, cellView: View): any {
         const cellSize = this.getCellSize(index);
-        cellView.iosOverflowSafeAreaEnabled = false;
         View.layoutChild(this, cellView, 0, 0, cellSize[0], cellSize[1]);
         if (Trace.isEnabled()) {
-            CLog(CLogTypes.log, 'layoutCell', index, cellView.getMeasuredWidth(), cellView.getMeasuredHeight());
+            CLog(CLogTypes.log, 'layoutCell', index, cellView,  cellView.getMeasuredWidth(), cellView.getMeasuredHeight());
         }
     }
 
@@ -619,7 +628,7 @@ export class CollectionView extends CollectionViewBase {
         this._prepareCell(cell, indexPath, templateType);
 
         const cellView: View = cell.view;
-        if (cellView && cellView['isLayoutRequired']) {
+        if (!this.iosOverflowSafeArea && cellView && cellView['isLayoutRequired']) {
             this.layoutCell(indexPath.row, cell, cellView);
         }
         return cell;
@@ -729,12 +738,25 @@ interface ViewItemIndex {
 }
 
 type ItemView = View & ViewItemIndex;
+
+@NativeClass
+class UICellView extends UIView {
+    view: WeakRef<View>;
+    layoutSubviews() {
+        const view = this.view && this.view.get();
+        if (!view) {
+            return;
+        }
+        this.frame = this.superview.bounds;
+        const size = this.bounds.size;
+        View.layoutChild(null, view, 0, 0, Utils.layout.toDevicePixels(size.width), Utils.layout.toDevicePixels(size.height));
+    }
+}
+
 @NativeClass
 class CollectionViewCell extends UICollectionViewCell {
     owner: WeakRef<ItemView>;
-    // static class() {
-    //     return CollectionViewCell.class();
-    // }
+
     get view(): ItemView {
         return this.owner ? this.owner.get() : null;
     }
