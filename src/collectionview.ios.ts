@@ -468,7 +468,7 @@ export class CollectionView extends CollectionViewBase {
 
             if (view && !view.parent) {
                 this._addView(view);
-                if (this.iosOverflowSafeArea) {
+                if (this.iosOverflowSafeAreaEnabled) {
                     const innerView = UICellView.new() as UICellView;
                     innerView.view = new WeakRef(view);
                     innerView.addSubview(view.nativeViewProtected);
@@ -628,7 +628,7 @@ export class CollectionView extends CollectionViewBase {
         this._prepareCell(cell, indexPath, templateType);
 
         const cellView: View = cell.view;
-        if (!this.iosOverflowSafeArea && cellView && cellView['isLayoutRequired']) {
+        if (!this.iosOverflowSafeAreaEnabled && cellView && cellView['isLayoutRequired']) {
             this.layoutCell(indexPath.row, cell, cellView);
         }
         return cell;
