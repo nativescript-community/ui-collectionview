@@ -249,11 +249,11 @@ export class CollectionView extends CollectionViewBase {
                 if (Trace.isEnabled()) {
                     CLog(CLogTypes.info, 'deleteItemsAtIndexPaths', indexes.count);
                 }
-                dispatch_async(main_queue, () => {
-                    view.performBatchUpdatesCompletion(() => {
-                        view.deleteItemsAtIndexPaths(indexes);
-                    }, null);
-                });
+                // dispatch_async(main_queue, () => {
+                view.performBatchUpdatesCompletion(() => {
+                    view.deleteItemsAtIndexPaths(indexes);
+                }, null);
+                // });
                 return;
             }
             case ChangeType.Update: {
@@ -262,13 +262,13 @@ export class CollectionView extends CollectionViewBase {
                 if (Trace.isEnabled()) {
                     CLog(CLogTypes.info, 'reloadItemsAtIndexPaths',event.index, indexes.count);
                 }
-                dispatch_async(main_queue, () => {
-                    UIView.performWithoutAnimation(()=>{
-                        view.performBatchUpdatesCompletion(() => {
-                            view.reloadItemsAtIndexPaths(indexes);
-                        }, null);
-                    });
+                // dispatch_async(main_queue, () => {
+                UIView.performWithoutAnimation(()=>{
+                    view.performBatchUpdatesCompletion(() => {
+                        view.reloadItemsAtIndexPaths(indexes);
+                    }, null);
                 });
+                // });
 
                 return;
             }
@@ -280,39 +280,39 @@ export class CollectionView extends CollectionViewBase {
                 if (Trace.isEnabled()) {
                     CLog(CLogTypes.info, 'insertItemsAtIndexPaths', indexes.count);
                 }
-                dispatch_async(main_queue, () => {
-                    view.performBatchUpdatesCompletion(() => {
-                        view.insertItemsAtIndexPaths(indexes);
-                    }, null);
-                });
+                // dispatch_async(main_queue, () => {
+                view.performBatchUpdatesCompletion(() => {
+                    view.insertItemsAtIndexPaths(indexes);
+                }, null);
+                // });
                 // Reload the items to avoid duplicate Load on Demand indicators:
                 return;
             }
             case ChangeType.Splice: {
-                dispatch_async(main_queue, () => {
-                    view.performBatchUpdatesCompletion(() => {
-                        if (event.addedCount > 0) {
-                            const indexes = NSMutableArray.alloc<NSIndexPath>().init();
-                            for (let index = 0; index < event.addedCount; index++) {
-                                indexes.addObject(NSIndexPath.indexPathForItemInSection(event.index + index, 0));
-                            }
-                            view.insertItemsAtIndexPaths(indexes);
+                // dispatch_async(main_queue, () => {
+                view.performBatchUpdatesCompletion(() => {
+                    if (event.addedCount > 0) {
+                        const indexes = NSMutableArray.alloc<NSIndexPath>().init();
+                        for (let index = 0; index < event.addedCount; index++) {
+                            indexes.addObject(NSIndexPath.indexPathForItemInSection(event.index + index, 0));
                         }
-                        if (event.removed && event.removed.length > 0) {
-                            const indexes = NSMutableArray.new<NSIndexPath>();
-                            for (let index = 0; index < event.removed.length; index++) {
-                                indexes.addObject(NSIndexPath.indexPathForItemInSection(event.index + index, 0));
-                            }
-                            this.unbindUnusedCells(event.removed);
-                            if (Trace.isEnabled()) {
-                                CLog(CLogTypes.info, 'deleteItemsAtIndexPaths', indexes.count);
-                            }
-                            view.performBatchUpdatesCompletion(() => {
-                                view.deleteItemsAtIndexPaths(indexes);
-                            }, null);
+                        view.insertItemsAtIndexPaths(indexes);
+                    }
+                    if (event.removed && event.removed.length > 0) {
+                        const indexes = NSMutableArray.new<NSIndexPath>();
+                        for (let index = 0; index < event.removed.length; index++) {
+                            indexes.addObject(NSIndexPath.indexPathForItemInSection(event.index + index, 0));
                         }
-                    }, null);
-                });
+                        this.unbindUnusedCells(event.removed);
+                        if (Trace.isEnabled()) {
+                            CLog(CLogTypes.info, 'deleteItemsAtIndexPaths', indexes.count);
+                        }
+                        view.performBatchUpdatesCompletion(() => {
+                            view.deleteItemsAtIndexPaths(indexes);
+                        }, null);
+                    }
+                }, null);
+                // });
                 return;
             }
         }
@@ -362,9 +362,9 @@ export class CollectionView extends CollectionViewBase {
 
         // TODO: this is ugly look here: https://github.com/nativescript-vue/nativescript-vue/issues/525
         // this.clearRealizedCells();
-        dispatch_async(main_queue, () => {
-            this.nativeViewProtected.reloadData();
-        });
+        // dispatch_async(main_queue, () => {
+        this.nativeViewProtected.reloadData();
+        // });
 
         const args = {
             eventName: CollectionViewBase.dataPopulatedEvent,
