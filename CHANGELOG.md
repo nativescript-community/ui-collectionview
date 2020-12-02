@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.14](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.13...v4.0.14) (2020-12-02)
+
+
+### Bug Fixes
+
+* ios is multithread. Ensure operations are run on the main thread ([f4e0b7d](https://github.com/Akylas/nativescript-collectionview/commit/f4e0b7d4c0ede606eb890f6888d3157e90488c4b))
+* ios rollback breaking change ([a301f0f](https://github.com/Akylas/nativescript-collectionview/commit/a301f0fbe6c19498503931d85f11059b09739d01))
+
+
+
+
+
 ## [4.0.13](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.12...v4.0.13) (2020-11-27)
 
 
