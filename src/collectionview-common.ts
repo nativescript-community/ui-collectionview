@@ -21,7 +21,8 @@ import {
     makeValidator,
     profile,
     removeWeakEventListener,
-    widthProperty
+    widthProperty,
+    CSSType
 } from '@nativescript/core';
 import { CollectionView as CollectionViewDefinition, Orientation } from './collectionview';
 
@@ -94,6 +95,7 @@ export interface Plugin {
     onLayout?: Function;
 }
 
+@CSSType('CollectionView')
 export abstract class CollectionViewBase extends View implements CollectionViewDefinition {
     public static itemLoadingEvent = 'itemLoading';
     public static cellCreateEvent = 'cellCreate';
