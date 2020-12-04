@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.15](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.14...v4.0.15) (2020-12-04)
+
+
+### Bug Fixes
+
+* add back missing cssType. Would fail in production builds ([ad92a72](https://github.com/Akylas/nativescript-collectionview/commit/ad92a7239fd3cb6f7cd4d672b867c3cc75ba2806))
+
+
+
+
+
 ## [4.0.14](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.13...v4.0.14) (2020-12-02)
 
 
