@@ -25,9 +25,6 @@ export * from './collectionview-common';
 
 const infinity = layout.makeMeasureSpec(0, layout.UNSPECIFIED);
 
-
-const main_queue = dispatch_get_current_queue();
-
 export enum ContentInsetAdjustmentBehavior {
     Always = UIScrollViewContentInsetAdjustmentBehavior.Always,
     Automatic = UIScrollViewContentInsetAdjustmentBehavior.Automatic,
@@ -215,12 +212,15 @@ export class CollectionView extends CollectionViewBase {
             // @ts-ignore
             layoutView.estimatedItemSize = layoutView.itemSize = CGSizeMake(layout.toDeviceIndependentPixels(this._effectiveColWidth), layout.toDeviceIndependentPixels(this._effectiveRowHeight));
         }
-        this._map.forEach((cellView, cell) => {
-            if (Trace.isEnabled()) {
-                CLog(CLogTypes.log, 'onLayout', 'cell', cellView._listViewItemIndex);
-            }
-            this.layoutCell(cellView._listViewItemIndex, cell, cellView);
-        });
+
+        layoutView.invalidateLayout();
+
+        // this._map.forEach((cellView, cell) => {
+        //     if (Trace.isEnabled()) {
+        //         CLog(CLogTypes.log, 'onLayout', 'cell', cellView._listViewItemIndex);
+        //     }
+        //     this.layoutCell(cellView._listViewItemIndex, cell, cellView);
+        // });
         this.refresh();
     }
 
@@ -478,18 +478,11 @@ export class CollectionView extends CollectionViewBase {
 
             if (view && !view.parent) {
                 this._addView(view);
-                if (this.iosOverflowSafeAreaEnabled) {
-                    const innerView = UICellView.new() as UICellView;
-                    innerView.view = new WeakRef(view);
-                    innerView.addSubview(view.nativeViewProtected);
-                    cell.contentView.addSubview(innerView);
-                } else {
-                    cell.contentView.addSubview(view.nativeViewProtected);
-                }
-
-            }
-            if (needsLayout) {
-                view.requestLayout();
+                const innerView = NSCellView.new() as NSCellView;
+                innerView.view = new WeakRef(view);
+                // view['performLayout'] = ()=>{};
+                innerView.addSubview(view.nativeViewProtected);
+                cell.contentView.addSubview(innerView);
             }
             cellSize = this.measureCell(cell, view, indexPath);
 
@@ -563,6 +556,7 @@ export class CollectionView extends CollectionViewBase {
     }
     layoutCell(index: number, cell: CollectionViewCell, cellView: View): any {
         const cellSize = this.getCellSize(index);
+        cellView['iosIgnoreSafeArea'] = true;
         View.layoutChild(this, cellView, 0, 0, cellSize[0], cellSize[1]);
         if (Trace.isEnabled()) {
             CLog(CLogTypes.log, 'layoutCell', index, cellView,  cellView.getMeasuredWidth(), cellView.getMeasuredHeight());
@@ -628,9 +622,9 @@ export class CollectionView extends CollectionViewBase {
 
     collectionViewCellForItemAtIndexPath(collectionView: UICollectionView, indexPath: NSIndexPath): UICollectionViewCell {
         const templateType = this._getItemTemplateType(indexPath);
-        let cell: any = collectionView.dequeueReusableCellWithReuseIdentifierForIndexPath(templateType, indexPath);
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifierForIndexPath(templateType, indexPath) as CollectionViewCell;
         if (!cell) {
-            cell = CollectionViewCell.new();
+            cell = CollectionViewCell.new() as CollectionViewCell;
         }
         if (Trace.isEnabled()) {
             CLog(CLogTypes.log, 'collectionViewCellForItemAtIndexPath', indexPath.row, templateType, !!cell.view, cell);
@@ -638,7 +632,7 @@ export class CollectionView extends CollectionViewBase {
         this._prepareCell(cell, indexPath, templateType);
 
         const cellView: View = cell.view;
-        if (!this.iosOverflowSafeAreaEnabled && cellView && cellView['isLayoutRequired']) {
+        if (cellView['isLayoutRequired']) {
             this.layoutCell(indexPath.row, cell, cellView);
         }
         return cell;
