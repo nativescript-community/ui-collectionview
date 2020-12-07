@@ -1,5 +1,6 @@
 import {
     Builder,
+    CSSType,
     ChangedData,
     ItemsSource,
     KeyedTemplate,
@@ -21,8 +22,7 @@ import {
     makeValidator,
     profile,
     removeWeakEventListener,
-    widthProperty,
-    CSSType
+    widthProperty
 } from '@nativescript/core';
 import { CollectionView as CollectionViewDefinition, Orientation } from './collectionview';
 
@@ -158,7 +158,9 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     public abstract scrollToIndex(index: number, animated: boolean);
     public onLayout(left: number, top: number, right: number, bottom: number) {
         super.onLayout(left, top, right, bottom);
-        this._innerWidth = this.getMeasuredWidth() - this.effectivePaddingLeft - this.effectivePaddingRight;
+        // on ios and during device rotation the getMeasuredWidth and getMeasuredHeight are wrong
+        // so we use left, top , right, bottom
+        this._innerWidth = right - left - this.effectivePaddingLeft - this.effectivePaddingRight;
         if (this.colWidth) {
             const newValue = PercentLength.toDevicePixels(this.colWidth, autoEffectiveColWidth, this._innerWidth); // We cannot use 0 for auto as it throws for android.
             if (newValue !== this._effectiveColWidth) {
@@ -166,7 +168,7 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
             }
         }
 
-        this._innerHeight = this.getMeasuredHeight() - this.effectivePaddingTop - this.effectivePaddingBottom;
+        this._innerHeight = bottom - top - this.effectivePaddingTop - this.effectivePaddingBottom;
         if (this.rowHeight) {
             const newValue = PercentLength.toDevicePixels(this.rowHeight, autoEffectiveRowHeight, this._innerHeight);
             if (newValue !== this._effectiveRowHeight) {
