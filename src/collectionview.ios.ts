@@ -750,9 +750,10 @@ interface ViewItemIndex {
 type ItemView = View & ViewItemIndex;
 
 @NativeClass
-class UICellView extends UIView {
+class NSCellView extends UIView {
     view: WeakRef<View>;
     layoutSubviews() {
+        super.layoutSubviews();
         const view = this.view && this.view.get();
         if (!view) {
             return;
