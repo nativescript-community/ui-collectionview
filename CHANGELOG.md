@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.16](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.15...v4.0.16) (2020-12-20)
+
+
+### Bug Fixes
+
+* support N Akylas fork layout improvements ([345f64b](https://github.com/Akylas/nativescript-collectionview/commit/345f64b333b64f2dfef0d941119a7d94c2146fb2))
+* **ios:** prevent unecessary refresh ([cd72d3f](https://github.com/Akylas/nativescript-collectionview/commit/cd72d3fe0808fcadb27840bc8988f363b180bf71))
+* always use NSCellView now ([8b986cc](https://github.com/Akylas/nativescript-collectionview/commit/8b986cc2751ef331ac036c6e1fc4e3c5fd8d1aba))
+* ios dont trust getMeasuredWidth or getMeasuredHeight ([9cc830e](https://github.com/Akylas/nativescript-collectionview/commit/9cc830e259855e13fc8d67cd57d14d98cef46a31))
+
+
+
+
+
 ## [4.0.15](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.14...v4.0.15) (2020-12-04)
 
 
