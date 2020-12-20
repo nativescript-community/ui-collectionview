@@ -44,12 +44,19 @@ declare module '@nativescript/core/ui/core/view-base' {
 }
 
 ViewBase.prototype._recursiveSuspendNativeUpdates = profile('_recursiveSuspendNativeUpdates', function (type) {
+    // we can suspendRequestLayout as it will be handled outside and after
+    this['suspendRequestLayout'] = true;
     this._suspendNativeUpdates(type);
-    this.eachChild((c) => c._recursiveSuspendNativeUpdates(type));
+    if (!(this instanceof CollectionViewBase)) {
+        this.eachChild((c) => c._recursiveSuspendNativeUpdates(type));
+    }
 });
 ViewBase.prototype._recursiveResumeNativeUpdates = profile('_recursiveResumeNativeUpdates', function (type) {
     this._resumeNativeUpdates(type);
-    this.eachChild((c) => c._recursiveResumeNativeUpdates(type));
+    if (!(this instanceof CollectionViewBase)) {
+        this.eachChild((c) => c._recursiveResumeNativeUpdates(type));
+    }
+    this['suspendRequestLayout'] = false;
 });
 
 // right now _recursiveBatchUpdates suppose no view is added in the callback. If so it will crash from _resumeNativeUpdates
