@@ -71,7 +71,7 @@ export enum CLogTypes {
 }
 
 export const CLog = (type: CLogTypes, ...args) => {
-    Trace.write(args.join(' '), CollectionViewTraceCategory, type);
+    Trace.write(args.map(a=>(a && typeof a === 'object'? JSON.stringify(a) :a)).join(' '), CollectionViewTraceCategory, type);
 };
 
 const autoEffectiveRowHeight = 0;
