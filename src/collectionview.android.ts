@@ -21,6 +21,25 @@ import { CLog, CLogTypes, CollectionViewBase, ListViewViewTypes, isScrollEnabled
 export * from './collectionview-common';
 
 
+// @NativeClass
+// class PreCachingGridLayoutManager extends com.nativescript.collectionview.PreCachingGridLayoutManager {
+//     owner: WeakRef<CollectionView>;
+//     constructor(context, span) {
+//         super(context, span);
+//         return global.__native(this);
+//     }
+//     onLayoutCompleted(state) {
+//         super.onLayoutCompleted(state);
+//         const owner = this.owner  && this.owner.get();
+//         if (owner) {
+//             owner.notify({
+//                 eventName: 'layoutCompleted',
+//                 object: owner,
+//             });
+//         }
+//     }
+// }
+
 declare module '@nativescript/core/ui/core/view' {
     interface View {
         layoutChangeListenerIsSet: boolean;
@@ -88,15 +107,23 @@ export class CollectionView extends CollectionViewBase {
         owner?: WeakRef<CollectionView>;
     };
 
-    templateTypeNumberString = new Map<string, number>();
-    templateStringTypeNumber = new Map<number, string>();
-    _currentNativeItemType = 0;
+    private templateTypeNumberString = new Map<string, number>();
+    private templateStringTypeNumber = new Map<number, string>();
+    private _currentNativeItemType = 0;
 
     // used to store viewHolder and make sure they are not garbaged
-    _viewHolders = new Array<CollectionViewCellHolder>();
+    private _viewHolders = new Array<CollectionViewCellHolder>();
 
     // used to "destroy" cells when possible
-    _viewHolderChildren = new Array();
+    private _viewHolderChildren = new Array();
+
+    private _scrollOrLoadMoreChangeCount = 0;
+    private _nScrollListener: com.nativescript.collectionview.OnScrollListener.Listener;
+    scrolling = false;
+
+    private _hlayoutParams: android.view.ViewGroup.LayoutParams;
+    private _vlayoutParams: android.view.ViewGroup.LayoutParams;
+    private _lastLayoutKey: string;
 
     private _listViewAdapter: com.nativescript.collectionview.Adapter;
 
@@ -139,6 +166,8 @@ export class CollectionView extends CollectionViewBase {
             layoutManager = CollectionViewBase.layoutStyles[this.layoutStyle].createLayout(this);
         } else {
             layoutManager = new com.nativescript.collectionview.PreCachingGridLayoutManager(this._context, 1);
+            // layoutManager = new PreCachingGridLayoutManager(this._context, 1);
+            // (layoutManager as any).owner = new WeakRef(this);
         }
         // this.spanSize
         nativeView.setLayoutManager(layoutManager);
@@ -186,9 +215,6 @@ export class CollectionView extends CollectionViewBase {
         this.attachScrollListener();
     }
 
-    _scrollOrLoadMoreChangeCount = 0;
-    _nScrollListener: com.nativescript.collectionview.OnScrollListener.Listener;
-    scrolling = false;
     private attachScrollListener() {
         if (this._scrollOrLoadMoreChangeCount > 0 && this.isLoaded) {
             const nativeView = this.nativeViewProtected;
@@ -303,8 +329,6 @@ export class CollectionView extends CollectionViewBase {
     get layoutManager() {
         return this.nativeViewProtected && this.nativeViewProtected.layoutManager;
     }
-    _hlayoutParams: android.view.ViewGroup.LayoutParams;
-    _vlayoutParams: android.view.ViewGroup.LayoutParams;
     _getViewLayoutParams() {
         if (this.isHorizontal()) {
             if (!this._hlayoutParams) {
@@ -423,17 +447,17 @@ export class CollectionView extends CollectionViewBase {
             const owner = this;
             this.layoutChangeListenerIsSet = true;
             this.layoutChangeListener =
-				this.layoutChangeListener ||
-				new android.view.View.OnLayoutChangeListener({
-				    onLayoutChange(v: android.view.View, left: number, top: number, right: number, bottom: number, oldLeft: number, oldTop: number, oldRight: number, oldBottom: number): void {
-				        if (left !== oldLeft || top !== oldTop || right !== oldRight || bottom !== oldBottom) {
-				            owner.onLayout(left, top, right, bottom);
-				            if (owner.hasListeners(View.layoutChangedEvent)) {
-				                owner._raiseLayoutChangedEvent();
-				            }
-				        }
-				    },
-				});
+                this.layoutChangeListener ||
+                new android.view.View.OnLayoutChangeListener({
+                    onLayoutChange(v: android.view.View, left: number, top: number, right: number, bottom: number, oldLeft: number, oldTop: number, oldRight: number, oldBottom: number): void {
+                        if (left !== oldLeft || top !== oldTop || right !== oldRight || bottom !== oldBottom) {
+                            owner.onLayout(left, top, right, bottom);
+                            if (owner.hasListeners(View.layoutChangedEvent)) {
+                                owner._raiseLayoutChangedEvent();
+                            }
+                        }
+                    },
+                });
 
             this.nativeViewProtected.addOnLayoutChangeListener(this.layoutChangeListener);
         }
@@ -451,7 +475,12 @@ export class CollectionView extends CollectionViewBase {
         if (this.layoutManager && this.layoutManager['setSpanCount']) {
             this.layoutManager['setSpanCount'](this.computeSpanCount());
         }
-        setTimeout(()=>this.refresh(),0);
+        // there is no need to call refresh if it was triggered before with same size.
+        // this refresh is just to handle size change
+        const layoutKey = this._innerWidth + '_' + this._innerHeight;
+        if (this._lastLayoutKey !== layoutKey) {
+            setTimeout(()=>this.refresh(),0);
+        }
     }
     public onSourceCollectionChanged(event: ChangedData<any>) {
         if (!this._listViewAdapter) {
@@ -505,6 +534,7 @@ export class CollectionView extends CollectionViewBase {
             return;
         }
         this._isDataDirty = false;
+        this._lastLayoutKey = this._innerWidth + '_' + this._innerHeight;
         let adapter = this._listViewAdapter;
         if (!adapter) {
             adapter = this._listViewAdapter = this.createComposedAdapter(this.nativeViewProtected);
@@ -514,7 +544,6 @@ export class CollectionView extends CollectionViewBase {
             view.setAdapter(adapter);
         }
 
-        // nativeView.adapter.owner = new WeakRef(this);
         const layoutManager = view.getLayoutManager();
         if (layoutManager['setSpanCount']) {
             layoutManager['setSpanCount'](this.computeSpanCount());
@@ -572,14 +601,6 @@ export class CollectionView extends CollectionViewBase {
         nativeView.setPadding(newValue.left, newValue.top, newValue.right, newValue.bottom);
     }
 
-    // private _getLayoutManagarOrientation() {
-    //     let orientation = androidx.recyclerview.widget.LinearLayoutManager.VERTICAL;
-    //     if (this.isHorizontal()) {
-    //         orientation = androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL;
-    //     }
-
-    //     return orientation;
-    // }
     private createComposedAdapter(recyclerView: CollectionViewRecyclerView) {
         const adapter = new com.nativescript.collectionview.Adapter();
         adapter.adapterInterface = new com.nativescript.collectionview.AdapterInterface({
@@ -626,11 +647,6 @@ export class CollectionView extends CollectionViewBase {
         this.templateStringTypeNumber.clear();
     }
 
-    // public notifyDataSetChanged() {
-    //     this.disposeViewHolderViews();
-    //     super.notifyDataSetChanged();
-    // }
-
     public getItemViewType(position: number) {
         let resultType = 0;
         let selectorType: string = 'default';
@@ -663,8 +679,6 @@ export class CollectionView extends CollectionViewBase {
     getKeyByValue(viewType: number) {
         return this.templateStringTypeNumber.get(viewType);
     }
-
-    // private onClickListener;
 
     @profile
     public onCreateViewHolder(parent: android.view.ViewGroup, viewType: number) {
@@ -767,15 +781,6 @@ export class CollectionView extends CollectionViewBase {
     }
 }
 
-// interface CollectionViewAdapter extends androidx.recyclerview.widget.RecyclerView.Adapter<any> {
-//     // tslint:disable-next-line:no-misused-new
-//     new (owner: WeakRef<CollectionView>): CollectionViewAdapter;
-//     clearTemplateTypes();
-//     disposeViewHolderViews();
-// }
-// let CollectionViewAdapter: CollectionViewAdapter;
-
-// Snapshot friendly CollectionViewAdapter
 interface CollectionViewCellHolder extends com.nativescript.collectionview.CollectionViewCellHolder {
     // tslint:disable-next-line:no-misused-new
     new (androidView: android.view.View): CollectionViewCellHolder;
@@ -787,7 +792,6 @@ let CollectionViewCellHolder: CollectionViewCellHolder;
 
 export interface CollectionViewRecyclerView extends com.nativescript.collectionview.RecyclerView {
     // tslint:disable-next-line:no-misused-new
-    // new (context: any, owner: WeakRef<CollectionView>): CollectionViewRecyclerView;
     new (context: any): CollectionViewRecyclerView;
 }
 
