@@ -63,6 +63,7 @@ export class CollectionView extends CollectionViewBase {
     private _sizes: number[][];
     private _map: Map<CollectionViewCell, ItemView>;
     _measureCellMap: Map<string, { cell: CollectionViewCell; view: View }>;
+    _lastLayoutKey: string;
 
     nativeViewProtected: UICollectionView;
 
@@ -194,7 +195,6 @@ export class CollectionView extends CollectionViewBase {
             callback(view);
         });
     }
-
     public onLayout(left: number, top: number, right: number, bottom: number) {
         super.onLayout(left, top, right, bottom);
 
@@ -215,13 +215,12 @@ export class CollectionView extends CollectionViewBase {
 
         layoutView.invalidateLayout();
 
-        // this._map.forEach((cellView, cell) => {
-        //     if (Trace.isEnabled()) {
-        //         CLog(CLogTypes.log, 'onLayout', 'cell', cellView._listViewItemIndex);
-        //     }
-        //     this.layoutCell(cellView._listViewItemIndex, cell, cellView);
-        // });
-        this.refresh();
+        // there is no need to call refresh if it was triggered before with same size.
+        // this refresh is just to handle size change
+        const layoutKey = this._innerWidth + '_' + this._innerHeight;
+        if (this._lastLayoutKey !== layoutKey) {
+            this.refresh();
+        }
     }
 
     public isHorizontal() {
@@ -347,6 +346,7 @@ export class CollectionView extends CollectionViewBase {
             return;
         }
         this._isDataDirty = false;
+        this._lastLayoutKey = this._innerWidth + '_' + this._innerHeight;
         if (Trace.isEnabled()) {
             CLog(CLogTypes.info, 'refresh');
         }
