@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.17](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.16...v4.0.17) (2021-01-21)
+
+
+### Features
+
+* reorder feature is here (using reorderEnabled property) ([600ae49](https://github.com/Akylas/nativescript-collectionview/commit/600ae49e6e90165af9c3bc3ca0cc8f9491d86fd7))
+
+
+
+
+
 ## [4.0.16](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.15...v4.0.16) (2020-12-20)
 
 
