@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.18](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.17...v4.0.18) (2021-01-21)
+
+
+### Features
+
+* reorderLongPressEnabled property (disabled by default) ([c0c4e32](https://github.com/Akylas/nativescript-collectionview/commit/c0c4e32f50c3197d788b85b300309a0ac4d6aac3))
+
+
+
+
+
 ## [4.0.17](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.16...v4.0.17) (2021-01-21)
 
 
