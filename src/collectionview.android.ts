@@ -15,11 +15,92 @@ import {
     profile,
 } from '@nativescript/core';
 import { layout } from '@nativescript/core/utils/utils';
-import { CollectionViewItemEventData, Orientation, reverseLayoutProperty } from './collectionview';
+import { CollectionViewItemDisplayEventData, CollectionViewItemEventData, Orientation, reorderingEnabledProperty, reverseLayoutProperty } from './collectionview';
 import { CLog, CLogTypes, CollectionViewBase, ListViewViewTypes, isScrollEnabledProperty, orientationProperty } from './collectionview-common';
 
 export * from './collectionview-common';
 
+declare module '@nativescript/core/ui/core/view' {
+    interface View {
+        handleGestureTouch(event: android.view.MotionEvent);
+    }
+}
+
+
+@NativeClass
+class SimpleCallback extends androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback {
+    owner: WeakRef<CollectionView>;
+    constructor(param1: number, param2: number) {
+        super(param1, param2);
+        return global.__native(this);
+    }
+    onMove(recyclerview: androidx.recyclerview.widget.RecyclerView, viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder, target: androidx.recyclerview.widget.RecyclerView.ViewHolder): boolean {
+        const startPosition = viewHolder.getAdapterPosition();
+        const endPosition = target.getAdapterPosition();
+        if (this.startPosition === -1) {
+            this.startPosition = startPosition;
+        }
+        this.endPosition = endPosition;
+        const owner = this.owner && this.owner.get();
+        if (owner) {
+            owner._reorderItemInSource(startPosition, endPosition);
+            return true;
+        }
+        return false;
+    }
+    startPosition = -1;
+    endPosition = -1;
+    onSelectedChanged(viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder, state: number) {
+        console.log('onSelectedChanged', viewHolder, this.startPosition, this.endPosition);
+        if (viewHolder) {
+            if (this.startPosition === -1) {
+                this.startPosition = viewHolder.getAdapterPosition();
+            }
+        }
+        if (!viewHolder) {
+            // this is where we identify the end of the drag and call the end event
+            const owner = this.owner && this.owner.get();
+
+            if (this.endPosition === -1) {
+                this.endPosition = this.startPosition;
+            }
+            if (owner) {
+                const item = owner.getItemAtIndex(this.startPosition);
+                owner._callItemReorderedEvent(this.startPosition, this.endPosition, item);
+            }
+            this.startPosition = -1;
+            this.endPosition = -1;
+            owner.isDragging = false;
+        }
+    }
+    onSwiped(viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder,
+             direction: number) {
+    }
+    isItemViewSwipeEnabled() {
+        // disabled for now
+        return false;
+    }
+    isLongPressDragEnabled() {
+        // we use our custom longpress gesture handler
+        return false;
+    }
+}
+
+
+@NativeClass
+class LongPressGestureListenerImpl extends android.view.GestureDetector.SimpleOnGestureListener {
+    constructor(private _owner: WeakRef<CollectionView>) {
+        super();
+        return global.__native(this);
+    }
+    public onLongPress(motionEvent: android.view.MotionEvent): void {
+        const owner = this._owner && this._owner.get();
+        if (owner) {
+            owner.onReorderLongPress(motionEvent);
+        }
+    }
+
+}
 
 // @NativeClass
 // class PreCachingGridLayoutManager extends com.nativescript.collectionview.PreCachingGridLayoutManager {
@@ -127,6 +208,10 @@ export class CollectionView extends CollectionViewBase {
 
     private _listViewAdapter: com.nativescript.collectionview.Adapter;
 
+    // reordering
+    private _simpleItemTouchCallback:  SimpleCallback;
+    private _itemTouchHelper:  androidx.recyclerview.widget.ItemTouchHelper;
+
     @profile
     public createNativeView() {
         // storing the class in a property for reuse in the future cause a materializing which is pretty slow!
@@ -187,7 +272,19 @@ export class CollectionView extends CollectionViewBase {
         // rowHeightProperty.coerce(this);
     }
     _getSpanSize: (position: number) => number;
+    public getViewForItemAtIndex(index: number): View {
 
+        let result: View;
+        this._viewHolders.some(function (cellItemView, key) {
+            if (cellItemView && cellItemView.getAdapterPosition() === index) {
+                result = cellItemView.view;
+                return true;
+            }
+            return false;
+        });
+
+        return result;
+    }
     //@ts-ignore
     set spanSize(inter: (position: number) => number) {
         if (!(typeof inter === 'function')) {
@@ -236,6 +333,7 @@ export class CollectionView extends CollectionViewBase {
             if (nativeView.scrollListener) {
                 this.nativeView.removeOnScrollListener(nativeView.scrollListener);
                 nativeView.scrollListener = null;
+                this._nScrollListener = null;
             }
         }
     }
@@ -305,19 +403,26 @@ export class CollectionView extends CollectionViewBase {
 
     public disposeNativeView() {
         // clear the cache
-        this.eachChildView((view) => {
-            view.parent._removeView(view);
-            return true;
-        });
+        // this.eachChildView((view) => {
+        //     view.parent._removeView(view);
+        //     return true;
+        // });
         // this._realizedItems.clear();
 
         const nativeView = this.nativeView;
-
         if (nativeView.scrollListener) {
             this.nativeView.removeOnScrollListener(nativeView.scrollListener);
             nativeView.scrollListener = null;
+            this._nScrollListener = null;
         }
         nativeView.layoutManager = null;
+        this._listViewAdapter = null;
+        this._itemTouchHelper = null;
+        this._simpleItemTouchCallback = null;
+        this.disposeViewHolderViews();
+        this._hlayoutParams = null;
+        this._vlayoutParams = null;
+        this.clearTemplateTypes();
 
         super.disposeNativeView();
     }
@@ -415,6 +520,79 @@ export class CollectionView extends CollectionViewBase {
     }
     public [itemViewCacheSizeProperty.setNative](value: number) {
         this.nativeViewProtected.setItemViewCacheSize(value);
+    }
+    public startDragging(index: number) {
+        if (this.reorderEnabled && this._itemTouchHelper) {
+            let viewHolder: CollectionViewCellHolder;
+            this._viewHolders.some((v) => {
+                if (v.getAdapterPosition() === index) {
+                    viewHolder = v;
+                    return true;
+                }
+                return false;
+            });
+            if (viewHolder) {
+                this.startViewHolderDragging(index, viewHolder);
+            }
+        }
+    }
+    isDragging = false;
+    startViewHolderDragging (index, viewHolder: CollectionViewCellHolder) {
+        // isDragging is to prevent longPress from triggering and starting a new drag
+        // when triggered manually
+        if (!this.isDragging && this.shouldMoveItemAtIndex(index)) {
+            this.isDragging = true;
+            this._itemTouchHelper.startDrag(viewHolder);
+        }
+    }
+    onReorderLongPress(motionEvent: android.view.MotionEvent) {
+        const collectionView  =this.nativeViewProtected;
+        if (!collectionView) {
+            return;
+        }
+        const view  = collectionView.findChildViewUnder(motionEvent.getX(), motionEvent.getY());
+        const viewHolder = view != null ? collectionView.getChildViewHolder(view) : null;
+        if (viewHolder) {
+            this.startViewHolderDragging(viewHolder.getAdapterPosition(), viewHolder as CollectionViewCellHolder);
+        }
+    }
+    _reorderItemInSource(oldPosition: number, newPosition: number) {
+        const adapter = this._listViewAdapter;
+        // 3. Tell adapter to render the model update.
+        adapter.notifyItemMoved(oldPosition, newPosition);
+        // on android _reorderItemInSource is call on every "move" and needs to update the adapter/items
+        // we will call events only at then end
+        super._reorderItemInSource(oldPosition, newPosition, false);
+    }
+
+    _longPressGesture: androidx.core.view.GestureDetectorCompat;
+    _itemTouchListerner: androidx.recyclerview.widget.RecyclerView.OnItemTouchListener;
+    public [reorderingEnabledProperty.setNative](value: boolean) {
+        if (value) {
+            if (!this._simpleItemTouchCallback) {
+                const ItemTouchHelper = androidx.recyclerview.widget.ItemTouchHelper;
+                this._simpleItemTouchCallback = new SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.START | ItemTouchHelper.END , 0);
+                this._simpleItemTouchCallback.owner = new WeakRef(this);
+                this._itemTouchHelper = new androidx.recyclerview.widget.ItemTouchHelper(this._simpleItemTouchCallback);
+                this._itemTouchHelper.attachToRecyclerView(this.nativeViewProtected);
+            }
+            if (!this._longPressGesture) {
+                this._longPressGesture = new androidx.core.view.GestureDetectorCompat(this._context, new LongPressGestureListenerImpl(new WeakRef(this)));
+                this._itemTouchListerner = new androidx.recyclerview.widget.RecyclerView.OnItemTouchListener({
+                    onInterceptTouchEvent:(view: android.view.View, event: android.view.MotionEvent)=>{
+                        if (this.reorderEnabled && this._longPressGesture) {
+                            this._longPressGesture.onTouchEvent(event);
+                        }
+                        return false;
+                    },
+                    onTouchEvent:(param0: androidx.recyclerview.widget.RecyclerView, param1: globalAndroid.view.MotionEvent)=>{
+                    },
+                    onRequestDisallowInterceptTouchEvent:(disallowIntercept: boolean) =>{
+                    }
+                });
+                this.nativeViewProtected.addOnItemTouchListener(this._itemTouchListerner);
+            }
+        }
     }
 
     onItemViewLoaderChanged() {
@@ -675,6 +853,7 @@ export class CollectionView extends CollectionViewBase {
         });
         this._viewHolders = new Array();
         this._viewHolderChildren.forEach(this._removeViewCore);
+        this._viewHolderChildren = new Array();
     }
     getKeyByValue(viewType: number) {
         return this.templateStringTypeNumber.get(viewType);

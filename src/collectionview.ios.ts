@@ -8,6 +8,7 @@ import {
     Observable,
     Property,
     ProxyViewContainer,
+    TouchGestureEventData,
     Trace,
     Utils,
     View,
@@ -18,7 +19,7 @@ import {
     profile,
 } from '@nativescript/core';
 import { layout } from '@nativescript/core/utils/utils';
-import { CollectionViewItemEventData, Orientation, reverseLayoutProperty } from './collectionview';
+import { CollectionViewItemDisplayEventData, CollectionViewItemEventData, Orientation, reorderingEnabledProperty, reverseLayoutProperty } from './collectionview';
 import { CLog, CLogTypes, CollectionViewBase, ListViewViewTypes, isBounceEnabledProperty, isScrollEnabledProperty, itemTemplatesProperty, orientationProperty } from './collectionview-common';
 
 export * from './collectionview-common';
@@ -132,6 +133,8 @@ export class CollectionView extends CollectionViewBase {
         nativeView.dataSource = null;
         this._dataSource = null;
         this._layout = null;
+        this.reorderLongPressHandler = null;
+        this.reorderLongPressGesture = null;
         this.clearRealizedCells();
         super.disposeNativeView();
     }
@@ -144,7 +147,15 @@ export class CollectionView extends CollectionViewBase {
     get _childrenCount(): number {
         return this._map.size;
     }
+    public getViewForItemAtIndex(index: number): View {
+        let result: View;
+        if (this.nativeViewProtected) {
+            const cell = this.nativeViewProtected.cellForItemAtIndexPath(NSIndexPath.indexPathForRowInSection(index, 0)) as CollectionViewCell;;
+            return cell?.view;
+        }
 
+        return result;
+    }
     public [contentInsetAdjustmentBehaviorProperty.setNative](value: ContentInsetAdjustmentBehavior) {
         this.nativeViewProtected.contentInsetAdjustmentBehavior = value as any;
     }
@@ -177,6 +188,7 @@ export class CollectionView extends CollectionViewBase {
     }
     public [isScrollEnabledProperty.setNative](value: boolean) {
         this.nativeViewProtected.scrollEnabled = value;
+        this.scrollEnabledBeforeDragging = value;
     }
     public [isBounceEnabledProperty.setNative](value: boolean) {
         this.nativeViewProtected.bounces = value;
@@ -189,7 +201,96 @@ export class CollectionView extends CollectionViewBase {
     public [reverseLayoutProperty.setNative](value: boolean) {
         this.nativeViewProtected.transform = value ? CGAffineTransformMakeRotation(-Math.PI) : null;
     }
-
+    manualDragging = false;
+    scrollEnabledBeforeDragging = true;
+    public startDragging(index: number) {
+        if (this.reorderEnabled && this.nativeViewProtected) {
+            this.manualDragging = true;
+            this.nativeViewProtected.beginInteractiveMovementForItemAtIndexPath(NSIndexPath.indexPathForRowInSection(index, 0));
+            this.scrollEnabledBeforeDragging = this.isScrollEnabled;
+            this.nativeViewProtected.scrollEnabled = false;
+        }
+    }
+    onReorderingTouch(event: TouchGestureEventData) {
+        if (!this.manualDragging) {
+            return;
+        }
+        const collectionView = this.nativeViewProtected;
+        const pointer  = event.getActivePointers()[0];
+        switch(event.action) {
+            case 'move':
+                collectionView.updateInteractiveMovementTargetPosition((pointer as any).location);
+                break;
+            case 'up':
+                this.manualDragging = false;
+                collectionView && collectionView.endInteractiveMovement();
+                this.nativeViewProtected.scrollEnabled = this.scrollEnabledBeforeDragging;
+                this.handleReorderEnd();
+                break;
+            case 'cancel':
+                this.manualDragging = false;
+                collectionView && collectionView.cancelInteractiveMovement();
+                this.nativeViewProtected.scrollEnabled = this.scrollEnabledBeforeDragging;
+                this.handleReorderEnd();
+                break;
+        }
+    }
+    handleReorderEnd() {
+        // we call all events from here because the delegate
+        // does not handle the case start dragging => cancel or
+        // start dragging => end over the same item
+        if (!this.reorderEndingRow) {
+            this.reorderEndingRow = this.reorderStartingRow;
+        }
+        const item = this.getItemAtIndex(this.reorderStartingRow);
+        this._callItemReorderedEvent(this.reorderStartingRow, this.reorderEndingRow, item);
+        this.reorderEndingRow = -1;
+        this.reorderEndingRow = -1;
+    }
+    reorderLongPressGesture: UILongPressGestureRecognizer;
+    reorderLongPressHandler: ReorderLongPressImpl;
+    reorderStartingRow = -1;
+    reorderEndingRow = -1;
+    onReorderLongPress(gesture: UILongPressGestureRecognizer) {
+        const collectionView = this.nativeViewProtected;
+        if (!collectionView) {
+            return;
+        }
+        switch(gesture.state) {
+            case UIGestureRecognizerState.Began:
+                const selectedIndexPath = collectionView.indexPathForItemAtPoint(gesture.locationInView(collectionView)) ;
+                collectionView.beginInteractiveMovementForItemAtIndexPath(selectedIndexPath);
+                break;
+            case UIGestureRecognizerState.Changed:
+                collectionView.updateInteractiveMovementTargetPosition(gesture.locationInView(collectionView));
+                break;
+            case UIGestureRecognizerState.Ended:
+                collectionView.endInteractiveMovement();
+                this.handleReorderEnd();
+                break;
+            default:
+                collectionView.cancelInteractiveMovement();
+                this.handleReorderEnd();
+                break;
+        }
+    }
+    public [reorderingEnabledProperty.setNative](value: boolean) {
+        if (value) {
+            if (!this.reorderLongPressGesture) {
+                this.reorderLongPressHandler = ReorderLongPressImpl.initWithOwner(new WeakRef(this));
+                this.reorderLongPressGesture = UILongPressGestureRecognizer.alloc().initWithTargetAction(this.reorderLongPressHandler, 'longPress');
+                this.nativeViewProtected.addGestureRecognizer(this.reorderLongPressGesture);
+            } else {
+                this.reorderLongPressGesture.enabled = true;
+            }
+            this.on('touch', this.onReorderingTouch, this);
+        } else {
+            if (this.reorderLongPressGesture) {
+                this.reorderLongPressGesture.enabled = false;
+            }
+            this.off('touch', this.onReorderingTouch, this);
+        }
+    }
     public eachChildView(callback: (child: View) => boolean): void {
         this._map.forEach((view, key) => {
             callback(view);
@@ -248,11 +349,9 @@ export class CollectionView extends CollectionViewBase {
                 if (Trace.isEnabled()) {
                     CLog(CLogTypes.info, 'deleteItemsAtIndexPaths', indexes.count);
                 }
-                // dispatch_async(main_queue, () => {
                 view.performBatchUpdatesCompletion(() => {
                     view.deleteItemsAtIndexPaths(indexes);
                 }, null);
-                // });
                 return;
             }
             case ChangeType.Update: {
@@ -261,14 +360,11 @@ export class CollectionView extends CollectionViewBase {
                 if (Trace.isEnabled()) {
                     CLog(CLogTypes.info, 'reloadItemsAtIndexPaths',event.index, indexes.count);
                 }
-                // dispatch_async(main_queue, () => {
                 UIView.performWithoutAnimation(()=>{
                     view.performBatchUpdatesCompletion(() => {
                         view.reloadItemsAtIndexPaths(indexes);
                     }, null);
                 });
-                // });
-
                 return;
             }
             case ChangeType.Add: {
@@ -279,16 +375,12 @@ export class CollectionView extends CollectionViewBase {
                 if (Trace.isEnabled()) {
                     CLog(CLogTypes.info, 'insertItemsAtIndexPaths', indexes.count);
                 }
-                // dispatch_async(main_queue, () => {
                 view.performBatchUpdatesCompletion(() => {
                     view.insertItemsAtIndexPaths(indexes);
                 }, null);
-                // });
-                // Reload the items to avoid duplicate Load on Demand indicators:
                 return;
             }
             case ChangeType.Splice: {
-                // dispatch_async(main_queue, () => {
                 view.performBatchUpdatesCompletion(() => {
                     if (event.addedCount > 0) {
                         const indexes = NSMutableArray.alloc<NSIndexPath>().init();
@@ -311,7 +403,6 @@ export class CollectionView extends CollectionViewBase {
                         }, null);
                     }
                 }, null);
-                // });
                 return;
             }
         }
@@ -374,24 +465,13 @@ export class CollectionView extends CollectionViewBase {
     }
     get scrollOffset() {
         const view = this.nativeViewProtected;
-        if (!view) {
-            return 0;
-        }
-        return (this.isHorizontal() ? view.contentOffset.x : view.contentOffset.y);
+        return (this.isHorizontal() ? view?.contentOffset.x : view?.contentOffset.y) || 0;
     }
     get verticalOffsetX() {
-        const view = this.nativeViewProtected;
-        if (!view) {
-            return 0;
-        }
-        return view.contentOffset.x;
+        return this.nativeViewProtected?.contentOffset.x || 0;
     }
     get verticalOffsetY() {
-        const view = this.nativeViewProtected;
-        if (!view) {
-            return 0;
-        }
-        return view.contentOffset.y;
+        return this.nativeViewProtected?.contentOffset.y || 0;
     }
     public scrollToIndex(index: number, animated: boolean = true) {
         this.nativeViewProtected.scrollToItemAtIndexPathAtScrollPositionAnimated(
@@ -452,7 +532,7 @@ export class CollectionView extends CollectionViewBase {
             needsLayout = needsLayout || oldBindingContext !== bindingContext;
 
             if (Trace.isEnabled()) {
-                CLog(CLogTypes.log, '_prepareCell', index, view && view._listViewItemIndex, !!cell.view, !!view, cell.view !== view, needsLayout, JSON.stringify(oldBindingContext), JSON.stringify(bindingContext));
+                CLog(CLogTypes.log, '_prepareCell', index, !!cell.view, !!view, cell.view !== view, needsLayout, JSON.stringify(oldBindingContext), JSON.stringify(bindingContext));
             }
             const args = this.notifyForItemAtIndex(this, cell, view, CollectionViewBase.itemLoadingEvent, indexPath, bindingContext);
             view = args.view;
@@ -470,7 +550,6 @@ export class CollectionView extends CollectionViewBase {
                 cell.view.nativeViewProtected.removeFromSuperview();
                 cell.owner = new WeakRef(view);
             }
-            view._listViewItemIndex = index;
 
             if (addToMap) {
                 this._map.set(cell, view);
@@ -592,7 +671,6 @@ export class CollectionView extends CollectionViewBase {
         const preparing = this._preparingCell;
         this._preparingCell = true;
         view.parent._removeView(view);
-        view._listViewItemIndex = undefined;
         this._preparingCell = preparing;
         this._map.delete(cell);
     }
@@ -683,16 +761,11 @@ export class CollectionView extends CollectionViewBase {
     }
     collectionViewLayoutSizeForItemAtIndexPath(collectionView: UICollectionView, collectionViewLayout: UICollectionViewLayout, indexPath: NSIndexPath) {
         const row = indexPath.row;
-        const dataItem = this.getItemAtIndex(row);
-        // if (dataItem.visible === false) {
-        //     return CGSizeZero;
-        // }
-
         let measuredSize = this.getCellSize(row);
         if (!measuredSize) {
-            // if (Trace.isEnabled()) {
-            //     CLog(CLogTypes.log, 'collectionViewLayoutSizeForItemAtIndexPath', row);
-            // }
+            if (Trace.isEnabled()) {
+                CLog(CLogTypes.log, 'collectionViewLayoutSizeForItemAtIndexPath', row);
+            }
             const templateType = this._getItemTemplateType(indexPath);
             if (templateType) {
                 const measureData: any = this._measureCellMap.get(templateType);
@@ -706,9 +779,9 @@ export class CollectionView extends CollectionViewBase {
                 this._measureCellMap.set(templateType, { cell, view: cell.view });
             }
         }
-        // if (Trace.isEnabled()) {
-        //     CLog(CLogTypes.log, 'collectionViewLayoutSizeForItemAtIndexPath', row, measuredSize);
-        // }
+        if (Trace.isEnabled()) {
+            CLog(CLogTypes.log, 'collectionViewLayoutSizeForItemAtIndexPath', row, measuredSize);
+        }
         if (measuredSize) {
             return CGSizeMake(layout.toDeviceIndependentPixels(measuredSize[0]), layout.toDeviceIndependentPixels(measuredSize[1]));
         }
@@ -729,16 +802,16 @@ export class CollectionView extends CollectionViewBase {
         });
     }
     scrollViewWillEndDraggingWithVelocityTargetContentOffset?(scrollView: UIScrollView, velocity: CGPoint, targetContentOffset: interop.Pointer | interop.Reference<CGPoint>): void {
-        // this.notify({
-        //     object: this,
-        //     eventName: CollectionViewBase.scrollEndEvent,
-        //     scrollOffset: this.isHorizontal() ? scrollView.contentOffset.x : scrollView.contentOffset.y,
-        // });
+    //     this.notify({
+    //         object: this,
+    //         eventName: CollectionViewBase.scrollWillEndEvent,
+    //         scrollOffset: this.isHorizontal() ? scrollView.contentOffset.x : scrollView.contentOffset.y,
+    //     });
     }
 }
+contentInsetAdjustmentBehaviorProperty.register(CollectionView);
 
 interface ViewItemIndex {
-    _listViewItemIndex?: number;
 }
 
 type ItemView = View & ViewItemIndex;
@@ -800,6 +873,32 @@ class CollectionViewDataSource extends NSObject implements UICollectionViewDataS
         }
         return null;
     }
+    collectionViewMoveItemAtIndexPathToIndexPath(collectionView: UICollectionView, sourceIndexPath: NSIndexPath, destinationIndexPath: NSIndexPath) {
+        const owner = this._owner.get();
+        if (owner) {
+            owner.reorderStartingRow = sourceIndexPath.row;
+            owner.reorderEndingRow = destinationIndexPath.row;
+            owner._reorderItemInSource(sourceIndexPath.row, destinationIndexPath.row, false);
+        }
+    }
+    collectionViewTargetIndexPathForMoveFromItemAtIndexPathToProposedIndexPath?(collectionView: UICollectionView, originalIndexPath: NSIndexPath, proposedIndexPath: NSIndexPath): NSIndexPath {
+        const owner = this._owner.get();
+        if (owner) {
+            owner.reorderEndingRow = proposedIndexPath.row;
+        }
+        return proposedIndexPath;
+    }
+    collectionViewCanMoveItemAtIndexPath(collectionView: UICollectionView, indexPath: NSIndexPath) {
+        const owner = this._owner.get();
+        if (owner) {
+            const result = owner.shouldMoveItemAtIndex(indexPath.row);
+            if (result) {
+                owner.reorderStartingRow = indexPath.row;
+            }
+            return result;
+        }
+        return false;
+    }
 }
 @NativeClass
 class UICollectionViewDelegateImpl extends NSObject implements UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
@@ -851,4 +950,26 @@ class UICollectionViewDelegateImpl extends NSObject implements UICollectionViewD
     }
 }
 
-contentInsetAdjustmentBehaviorProperty.register(CollectionView);
+
+@NativeClass
+class ReorderLongPressImpl extends NSObject {
+    private _owner: WeakRef<CollectionView>;
+
+    public static initWithOwner(owner: WeakRef<CollectionView>): ReorderLongPressImpl {
+        const handler = ReorderLongPressImpl.new() as ReorderLongPressImpl;
+        handler._owner = owner;
+        return handler;
+    }
+
+    public longPress(recognizer: UILongPressGestureRecognizer): void {
+        const owner = this._owner && this._owner.get();
+        if (owner) {
+            owner.onReorderLongPress(recognizer);
+        }
+    }
+
+    public static ObjCExposedMethods = {
+        longPress: { returns: interop.types.void, params: [interop.types.id] },
+    };
+}
+

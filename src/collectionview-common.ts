@@ -24,7 +24,7 @@ import {
     removeWeakEventListener,
     widthProperty
 } from '@nativescript/core';
-import { CollectionView as CollectionViewDefinition, Orientation } from './collectionview';
+import { CollectionView as CollectionViewDefinition, CollectionViewItemEventData, Orientation } from './collectionview';
 
 export const CollectionViewTraceCategory = 'NativescriptCollectionView';
 
@@ -110,6 +110,9 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     public static scrollEndEvent = 'scrollEnd';
     public static itemTapEvent = 'itemTap';
     public static displayItemEvent = 'displayItem';
+    public static itemReorderedEvent = 'itemReordered';
+    public static itemReorderStartingEvent = 'itemReorderStarting';
+    public static itemReorderStartedEvent = 'itemReorderStarted';
     public static loadMoreItemsEvent = 'loadMoreItems';
     public static dataPopulatedEvent = 'dataPopulated';
     public static knownFunctions = ['itemTemplateSelector', 'itemIdGenerator']; // See component-builder.ts isKnownFunction
@@ -131,6 +134,9 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     public _effectiveColWidth: number;
 
     public loadMoreThreshold: number;
+
+    public reorderEnabled: boolean;
+    protected _dataUpdatesSuspended = false;
 
     public layoutStyle: string = 'grid';
     public plugins: string[] = [];
@@ -423,7 +429,9 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
         this.refresh();
     }
     onSourceCollectionChangedInternal(event: ChangedData<any>) {
-        this.onSourceCollectionChanged(event);
+        if (this._dataUpdatesSuspended === false) {
+            this.onSourceCollectionChanged(event);
+        }
     }
     // onItemsChanged(oldValue, newValue) {
     //     this.onItemsChangedInternal(oldValue, newValue);
@@ -434,6 +442,76 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     }
     [heightProperty.getDefault]() {
         return '100%';
+    }
+    public suspendUpdates() {
+        this._dataUpdatesSuspended = true;
+    }
+    public updatesSuspended(): boolean {
+        return this._dataUpdatesSuspended;
+    }
+    public resumeUpdates(refresh: boolean) {
+        this._dataUpdatesSuspended = false;
+        if (refresh === true) {
+            this.refresh();
+        }
+    }
+    abstract getViewForItemAtIndex(index: number): View;
+    draggingView: View;
+    _callItemReorderedEvent(oldPosition, newPosition, item) {
+        console.log('_callItemReorderedEvent', this.draggingView);
+        const args = {
+            eventName: CollectionViewBase.itemReorderedEvent,
+            object: this,
+            index: oldPosition,
+            item,
+            data: { targetIndex: newPosition },
+            view: this.draggingView
+        } as CollectionViewItemEventData;
+        this.notify(args);
+        this.draggingView = null;
+    }
+    _reorderItemInSource(oldPosition: number, newPosition: number, callEvents = true) {
+        this.suspendUpdates();
+        const ownerSource = this.items as any;
+        const item = this.getItemAtIndex(oldPosition);
+        ownerSource.splice(oldPosition, 1);
+        ownerSource.splice(newPosition, 0, item);
+
+        this.resumeUpdates(false);
+        if (callEvents) {
+            this._callItemReorderedEvent(oldPosition, newPosition, item);
+        }
+
+    }
+
+    shouldMoveItemAtIndex(index: number) {
+        if (!this.reorderEnabled) {
+            return false;
+        }
+        const item = this.getItemAtIndex(index);
+        const view = this.draggingView = this.getViewForItemAtIndex(index);
+        console.log('shouldMoveItemAtIndex', this.draggingView);
+        let args = {
+            returnValue: true,
+            eventName: CollectionViewBase.itemReorderStartingEvent,
+            object: this,
+            index,
+            item,
+            view
+        };
+        this.notify(args);
+        if (!args.returnValue) {
+            return false;
+        }
+        args = {
+            eventName: CollectionViewBase.itemReorderStartedEvent,
+            object: this,
+            index,
+            item,
+            view
+        } as any;
+        this.notify(args);
+        return true;
     }
 }
 
@@ -560,3 +638,9 @@ export const loadMoreThresholdProperty = new Property<CollectionViewBase, number
     valueConverter: v => parseInt(v, 10)
 });
 loadMoreThresholdProperty.register(CollectionViewBase);
+export const reorderingEnabledProperty = new Property<CollectionViewBase, boolean>({
+    name: 'reorderEnabled',
+    defaultValue: false,
+    valueConverter: booleanConverter,
+});
+reorderingEnabledProperty.register(CollectionViewBase);
