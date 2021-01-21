@@ -19,7 +19,7 @@ import {
     profile,
 } from '@nativescript/core';
 import { layout } from '@nativescript/core/utils/utils';
-import { CollectionViewItemDisplayEventData, CollectionViewItemEventData, Orientation, reorderingEnabledProperty, reverseLayoutProperty } from './collectionview';
+import { CollectionViewItemDisplayEventData, CollectionViewItemEventData, Orientation, reorderLongPressEnabledProperty, reorderingEnabledProperty, reverseLayoutProperty } from './collectionview';
 import { CLog, CLogTypes, CollectionViewBase, ListViewViewTypes, isBounceEnabledProperty, isScrollEnabledProperty, itemTemplatesProperty, orientationProperty } from './collectionview-common';
 
 export * from './collectionview-common';
@@ -274,7 +274,7 @@ export class CollectionView extends CollectionViewBase {
                 break;
         }
     }
-    public [reorderingEnabledProperty.setNative](value: boolean) {
+    public [reorderLongPressEnabledProperty.setNative](value: boolean) {
         if (value) {
             if (!this.reorderLongPressGesture) {
                 this.reorderLongPressHandler = ReorderLongPressImpl.initWithOwner(new WeakRef(this));
@@ -283,11 +283,17 @@ export class CollectionView extends CollectionViewBase {
             } else {
                 this.reorderLongPressGesture.enabled = true;
             }
-            this.on('touch', this.onReorderingTouch, this);
         } else {
             if (this.reorderLongPressGesture) {
                 this.reorderLongPressGesture.enabled = false;
             }
+        }
+
+    }
+    public [reorderingEnabledProperty.setNative](value: boolean) {
+        if (value) {
+            this.on('touch', this.onReorderingTouch, this);
+        } else {
             this.off('touch', this.onReorderingTouch, this);
         }
     }

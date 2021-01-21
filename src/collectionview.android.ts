@@ -15,7 +15,7 @@ import {
     profile,
 } from '@nativescript/core';
 import { layout } from '@nativescript/core/utils/utils';
-import { CollectionViewItemDisplayEventData, CollectionViewItemEventData, Orientation, reorderingEnabledProperty, reverseLayoutProperty } from './collectionview';
+import { CollectionViewItemDisplayEventData, CollectionViewItemEventData, Orientation, reorderLongPressEnabledProperty, reorderingEnabledProperty, reverseLayoutProperty } from './collectionview';
 import { CLog, CLogTypes, CollectionViewBase, ListViewViewTypes, isScrollEnabledProperty, orientationProperty } from './collectionview-common';
 
 export * from './collectionview-common';
@@ -567,15 +567,8 @@ export class CollectionView extends CollectionViewBase {
 
     _longPressGesture: androidx.core.view.GestureDetectorCompat;
     _itemTouchListerner: androidx.recyclerview.widget.RecyclerView.OnItemTouchListener;
-    public [reorderingEnabledProperty.setNative](value: boolean) {
+    public [reorderLongPressEnabledProperty.setNative](value: boolean) {
         if (value) {
-            if (!this._simpleItemTouchCallback) {
-                const ItemTouchHelper = androidx.recyclerview.widget.ItemTouchHelper;
-                this._simpleItemTouchCallback = new SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.START | ItemTouchHelper.END , 0);
-                this._simpleItemTouchCallback.owner = new WeakRef(this);
-                this._itemTouchHelper = new androidx.recyclerview.widget.ItemTouchHelper(this._simpleItemTouchCallback);
-                this._itemTouchHelper.attachToRecyclerView(this.nativeViewProtected);
-            }
             if (!this._longPressGesture) {
                 this._longPressGesture = new androidx.core.view.GestureDetectorCompat(this._context, new LongPressGestureListenerImpl(new WeakRef(this)));
                 this._itemTouchListerner = new androidx.recyclerview.widget.RecyclerView.OnItemTouchListener({
@@ -590,7 +583,22 @@ export class CollectionView extends CollectionViewBase {
                     onRequestDisallowInterceptTouchEvent:(disallowIntercept: boolean) =>{
                     }
                 });
-                this.nativeViewProtected.addOnItemTouchListener(this._itemTouchListerner);
+            }
+            this.nativeViewProtected.addOnItemTouchListener(this._itemTouchListerner);
+        } else {
+            if (this._itemTouchListerner) {
+                this.nativeViewProtected.removeOnItemTouchListener(this._itemTouchListerner);
+            }
+        }
+    }
+    public [reorderingEnabledProperty.setNative](value: boolean) {
+        if (value) {
+            if (!this._simpleItemTouchCallback) {
+                const ItemTouchHelper = androidx.recyclerview.widget.ItemTouchHelper;
+                this._simpleItemTouchCallback = new SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.START | ItemTouchHelper.END , 0);
+                this._simpleItemTouchCallback.owner = new WeakRef(this);
+                this._itemTouchHelper = new androidx.recyclerview.widget.ItemTouchHelper(this._simpleItemTouchCallback);
+                this._itemTouchHelper.attachToRecyclerView(this.nativeViewProtected);
             }
         }
     }

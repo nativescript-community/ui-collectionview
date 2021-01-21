@@ -136,6 +136,7 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     public loadMoreThreshold: number;
 
     public reorderEnabled: boolean;
+    public reorderLongPressEnabled: boolean;
     protected _dataUpdatesSuspended = false;
 
     public layoutStyle: string = 'grid';
@@ -644,3 +645,9 @@ export const reorderingEnabledProperty = new Property<CollectionViewBase, boolea
     valueConverter: booleanConverter,
 });
 reorderingEnabledProperty.register(CollectionViewBase);
+export const reorderLongPressEnabledProperty = new Property<CollectionViewBase, boolean>({
+    name: 'reorderLongPressEnabled',
+    defaultValue: false,
+    valueConverter: booleanConverter,
+});
+reorderLongPressEnabledProperty.register(CollectionViewBase);
