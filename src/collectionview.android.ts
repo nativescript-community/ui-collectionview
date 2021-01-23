@@ -669,7 +669,7 @@ export class CollectionView extends CollectionViewBase {
         }
     }
     public onSourceCollectionChanged(event: ChangedData<any>) {
-        if (!this._listViewAdapter) {
+        if (!this._listViewAdapter || this._dataUpdatesSuspended) {
             return;
         }
         if (Trace.isEnabled()) {
