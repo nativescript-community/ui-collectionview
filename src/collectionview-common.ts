@@ -477,7 +477,6 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
         const item = this.getItemAtIndex(oldPosition);
         ownerSource.splice(oldPosition, 1);
         ownerSource.splice(newPosition, 0, item);
-        console.log('_reorderItemInSource', item, oldPosition, newPosition, this.items);
 
         this.resumeUpdates(false);
         if (callEvents) {

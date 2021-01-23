@@ -233,7 +233,6 @@ export class CollectionView extends CollectionViewBase {
                 let x = pointer.getX();
                 let y = pointer.getY();
                 if (this.draggingStartDelta) {
-                    console.log('updateInteractiveMovementTargetPosition', x, y, this.draggingStartDelta );
                     x -= this.draggingStartDelta[0];
                     y -= this.draggingStartDelta[1];
                 }
@@ -354,7 +353,7 @@ export class CollectionView extends CollectionViewBase {
 
     public onSourceCollectionChanged(event: ChangedData<any>) {
         const view = this.nativeViewProtected;
-        if (!view) {
+        if (!view || this._dataUpdatesSuspended) {
             return;
         }
         if (Trace.isEnabled()) {
