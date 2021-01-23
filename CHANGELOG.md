@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.19](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.18...v4.0.19) (2021-01-23)
+
+
+### Bug Fixes
+
+* **android:** prevent blink on reorder done ([9007953](https://github.com/Akylas/nativescript-collectionview/commit/90079536d68e48fb87105c02cf62a3d45ce5ec96))
+* **ios:** prevent blink after reorder done ([76dbc95](https://github.com/Akylas/nativescript-collectionview/commit/76dbc95df67f6f8e82e62785e088ac14d9ebff66))
+* **ios:** startDragging pointer argument to fix drag translate ([a08789e](https://github.com/Akylas/nativescript-collectionview/commit/a08789ebbeedcfb1f8545d3748b605cfdcf65903))
+
+
+
+
+
 ## [4.0.18](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.17...v4.0.18) (2021-01-21)
 
 
