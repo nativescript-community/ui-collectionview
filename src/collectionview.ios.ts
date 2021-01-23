@@ -18,6 +18,7 @@ import {
     paddingTopProperty,
     profile,
 } from '@nativescript/core';
+import { Pointer } from '@nativescript/core/ui/gestures';
 import { layout } from '@nativescript/core/utils/utils';
 import { CollectionViewItemDisplayEventData, CollectionViewItemEventData, Orientation, reorderLongPressEnabledProperty, reorderingEnabledProperty, reverseLayoutProperty } from './collectionview';
 import { CLog, CLogTypes, CollectionViewBase, ListViewViewTypes, isBounceEnabledProperty, isScrollEnabledProperty, itemTemplatesProperty, orientationProperty } from './collectionview-common';
@@ -203,9 +204,19 @@ export class CollectionView extends CollectionViewBase {
     }
     manualDragging = false;
     scrollEnabledBeforeDragging = true;
-    public startDragging(index: number) {
+    draggingStartDelta: [number, number];
+    public startDragging(index: number, pointer?: Pointer) {
         if (this.reorderEnabled && this.nativeViewProtected) {
             this.manualDragging = true;
+            this.draggingStartDelta = null;
+            if (pointer) {
+                const view =  this.getViewForItemAtIndex(index);
+                if (view) {
+                    const size = view.nativeViewProtected.bounds.size;
+                    const point = (pointer.ios as UITouch).locationInView(view.nativeViewProtected);
+                    this.draggingStartDelta = [point.x - size.width/2, point.y - size.height/2];
+                }
+            }
             this.nativeViewProtected.beginInteractiveMovementForItemAtIndexPath(NSIndexPath.indexPathForRowInSection(index, 0));
             this.scrollEnabledBeforeDragging = this.isScrollEnabled;
             this.nativeViewProtected.scrollEnabled = false;
@@ -219,7 +230,14 @@ export class CollectionView extends CollectionViewBase {
         const pointer  = event.getActivePointers()[0];
         switch(event.action) {
             case 'move':
-                collectionView.updateInteractiveMovementTargetPosition((pointer as any).location);
+                let x = pointer.getX();
+                let y = pointer.getY();
+                if (this.draggingStartDelta) {
+                    console.log('updateInteractiveMovementTargetPosition', x, y, this.draggingStartDelta );
+                    x -= this.draggingStartDelta[0];
+                    y -= this.draggingStartDelta[1];
+                }
+                collectionView.updateInteractiveMovementTargetPosition(CGPointMake(x, y));
                 break;
             case 'up':
                 this.manualDragging = false;

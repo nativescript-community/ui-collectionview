@@ -457,9 +457,9 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
         }
     }
     abstract getViewForItemAtIndex(index: number): View;
+    abstract startDragging(index: number);
     draggingView: View;
     _callItemReorderedEvent(oldPosition, newPosition, item) {
-        console.log('_callItemReorderedEvent', this.draggingView);
         const args = {
             eventName: CollectionViewBase.itemReorderedEvent,
             object: this,
@@ -477,6 +477,7 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
         const item = this.getItemAtIndex(oldPosition);
         ownerSource.splice(oldPosition, 1);
         ownerSource.splice(newPosition, 0, item);
+        console.log('_reorderItemInSource', item, oldPosition, newPosition, this.items);
 
         this.resumeUpdates(false);
         if (callEvents) {
@@ -491,7 +492,6 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
         }
         const item = this.getItemAtIndex(index);
         const view = this.draggingView = this.getViewForItemAtIndex(index);
-        console.log('shouldMoveItemAtIndex', this.draggingView);
         let args = {
             returnValue: true,
             eventName: CollectionViewBase.itemReorderStartingEvent,
