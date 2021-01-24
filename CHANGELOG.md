@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.20](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.19...v4.0.20) (2021-01-24)
+
+
+### Bug Fixes
+
+* **android:** fix crash on dispose ([2cd9afb](https://github.com/Akylas/nativescript-collectionview/commit/2cd9afb9a5fbd8e5d3df401f1dd0ed2960ccbf2c))
+
+
+
+
+
 ## [4.0.19](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.18...v4.0.19) (2021-01-23)
 
 
