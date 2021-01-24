@@ -860,7 +860,7 @@ export class CollectionView extends CollectionViewBase {
             v.clickListener = null;
         });
         this._viewHolders = new Array();
-        this._viewHolderChildren.forEach(this._removeViewCore);
+        this._viewHolderChildren.forEach((v)=> this._removeViewCore(v));
         this._viewHolderChildren = new Array();
     }
     getKeyByValue(viewType: number) {
