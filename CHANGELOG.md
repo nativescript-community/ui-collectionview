@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.21](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.20...v4.0.21) (2021-01-26)
+
+
+### Bug Fixes
+
+* prevent crash on CLog when passing native views ([4bd28b4](https://github.com/Akylas/nativescript-collectionview/commit/4bd28b471eb82d362beccebda6eaf31a1312d47b))
+
+
+### Features
+
+* refreshVisibleItems ([31cbb77](https://github.com/Akylas/nativescript-collectionview/commit/31cbb77b8827b4acfb6ab8e3522bc312a71db350))
+
+
+
+
+
 ## [4.0.20](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.19...v4.0.20) (2021-01-24)
 
 
