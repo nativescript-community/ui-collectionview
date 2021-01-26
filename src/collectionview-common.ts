@@ -169,6 +169,7 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     }
 
     public abstract refresh();
+    public abstract refreshVisibleItems();
     public abstract scrollToIndex(index: number, animated: boolean);
     public onLayout(left: number, top: number, right: number, bottom: number) {
         super.onLayout(left, top, right, bottom);

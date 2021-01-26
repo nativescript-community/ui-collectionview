@@ -453,6 +453,21 @@ export class CollectionView extends CollectionViewBase {
             }
         }, this);
     }
+
+    refreshVisibleItems() {
+        const view = this.nativeViewProtected;
+        if (!view) {
+            return;
+        }
+        const visibles = view.indexPathsForVisibleItems;
+        UIView.performWithoutAnimation(()=>{
+            view.performBatchUpdatesCompletion(() => {
+                view.reloadItemsAtIndexPaths(visibles);
+            }, null);
+        });
+    }
+
+
     @profile
     public refresh() {
         if (!this.isLoaded || !this.nativeView) {
