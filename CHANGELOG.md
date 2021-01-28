@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.22](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.21...v4.0.22) (2021-01-28)
+
+
+### Bug Fixes
+
+* removed _recursiveBatchUpdates. Will be handled differently in the future in N ([9e15d48](https://github.com/Akylas/nativescript-collectionview/commit/9e15d488445c3a9a83da3a377a9d5562b70b0bd3))
+
+
+
+
+
 ## [4.0.21](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.20...v4.0.21) (2021-01-26)
 
 
