@@ -41,6 +41,13 @@ There is no additional configuration needed!
 | itemLoading         | Triggered when generating an item in the CollectionView.                     |
 | itemTap             | Triggered when the user taps on an item in the CollectionView.               |
 | loadMoreItems       | Triggered when the generated items reached the end of the items property.    |
+| scroll              | Triggered on collectionview scroll.                                          |
+| scrollEnd           | Triggered on collectionview scroll end.    |
+| itemReorderStarting       | Triggered when a reorder is starting. Changing the `returnValue` of the event data allows you to cancel it    |
+| itemReorderStarted       | Triggered when a reorder started.    |
+| itemReordered       | Triggered when a reorder finished.    |
+| dataPopulated       | Triggered when a refresh has been called.    |
+
 
 
 ### Properties
