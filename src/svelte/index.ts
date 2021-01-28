@@ -132,10 +132,8 @@ export default class CollectionViewViewElement extends NativeViewElementNode<Col
             // ensure we dont do unnecessary tasks if index did not change
             // console.log('updateListItem', args.index,  _view.__CollectionViewCurrentIndex__);
             _view.__CollectionViewCurrentIndex__ = args.index;
-            _view._recursiveBatchUpdates(() => {
-                componentInstance.$set(props);
-                flush(); // we need to flush to make sure update is applied right away
-            });
+            componentInstance.$set(props);
+            flush(); // we need to flush to make sure update is applied right away
         }
     }
 

@@ -80,17 +80,7 @@ export default {
             const context = this.getItemContext(currentItem, index, isSelected);
             const oldVnode = args.view && args.view[VUE_VIEW];
 
-            // TODO: patchTemplate is async in the sense it requires a next tick for
-            // the props to change :s
-            // this is an issue when you reuse a cell whene custom subviews measurement will change
-            if (args.view) {
-                // reusing
-                args.view._recursiveBatchUpdates(() => {
-                    args.view = this.$templates.patchTemplate(name, context, oldVnode);
-                });
-            } else {
-                args.view = this.$templates.patchTemplate(name, context, oldVnode);
-            }
+            args.view = this.$templates.patchTemplate(name, context, oldVnode);
         },
         onItemLoadingInternal(args) {
             this.updateViewTemplate(args);

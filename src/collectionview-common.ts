@@ -35,40 +35,6 @@ export enum ContentInsetAdjustmentBehavior {
     Never,
     ScrollableAxes
 }
-declare module '@nativescript/core/ui/core/view-base' {
-    interface ViewBase {
-        _recursiveSuspendNativeUpdates(type);
-        _recursiveResumeNativeUpdates(type);
-        _recursiveBatchUpdates<T>(callback: () => T): T;
-    }
-}
-
-ViewBase.prototype._recursiveSuspendNativeUpdates = profile('_recursiveSuspendNativeUpdates', function (type) {
-    // we can suspendRequestLayout as it will be handled outside and after
-    this['suspendRequestLayout'] = true;
-    this._suspendNativeUpdates(type);
-    if (!(this instanceof CollectionViewBase)) {
-        this.eachChild((c) => c._recursiveSuspendNativeUpdates(type));
-    }
-});
-ViewBase.prototype._recursiveResumeNativeUpdates = profile('_recursiveResumeNativeUpdates', function (type) {
-    this._resumeNativeUpdates(type);
-    if (!(this instanceof CollectionViewBase)) {
-        this.eachChild((c) => c._recursiveResumeNativeUpdates(type));
-    }
-    this['suspendRequestLayout'] = false;
-});
-
-// right now _recursiveBatchUpdates suppose no view is added in the callback. If so it will crash from _resumeNativeUpdates
-ViewBase.prototype._recursiveBatchUpdates = profile('_recursiveBatchUpdates', function <T>(callback: () => T): T {
-    try {
-        this._recursiveSuspendNativeUpdates(0);
-
-        return callback();
-    } finally {
-        this._recursiveResumeNativeUpdates(0);
-    }
-});
 
 export enum CLogTypes {
     log = Trace.messageType.log,
@@ -105,7 +71,7 @@ export interface Plugin {
 @CSSType('CollectionView')
 export abstract class CollectionViewBase extends View implements CollectionViewDefinition {
     public static itemLoadingEvent = 'itemLoading';
-    public static cellCreateEvent = 'cellCreate';
+    // public static cellCreateEvent = 'cellCreate';
     public static scrollEvent = 'scroll';
     public static scrollEndEvent = 'scrollEnd';
     public static itemTapEvent = 'itemTap';
