@@ -20,7 +20,7 @@ import {
 } from '@nativescript/core';
 import { Pointer } from '@nativescript/core/ui/gestures';
 import { layout } from '@nativescript/core/utils/utils';
-import { CollectionViewItemDisplayEventData, CollectionViewItemEventData, Orientation, reorderLongPressEnabledProperty, reorderingEnabledProperty, reverseLayoutProperty } from './collectionview';
+import { CollectionViewItemDisplayEventData, CollectionViewItemEventData, Orientation, reorderLongPressEnabledProperty, reorderingEnabledProperty, reverseLayoutProperty, scrollBarIndicatorVisibleProperty } from './collectionview';
 import { CLog, CLogTypes, CollectionViewBase, ListViewViewTypes, isBounceEnabledProperty, isScrollEnabledProperty, itemTemplatesProperty, orientationProperty } from './collectionview-common';
 
 export * from './collectionview-common';
@@ -66,6 +66,15 @@ export class CollectionView extends CollectionViewBase {
     private _map: Map<CollectionViewCell, ItemView>;
     _measureCellMap: Map<string, { cell: CollectionViewCell; view: View }>;
     _lastLayoutKey: string;
+
+    reorderLongPressGesture: UILongPressGestureRecognizer;
+    reorderLongPressHandler: ReorderLongPressImpl;
+    reorderStartingRow = -1;
+    reorderEndingRow = -1;
+
+    manualDragging = false;
+    scrollEnabledBeforeDragging = true;
+    draggingStartDelta: [number, number];
 
     nativeViewProtected: UICollectionView;
 
@@ -157,54 +166,6 @@ export class CollectionView extends CollectionViewBase {
 
         return result;
     }
-    public [contentInsetAdjustmentBehaviorProperty.setNative](value: ContentInsetAdjustmentBehavior) {
-        this.nativeViewProtected.contentInsetAdjustmentBehavior = value as any;
-    }
-
-    public [paddingTopProperty.setNative](value: Length) {
-        this._setPadding({ top: layout.toDeviceIndependentPixels(this.effectivePaddingTop) });
-    }
-
-    public [paddingRightProperty.setNative](value: Length) {
-        this._setPadding({ right: layout.toDeviceIndependentPixels(this.effectivePaddingRight) });
-    }
-
-    public [paddingBottomProperty.setNative](value: Length) {
-        this._setPadding({ bottom: layout.toDeviceIndependentPixels(this.effectivePaddingBottom) });
-    }
-
-    public [paddingLeftProperty.setNative](value: Length) {
-        this._setPadding({ left: layout.toDeviceIndependentPixels(this.effectivePaddingLeft) });
-    }
-
-    public [orientationProperty.setNative](value: Orientation) {
-        const layout = this._layout;
-        if (layout instanceof UICollectionViewFlowLayout) {
-            if (value === 'horizontal') {
-                layout.scrollDirection = UICollectionViewScrollDirection.Horizontal;
-            } else {
-                layout.scrollDirection = UICollectionViewScrollDirection.Vertical;
-            }
-        }
-    }
-    public [isScrollEnabledProperty.setNative](value: boolean) {
-        this.nativeViewProtected.scrollEnabled = value;
-        this.scrollEnabledBeforeDragging = value;
-    }
-    public [isBounceEnabledProperty.setNative](value: boolean) {
-        this.nativeViewProtected.bounces = value;
-        // this.nativeViewProtected.alwaysBounceHorizontal = value;
-    }
-
-    public [itemTemplatesProperty.getDefault](): KeyedTemplate[] {
-        return null;
-    }
-    public [reverseLayoutProperty.setNative](value: boolean) {
-        this.nativeViewProtected.transform = value ? CGAffineTransformMakeRotation(-Math.PI) : null;
-    }
-    manualDragging = false;
-    scrollEnabledBeforeDragging = true;
-    draggingStartDelta: [number, number];
     public startDragging(index: number, pointer?: Pointer) {
         if (this.reorderEnabled && this.nativeViewProtected) {
             this.manualDragging = true;
@@ -264,10 +225,6 @@ export class CollectionView extends CollectionViewBase {
         this.reorderEndingRow = -1;
         this.reorderEndingRow = -1;
     }
-    reorderLongPressGesture: UILongPressGestureRecognizer;
-    reorderLongPressHandler: ReorderLongPressImpl;
-    reorderStartingRow = -1;
-    reorderEndingRow = -1;
     onReorderLongPress(gesture: UILongPressGestureRecognizer) {
         const collectionView = this.nativeViewProtected;
         if (!collectionView) {
@@ -291,7 +248,54 @@ export class CollectionView extends CollectionViewBase {
                 break;
         }
     }
-    public [reorderLongPressEnabledProperty.setNative](value: boolean) {
+
+    [contentInsetAdjustmentBehaviorProperty.setNative](value: ContentInsetAdjustmentBehavior) {
+        this.nativeViewProtected.contentInsetAdjustmentBehavior = value as any;
+    }
+
+    [paddingTopProperty.setNative](value: Length) {
+        this._setPadding({ top: layout.toDeviceIndependentPixels(this.effectivePaddingTop) });
+    }
+
+    [paddingRightProperty.setNative](value: Length) {
+        this._setPadding({ right: layout.toDeviceIndependentPixels(this.effectivePaddingRight) });
+    }
+
+    [paddingBottomProperty.setNative](value: Length) {
+        this._setPadding({ bottom: layout.toDeviceIndependentPixels(this.effectivePaddingBottom) });
+    }
+
+    [paddingLeftProperty.setNative](value: Length) {
+        this._setPadding({ left: layout.toDeviceIndependentPixels(this.effectivePaddingLeft) });
+    }
+
+    [orientationProperty.setNative](value: Orientation) {
+        const layout = this._layout;
+        if (layout instanceof UICollectionViewFlowLayout) {
+            if (value === 'horizontal') {
+                layout.scrollDirection = UICollectionViewScrollDirection.Horizontal;
+            } else {
+                layout.scrollDirection = UICollectionViewScrollDirection.Vertical;
+            }
+        }
+        this.updateScrollBarVisibility(this.scrollBarIndicatorVisible);
+    }
+    [isScrollEnabledProperty.setNative](value: boolean) {
+        this.nativeViewProtected.scrollEnabled = value;
+        this.scrollEnabledBeforeDragging = value;
+    }
+    [isBounceEnabledProperty.setNative](value: boolean) {
+        this.nativeViewProtected.bounces = value;
+        // this.nativeViewProtected.alwaysBounceHorizontal = value;
+    }
+
+    [itemTemplatesProperty.getDefault](): KeyedTemplate[] {
+        return null;
+    }
+    [reverseLayoutProperty.setNative](value: boolean) {
+        this.nativeViewProtected.transform = value ? CGAffineTransformMakeRotation(-Math.PI) : null;
+    }
+    [reorderLongPressEnabledProperty.setNative](value: boolean) {
         if (value) {
             if (!this.reorderLongPressGesture) {
                 this.reorderLongPressHandler = ReorderLongPressImpl.initWithOwner(new WeakRef(this));
@@ -307,11 +311,27 @@ export class CollectionView extends CollectionViewBase {
         }
 
     }
-    public [reorderingEnabledProperty.setNative](value: boolean) {
+    [reorderingEnabledProperty.setNative](value: boolean) {
         if (value) {
             this.on('touch', this.onReorderingTouch, this);
         } else {
             this.off('touch', this.onReorderingTouch, this);
+        }
+    }
+    [scrollBarIndicatorVisibleProperty.getDefault](): boolean {
+        return true;
+    }
+    [scrollBarIndicatorVisibleProperty.setNative](value: boolean) {
+        this.updateScrollBarVisibility(value);
+    }
+    protected updateScrollBarVisibility(value) {
+        if (!this.nativeViewProtected) {
+            return;
+        }
+        if (this.orientation === 'horizontal') {
+            this.nativeViewProtected.showsHorizontalScrollIndicator = value;
+        } else {
+            this.nativeViewProtected.showsVerticalScrollIndicator = value;
         }
     }
     public eachChildView(callback: (child: View) => boolean): void {

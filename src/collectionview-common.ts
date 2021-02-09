@@ -104,6 +104,7 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     public reorderEnabled: boolean;
     public reorderLongPressEnabled: boolean;
     protected _dataUpdatesSuspended = false;
+    public scrollBarIndicatorVisible: boolean;
 
     public layoutStyle: string = 'grid';
     public plugins: string[] = [];
@@ -617,3 +618,10 @@ export const reorderLongPressEnabledProperty = new Property<CollectionViewBase, 
     valueConverter: booleanConverter,
 });
 reorderLongPressEnabledProperty.register(CollectionViewBase);
+
+export const scrollBarIndicatorVisibleProperty = new Property<CollectionViewBase, boolean>({
+    name: 'scrollBarIndicatorVisible',
+    defaultValue: true,
+    valueConverter: booleanConverter,
+});
+scrollBarIndicatorVisibleProperty.register(CollectionViewBase);

@@ -15,7 +15,7 @@ import {
     profile,
 } from '@nativescript/core';
 import { layout } from '@nativescript/core/utils/utils';
-import { CollectionViewItemDisplayEventData, CollectionViewItemEventData, Orientation, reorderLongPressEnabledProperty, reorderingEnabledProperty, reverseLayoutProperty } from './collectionview';
+import { CollectionViewItemDisplayEventData, CollectionViewItemEventData, Orientation, reorderLongPressEnabledProperty, reorderingEnabledProperty, reverseLayoutProperty, scrollBarIndicatorVisibleProperty } from './collectionview';
 import { CLog, CLogTypes, CollectionViewBase, ListViewViewTypes, isScrollEnabledProperty, orientationProperty } from './collectionview-common';
 
 export * from './collectionview-common';
@@ -450,43 +450,38 @@ export class CollectionView extends CollectionViewBase {
         }
     }
 
-    public [paddingTopProperty.getDefault](): number {
-        return (this.nativeView as android.view.View).getPaddingTop();
+    [paddingTopProperty.getDefault](): Length {
+        return { value: this._defaultPaddingTop, unit: 'px' };
     }
-    public [paddingTopProperty.setNative](value: Length) {
+    [paddingTopProperty.setNative](value: Length) {
         this._setPadding({ top: this.effectivePaddingTop });
     }
 
-    public [paddingRightProperty.getDefault](): number {
-        return (this.nativeView as android.view.View).getPaddingRight();
+    [paddingRightProperty.getDefault](): Length {
+        return { value: this._defaultPaddingRight, unit: 'px' };
     }
-    public [paddingRightProperty.setNative](value: Length) {
+    [paddingRightProperty.setNative](value: Length) {
         this._setPadding({ right: this.effectivePaddingRight });
     }
 
-    public [paddingBottomProperty.getDefault](): number {
-        return (this.nativeView as android.view.View).getPaddingBottom();
+    [paddingBottomProperty.getDefault](): Length {
+        return { value: this._defaultPaddingBottom, unit: 'px' };
     }
-    public [paddingBottomProperty.setNative](value: Length) {
+    [paddingBottomProperty.setNative](value: Length) {
         this._setPadding({ bottom: this.effectivePaddingBottom });
     }
 
-    public [paddingLeftProperty.getDefault](): number {
-        return (this.nativeView as android.view.View).getPaddingLeft();
+    [paddingLeftProperty.getDefault](): Length {
+        return { value: this._defaultPaddingLeft, unit: 'px' };
     }
-    public [paddingLeftProperty.setNative](value: Length) {
+    [paddingLeftProperty.setNative](value: Length) {
         this._setPadding({ left: this.effectivePaddingLeft });
     }
 
-    // public [orientationProperty.getDefault](): Orientation {
-    //     const layoutManager = this.layoutManager;
-    //     if (layoutManager.getOrientation() === androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL) {
-    //         return 'horizontal';
-    //     }
-
-    //     return 'vertical';
-    // }
-    public [orientationProperty.setNative](value: Orientation) {
+    public [orientationProperty.getDefault](): Orientation {
+        return 'vertical';
+    }
+    [orientationProperty.setNative](value: Orientation) {
         const layoutManager = this.layoutManager;
         if (!layoutManager || !layoutManager['setOrientation']) {
             return;
@@ -496,30 +491,45 @@ export class CollectionView extends CollectionViewBase {
         } else {
             layoutManager['setOrientation'](1);
         }
+        this.updateScrollBarVisibility(this.scrollBarIndicatorVisible);
     }
-    // isScrollEnabled = true;
-    public [isScrollEnabledProperty.setNative](value: boolean) {
+    [isScrollEnabledProperty.setNative](value: boolean) {
         const layoutManager = this.layoutManager;
         if (layoutManager && (layoutManager as any).setScrollEnabled ) {
             (layoutManager as any).setScrollEnabled(value);
         }
     }
-    public [reverseLayoutProperty.setNative](value: boolean) {
-        // this.isScrollEnabled = value;
+    [reverseLayoutProperty.setNative](value: boolean) {
         const layoutManager = this.layoutManager;
         if (layoutManager && (layoutManager as any).setReverseLayout) {
             (layoutManager as any).setReverseLayout(value);
             // layoutManager['setStackFromEnd'](value);
         }
     }
-    public [extraLayoutSpaceProperty.setNative](value: number) {
+    [extraLayoutSpaceProperty.setNative](value: number) {
         const layoutManager = this.layoutManager;
         if (layoutManager && layoutManager['setExtraLayoutSpace']) {
             layoutManager['setExtraLayoutSpace'](value);
         }
     }
-    public [itemViewCacheSizeProperty.setNative](value: number) {
+    [itemViewCacheSizeProperty.setNative](value: number) {
         this.nativeViewProtected.setItemViewCacheSize(value);
+    }
+    [scrollBarIndicatorVisibleProperty.getDefault](): boolean {
+        return true;
+    }
+    [scrollBarIndicatorVisibleProperty.setNative](value: boolean) {
+        this.updateScrollBarVisibility(value);
+    }
+    protected updateScrollBarVisibility(value) {
+        if (!this.nativeViewProtected) {
+            return;
+        }
+        if (this.orientation === 'horizontal') {
+            this.nativeViewProtected.setHorizontalScrollBarEnabled(value);
+        } else {
+            this.nativeViewProtected.setVerticalScrollBarEnabled(value);
+        }
     }
     public startDragging(index: number) {
         if (this.reorderEnabled && this._itemTouchHelper) {
