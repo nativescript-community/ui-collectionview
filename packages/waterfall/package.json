@@ -1,0 +1,41 @@
+{
+    "name": "@nativescript-community/ui-collectionview-waterfall",
+    "version": "1.1.0",
+    "main": "./waterfall",
+    "sideEffects": false,
+    "typings": "./waterfall.d.ts",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/nativescript-community/ui-collectionview.git"
+    },
+    "scripts": {
+        "build": "npm run tsc",
+        "build.all": "npm run build",
+        "tsc": "../../node_modules/.bin/cpy '**/*.d.ts' '../../packages/waterfall' --parents --cwd=../../src/waterfall && ../../node_modules/.bin/tsc -skipLibCheck -d",
+        "clean": "../../node_modules/.bin/rimraf ./*.d.ts ./*.js ./*.js.map"
+    },
+    "nativescript": {
+        "platforms": {
+            "android": "6.1.0",
+            "ios": "6.1.0"
+        }
+    },
+    "keywords": [
+        "NativeScript",
+        "JavaScript",
+        "Android",
+        "iOS"
+    ],
+    "author": {
+        "name": "Martin Guillon",
+        "email": "martin@akylas.fr"
+    },
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/nativescript-community/ui-collectionview/issues"
+    },
+    "homepage": "https://github.com/nativescript-community/ui-collectionview#readme",
+    "dependencies": {
+        "@nativescript-community/ui-collectionview": "^4.0.23"
+    }
+}

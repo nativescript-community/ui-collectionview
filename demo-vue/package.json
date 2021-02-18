@@ -31,7 +31,7 @@
     "category-general"
   ],
   "dependencies": {
-    "@nativescript-community/ui-collectionview": "../plugin",
+    "@nativescript-community/ui-collectionview": "../packages/collectionview",
     "@nativescript/core": "~7.0.13",
     "@nativescript/detox": "~1.0.0",
     "@nativescript/theme": "~3.0.0",

@@ -1,11 +1,21 @@
 {
   "packages": [
-    "plugin"
+    "packages/*"
   ],
-  "version": "4.0.23",
+  "npmClient": "npm",
   "command": {
     "publish": {
-      "conventionalCommits": true
+      "conventionalCommits": true,
+      "ignoreChanges": [
+        "ignored-file",
+        "*.md"
+      ]
+    },
+    "bootstrap": {
+      "npmClientArgs": [
+        "--no-package-lock"
+      ]
     }
-  }
+  },
+  "version": "4.0.23"
 }

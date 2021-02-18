@@ -1,0 +1,59 @@
+{
+    "name": "@nativescript-community/ui-collectionview",
+    "version": "4.0.23",
+    "description": "Allows you to easily add a collection view (grid list view) to your projects. Supports vertical and horizontal modes, templating, and more.",
+    "main": "./collectionview",
+    "module": "./collectionview.mjs",
+    "sideEffects": false,
+    "typings": "./collectionview.d.ts",
+    "scripts": {
+        "build": "npm run tsc",
+        "build.all": "npm run build && npm run build.angular",
+        "build.angular": "../../node_modules/.bin/ng-packagr -p ../../src/collectionview/angular/package.json -c ../../src/collectionview/angular/tsconfig.json",
+        "tsc": "../../node_modules/.bin/cpy '**/*.d.ts' '../../packages/collectionview' --parents --cwd=../../src/collectionview && ../../node_modules/.bin/tsc -skipLibCheck -d",
+        "clean": "../../node_modules/.bin/rimraf ./*.d.ts ./*.js ./*.js.map"
+    },
+    "nativescript": {
+        "platforms": {
+            "android": "6.0.0",
+            "ios": "6.0.0"
+        }
+    },
+    "keywords": [
+        "NativeScript",
+        "JavaScript",
+        "Android",
+        "iOS",
+        "RadListView",
+        "CollectionView",
+        "collection view",
+        "grid view",
+        "grid list view",
+        "super grid",
+        "NativeScript UI",
+        "nativescript community",
+        "Angular",
+        "Vue.js",
+        "Vue.js Native",
+        "Vue Native",
+        "Svelte",
+        "Svelte Native",
+        "React",
+        "React NativeScript",
+        "preview|https://raw.githubusercontent.com/nativescript-community/ui-collectionview/master/images/demo-ios.gif|iOS Demo",
+        "preview|https://raw.githubusercontent.com/nativescript-community/ui-collectionview/master/images/demo-android.gif|Android Demo"
+    ],
+    "author": {
+        "name": "Martin Guillon",
+        "email": "martin@akylas.fr"
+    },
+    "bugs": {
+        "url": "https://github.com/nativescript-community/ui-collectionview/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/nativescript-community/ui-collectionview"
+    },
+    "license": "Apache-2.0",
+    "readmeFilename": "README.md"
+}

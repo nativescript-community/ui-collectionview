@@ -17,7 +17,7 @@
                 rowHeight="200"
             >
                 <v-template>
-                    <GridLayout rows="*, auto" :backgroundColor="item.color" class="item">
+                    <GridLayout id="test" rows="*, auto" :backgroundColor="item.color" class="item">
                         <StackLayout row="1">
                             <Label row="1" :text="item.name" class="title" />
                             <Label row="1" :text="item.color" class="subtitle" />
