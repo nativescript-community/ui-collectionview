@@ -9,6 +9,7 @@
         "experimentalDecorators": true,
         "jsx": "react",
         "lib": ["es6", "dom"],
+        "types": ["node", "svelte"],  
         "sourceMap": true,
         "pretty": true,
         "allowUnreachableCode": false,
