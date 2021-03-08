@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.25](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.24...v4.0.25) (2021-03-08)
+
+
+### Bug Fixes
+
+* **collectionview:** support css global change to be applied on visible cells ([0ae925e](https://github.com/Akylas/nativescript-collectionview/commit/0ae925ead62186499d7e579891696de293545605))
+
+
+
+
+
 ## [4.0.24](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.23...v4.0.24) (2021-02-18)
 
 **Note:** Version bump only for package @nativescript-community/ui-collectionview
