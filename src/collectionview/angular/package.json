@@ -2,7 +2,7 @@
   "name": "@nativescript-community/ui-collectionview-angular",
   "main": "index.js",
   "ngPackage": {
-    "dest": "../../plugin/angular",
+    "dest": "../../../packages/collectionview/angular",
     "lib": {
       "entryFile": "index.ts",
       "umdModuleIds": {
