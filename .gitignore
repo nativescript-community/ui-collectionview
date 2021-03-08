@@ -25,3 +25,12 @@ plugin/**/*js
 plugin/*.ngsummary.json
 plugin/*.metadata.json
 pnpm-lock.yaml
+
+packages/**/angular
+packages/**/*.js
+packages/**/*.ts
+packages/**/*.js.map
+packages/**/*.metadata.json
+packages/**/*.ngsummary.json
+!packages/**/angular/package.json
+!packages/**/platforms
