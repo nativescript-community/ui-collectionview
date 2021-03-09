@@ -746,7 +746,7 @@ export class CollectionView extends CollectionViewBase {
         if (layoutManager['findFirstVisibleItemPosition']) {
             const first = layoutManager.findFirstVisibleItemPosition();
             const last = layoutManager.findLastVisibleItemPosition();
-            this._listViewAdapter.notifyItemRangeChanged(first, last - first);
+            this._listViewAdapter.notifyItemRangeChanged(first, last - first + 1);
         }
     }
 
