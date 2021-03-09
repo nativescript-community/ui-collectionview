@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.26](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.25...v4.0.26) (2021-03-09)
+
+
+### Bug Fixes
+
+* **android:** refreshVisibleItems not refreshing last one ([4d5de50](https://github.com/Akylas/nativescript-collectionview/commit/4d5de504aab62ff521eeba64317da8b659658cb7))
+
+
+
+
+
 ## [4.0.25](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.24...v4.0.25) (2021-03-08)
 
 
