@@ -628,7 +628,12 @@ export class CollectionView extends CollectionViewBase {
                 this._addView(view);
                 const innerView = NSCellView.new() as NSCellView;
                 innerView.view = new WeakRef(view);
-                // view['performLayout'] = ()=>{};
+                // for a cell to update correctly on cell layout change we need
+                // to do it ourself instead of "propagating it"
+                view['performLayout'] = () => {
+                    this.measureCell(cell, view, indexPath);
+                    this.layoutCell(indexPath.row, cell, view);
+                };
                 innerView.addSubview(view.nativeViewProtected);
                 cell.contentView.addSubview(innerView);
             }
