@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.28](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.27...v4.0.28) (2021-03-11)
+
+
+### Bug Fixes
+
+* support splice with multiple items ([6716b33](https://github.com/Akylas/nativescript-collectionview/commit/6716b33779c7f7c559141260b96af5da45cb2743))
+
+
+
+
+
 ## [4.0.27](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.26...v4.0.27) (2021-03-11)
 
 
