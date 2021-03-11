@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.27](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.26...v4.0.27) (2021-03-11)
+
+
+### Bug Fixes
+
+* **ios:** allow layout change within a cell. ([6737df6](https://github.com/Akylas/nativescript-collectionview/commit/6737df6e0d20100abc55eb7e54844d02497e931f))
+
+
+
+
+
 ## [4.0.26](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.25...v4.0.26) (2021-03-09)
 
 
