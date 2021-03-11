@@ -438,25 +438,35 @@ export class CollectionView extends CollectionViewBase {
             }
             case ChangeType.Splice: {
                 view.performBatchUpdatesCompletion(() => {
-                    if (event.addedCount > 0) {
-                        const indexes = NSMutableArray.alloc<NSIndexPath>().init();
-                        for (let index = 0; index < event.addedCount; index++) {
-                            indexes.addObject(NSIndexPath.indexPathForItemInSection(event.index + index, 0));
-                        }
-                        view.insertItemsAtIndexPaths(indexes);
-                    }
-                    if (event.removed && event.removed.length > 0) {
+                    const added = event.addedCount;
+                    const removed = (event.removed && event.removed.length) || 0;
+                    if (added > 0 && added === removed) {
                         const indexes = NSMutableArray.new<NSIndexPath>();
-                        for (let index = 0; index < event.removed.length; index++) {
-                            indexes.addObject(NSIndexPath.indexPathForItemInSection(event.index + index, 0));
+                        for (let index = 0; index < added; index++) {
+                            indexes.addObject(NSIndexPath.indexPathForRowInSection(event.index + index, 0));
                         }
-                        this.unbindUnusedCells(event.removed);
-                        if (Trace.isEnabled()) {
-                            CLog(CLogTypes.info, 'deleteItemsAtIndexPaths', indexes.count);
+                        view.reloadItemsAtIndexPaths(indexes);
+                    } else {
+                        if (event.addedCount > 0) {
+                            const indexes = NSMutableArray.alloc<NSIndexPath>().init();
+                            for (let index = 0; index < event.addedCount; index++) {
+                                indexes.addObject(NSIndexPath.indexPathForItemInSection(event.index + index, 0));
+                            }
+                            view.insertItemsAtIndexPaths(indexes);
                         }
-                        view.performBatchUpdatesCompletion(() => {
-                            view.deleteItemsAtIndexPaths(indexes);
-                        }, null);
+                        if (event.removed && event.removed.length > 0) {
+                            const indexes = NSMutableArray.new<NSIndexPath>();
+                            for (let index = 0; index < event.removed.length; index++) {
+                                indexes.addObject(NSIndexPath.indexPathForItemInSection(event.index + index, 0));
+                            }
+                            this.unbindUnusedCells(event.removed);
+                            if (Trace.isEnabled()) {
+                                CLog(CLogTypes.info, 'deleteItemsAtIndexPaths', indexes.count);
+                            }
+                            view.performBatchUpdatesCompletion(() => {
+                                view.deleteItemsAtIndexPaths(indexes);
+                            }, null);
+                        }
                     }
                 }, null);
                 return;
@@ -712,7 +722,7 @@ export class CollectionView extends CollectionViewBase {
         cellView['iosIgnoreSafeArea'] = true;
         View.layoutChild(this, cellView, 0, 0, cellSize[0], cellSize[1]);
         if (Trace.isEnabled()) {
-            CLog(CLogTypes.log, 'layoutCell', index, cellView, cellView.getMeasuredWidth(), cellView.getMeasuredHeight());
+            CLog(CLogTypes.log, 'layoutCell', index, cellView.getMeasuredWidth(), cellView.getMeasuredHeight());
         }
     }
 

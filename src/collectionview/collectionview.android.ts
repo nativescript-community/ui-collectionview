@@ -712,11 +712,17 @@ export class CollectionView extends CollectionViewBase {
                 return;
             }
             case ChangeType.Splice: {
-                if (event.addedCount > 0) {
-                    this._listViewAdapter.notifyItemRangeInserted(event.index, event.addedCount);
-                }
-                if (event.removed && event.removed.length > 0) {
-                    this._listViewAdapter.notifyItemRangeRemoved(event.index, event.removed.length);
+                const added = event.addedCount;
+                const removed = (event.removed && event.removed.length) || 0;
+                if (added > 0 && added === removed) {
+                    this._listViewAdapter.notifyItemRangeChanged(event.index, added);
+                } else {
+                    if (event.addedCount > 0) {
+                        this._listViewAdapter.notifyItemRangeInserted(event.index, event.addedCount);
+                    }
+                    if (event.removed && event.removed.length > 0) {
+                        this._listViewAdapter.notifyItemRangeRemoved(event.index, event.removed.length);
+                    }
                 }
                 return;
             }
