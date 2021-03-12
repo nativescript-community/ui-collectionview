@@ -15,19 +15,19 @@ export default {
     props: {
         items: {
             validator: (val) => !val || Array.isArray(val) || val instanceof ObservableArray,
-            required: true,
+            required: true
         },
         '+alias': {
             type: String,
-            default: 'item',
+            default: 'item'
         },
         '+index': {
-            type: String,
+            type: String
         },
         itemTemplateSelector: {
             type: Function,
-            default: undefined,
-        },
+            default: undefined
+        }
     },
     template: `<NativeCollectionView ref="listView" :items="items" v-bind="$attrs" v-on="listeners" @itemTap="onItemTap" @itemLoading="onItemLoadingInternal"
   >
@@ -39,8 +39,8 @@ export default {
                     this.$refs.listView.setAttribute('items', newVal);
                 }
             },
-            deep: true,
-        },
+            deep: true
+        }
     },
     created() {
         // we need to remove the itemTap handler from a clone of the $listeners
@@ -57,9 +57,7 @@ export default {
 
         const itemTemplateSelector = this.itemTemplateSelector
             ? this.itemTemplateSelector // custom template selector if any
-            : (item, index, items) => {
-                return this.$templates.selectorFn(this.getItemContext(item, index));
-            };
+            : (item, index, items) => this.$templates.selectorFn(this.getItemContext(item, index));
         listView.setAttribute('itemTemplateSelector', itemTemplateSelector);
     },
     methods: {
@@ -77,10 +75,7 @@ export default {
             const name = (listView as any)._itemTemplateSelector(currentItem, index, items);
             const context = this.getItemContext(currentItem, index);
             const oldVnode = args.view && args.view[VUE_VIEW];
-
-            // profile('$templates.patchTemplate', () => {
-                args.view = this.$templates.patchTemplate(name, context, oldVnode);
-            // });
+            args.view = this.$templates.patchTemplate(name, context, oldVnode);
         },
         onItemLoadingInternal(args) {
             this.updateViewTemplate(args);
@@ -90,17 +85,17 @@ export default {
         },
         scrollToIndex(index, animate = false) {
             (this.listView as CollectionView).scrollToIndex(index, animate);
-        },
+        }
         // getSelectedItems() {
         //     return (this.listView as CollectionView).getSelectedItems();
         // }
-    },
+    }
 };
 function getItemContext(item, index = -1, alias = this.$props['+alias'], index_alias = this.$props['+index']) {
     return {
         [alias]: item,
         [index_alias || '$index']: index,
         $even: index % 2 === 0,
-        $odd: index % 2 !== 0,
+        $odd: index % 2 !== 0
     };
 }
