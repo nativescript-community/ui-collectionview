@@ -40,11 +40,11 @@ export enum CLogTypes {
     log = Trace.messageType.log,
     info = Trace.messageType.info,
     warning = Trace.messageType.warn,
-    error = Trace.messageType.error,
+    error = Trace.messageType.error
 }
 
 export const CLog = (type: CLogTypes, ...args) => {
-    Trace.write(args.map(a=>(a && typeof a === 'object'? a.toString() :a)).join(' '), CollectionViewTraceCategory, type);
+    Trace.write(args.map((a) => (a && typeof a === 'object' ? a.toString() : a)).join(' '), CollectionViewTraceCategory, type);
 };
 
 const autoEffectiveRowHeight = 0;
@@ -53,7 +53,7 @@ const autoEffectiveColWidth = 0;
 // export * from 'ui/core/view';
 
 export enum ListViewViewTypes {
-    ItemView,
+    ItemView
 }
 
 export namespace knownTemplates {
@@ -129,7 +129,7 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
                     return Builder.parse(this.itemTemplate, this);
                 }
                 return undefined;
-            },
+            }
         };
         this._itemTemplatesInternal = new Map();
         this._itemTemplatesInternal.set(this._defaultTemplate.key, this._defaultTemplate);
@@ -252,7 +252,7 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
         lbl['defaultItemView'] = true;
         lbl.bind({
             targetProperty: 'text',
-            sourceProperty: '$value',
+            sourceProperty: '$value'
         });
         return lbl;
     }
@@ -293,7 +293,7 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
             this._itemTemplateSelectorBindable.bind({
                 sourceProperty: null,
                 targetProperty: 'templateKey',
-                expression: newValue,
+                expression: newValue
             });
             this._itemTemplateSelector = function (item, index, items) {
                 item['$index'] = index;
@@ -315,7 +315,7 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
             this._itemIdGeneratorBindable.bind({
                 sourceProperty: null,
                 targetProperty: 'itemId',
-                expression: newValue,
+                expression: newValue
             });
             this._itemIdGenerator = function (item, index, items) {
                 item['$index'] = index;
@@ -450,7 +450,6 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
         if (callEvents) {
             this._callItemReorderedEvent(oldPosition, newPosition, item);
         }
-
     }
 
     shouldMoveItemAtIndex(index: number) {
@@ -458,7 +457,7 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
             return false;
         }
         const item = this.getItemAtIndex(index);
-        const view = this.draggingView = this.getViewForItemAtIndex(index);
+        const view = (this.draggingView = this.getViewForItemAtIndex(index));
         let args = {
             returnValue: true,
             eventName: CollectionViewBase.itemReorderStartingEvent,
@@ -492,7 +491,7 @@ export const rowHeightProperty = new Property<CollectionViewBase, PercentLength>
     valueChanged: (target, oldValue, newValue) => {
         target._effectiveRowHeight = PercentLength.toDevicePixels(newValue, autoEffectiveRowHeight, target._innerHeight);
         target._onRowHeightPropertyChanged(oldValue, newValue);
-    },
+    }
 });
 rowHeightProperty.register(CollectionViewBase);
 
@@ -507,7 +506,7 @@ export const colWidthProperty = new Property<CollectionViewBase, PercentLength>(
             target._effectiveColWidth = PercentLength.toDevicePixels(newValue, autoEffectiveColWidth, target._innerWidth);
         }
         target._onColWidthPropertyChanged(oldValue, newValue);
-    },
+    }
 });
 colWidthProperty.register(CollectionViewBase);
 
@@ -519,7 +518,7 @@ export const orientationProperty = new Property<CollectionViewBase, Orientation>
     valueChanged: (target: CollectionViewBase, oldValue: Orientation, newValue: Orientation) => {
         target.refresh();
     },
-    valueConverter: converter,
+    valueConverter: converter
 });
 orientationProperty.register(CollectionViewBase);
 
@@ -527,7 +526,7 @@ export const itemTemplateProperty = new Property<CollectionViewBase, string | Te
     name: 'itemTemplate',
     valueChanged(target, oldValue, newValue) {
         target.onItemTemplatePropertyChanged(oldValue, newValue);
-    },
+    }
 });
 itemTemplateProperty.register(CollectionViewBase);
 
@@ -542,7 +541,7 @@ export const itemTemplatesProperty = new Property<CollectionViewBase, KeyedTempl
     },
     valueChanged(target, oldValue, newValue) {
         target.onItemTemplatesPropertyChanged(oldValue, newValue);
-    },
+    }
 });
 itemTemplatesProperty.register(CollectionViewBase);
 
@@ -551,7 +550,7 @@ export const itemTemplateSelectorProperty = new Property<CollectionViewBase, Fun
     defaultValue: undefined,
     valueChanged(target, oldValue, newValue) {
         target.onItemTemplateSelectorChanged(oldValue, newValue);
-    },
+    }
 });
 itemTemplateSelectorProperty.register(CollectionViewBase);
 export const itemIdGeneratorProperty = new Property<CollectionViewBase, Function>({
@@ -559,7 +558,7 @@ export const itemIdGeneratorProperty = new Property<CollectionViewBase, Function
     defaultValue: undefined,
     valueChanged(target, oldValue, newValue) {
         target.onItemIdGeneratorChanged(oldValue, newValue);
-    },
+    }
 });
 itemIdGeneratorProperty.register(CollectionViewBase);
 
@@ -568,7 +567,7 @@ export const itemsProperty = new Property<CollectionViewBase, Function>({
     defaultValue: undefined,
     valueChanged(target, oldValue, newValue) {
         target.onItemsChangedInternal(oldValue, newValue);
-    },
+    }
 });
 itemsProperty.register(CollectionViewBase);
 
@@ -577,51 +576,51 @@ export const spanSizeProperty = new Property<CollectionViewBase, Function>({
     defaultValue: undefined,
     valueChanged(target, oldValue, newValue) {
         target.onSpanSizeChangedInternal(oldValue, newValue);
-    },
+    }
 });
 spanSizeProperty.register(CollectionViewBase);
 
 export const isScrollEnabledProperty = new Property<CollectionViewBase, boolean>({
     name: 'isScrollEnabled',
     defaultValue: true,
-    valueConverter: booleanConverter,
+    valueConverter: booleanConverter
 });
 isScrollEnabledProperty.register(CollectionViewBase);
 export const isBounceEnabledProperty = new Property<CollectionViewBase, boolean>({
     name: 'isBounceEnabled',
     defaultValue: true,
-    valueConverter: booleanConverter,
+    valueConverter: booleanConverter
 });
 isBounceEnabledProperty.register(CollectionViewBase);
 export const reverseLayoutProperty = new Property<CollectionViewBase, boolean>({
     name: 'reverseLayout',
     defaultValue: false,
-    valueConverter: booleanConverter,
+    valueConverter: booleanConverter
 });
 reverseLayoutProperty.register(CollectionViewBase);
 
 export const loadMoreThresholdProperty = new Property<CollectionViewBase, number>({
     name: 'loadMoreThreshold',
     defaultValue: 1,
-    valueConverter: v => parseInt(v, 10)
+    valueConverter: (v) => parseInt(v, 10)
 });
 loadMoreThresholdProperty.register(CollectionViewBase);
 export const reorderingEnabledProperty = new Property<CollectionViewBase, boolean>({
     name: 'reorderEnabled',
     defaultValue: false,
-    valueConverter: booleanConverter,
+    valueConverter: booleanConverter
 });
 reorderingEnabledProperty.register(CollectionViewBase);
 export const reorderLongPressEnabledProperty = new Property<CollectionViewBase, boolean>({
     name: 'reorderLongPressEnabled',
     defaultValue: false,
-    valueConverter: booleanConverter,
+    valueConverter: booleanConverter
 });
 reorderLongPressEnabledProperty.register(CollectionViewBase);
 
 export const scrollBarIndicatorVisibleProperty = new Property<CollectionViewBase, boolean>({
     name: 'scrollBarIndicatorVisible',
     defaultValue: true,
-    valueConverter: booleanConverter,
+    valueConverter: booleanConverter
 });
 scrollBarIndicatorVisibleProperty.register(CollectionViewBase);
