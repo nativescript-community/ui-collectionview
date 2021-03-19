@@ -220,6 +220,8 @@ export class CollectionView extends CollectionViewBase {
     private _simpleItemTouchCallback: SimpleCallback;
     private _itemTouchHelper: androidx.recyclerview.widget.ItemTouchHelper;
 
+    public animateItemUpdate = false;
+
     @profile
     public createNativeView() {
         // storing the class in a property for reuse in the future cause a materializing which is pretty slow!
@@ -706,22 +708,35 @@ export class CollectionView extends CollectionViewBase {
                 if (event.addedCount > 0) {
                     this._listViewAdapter.notifyItemRangeChanged(event.index, event.addedCount);
                 }
-                // if (event.removed && event.removed.length > 0) {
-                //     this._listViewAdapter.notifyItemRangeRemoved(event.index, event.removed.length);
-                // }
                 return;
             }
             case ChangeType.Splice: {
                 const added = event.addedCount;
                 const removed = (event.removed && event.removed.length) || 0;
                 if (added > 0 && added === removed) {
-                    this._listViewAdapter.notifyItemRangeChanged(event.index, added);
-                } else {
-                    if (event.addedCount > 0) {
-                        this._listViewAdapter.notifyItemRangeInserted(event.index, event.addedCount);
+                    // notifyItemRangeChanged wont create a fade effect
+                    if (!this.animateItemUpdate) {
+                        this._listViewAdapter.notifyItemRangeChanged(event.index, added);
+                    } else {
+                        this._listViewAdapter.notifyItemRangeRemoved(event.index, added);
+                        this._listViewAdapter.notifyItemRangeInserted(event.index, added);
                     }
-                    if (event.removed && event.removed.length > 0) {
-                        this._listViewAdapter.notifyItemRangeRemoved(event.index, event.removed.length);
+                } else {
+                    if (!this.animateItemUpdate) {
+                        if (added > removed) {
+                            this._listViewAdapter.notifyItemRangeChanged(event.index, removed);
+                            this._listViewAdapter.notifyItemRangeInserted(event.index + removed, added - removed);
+                        } else {
+                            this._listViewAdapter.notifyItemRangeChanged(event.index, added);
+                            this._listViewAdapter.notifyItemRangeRemoved(event.index + removed, removed - removed);
+                        }
+                    } else {
+                        if (event.removed && event.removed.length > 0) {
+                            this._listViewAdapter.notifyItemRangeRemoved(event.index, event.removed.length);
+                        }
+                        if (event.addedCount > 0) {
+                            this._listViewAdapter.notifyItemRangeInserted(event.index, event.addedCount);
+                        }
                     }
                 }
                 return;
