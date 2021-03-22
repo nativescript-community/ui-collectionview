@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.29](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.28...v4.0.29) (2021-03-22)
+
+
+### Bug Fixes
+
+* **android:** broken observableArray splice  event ([9b28d2c](https://github.com/Akylas/nativescript-collectionview/commit/9b28d2c79b2440fd446965b224ba9ca6866b7793))
+
+
+
+
+
 ## [4.0.28](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.27...v4.0.28) (2021-03-11)
 
 
