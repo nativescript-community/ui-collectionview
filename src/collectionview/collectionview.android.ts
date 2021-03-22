@@ -724,11 +724,15 @@ export class CollectionView extends CollectionViewBase {
                 } else {
                     if (!this.animateItemUpdate) {
                         if (added > removed) {
-                            this._listViewAdapter.notifyItemRangeChanged(event.index, removed);
+                            if (removed > 0) {
+                                this._listViewAdapter.notifyItemRangeChanged(event.index, removed);
+                            }
                             this._listViewAdapter.notifyItemRangeInserted(event.index + removed, added - removed);
                         } else {
-                            this._listViewAdapter.notifyItemRangeChanged(event.index, added);
-                            this._listViewAdapter.notifyItemRangeRemoved(event.index + removed, removed - removed);
+                            if (added > 0) {
+                                this._listViewAdapter.notifyItemRangeChanged(event.index, added);
+                            }
+                            this._listViewAdapter.notifyItemRangeRemoved(event.index + added, removed - added);
                         }
                     } else {
                         if (event.removed && event.removed.length > 0) {
