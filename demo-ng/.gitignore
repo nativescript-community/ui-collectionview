@@ -7,7 +7,6 @@ platforms/
 *.js.map
 *.js
 !ngcc.config.js
-!webpack.config.js
 
 # Logs
 logs

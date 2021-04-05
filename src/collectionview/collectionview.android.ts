@@ -3,8 +3,8 @@ import {
     ChangeType,
     ChangedData,
     ContentView,
+    CoreTypes,
     FlexboxLayout,
-    Length,
     Property,
     ProxyViewContainer,
     Trace,
@@ -459,31 +459,31 @@ export class CollectionView extends CollectionViewBase {
         }
     }
 
-    [paddingTopProperty.getDefault](): Length {
+    [paddingTopProperty.getDefault](): CoreTypes.LengthType {
         return { value: this._defaultPaddingTop, unit: 'px' };
     }
-    [paddingTopProperty.setNative](value: Length) {
+    [paddingTopProperty.setNative](value: CoreTypes.LengthType) {
         this._setPadding({ top: this.effectivePaddingTop });
     }
 
-    [paddingRightProperty.getDefault](): Length {
+    [paddingRightProperty.getDefault](): CoreTypes.LengthType {
         return { value: this._defaultPaddingRight, unit: 'px' };
     }
-    [paddingRightProperty.setNative](value: Length) {
+    [paddingRightProperty.setNative](value: CoreTypes.LengthType) {
         this._setPadding({ right: this.effectivePaddingRight });
     }
 
-    [paddingBottomProperty.getDefault](): Length {
+    [paddingBottomProperty.getDefault](): CoreTypes.LengthType {
         return { value: this._defaultPaddingBottom, unit: 'px' };
     }
-    [paddingBottomProperty.setNative](value: Length) {
+    [paddingBottomProperty.setNative](value: CoreTypes.LengthType) {
         this._setPadding({ bottom: this.effectivePaddingBottom });
     }
 
-    [paddingLeftProperty.getDefault](): Length {
+    [paddingLeftProperty.getDefault](): CoreTypes.LengthType {
         return { value: this._defaultPaddingLeft, unit: 'px' };
     }
-    [paddingLeftProperty.setNative](value: Length) {
+    [paddingLeftProperty.setNative](value: CoreTypes.LengthType) {
         this._setPadding({ left: this.effectivePaddingLeft });
     }
 

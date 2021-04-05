@@ -2,10 +2,10 @@ import {
     Builder,
     CSSType,
     ChangedData,
+    CoreTypes,
     ItemsSource,
     KeyedTemplate,
     Label,
-    Length,
     Observable,
     ObservableArray,
     PercentLength,
@@ -90,10 +90,10 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     public itemTemplate: string | Template;
     public itemTemplates: string | KeyedTemplate[];
     public isItemsSourceIn: boolean;
-    public rowHeight: PercentLength;
-    public colWidth: PercentLength;
-    public verticalSpacing: Length;
-    public horizontalSpacing: Length;
+    public rowHeight: CoreTypes.PercentLengthType;
+    public colWidth: CoreTypes.PercentLengthType;
+    public verticalSpacing: CoreTypes.LengthType;
+    public horizontalSpacing: CoreTypes.LengthType;
     public _innerWidth: number = 0;
     public _innerHeight: number = 0;
     public _effectiveRowHeight: number;
@@ -226,10 +226,10 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
         }
         return spanCount;
     }
-    public _onRowHeightPropertyChanged(oldValue: PercentLength, newValue: PercentLength) {
+    public _onRowHeightPropertyChanged(oldValue: CoreTypes.PercentLengthType, newValue: CoreTypes.PercentLengthType) {
         this.refresh();
     }
-    public _onColWidthPropertyChanged(oldValue: PercentLength, newValue: PercentLength) {
+    public _onColWidthPropertyChanged(oldValue: CoreTypes.PercentLengthType, newValue: CoreTypes.PercentLengthType) {
         this.refresh();
     }
     onItemViewLoaderChanged() {}
@@ -482,8 +482,8 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     }
 }
 
-const defaultRowHeight: Length = 'auto';
-export const rowHeightProperty = new Property<CollectionViewBase, PercentLength>({
+const defaultRowHeight: CoreTypes.LengthType = 'auto';
+export const rowHeightProperty = new Property<CollectionViewBase, CoreTypes.PercentLengthType>({
     name: 'rowHeight',
     defaultValue: defaultRowHeight,
     equalityComparer: PercentLength.equals,
@@ -495,8 +495,8 @@ export const rowHeightProperty = new Property<CollectionViewBase, PercentLength>
 });
 rowHeightProperty.register(CollectionViewBase);
 
-const defaultColWidth: PercentLength = { unit: '%', value: 1 };
-export const colWidthProperty = new Property<CollectionViewBase, PercentLength>({
+const defaultColWidth: CoreTypes.PercentLengthType = { unit: '%', value: 1 };
+export const colWidthProperty = new Property<CollectionViewBase, CoreTypes.PercentLengthType>({
     name: 'colWidth',
     defaultValue: defaultColWidth,
     equalityComparer: PercentLength.equals,
