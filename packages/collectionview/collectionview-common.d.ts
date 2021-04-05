@@ -1,4 +1,4 @@
-import { ChangedData, ItemsSource, KeyedTemplate, Label, Length, PercentLength, Property, Template, View } from '@nativescript/core';
+import { ChangedData, CoreTypes, ItemsSource, KeyedTemplate, Label, Property, Template, View } from '@nativescript/core';
 import { CollectionView as CollectionViewDefinition, Orientation } from './collectionview';
 export declare const CollectionViewTraceCategory = "NativescriptCollectionView";
 export declare enum ContentInsetAdjustmentBehavior {
@@ -45,10 +45,10 @@ export declare abstract class CollectionViewBase extends View implements Collect
     itemTemplate: string | Template;
     itemTemplates: string | KeyedTemplate[];
     isItemsSourceIn: boolean;
-    rowHeight: PercentLength;
-    colWidth: PercentLength;
-    verticalSpacing: Length;
-    horizontalSpacing: Length;
+    rowHeight: CoreTypes.PercentLengthType;
+    colWidth: CoreTypes.PercentLengthType;
+    verticalSpacing: CoreTypes.LengthType;
+    horizontalSpacing: CoreTypes.LengthType;
     _innerWidth: number;
     _innerHeight: number;
     _effectiveRowHeight: number;
@@ -87,8 +87,8 @@ export declare abstract class CollectionViewBase extends View implements Collect
     getItemAtIndex(index: number): any;
     isHorizontal(): boolean;
     computeSpanCount(): number;
-    _onRowHeightPropertyChanged(oldValue: PercentLength, newValue: PercentLength): void;
-    _onColWidthPropertyChanged(oldValue: PercentLength, newValue: PercentLength): void;
+    _onRowHeightPropertyChanged(oldValue: CoreTypes.PercentLengthType, newValue: CoreTypes.PercentLengthType): void;
+    _onColWidthPropertyChanged(oldValue: CoreTypes.PercentLengthType, newValue: CoreTypes.PercentLengthType): void;
     onItemViewLoaderChanged(): void;
     _itemViewLoader: any;
     get itemViewLoader(): any;
@@ -128,8 +128,8 @@ export declare abstract class CollectionViewBase extends View implements Collect
     _reorderItemInSource(oldPosition: number, newPosition: number, callEvents?: boolean): void;
     shouldMoveItemAtIndex(index: number): boolean;
 }
-export declare const rowHeightProperty: Property<CollectionViewBase, PercentLength>;
-export declare const colWidthProperty: Property<CollectionViewBase, PercentLength>;
+export declare const rowHeightProperty: Property<CollectionViewBase, CoreTypes.PercentLengthType>;
+export declare const colWidthProperty: Property<CollectionViewBase, CoreTypes.PercentLengthType>;
 export declare const orientationProperty: Property<CollectionViewBase, Orientation>;
 export declare const itemTemplateProperty: Property<CollectionViewBase, string | Template>;
 export declare const itemTemplatesProperty: Property<CollectionViewBase, KeyedTemplate[]>;
