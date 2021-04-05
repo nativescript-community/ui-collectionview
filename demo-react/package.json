@@ -27,20 +27,20 @@
     "template"
   ],
   "dependencies": {
-    "@nativescript/core": "^7.0.13",
+    "@nativescript-community/ui-collectionview": "../packages/collectionview",
+    "@nativescript/core": "^8.0.0",
     "@nativescript/detox": "~1.0.0",
     "@react-navigation/core": "^5.13.2",
-    "@nativescript-community/ui-collectionview": "../plugin",
     "react": "^16.13.1",
-    "react-nativescript": "^2.1.0",
+    "react-nativescript": "^2.2.0",
     "react-nativescript-navigation": "^2.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.4.5",
-    "@nativescript/android": "7.0.1",
-    "@nativescript/ios": "7.0.4",
-    "@nativescript/types": "^7.0.4",
-    "@nativescript/webpack": "~3.0.0",
+    "@nativescript/android": "8.0.0",
+    "@nativescript/ios": "8.0.0",
+    "@nativescript/types": "^8.0.0",
+    "@nativescript/webpack": "~4.1.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.4.0-beta.5",
     "@types/react": "16.9.34",
     "babel-loader": "8.0.6",
@@ -48,7 +48,7 @@
     "fork-ts-checker-webpack-plugin": "^5.1.0",
     "patch-package": "^6.2.2",
     "react-refresh": "^0.8.3",
-    "typescript": "^3.9.3"
+    "typescript": "~4.0.0"
   },
   "gitHead": "1350d382fb4b0ed4c6e9685df909518b2688e004",
   "readme": "NativeScript Application",
