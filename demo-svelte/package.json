@@ -27,16 +27,16 @@
     "url": "https://github.com/NativeScript/NativeScript/issues"
   },
   "dependencies": {
-    "@nativescript/core": "~7.0.0",
+    "@nativescript-community/ui-collectionview": "../packages/collectionview",
+    "@nativescript/core": "~8.0.0",
     "@nativescript/detox": "~1.0.0",
     "@nativescript/theme": "~2.3.0",
-    "@nativescript-community/ui-collectionview": "../plugin",
-    "svelte-native": "~0.9.4"
+    "svelte-native": "~0.9.5"
   },
   "devDependencies": {
-    "@nativescript/android": "7.0.1",
-    "@nativescript/ios": "7.0.4",
-    "@nativescript/webpack": "~3.0.0",
+    "@nativescript/android": "8.0.0",
+    "@nativescript/ios": "8.0.0",
+    "@nativescript/webpack": "~4.1.0",
     "detox": "~17.10.6",
     "svelte": "~3.24.1",
     "svelte-loader-hot": "~0.3.1",
