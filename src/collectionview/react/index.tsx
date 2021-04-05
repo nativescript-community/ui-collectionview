@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ItemEventData, ItemsSource, KeyedTemplate, Length, PercentLength, View } from '@nativescript/core';
+import { CoreTypes, ItemEventData, ItemsSource, KeyedTemplate, View } from '@nativescript/core';
 import { NSVElement, NSVRoot, NativeScriptProps, render as RNSRender, ViewAttributes, registerElement, unmountComponentAtNode } from 'react-nativescript';
 import { CollectionView as NativeScriptCollectionView } from '../collectionview';
 
@@ -12,8 +12,8 @@ export function registerCollectionView() {
 }
 
 interface CollectionViewAttributes extends ViewAttributes {
-    colWidth?: PercentLength | string;
-    horizontalSpacing?: Length | string;
+    colWidth?: CoreTypes.PercentLengthType | string;
+    horizontalSpacing?: CoreTypes.LengthType | string;
     isBounceEnabled?: boolean;
     isItemsSourceIn?: boolean;
     isScrollEnabled?: boolean;
@@ -28,9 +28,9 @@ interface CollectionViewAttributes extends ViewAttributes {
     orientation?: 'horizontal' | 'vertical';
     plugins?: string[];
     reverseLayout?: boolean;
-    rowHeight?: PercentLength | string;
+    rowHeight?: CoreTypes.PercentLengthType | string;
     spanSize?: (position: number) => number;
-    verticalSpacing?: Length | string;
+    verticalSpacing?: CoreTypes.LengthType | string;
 };
 
 declare global {

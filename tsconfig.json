@@ -22,7 +22,7 @@
         "noFallthroughCasesInSwitch": true,
         "sourceRoot": "../src",
         "baseUrl": ".",
-        "outDir": "./plugin",
+        "outDir": "./packages",
         "paths": {
             "@nativescript-community/ui-collectionview": ["src/collectionview/collectionview"],
             "@nativescript-community/ui-collectionview/*": ["src/*"],

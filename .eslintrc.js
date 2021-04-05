@@ -1,6 +1,6 @@
 module.exports = {
     extends: ['plugin:prettier/recommended'],
-    plugins: ['prettier', '@typescript-eslint'],
+    plugins: ['@nativescript', 'prettier', '@typescript-eslint'],
     parser: '@typescript-eslint/parser',
     parserOptions: {
         ecmaVersion: 2018,
@@ -10,9 +10,13 @@ module.exports = {
         extraFileExtensions: ['.vue'],
         warnOnUnsupportedTypeScriptVersion: false,
         tsconfigRootDir: __dirname,
+        createDefaultProgram: true
     },
     rules: {
         'prettier/prettier': 'warn',
+        '@nativescript/no-nativescript-angular-imports': 'warn',
+        '@nativescript/no-tns-core-modules-imports': 'warn',
+        '@nativescript/no-duplicate-ns-imports': 'warn',
         '@typescript-eslint/adjacent-overload-signatures': 'error',
         '@typescript-eslint/array-type': 'error',
         '@typescript-eslint/await-thenable': 'error',
