@@ -2,9 +2,9 @@ import {
     ChangeType,
     ChangedData,
     ContentView,
+    CoreTypes,
     EventData,
     KeyedTemplate,
-    Length,
     Observable,
     Property,
     ProxyViewContainer,
@@ -267,19 +267,19 @@ export class CollectionView extends CollectionViewBase {
         this.nativeViewProtected.contentInsetAdjustmentBehavior = value as any;
     }
 
-    [paddingTopProperty.setNative](value: Length) {
+    [paddingTopProperty.setNative](value: CoreTypes.LengthType) {
         this._setPadding({ top: layout.toDeviceIndependentPixels(this.effectivePaddingTop) });
     }
 
-    [paddingRightProperty.setNative](value: Length) {
+    [paddingRightProperty.setNative](value: CoreTypes.LengthType) {
         this._setPadding({ right: layout.toDeviceIndependentPixels(this.effectivePaddingRight) });
     }
 
-    [paddingBottomProperty.setNative](value: Length) {
+    [paddingBottomProperty.setNative](value: CoreTypes.LengthType) {
         this._setPadding({ bottom: layout.toDeviceIndependentPixels(this.effectivePaddingBottom) });
     }
 
-    [paddingLeftProperty.setNative](value: Length) {
+    [paddingLeftProperty.setNative](value: CoreTypes.LengthType) {
         this._setPadding({ left: layout.toDeviceIndependentPixels(this.effectivePaddingLeft) });
     }
 
