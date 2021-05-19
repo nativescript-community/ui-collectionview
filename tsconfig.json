@@ -22,13 +22,15 @@
         "noFallthroughCasesInSwitch": true,
         "sourceRoot": "../src",
         "baseUrl": ".",
-        "outDir": "./plugin",
+        "outDir": "./packages",
         "paths": {
             "@nativescript-community/ui-collectionview": ["src/collectionview/collectionview"],
             "@nativescript-community/ui-collectionview/*": ["src/*"],
             "*": ["node_modules/*"]
         },
-        "plugins": [{ "transform": "../../node_modules/@nativescript/webpack/transformers/ns-transform-native-classes", "type": "raw" }]
+        "plugins": [{ "transform": "../../node_modules/@nativescript/webpack/transformers/ns-transform-native-classes", "type": "raw" }],
+        "skipDefaultLibCheck": true,
+        "skipLibCheck": true,
     },
     "include": ["src/**/*", "./references.d.ts"],
     "exclude": ["node_modules", "platforms", "src/collectionview/angular/**/*"],

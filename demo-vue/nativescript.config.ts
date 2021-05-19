@@ -2,7 +2,6 @@ import { NativeScriptConfig } from '@nativescript/core';
 
 export default {
     id: 'org.nativescript.vuedemo',
-    profiling: 'timeline',
     appResourcesPath: 'App_Resources',
     android: {
         v8Flags: '--expose_gc',
