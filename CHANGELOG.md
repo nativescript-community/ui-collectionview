@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.30](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.29...v4.0.30) (2021-05-19)
+
+
+### Bug Fixes
+
+* prevent tracing error ([32d9e40](https://github.com/Akylas/nativescript-collectionview/commit/32d9e400f8c259ad867dbaddd2069858614c3c59))
+* update Angular demo ([c5b13d1](https://github.com/Akylas/nativescript-collectionview/commit/c5b13d1ae1250f5eb69ceffd1ed5ec0d9a241377))
+* update React demo ([01ab895](https://github.com/Akylas/nativescript-collectionview/commit/01ab895530e5bafa7636c4cfec1968341421ecf7))
+* update Svelte demo ([64937de](https://github.com/Akylas/nativescript-collectionview/commit/64937de0598dad15d873c3bcdba0f46b5f01290f))
+* update Vue demo ([010e7a1](https://github.com/Akylas/nativescript-collectionview/commit/010e7a1f2e90de07eebd0c82495168a7c3bac1fb))
+* updates for NS8 ([4b0a753](https://github.com/Akylas/nativescript-collectionview/commit/4b0a753b563f171b1dc0505d98adf31a18b07986))
+
+
+
+
+
 ## [4.0.29](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.28...v4.0.29) (2021-03-22)
 
 
