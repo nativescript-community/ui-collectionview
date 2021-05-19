@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.31](https://github.com/nativescript-community/ui-collectionview/compare/v4.0.30...v4.0.31) (2021-05-19)
+
+**Note:** Version bump only for package @nativescript-community/ui-collectionview
+
+
+
+
+
 ## [4.0.30](https://github.com/nativescript-community/ui-collectionview/compare/v4.0.29...v4.0.30) (2021-05-19)
 
 **Note:** Version bump only for package @nativescript-community/ui-collectionview

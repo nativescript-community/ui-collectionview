@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.31](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.30...v4.0.31) (2021-05-19)
+
+
+### Features
+
+* isItemAtIndexVisible ([8c7239a](https://github.com/Akylas/nativescript-collectionview/commit/8c7239aee1d856c71dc67d9bf34863939c5cf226))
+
+
+
+
+
 ## [4.0.30](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.29...v4.0.30) (2021-05-19)
 
 
