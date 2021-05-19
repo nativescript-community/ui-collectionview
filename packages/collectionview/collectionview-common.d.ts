@@ -79,6 +79,7 @@ export declare abstract class CollectionViewBase extends View implements Collect
     constructor();
     abstract refresh(): any;
     abstract refreshVisibleItems(): any;
+    abstract isItemAtIndexVisible(index: number): any;
     abstract scrollToIndex(index: number, animated: boolean): any;
     onLayout(left: number, top: number, right: number, bottom: number): void;
     items: any[] | ItemsSource;
