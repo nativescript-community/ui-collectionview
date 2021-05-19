@@ -509,6 +509,15 @@ export class CollectionView extends CollectionViewBase {
             }, null);
         });
     }
+    public isItemAtIndexVisible(itemIndex: number): boolean {
+        const view = this.nativeViewProtected;
+        if (!view) {
+            return false;
+        }
+		const indexes: NSIndexPath[] = Array.from(view.indexPathsForVisibleItems);
+
+		return indexes.some((visIndex) => visIndex.row === itemIndex);
+	}
 
     @profile
     public refresh() {

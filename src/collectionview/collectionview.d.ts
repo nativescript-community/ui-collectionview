@@ -8,6 +8,7 @@ export type Orientation = 'horizontal' | 'vertical';
 export class CollectionView extends CollectionViewBase {
     public refresh();
     public refreshVisibleItems();
+    public isItemAtIndexVisible(index: number): boolean;
     public scrollToIndex(index: number, animated: boolean);
     public getViewForItemAtIndex(index: number): View;
     // on iOS a view is dragged from its center by default

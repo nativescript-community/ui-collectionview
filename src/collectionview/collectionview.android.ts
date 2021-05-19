@@ -774,6 +774,19 @@ export class CollectionView extends CollectionViewBase {
             this._listViewAdapter.notifyItemRangeChanged(first, last - first + 1);
         }
     }
+    public isItemAtIndexVisible(index: number): boolean {
+        const view = this.nativeViewProtected;
+        if (!view) {
+            return false;
+        }
+        const layoutManager = this.layoutManager as androidx.recyclerview.widget.LinearLayoutManager;
+        if (layoutManager['findFirstVisibleItemPosition']) {
+		    const first = layoutManager.findFirstVisibleItemPosition();
+		    const last = layoutManager.findLastVisibleItemPosition();
+		    return index >= first && index <= last;
+        }
+        return false;
+	}
 
     @profile
     public refresh() {
