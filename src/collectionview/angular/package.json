@@ -11,7 +11,7 @@
         "@nativescript-community/ui-collectionview": "ns-ui-collectionview"
       }
     },
-    "allowedNonPeerDependencies": [
+    "whitelistedNonPeerDependencies": [
       "."
     ]
   }
