@@ -611,7 +611,7 @@ export class CollectionView extends CollectionViewBase {
             needsLayout = needsLayout || oldBindingContext !== bindingContext;
 
             if (Trace.isEnabled()) {
-                CLog(CLogTypes.log, '_prepareCell', index, !!cell.view, !!view, cell.view !== view, needsLayout, JSON.stringify(oldBindingContext), JSON.stringify(bindingContext));
+                CLog(CLogTypes.log, '_prepareCell', index, !!cell.view, !!view, cell.view !== view, needsLayout);
             }
             const args = this.notifyForItemAtIndex(this, cell, view, CollectionViewBase.itemLoadingEvent, indexPath, bindingContext);
             view = args.view;
