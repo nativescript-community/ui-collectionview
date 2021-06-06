@@ -100,6 +100,7 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     public _effectiveColWidth: number;
 
     public loadMoreThreshold: number;
+    public scrollOffset: number;
 
     public reorderEnabled: boolean;
     public reorderLongPressEnabled: boolean;
@@ -137,7 +138,7 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
 
     public abstract refresh();
     public abstract refreshVisibleItems();
-    public abstract isItemAtIndexVisible(index:number);
+    public abstract isItemAtIndexVisible(index: number);
     public abstract scrollToIndex(index: number, animated: boolean);
     public onLayout(left: number, top: number, right: number, bottom: number) {
         super.onLayout(left, top, right, bottom);
