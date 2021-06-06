@@ -34,3 +34,4 @@ packages/**/*.metadata.json
 packages/**/*.ngsummary.json
 !packages/**/angular/package.json
 !packages/**/platforms
+packages/collectionview/*.d.ts
