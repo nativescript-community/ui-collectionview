@@ -781,12 +781,12 @@ export class CollectionView extends CollectionViewBase {
         }
         const layoutManager = this.layoutManager as androidx.recyclerview.widget.LinearLayoutManager;
         if (layoutManager['findFirstVisibleItemPosition']) {
-		    const first = layoutManager.findFirstVisibleItemPosition();
-		    const last = layoutManager.findLastVisibleItemPosition();
-		    return index >= first && index <= last;
+            const first = layoutManager.findFirstVisibleItemPosition();
+            const last = layoutManager.findLastVisibleItemPosition();
+            return index >= first && index <= last;
         }
         return false;
-	}
+    }
 
     @profile
     public refresh() {
@@ -821,6 +821,7 @@ export class CollectionView extends CollectionViewBase {
         this.notify(args);
     }
 
+    //@ts-ignore
     get scrollOffset() {
         const view = this.nativeViewProtected;
         if (!view) {

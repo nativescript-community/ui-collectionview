@@ -514,10 +514,10 @@ export class CollectionView extends CollectionViewBase {
         if (!view) {
             return false;
         }
-		const indexes: NSIndexPath[] = Array.from(view.indexPathsForVisibleItems);
+        const indexes: NSIndexPath[] = Array.from(view.indexPathsForVisibleItems);
 
-		return indexes.some((visIndex) => visIndex.row === itemIndex);
-	}
+        return indexes.some((visIndex) => visIndex.row === itemIndex);
+    }
 
     @profile
     public refresh() {
@@ -552,6 +552,7 @@ export class CollectionView extends CollectionViewBase {
         };
         this.notify(args);
     }
+    //@ts-ignore
     get scrollOffset() {
         const view = this.nativeViewProtected;
         return (this.isHorizontal() ? view?.contentOffset.x : view?.contentOffset.y) || 0;
