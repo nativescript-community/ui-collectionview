@@ -6,6 +6,8 @@ export * from './collectionview-common';
 export type Orientation = 'horizontal' | 'vertical';
 
 export class CollectionView extends CollectionViewBase {
+
+    public scrollOffset: number;
     public refresh();
     public refreshVisibleItems();
     public isItemAtIndexVisible(index: number): boolean;
