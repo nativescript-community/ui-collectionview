@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.32](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.31...v4.0.32) (2021-06-06)
+
+
+### Bug Fixes
+
+* missing scrollOffset definition ([0356ac8](https://github.com/Akylas/nativescript-collectionview/commit/0356ac8b66cec9b8c19414ec54b7f261ae99185d))
+
+
+
+
+
 ## [4.0.31](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.30...v4.0.31) (2021-05-19)
 
 
