@@ -674,7 +674,8 @@ export class CollectionView extends CollectionViewBase {
             let width = this._effectiveColWidth;
             let height = this._effectiveRowHeight;
             if (this.spanSize) {
-                const spanSize = this.spanSize(index);
+                const dataItem = this.getItemAtIndex(index);
+                const spanSize = this.spanSize(dataItem, index);
                 const horizontal = this.isHorizontal();
                 if (horizontal) {
                     height *= spanSize;
@@ -706,7 +707,9 @@ export class CollectionView extends CollectionViewBase {
             let height = this._effectiveRowHeight;
             const horizontal = this.isHorizontal();
             if (this.spanSize) {
-                const spanSize = this.spanSize(index.row);
+                const position = index.row;
+                const dataItem = this.getItemAtIndex(position);
+                const spanSize = this.spanSize(dataItem, position);
                 if (horizontal) {
                     height *= spanSize;
                 } else {

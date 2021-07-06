@@ -281,7 +281,7 @@ export class CollectionView extends CollectionViewBase {
         // colWidthProperty.coerce(this);
         // rowHeightProperty.coerce(this);
     }
-    _getSpanSize: (position: number) => number;
+    _getSpanSize: (item, index) => number;
     public getViewForItemAtIndex(index: number): View {
         let result: View;
         this._viewHolders.some(function (cellItemView, key) {
@@ -295,7 +295,7 @@ export class CollectionView extends CollectionViewBase {
         return result;
     }
     //@ts-ignore
-    set spanSize(inter: (position: number) => number) {
+    set spanSize(inter: (item, index) => number) {
         if (!(typeof inter === 'function')) {
             return;
         }
@@ -306,7 +306,10 @@ export class CollectionView extends CollectionViewBase {
                 inter
                     ? new com.nativescript.collectionview.SpanSizeLookup(
                         new com.nativescript.collectionview.SpanSizeLookup.Interface({
-                            getSpanSize: inter
+                            getSpanSize: (position)=>{
+                                const dataItem = this.getItemAtIndex(position);
+                                return inter(dataItem, position);
+                            }
                         })
                     )
                     : null
@@ -665,6 +668,19 @@ export class CollectionView extends CollectionViewBase {
             this.nativeViewProtected.addOnLayoutChangeListener(this.layoutChangeListener);
         }
     }
+    _updateSpanCount() {
+        if (this.isLayoutValid && this.layoutManager && this.layoutManager['setSpanCount']) {
+            this.layoutManager['setSpanCount'](this.computeSpanCount());
+        }
+    }
+    _onColWidthPropertyChanged(oldValue: CoreTypes.PercentLengthType, newValue: CoreTypes.PercentLengthType) {
+        this._updateSpanCount();
+        super._onColWidthPropertyChanged(oldValue, newValue);
+    }
+    _onRowHeightPropertyChanged(oldValue: CoreTypes.PercentLengthType, newValue: CoreTypes.PercentLengthType) {
+        this._updateSpanCount();
+        super._onRowHeightPropertyChanged(oldValue, newValue);
+    }
     public onLayout(left: number, top: number, right: number, bottom: number) {
         super.onLayout(left, top, right, bottom);
         const p = CollectionViewBase.plugins[this.layoutStyle];
@@ -675,9 +691,7 @@ export class CollectionView extends CollectionViewBase {
             const p = CollectionViewBase.plugins[k];
             p.onLayout && p.onLayout(this, left, top, right, bottom);
         });
-        if (this.layoutManager && this.layoutManager['setSpanCount']) {
-            this.layoutManager['setSpanCount'](this.computeSpanCount());
-        }
+        this._updateSpanCount();
         // there is no need to call refresh if it was triggered before with same size.
         // this refresh is just to handle size change
         const layoutKey = this._innerWidth + '_' + this._innerHeight;
@@ -794,7 +808,7 @@ export class CollectionView extends CollectionViewBase {
             return;
         }
         const view = this.nativeViewProtected;
-        if (!this.isLoaded) {
+        if (!this.isLoaded || !this.isLayoutValid) {
             this._isDataDirty = true;
             return;
         }
@@ -1020,7 +1034,7 @@ export class CollectionView extends CollectionViewBase {
         let width = this._effectiveColWidth;
         let height = this._effectiveRowHeight;
         if (this._getSpanSize) {
-            const spanSize = this._getSpanSize(position);
+            const spanSize = this._getSpanSize(bindingContext, position);
             const horizontal = this.isHorizontal();
             if (horizontal) {
                 height *= spanSize;

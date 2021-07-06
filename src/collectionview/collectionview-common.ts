@@ -384,7 +384,7 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
         }
         this.refresh();
     };
-    spanSize: (position: number) => number;
+    spanSize: (item, index: number) => number;
     onSpanSizeChangedInternal = (oldValue, newValue) => {
         this.spanSize = newValue;
         this.refresh();
