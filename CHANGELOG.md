@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.33](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.32...v4.0.33) (2021-07-06)
+
+
+### Bug Fixes
+
+* spanSize function now has (item, index) as parameters to allow complex layouts ([795bada](https://github.com/Akylas/nativescript-collectionview/commit/795badad79409e919f33c0c4317da8324cb6cf6f))
+
+
+
+
+
 ## [4.0.32](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.31...v4.0.32) (2021-06-06)
 
 
