@@ -60,6 +60,7 @@ There is no additional configuration needed!
 | itemTemplate  | `string`  | Gets or sets the item template of the CollectionView.    |
 | rowHeight     | `PercentLength`  | Gets or sets the height for every row in the CollectionView.    |
 | colWidth      | `PercentLength`  | Gets or sets the width for every column in the CollectionView.    |
+| spanSize      | `function` | Triggered when an item is loaded. Returns the number of columns that the element should occupy taking into account `colWidth`. Parameters: (item, index: number).    |
 
 ### Methods
 
