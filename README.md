@@ -60,14 +60,17 @@ There is no additional configuration needed!
 | itemTemplate  | `string`  | Gets or sets the item template of the CollectionView.    |
 | rowHeight     | `PercentLength`  | Gets or sets the height for every row in the CollectionView.    |
 | colWidth      | `PercentLength`  | Gets or sets the width for every column in the CollectionView.    |
-| spanSize      | `function` | Triggered when an item is loaded. Returns the number of columns that the element should occupy taking into account `colWidth`. Parameters: (item, index: number).    |
+| spanSize      | `function` | Triggered when an item is loaded. Returns the number of columns that the element should occupy taking into account `colWidth` when the device is vertical and `rowHeight` when horizontal. Parameters: (item, index: number).    |
+| scrollOffset  | `number` | Gets the current scroll. |
 
 ### Methods
 
 | Name                                                   | Return | Description                                                                                                            |
 | ------------------------------------------------------ | ------ | ---------------------------------------------------------------------------------------------------------------------- |
 | refresh()                                              | `void` | Forces the CollectionView to reload all its items.                                                                     |
+| refreshVisibleItem()                                   | `void` | Forces CollectionView to reload visible items. |
 | scrollToIndex(index: number, animated: boolean = true) | `void` | Scrolls the CollectionView to the item with the given index. This can be either animated or not. Defaults to animated. |
+| isItemAtIndexVisible(index: number)                    | `boolean` | Returns a boolean indicating whether the item is visible. |
 
 ## Usage
 You need to add `xmlns:gv="@nativescript-community/ui-collectionview"` to your page tag, and then simply use `<gv:CollectionView/>` in order to add the widget to your page. Use `<gv:Gridview.itemTemplate/>` to specify the template for each cell:
