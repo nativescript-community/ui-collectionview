@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.34](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.33...v4.0.34) (2021-07-12)
+
+
+### Features
+
+* scroll and scrollEnd now reports `scrollOffsetPercentage` ([1dd529a](https://github.com/Akylas/nativescript-collectionview/commit/1dd529a95460db7c724eea159039debf655a5165))
+
+
+
+
+
 ## [4.0.33](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.32...v4.0.33) (2021-07-06)
 
 
