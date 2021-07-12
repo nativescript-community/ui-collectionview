@@ -885,17 +885,23 @@ export class CollectionView extends CollectionViewBase {
         return CGSizeZero;
     }
     scrollViewDidScroll(scrollView: UIScrollView): void {
+        const offset = this.isHorizontal() ? scrollView.contentOffset.x : scrollView.contentOffset.y;
+        const size = this.isHorizontal() ? scrollView.contentSize.width : scrollView.contentSize.height;
         this.notify({
             object: this,
             eventName: CollectionViewBase.scrollEvent,
-            scrollOffset: this.isHorizontal() ? scrollView.contentOffset.x : scrollView.contentOffset.y
+            scrollOffset: offset,
+            scrollOffsetPercentage: offset / size
         });
     }
     scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        const offset = this.isHorizontal() ? scrollView.contentOffset.x : scrollView.contentOffset.y;
+        const size = this.isHorizontal() ? scrollView.contentSize.width : scrollView.contentSize.height;
         this.notify({
             object: this,
             eventName: CollectionViewBase.scrollEndEvent,
-            scrollOffset: this.isHorizontal() ? scrollView.contentOffset.x : scrollView.contentOffset.y
+            scrollOffset: offset,
+            scrollOffsetPercentage: offset / size
         });
     }
     scrollViewWillEndDraggingWithVelocityTargetContentOffset?(scrollView: UIScrollView, velocity: CGPoint, targetContentOffset: interop.Pointer | interop.Reference<CGPoint>): void {

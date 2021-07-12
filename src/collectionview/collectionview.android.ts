@@ -306,7 +306,7 @@ export class CollectionView extends CollectionViewBase {
                 inter
                     ? new com.nativescript.collectionview.SpanSizeLookup(
                         new com.nativescript.collectionview.SpanSizeLookup.Interface({
-                            getSpanSize: (position)=>{
+                            getSpanSize: (position) => {
                                 const dataItem = this.getItemAtIndex(position);
                                 return inter(dataItem, position);
                             }
@@ -356,10 +356,14 @@ export class CollectionView extends CollectionViewBase {
         }
 
         if (this.hasListeners(CollectionViewBase.scrollEvent)) {
+            const offset = this.isHorizontal() ? view.computeHorizontalScrollOffset() : view.computeVerticalScrollOffset();
+            const range = view.computeHorizontalScrollRange();
+            const extent = view.computeHorizontalScrollExtent();
             this.notify({
                 object: this,
                 eventName: CollectionViewBase.scrollEvent,
-                scrollOffset: (this.isHorizontal() ? view.computeHorizontalScrollOffset() : view.computeVerticalScrollOffset()) / layout.getDisplayDensity()
+                scrollOffset: offset / layout.getDisplayDensity(),
+                scrollOffsetPercentage: offset / (range - extent)
             });
         }
 
@@ -384,10 +388,14 @@ export class CollectionView extends CollectionViewBase {
             this.scrolling = false;
 
             if (this.hasListeners(CollectionViewBase.scrollEndEvent)) {
+                const offset = this.isHorizontal() ? view.computeHorizontalScrollOffset() : view.computeVerticalScrollOffset();
+                const range = view.computeHorizontalScrollRange();
+                const extent = view.computeHorizontalScrollExtent();
                 this.notify({
                     object: this,
                     eventName: CollectionViewBase.scrollEndEvent,
-                    scrollOffset: (this.isHorizontal() ? view.computeHorizontalScrollOffset() : view.computeVerticalScrollOffset()) / layout.getDisplayDensity()
+                    scrollOffset: offset / layout.getDisplayDensity(),
+                    scrollOffsetPercentage: offset / (range - extent)
                 });
             }
         } else if (!this.scrolling && newState === 1) {
