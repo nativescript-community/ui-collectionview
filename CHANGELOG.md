@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.35](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.34...v4.0.35) (2021-07-13)
+
+
+### Bug Fixes
+
+* **collectionview:** android fix for collectionview wrongly updating items ([cf34d0b](https://github.com/Akylas/nativescript-collectionview/commit/cf34d0b362db0ec9f0f1a9a3dea3cdf4f3d6cf68))
+
+
+
+
+
 ## [4.0.34](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.33...v4.0.34) (2021-07-12)
 
 
