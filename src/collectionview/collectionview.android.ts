@@ -677,7 +677,7 @@ export class CollectionView extends CollectionViewBase {
         }
     }
     _updateSpanCount() {
-        if (this.isLayoutValid && this.layoutManager && this.layoutManager['setSpanCount']) {
+        if (this._layedOut && this.layoutManager && this.layoutManager['setSpanCount']) {
             this.layoutManager['setSpanCount'](this.computeSpanCount());
         }
     }
@@ -690,6 +690,7 @@ export class CollectionView extends CollectionViewBase {
         super._onRowHeightPropertyChanged(oldValue, newValue);
     }
     public onLayout(left: number, top: number, right: number, bottom: number) {
+        this._layedOut = true;
         super.onLayout(left, top, right, bottom);
         const p = CollectionViewBase.plugins[this.layoutStyle];
         if (p && p.onLayout) {
@@ -810,13 +811,14 @@ export class CollectionView extends CollectionViewBase {
         return false;
     }
 
+    _layedOut = false;
     @profile
     public refresh() {
         if (!this.nativeViewProtected) {
             return;
         }
         const view = this.nativeViewProtected;
-        if (!this.isLoaded || !this.isLayoutValid) {
+        if (!this.isLoaded || !this._layedOut) {
             this._isDataDirty = true;
             return;
         }
@@ -915,7 +917,7 @@ export class CollectionView extends CollectionViewBase {
     }
 
     public getItemId(i: number) {
-        let id = i;
+        let id = -1;
         if (this._itemIdGenerator && this.items) {
             const item = this.getItemAtIndex(i);
             id = this._itemIdGenerator(item, i, this.items);
