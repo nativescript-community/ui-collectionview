@@ -20,12 +20,14 @@ declare module com {
                 public getItemCount(): number;
                 public getItemId(param0: number): number;
                 public onBindViewHolder(param0: CollectionViewCellHolder, param1: number): void;
+                public onViewRecycled(param0: CollectionViewCellHolder): void;
                 constructor(implementation?: {
                     onCreateViewHolder(param0: globalAndroid.view.ViewGroup, param1: number): CollectionViewCellHolder;
                     getItemViewType(param0: number): number;
                     getItemCount(): number;
                     getItemId(param0: number): number;
                     onBindViewHolder(param0: CollectionViewCellHolder, param1: number): void;
+                    onViewRecycled(param0: CollectionViewCellHolder): void;
                 });
             }
             export class Adapter extends androidx.recyclerview.widget.RecyclerView.Adapter<CollectionViewCellHolder> {

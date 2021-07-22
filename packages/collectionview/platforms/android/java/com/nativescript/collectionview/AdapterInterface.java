@@ -9,7 +9,10 @@ public interface AdapterInterface {
 
     void onBindViewHolder(@NonNull CollectionViewCellHolder holder, int position);
 
+    void onViewRecycled(@NonNull CollectionViewCellHolder holder);
+
     int getItemViewType(int position);
+
     long getItemId(int position);
 
     int getItemCount();

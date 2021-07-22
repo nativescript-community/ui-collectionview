@@ -24,6 +24,14 @@ public class Adapter extends RecyclerView.Adapter<CollectionViewCellHolder> {
         return null;
     }
 
+    @NonNull
+    @Override
+    public void onViewRecycled(@NonNull CollectionViewCellHolder holder) {
+        if (this.adapterInterface != null) {
+            this.adapterInterface.onViewRecycled(holder);
+        }
+    }
+
     @Override
     public void onBindViewHolder(@NonNull CollectionViewCellHolder holder, int position) {
         if (this.adapterInterface != null) {
@@ -38,6 +46,7 @@ public class Adapter extends RecyclerView.Adapter<CollectionViewCellHolder> {
         }
         return 0;
     }
+
     @Override
     public int getItemViewType(int position) {
         if (this.adapterInterface != null) {

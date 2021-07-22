@@ -790,12 +790,11 @@ export class CollectionView extends CollectionViewBase {
         if (!view) {
             return;
         }
-        const layoutManager = this.layoutManager as androidx.recyclerview.widget.LinearLayoutManager;
-        if (layoutManager['findFirstVisibleItemPosition']) {
-            const first = layoutManager.findFirstVisibleItemPosition();
-            const last = layoutManager.findLastVisibleItemPosition();
-            this._listViewAdapter.notifyItemRangeChanged(first, last - first + 1);
-        }
+        const ids = this._viewHolders
+            .map((s) => s['position'])
+            .filter((s) => s !== null)
+            .sort((a, b) => a - b);
+        this._listViewAdapter.notifyItemRangeChanged(ids[0], ids[ids.length - 1] - ids[0] + 1);
     }
     public isItemAtIndexVisible(index: number): boolean {
         const view = this.nativeViewProtected;
@@ -898,7 +897,8 @@ export class CollectionView extends CollectionViewBase {
             getItemViewType: this.getItemViewType.bind(this),
             getItemCount: this.getItemCount.bind(this),
             onCreateViewHolder: this.onCreateViewHolder.bind(this),
-            onBindViewHolder: this.onBindViewHolder.bind(this)
+            onBindViewHolder: this.onBindViewHolder.bind(this),
+            onViewRecycled: this.onViewRecycled.bind(this)
         });
         // const composedAdapter = new com.h6ah4i.android.widget.advrecyclerview.composedadapter.ComposedAdapter();
         // composedAdapter.addAdapter(new CollectionViewAdapter(new WeakRef(this)));
@@ -1023,6 +1023,7 @@ export class CollectionView extends CollectionViewBase {
         let view = holder.view;
         const bindingContext = this._prepareItem(view, position);
         const isNonSync = holder['defaultItemView'] === true;
+        holder['position'] = position;
 
         view = isNonSync ? (view as ContentView).content : view;
 
@@ -1069,6 +1070,10 @@ export class CollectionView extends CollectionViewBase {
         if (Trace.isEnabled()) {
             CLog(CLogTypes.log, 'onBindViewHolder done ', position);
         }
+    }
+
+    onViewRecycled(holder) {
+        holder['position'] = null;
     }
 }
 
