@@ -378,6 +378,22 @@ export class CollectionView extends CollectionViewBase {
                         object: this
                     });
                 }
+            } else if (layoutManager['findLastCompletelyVisibleItemPositions'] && layoutManager['getSpanCount']) {
+                let positions = Array.create("int", layoutManager['getSpanCount']());
+                positions = layoutManager['findLastCompletelyVisibleItemPositions'](positions);
+                let lastVisibleItemPos = 0;
+                for(let i = 0; i < positions.length; i++) {
+                    if(positions[i] > lastVisibleItemPos) {
+                        lastVisibleItemPos = positions[i];
+                    }
+                }
+                const loadMoreItemIndex = this.items.length - this.loadMoreThreshold;
+                if (lastVisibleItemPos >= loadMoreItemIndex) {
+                    this.notify({
+                        eventName: CollectionViewBase.loadMoreItemsEvent,
+                        object: this
+                    });
+                }
             }
         }
     }
