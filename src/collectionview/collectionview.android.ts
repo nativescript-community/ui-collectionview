@@ -379,11 +379,11 @@ export class CollectionView extends CollectionViewBase {
                     });
                 }
             } else if (layoutManager['findLastCompletelyVisibleItemPositions'] && layoutManager['getSpanCount']) {
-                let positions = Array.create("int", layoutManager['getSpanCount']());
+                let positions = Array.create('int', layoutManager['getSpanCount']());
                 positions = layoutManager['findLastCompletelyVisibleItemPositions'](positions);
                 let lastVisibleItemPos = 0;
-                for(let i = 0; i < positions.length; i++) {
-                    if(positions[i] > lastVisibleItemPos) {
+                for (let i = 0; i < positions.length; i++) {
+                    if (positions[i] > lastVisibleItemPos) {
                         lastVisibleItemPos = positions[i];
                     }
                 }
@@ -903,7 +903,9 @@ export class CollectionView extends CollectionViewBase {
         };
         // tslint:disable-next-line:prefer-object-spread
         const newValue = Object.assign(padding, newPadding);
+        nativeView.setClipToPadding(false);
         nativeView.setPadding(newValue.left, newValue.top, newValue.right, newValue.bottom);
+        this.updateInnerSize();
     }
 
     private createComposedAdapter(recyclerView: CollectionViewRecyclerView) {

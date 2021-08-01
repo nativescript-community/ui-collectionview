@@ -774,17 +774,15 @@ export class CollectionView extends CollectionViewBase {
 
     private _setPadding(newPadding: { top?: number; right?: number; bottom?: number; left?: number }) {
         const layout = this._layout;
-        if (layout.hasOwnProperty('sectionInset')) {
-            const padding = {
-                top: layout['sectionInset'].top,
-                right: layout['sectionInset'].right,
-                bottom: layout['sectionInset'].bottom,
-                left: layout['sectionInset'].left
-            };
-            // tslint:disable-next-line:prefer-object-spread
-            const newValue = Object.assign(padding, newPadding);
-            layout['sectionInset'] = UIEdgeInsetsFromString(`{${newValue.top},${newValue.left},${newValue.bottom},${newValue.right}}`);
-        }
+        const padding = {
+            top: layout['sectionInset'].top,
+            right: layout['sectionInset'].right,
+            bottom: layout['sectionInset'].bottom,
+            left: layout['sectionInset'].left
+        };
+        // tslint:disable-next-line:prefer-object-spread
+        const newValue = Object.assign(padding, newPadding);
+        layout['sectionInset'] = newValue;
     }
 
     numberOfSectionsInCollectionView(collectionView: UICollectionView) {

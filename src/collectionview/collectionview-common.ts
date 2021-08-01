@@ -13,6 +13,7 @@ import {
     ProxyViewContainer,
     Template,
     Trace,
+    Utils,
     View,
     ViewBase,
     addWeakEventListener,
@@ -66,6 +67,28 @@ export namespace knownMultiTemplates {
 
 export interface Plugin {
     onLayout?: Function;
+}
+
+function toDevicePixels(length: CoreTypes.PercentLengthType, auto: number = Number.NaN, parentAvailableWidth: number = Number.NaN): number {
+    if (length === 'auto') {
+        // tslint:disable-line
+        return auto;
+    }
+    if (typeof length === 'number') {
+        return Math.floor(Utils.layout.toDevicePixels(length));
+    }
+    if (!length) {
+        return auto;
+    }
+    switch (length.unit) {
+        case 'px':
+            return Math.floor(length.value);
+        case '%':
+            return Math.floor(parentAvailableWidth * length.value);
+        case 'dip':
+        default:
+            return Math.floor(Utils.layout.toDevicePixels(length.value));
+    }
 }
 
 @CSSType('CollectionView')
@@ -140,25 +163,37 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     public abstract refreshVisibleItems();
     public abstract isItemAtIndexVisible(index: number);
     public abstract scrollToIndex(index: number, animated: boolean);
-    public onLayout(left: number, top: number, right: number, bottom: number) {
-        super.onLayout(left, top, right, bottom);
-        // on ios and during device rotation the getMeasuredWidth and getMeasuredHeight are wrong
-        // so we use left, top , right, bottom
-        this._innerWidth = right - left - this.effectivePaddingLeft - this.effectivePaddingRight;
+
+    protected updateInnerSize() {
+        const width = this.getMeasuredWidth();
+        const height = this.getMeasuredHeight();
+        this._innerWidth = width - this.effectivePaddingLeft - this.effectivePaddingRight;
         if (this.colWidth) {
-            const newValue = PercentLength.toDevicePixels(this.colWidth, autoEffectiveColWidth, this._innerWidth); // We cannot use 0 for auto as it throws for android.
+            let newValue = toDevicePixels(this.colWidth, autoEffectiveColWidth, this._innerWidth); // We cannot use 0 for auto as it throws for android.
+            if (global.isAndroid) {
+                newValue = Math.floor(newValue);
+            }
             if (newValue !== this._effectiveColWidth) {
                 this._effectiveColWidth = newValue;
             }
         }
 
-        this._innerHeight = bottom - top - this.effectivePaddingTop - this.effectivePaddingBottom;
+        this._innerHeight = height - this.effectivePaddingTop - this.effectivePaddingBottom;
         if (this.rowHeight) {
-            const newValue = PercentLength.toDevicePixels(this.rowHeight, autoEffectiveRowHeight, this._innerHeight);
+            let newValue = toDevicePixels(this.rowHeight, autoEffectiveRowHeight, this._innerHeight);
+            if (global.isAndroid) {
+                newValue = Math.floor(newValue);
+            }
             if (newValue !== this._effectiveRowHeight) {
                 this._effectiveRowHeight = newValue;
             }
         }
+    }
+    public onLayout(left: number, top: number, right: number, bottom: number) {
+        super.onLayout(left, top, right, bottom);
+        // on ios and during device rotation the getMeasuredWidth and getMeasuredHeight are wrong
+        // so we use left, top , right, bottom
+        this.updateInnerSize();
     }
     // _onSizeChanged() {
     //     super._onSizeChanged();
@@ -245,6 +280,40 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
             this._itemViewLoader = value;
             this.onItemViewLoaderChanged();
         }
+    }
+    get padding(): string | CoreTypes.LengthType {
+        return this.style.padding;
+    }
+    set padding(value: string | CoreTypes.LengthType) {
+        this.style.padding = value;
+    }
+
+    get paddingTop(): CoreTypes.LengthType {
+        return this.style.paddingTop;
+    }
+    set paddingTop(value: CoreTypes.LengthType) {
+        this.style.paddingTop = value;
+    }
+
+    get paddingRight(): CoreTypes.LengthType {
+        return this.style.paddingRight;
+    }
+    set paddingRight(value: CoreTypes.LengthType) {
+        this.style.paddingRight = value;
+    }
+
+    get paddingBottom(): CoreTypes.LengthType {
+        return this.style.paddingBottom;
+    }
+    set paddingBottom(value: CoreTypes.LengthType) {
+        this.style.paddingBottom = value;
+    }
+
+    get paddingLeft(): CoreTypes.LengthType {
+        return this.style.paddingLeft;
+    }
+    set paddingLeft(value: CoreTypes.LengthType) {
+        this.style.paddingLeft = value;
     }
     resolveTemplateView(template) {
         return Builder.parse(template, this);

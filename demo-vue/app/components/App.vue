@@ -6,6 +6,7 @@
 
         <GridLayout>
             <CollectionView
+                padding="20 5 100 10"
                 automationText="collectionView"
                 iosOverflowSafeArea="true"
                 :items="itemList"
