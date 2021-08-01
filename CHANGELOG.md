@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.38](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.37...v4.0.38) (2021-08-01)
+
+
+### Bug Fixes
+
+* padding support for iOS/Android ([5525219](https://github.com/Akylas/nativescript-collectionview/commit/5525219d51c9bbf947b5708a2b6ab7287bd2b1a9))
+
+
+
+
+
 ## [4.0.37](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.36...v4.0.37) (2021-07-26)
 
 **Note:** Version bump only for package @nativescript-community/ui-collectionview

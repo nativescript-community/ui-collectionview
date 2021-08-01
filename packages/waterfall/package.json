@@ -1,6 +1,6 @@
 {
     "name": "@nativescript-community/ui-collectionview-waterfall",
-    "version": "4.0.37",
+    "version": "4.0.38",
     "main": "./waterfall",
     "sideEffects": false,
     "typings": "./waterfall.d.ts",
@@ -36,6 +36,6 @@
     },
     "homepage": "https://github.com/nativescript-community/ui-collectionview#readme",
     "dependencies": {
-        "@nativescript-community/ui-collectionview": "^4.0.37"
+        "@nativescript-community/ui-collectionview": "^4.0.38"
     }
 }
