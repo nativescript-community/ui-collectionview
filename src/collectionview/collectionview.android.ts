@@ -137,6 +137,87 @@ declare module '@nativescript/core/ui/core/view' {
     }
 }
 
+// https://bladecoder.medium.com/fixing-recyclerview-nested-scrolling-in-opposite-direction-f587be5c1a04
+
+@NativeClass
+@Interfaces([androidx.recyclerview.widget.RecyclerView.OnItemTouchListener, com.nativescript.collectionview.OnScrollListener.Listener])
+class SingleScrollDirectionEnforcer extends java.lang.Object {
+    public static _directionEnforcer: SingleScrollDirectionEnforcer = null;
+    private _scrollListener: com.nativescript.collectionview.OnScrollListener = null;
+    private _scrollState = androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE;
+    private _scrollPointerId = -1;
+    private _initialTouchX = 0;
+    private _initialTouchY = 0;
+    private _dx = 0;
+    private _dy = 0;
+
+    public constructor() {
+        super();
+        return global.__native(this);
+    }
+
+    public onInterceptTouchEvent(rv: androidx.recyclerview.widget.RecyclerView, e: android.view.MotionEvent) {
+        switch (e.getActionMasked()) {
+            case android.view.MotionEvent.ACTION_DOWN:
+                this._scrollPointerId = e.getPointerId(0);
+                this._initialTouchX = Math.floor(e.getX() + 0.5);
+                this._initialTouchY = Math.floor(e.getY() + 0.5);
+                break;
+            case android.view.MotionEvent.ACTION_POINTER_DOWN:
+                const actionIndex = e.getActionIndex();
+                this._scrollPointerId = e.getPointerId(actionIndex);
+                this._initialTouchX = Math.floor(e.getX(actionIndex) + 0.5);
+                this._initialTouchY = Math.floor(e.getY(actionIndex) + 0.5);
+                break;
+            case android.view.MotionEvent.ACTION_MOVE:
+                const index = e.findPointerIndex(this._scrollPointerId);
+                if (index >= 0 && this._scrollState != androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_DRAGGING) {
+                    const x = Math.floor(e.getX(index) + 0.5);
+                    const y = Math.floor(e.getY(index) + 0.5);
+                    this._dx = x - this._initialTouchX;
+                    this._dy = y - this._initialTouchY;
+                    break;
+                }
+        }
+        return false;
+    }
+    public onTouchEvent(param0: androidx.recyclerview.widget.RecyclerView, param1: globalAndroid.view.MotionEvent): void {}
+    public onRequestDisallowInterceptTouchEvent(param0: boolean): void {}
+    public onScrolled(param0: androidx.recyclerview.widget.RecyclerView, param1: number, param2: number): void {}
+    public onScrollStateChanged(rv: androidx.recyclerview.widget.RecyclerView, newState: number): boolean {
+        const oldState = this._scrollState;
+        this._scrollState = newState;
+        if (oldState == androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE && newState == androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_DRAGGING) {
+            const lm = rv.getLayoutManager();
+            if (lm) {
+                const canScrollHorizontally = lm.canScrollHorizontally();
+                const canScrollVertically = lm.canScrollVertically();
+                if (canScrollHorizontally !== canScrollVertically) {
+                    if ((canScrollHorizontally && Math.abs(this._dy) > Math.abs(this._dx)) || (canScrollVertically && Math.abs(this._dx) > Math.abs(this._dy))) {
+                        rv.stopScroll();
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+    public installSingleScrollDirectionEnforcerInView(nativeViewProtected: CollectionViewRecyclerView) {
+        if (!this._scrollListener) {
+            this._scrollListener = new com.nativescript.collectionview.OnScrollListener(this);
+            nativeViewProtected.addOnItemTouchListener(this);
+            nativeViewProtected.addOnScrollListener(this._scrollListener);
+        }
+    }
+    public uninstallSingleScrollDirectionEnforcerInView(nativeViewProtected: CollectionViewRecyclerView) {
+        if (this._scrollListener) {
+            nativeViewProtected.removeOnItemTouchListener(this);
+            nativeViewProtected.removeOnScrollListener(this._scrollListener);
+            this._scrollListener = null;
+        }
+    }
+}
+
 // Snapshot friendly GridViewAdapter
 interface CellViewHolder extends com.nativescript.collectionview.CollectionViewCellHolder {
     // tslint:disable-next-line:no-misused-new
@@ -199,6 +280,8 @@ export class CollectionView extends CollectionViewBase {
     private templateTypeNumberString = new Map<string, number>();
     private templateStringTypeNumber = new Map<number, string>();
     private _currentNativeItemType = 0;
+
+    private enforcer = new SingleScrollDirectionEnforcer();
 
     // used to store viewHolder and make sure they are not garbaged
     private _viewHolders = new Array<CollectionViewCellHolder>();
@@ -276,6 +359,7 @@ export class CollectionView extends CollectionViewBase {
         animator.setSupportsChangeAnimations(false);
 
         nativeView.setItemAnimator(animator);
+        this.enforcer.installSingleScrollDirectionEnforcerInView(this.nativeViewProtected);
         this.refresh();
 
         // colWidthProperty.coerce(this);
@@ -305,13 +389,13 @@ export class CollectionView extends CollectionViewBase {
             layoutManager['setSpanSizeLookup'](
                 inter
                     ? new com.nativescript.collectionview.SpanSizeLookup(
-                        new com.nativescript.collectionview.SpanSizeLookup.Interface({
-                            getSpanSize: (position) => {
-                                const dataItem = this.getItemAtIndex(position);
-                                return inter(dataItem, position);
-                            }
-                        })
-                    )
+                          new com.nativescript.collectionview.SpanSizeLookup.Interface({
+                              getSpanSize: (position) => {
+                                  const dataItem = this.getItemAtIndex(position);
+                                  return inter(dataItem, position);
+                              }
+                          })
+                      )
                     : null
             );
         }
@@ -459,6 +543,8 @@ export class CollectionView extends CollectionViewBase {
         this._hlayoutParams = null;
         this._vlayoutParams = null;
         this.clearTemplateTypes();
+
+        this.enforcer.uninstallSingleScrollDirectionEnforcerInView(this.nativeViewProtected);
 
         super.disposeNativeView();
     }
