@@ -365,6 +365,9 @@ export class CollectionView extends CollectionViewBase {
         });
 
         const layoutView = this.nativeViewProtected.collectionViewLayout;
+        if (!layoutView) {
+            return;
+        }
         if ((layoutView instanceof UICollectionViewFlowLayout && this._effectiveColWidth) || this._effectiveRowHeight) {
             // @ts-ignore
             layoutView.estimatedItemSize = layoutView.itemSize = CGSizeMake(layout.toDeviceIndependentPixels(this._effectiveColWidth), layout.toDeviceIndependentPixels(this._effectiveRowHeight));
