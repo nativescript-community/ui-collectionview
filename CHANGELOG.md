@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.39](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.38...v4.0.39) (2021-08-02)
+
+
+### Bug Fixes
+
+* **collectionview:** crash fix on iOS 14 ([72e6818](https://github.com/Akylas/nativescript-collectionview/commit/72e681824dea29bcaa7bc89b0e331d395198d06c))
+
+
+
+
+
 ## [4.0.38](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.37...v4.0.38) (2021-08-01)
 
 
