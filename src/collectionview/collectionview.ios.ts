@@ -887,7 +887,7 @@ export class CollectionView extends CollectionViewBase {
     }
     scrollViewDidScroll(scrollView: UIScrollView): void {
         const offset = this.isHorizontal() ? scrollView.contentOffset.x : scrollView.contentOffset.y;
-        const size = this.isHorizontal() ? scrollView.contentSize.width : scrollView.contentSize.height;
+        const size = this.isHorizontal() ? scrollView.contentSize.width - scrollView.bounds.size.width : scrollView.contentSize.height - scrollView.bounds.size.height;
         this.notify({
             object: this,
             eventName: CollectionViewBase.scrollEvent,
@@ -897,7 +897,7 @@ export class CollectionView extends CollectionViewBase {
     }
     scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         const offset = this.isHorizontal() ? scrollView.contentOffset.x : scrollView.contentOffset.y;
-        const size = this.isHorizontal() ? scrollView.contentSize.width : scrollView.contentSize.height;
+        const size = this.isHorizontal() ? scrollView.contentSize.width - scrollView.bounds.size.width : scrollView.contentSize.height - scrollView.bounds.size.height;
         this.notify({
             object: this,
             eventName: CollectionViewBase.scrollEndEvent,
