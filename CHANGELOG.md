@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.40](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.39...v4.0.40) (2021-08-07)
+
+
+### Bug Fixes
+
+* **ios:** scrollOffsetPercentage for end of content size ([d9c3abe](https://github.com/Akylas/nativescript-collectionview/commit/d9c3abe6d886e525fc50b55b1301fe81d91df0b3))
+
+
+
+
+
 ## [4.0.39](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.38...v4.0.39) (2021-08-02)
 
 
