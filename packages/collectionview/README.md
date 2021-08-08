@@ -7,11 +7,13 @@
 A NativeScript CollectionView widget. The CollectionView displays data in separate cells, each cell representing one data item. For iOS wraps up [UICollectionView](https://developer.apple.com/library/ios/documentation/UIKit/Reference/UICollectionView_class/) and for Android wraps up [RecyclerView](https://developer.android.com/reference/android/support/v7/widget/RecyclerView.html). This can be used as an Open Source alternative to [RadListView](https://docs.nativescript.org/ui/components/radlistview/overview).
 
 | <img src="images/demo-ios.gif" height="500" /> | <img src="images/demo-android.gif" height="500" /> |
-| --- | ----------- |
-| iOS Demo | Android Demo |
+| ---------------------------------------------- | -------------------------------------------------- |
+| iOS Demo                                       | Android Demo                                       |
 
 ---
+
 ## Table of Contents
+
 1. [Installation](#installation)
 2. [Configuration](#configuration)
 3. [API](#api)
@@ -23,6 +25,7 @@ A NativeScript CollectionView widget. The CollectionView displays data in separa
 9. [Demos](#demos)
 
 ## Installation
+
 Run the following command from the root of your project:
 
 `ns plugin add @nativescript-community/ui-collectionview`
@@ -30,36 +33,45 @@ Run the following command from the root of your project:
 This command automatically installs the necessary files, as well as stores @nativescript-community/ui-collectionview as a dependency in your project's package.json file.
 
 ## Configuration
+
 There is no additional configuration needed!
 
 ## API
 
 ### Events
 
-| Property            | Description                                                                  |
-| ------------------- | ---------------------------------------------------------------------------- |
-| itemLoading         | Triggered when generating an item in the CollectionView.                     |
-| itemTap             | Triggered when the user taps on an item in the CollectionView.               |
-| loadMoreItems       | Triggered when the generated items reached the end of the items property.    |
-| scroll              | Triggered on collectionview scroll.                                          |
-| scrollEnd           | Triggered on collectionview scroll end.    |
-| itemReorderStarting       | Triggered when a reorder is starting. Changing the `returnValue` of the event data allows you to cancel it    |
-| itemReorderStarted       | Triggered when a reorder started.    |
-| itemReordered       | Triggered when a reorder finished.    |
-| dataPopulated       | Triggered when a refresh has been called.    |
-
-
+| Property            | Description                                                                                                |
+| ------------------- | ---------------------------------------------------------------------------------------------------------- |
+| itemLoading         | Triggered when generating an item in the CollectionView.                                                   |
+| itemTap             | Triggered when the user taps on an item in the CollectionView.                                             |
+| loadMoreItems       | Triggered when the generated items reached the end of the items property.                                  |
+| scroll              | Triggered on collectionview scroll.                                                                        |
+| scrollEnd           | Triggered on collectionview scroll end.                                                                    |
+| itemReorderStarting | Triggered when a reorder is starting. Changing the `returnValue` of the event data allows you to cancel it |
+| itemReorderStarted  | Triggered when a reorder started.                                                                          |
+| itemReordered       | Triggered when a reorder finished.                                                                         |
+| dataPopulated       | Triggered when a refresh has been called.                                                                  |
 
 ### Properties
 
-| Property      | Type                                             | Description                                             |
-| ------------- | ------------------------------------------------ | ------------------------------------------------------- |
-| ios           | [UICollectionView](https://tinyurl.com/y4ugbfgc) | Gets the native iOS view that represents the user interface for this component. Valid only when running on iOS.    |
-| android       | [android.support.v7.widget.RecyclerView](https://tinyurl.com/lvqebpq) | Gets the native android widget that represents the user interface for this component. Valid only when running on Android OS.    |
-| items         | `array` or `ItemsSource`  | Gets or sets the items collection of the CollectionView. The items property can be set to an array or an object defining length and getItem(index) method.    |
-| itemTemplate  | `string`  | Gets or sets the item template of the CollectionView.    |
-| rowHeight     | `PercentLength`  | Gets or sets the height for every row in the CollectionView.    |
-| colWidth      | `PercentLength`  | Gets or sets the width for every column in the CollectionView.    |
+| Property                  | Type                                                                  | Description                                                                                                                                                |
+| ------------------------- | --------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------ |
+| ios                       | [UICollectionView](https://tinyurl.com/y4ugbfgc)                      | Gets the native iOS view that represents the user interface for this component. Valid only when running on iOS.                                            |
+| android                   | [android.support.v7.widget.RecyclerView](https://tinyurl.com/lvqebpq) | Gets the native android widget that represents the user interface for this component. Valid only when running on Android OS.                               |
+| items                     | `array` or `ItemsSource`                                              | Gets or sets the items collection of the CollectionView. The items property can be set to an array or an object defining length and getItem(index) method. |
+| itemTemplate              | `string`                                                              | Gets or sets the item template of the CollectionView.                                                                                                      |
+| rowHeight                 | `PercentLength`                                                       | Gets or sets the height for every row in the CollectionView.                                                                                               |
+| colWidth                  | `PercentLength`                                                       | Gets or sets the width for every column in the CollectionView.                                                                                             |
+| spanSize                  | `Function`                                                            | Function to return the span of a cell. For example with `colWidth:50%` a cell with a spanSize of 2 will be `100%` in width                                 |
+| orientation               | `'horizontal'                                                         | 'vertical'`                                                                                                                                                | Set the orientation for the collectionView |
+| isBounceEnabled           | `boolean`                                                             | (iOS) enable/disable CollectionView bounce                                                                                                                 |
+| isScrollEnabled           | `boolean`                                                             | enable/disable CollectionView scroll                                                                                                                       |
+| reverseLayout             | `boolean`                                                             | enable/disable CollectionView reversed layout (for message like views)                                                                                     |
+| loadMoreThreshold         | `number`                                                              | set the loadMore threshold (called on the `item.length - loadMoreThreshold` item appearing)                                                                |
+| reorderEnabled            | `boolean`                                                             | enable/disable CollectionView reorder feature                                                                                                              |
+| reorderLongPressEnabled   | `boolean`                                                             | enable/disable CollectionView longpress to reorder                                                                                                         |
+| scrollBarIndicatorVisible | `boolean`                                                             | enable/disable CollectionView scrollBars                                                                                                                   |
+| nestedScrollingEnabled    | `boolean`                                                             | (Android) enable/disable CollectionView nested scrolling                                                                                                   |
 
 ### Methods
 
@@ -69,6 +81,7 @@ There is no additional configuration needed!
 | scrollToIndex(index: number, animated: boolean = true) | `void` | Scrolls the CollectionView to the item with the given index. This can be either animated or not. Defaults to animated. |
 
 ## Usage
+
 You need to add `xmlns:gv="@nativescript-community/ui-collectionview"` to your page tag, and then simply use `<gv:CollectionView/>` in order to add the widget to your page. Use `<gv:Gridview.itemTemplate/>` to specify the template for each cell:
 
 ### Simple Example:
@@ -104,9 +117,11 @@ const items = [
 ```
 
 ### Templates Example:
+
 You can also have multiple templates the same way you add them in the builtin `ListView` control:
+
 ```xml
-<gv:CollectionView id="gv" row="0" class="{{ cssClass }}" items="{{ items }}" 
+<gv:CollectionView id="gv" row="0" class="{{ cssClass }}" items="{{ items }}"
                 colWidth="{{ colWidth }}" rowHeight="{{ rowHeight }}" itemTemplateSelector="templateSelector"
                 itemTap="gridViewItemTap" itemLoading="gridViewItemLoading" loadMoreItems="gridViewLoadMoreItems">
     <gv:CollectionView.itemTemplates>
@@ -125,9 +140,10 @@ You can also have multiple templates the same way you add them in the builtin `L
     </gv:CollectionView.itemTemplates>
 </gv:CollectionView>
 ```
+
 ```ts
 export function templateSelector(item: any, index: number, items: any) {
-    return index % 2 === 0 ? "even" : "odd";
+    return index % 2 === 0 ? 'even' : 'odd';
 }
 ```
 
@@ -144,6 +160,7 @@ import { CollectionViewModule } from '@nativescript-community/ui-collectionview/
     ],
 })
 ```
+
 ### Simple Example:
 
 Create a simple array of objects in your Typescript file.
@@ -164,6 +181,7 @@ items = [
 ```
 
 Add the following to your component HTML.
+
 ```xml
 <CollectionView [items]="items" colWidth="50%" rowHeight="100">
     <ng-template let-item="item">
@@ -173,30 +191,32 @@ Add the following to your component HTML.
 ```
 
 ### Templates Example:
+
 If you want to use multiple item templates, you can do that very similarly to how you do it for the builtin `ListView` control. The only difference is that due to current limitations instead of using the `nsTemplateKey` directive you need to use the `cvTemplateKey` directive that comes from the CollectionView. (In a future version, once the framework allows it this will be changed and you will be able to use the same directive for the `CollectionView` as well)
+
 ```html
 <CollectionView row="1" [items]="items" colWidth="33%" rowHeight="100" [itemTemplateSelector]="templateSelector">
     <ng-template cvTemplateKey="Defender" let-item="item" let-odd="odd">
         <StackLayout [nsRouterLink]="['/item', item.id]" borderColor="blue" borderWidth="2" borderRadius="5" verticalAlignment="stretch" class="list-group-item" [class.odd]="odd">
-        <Label verticalAlignment="center" [text]="item.name" class="list-group-item-text" textWrap="true"></Label>
+            <label verticalAlignment="center" [text]="item.name" class="list-group-item-text" textWrap="true"></label>
         </StackLayout>
     </ng-template>
 
     <ng-template cvTemplateKey="Goalkeeper" let-item="item" let-odd="odd">
         <StackLayout [nsRouterLink]="['/item', item.id]" borderColor="black" borderWidth="2" borderRadius="5" verticalAlignment="stretch" class="list-group-item" [class.odd]="odd">
-        <Label verticalAlignment="center" [text]="item.name" class="list-group-item-text" textWrap="true"></Label>
+            <label verticalAlignment="center" [text]="item.name" class="list-group-item-text" textWrap="true"></label>
         </StackLayout>
     </ng-template>
 
     <ng-template cvTemplateKey="Midfielder" let-item="item" let-odd="odd">
         <StackLayout [nsRouterLink]="['/item', item.id]" borderColor="yellow" borderWidth="2" borderRadius="5" verticalAlignment="stretch" class="list-group-item" [class.odd]="odd">
-        <Label verticalAlignment="center" [text]="item.name" class="list-group-item-text" textWrap="true"></Label>
+            <label verticalAlignment="center" [text]="item.name" class="list-group-item-text" textWrap="true"></label>
         </StackLayout>
     </ng-template>
 
     <ng-template cvTemplateKey="Forward" let-item="item" let-odd="odd">
         <StackLayout [nsRouterLink]="['/item', item.id]" borderColor="red" borderWidth="2" borderRadius="5" verticalAlignment="stretch" class="list-group-item" [class.odd]="odd">
-        <Label verticalAlignment="center" [text]="item.name" class="list-group-item-text" textWrap="true"></Label>
+            <label verticalAlignment="center" [text]="item.name" class="list-group-item-text" textWrap="true"></label>
         </StackLayout>
     </ng-template>
 </CollectionView>
@@ -214,6 +234,7 @@ Vue.use(CollectionView);
 ```
 
 ### Simple Example:
+
 In your component, add the following to make a simple array of objects.
 
 ```typescript
@@ -235,7 +256,7 @@ export default {
         return {
             itemList: items
         };
-    },
+    }
     // ...
 };
 ```
@@ -289,8 +310,8 @@ const items = [
 Then add the following XML to your component:
 
 ```xml
-<collectionView 
-    {items} 
+<collectionView
+    {items}
     colWidth="50%"
     rowHeight="100"
 >
@@ -337,21 +358,19 @@ interface Item {
     color: string;
 }
 
-const cellFactory = (item: Item) => (
-    <label text={item.name} />
-);
+const cellFactory = (item: Item) => <label text={item.name} />;
 
 export function First() {
-    return (
-        <CollectionView items={items} colWidth="50%" rowHeight="100" cellFactory={cellFactory} width="100%" height="100%" />
-    );
+    return <CollectionView items={items} colWidth="50%" rowHeight="100" cellFactory={cellFactory} width="100%" height="100%" />;
 }
 ```
 
 For a more complete example, look in the `demo-react` directory.
 
 ## Demos
+
 This repository includes Angular, Vue.js, and Svelte demos. In order to run these execute the following in your shell:
+
 ```shell
 $ git clone https://github.com/@nativescript-community/ui-collectionview
 $ cd ui-collectionview
