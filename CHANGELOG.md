@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.41](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.40...v4.0.41) (2021-08-08)
+
+
+### Features
+
+* **collectionview:** android `nestedScrollingEnabled` property ([bb52a55](https://github.com/Akylas/nativescript-collectionview/commit/bb52a550734513b58ee67377c8a623f5453a18fd))
+
+
+
+
+
 ## [4.0.40](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.39...v4.0.40) (2021-08-07)
 
 
