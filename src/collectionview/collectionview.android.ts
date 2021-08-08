@@ -10,6 +10,7 @@ import {
     Trace,
     View,
     ViewBase,
+    booleanConverter,
     paddingBottomProperty,
     paddingLeftProperty,
     paddingRightProperty,
@@ -187,6 +188,12 @@ const extraLayoutSpaceProperty = new Property<CollectionViewBase, number>({
 const itemViewCacheSizeProperty = new Property<CollectionViewBase, number>({
     name: 'itemViewCacheSize'
 });
+
+const nestedScrollingEnabledProperty = new Property<CollectionViewBase, boolean>({
+    name: 'nestedScrollingEnabled',
+    defaultValue: true,
+    valueConverter: booleanConverter
+});
 export class CollectionView extends CollectionViewBase {
     public static DEFAULT_TEMPLATE_VIEW_TYPE = 0;
     public static CUSTOM_TEMPLATE_ITEM_TYPE = 1;
@@ -221,6 +228,10 @@ export class CollectionView extends CollectionViewBase {
     private _itemTouchHelper: androidx.recyclerview.widget.ItemTouchHelper;
 
     public animateItemUpdate = false;
+
+    public nestedScrollingEnabled: boolean;
+    public itemViewCacheSize: number;
+    public extraLayoutSpace: number;
 
     @profile
     public createNativeView() {
@@ -541,6 +552,9 @@ export class CollectionView extends CollectionViewBase {
             (layoutManager as any).setReverseLayout(value);
             // layoutManager['setStackFromEnd'](value);
         }
+    }
+    [nestedScrollingEnabledProperty.setNative](value: boolean) {
+        this.nativeViewProtected.setNestedScrollingEnabled(value);
     }
     [extraLayoutSpaceProperty.setNative](value: number) {
         const layoutManager = this.layoutManager;
@@ -1112,3 +1126,4 @@ export interface CollectionViewRecyclerView extends com.nativescript.collectionv
 let CollectionViewRecyclerView: CollectionViewRecyclerView;
 itemViewCacheSizeProperty.register(CollectionViewBase);
 extraLayoutSpaceProperty.register(CollectionViewBase);
+nestedScrollingEnabledProperty.register(CollectionViewBase);
