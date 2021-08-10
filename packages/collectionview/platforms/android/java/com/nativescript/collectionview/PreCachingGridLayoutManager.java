@@ -3,6 +3,8 @@ package com.nativescript.collectionview;
 import android.content.Context;
 import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import java.util.HashMap;
 
 public class PreCachingGridLayoutManager extends GridLayoutManager {
     static final String TAG = "PreCachingGridLayoutManager";
@@ -20,14 +22,27 @@ public class PreCachingGridLayoutManager extends GridLayoutManager {
     @Override
     protected void calculateExtraLayoutSpace(RecyclerView.State state, int[] extraLayoutSpace) {
         super.calculateExtraLayoutSpace(state, extraLayoutSpace);
-        // Log.d(TAG, "calculateExtraLayoutSpace: " + this.extraLayoutSpace);
         if (this.extraLayoutSpace > 0) {
-            // if (getOrientation() == HORIZONTAL) {
-                // extraLayoutSpace[0] = extraLayoutSpace[0] + this.extraLayoutSpace;
-            // } else {
             extraLayoutSpace[0] = extraLayoutSpace[0] + this.extraLayoutSpace;
             extraLayoutSpace[1] = extraLayoutSpace[1] + this.extraLayoutSpace;
-            // }
         }
+    }
+
+    @Override
+    public int computeVerticalScrollOffset(RecyclerView.State state) {
+        // fixed computeVerticalScrollOffset
+        View firstItemView = getChildAt(0);
+        View lastItemView = getChildAt(getChildCount() - 1);
+
+        int firstItem = getPosition(firstItemView);
+        int lastItem = getPosition(lastItemView);
+        int itemsBefore = firstItem;
+
+        int laidOutArea = getDecoratedBottom(lastItemView) - getDecoratedTop(firstItemView);
+        int itemRange = lastItem - firstItem + 1;
+        float avgSizePerRow = (float) laidOutArea / itemRange;
+
+        int offset = (int) (itemsBefore * avgSizePerRow + getPaddingTop() - getDecoratedTop(firstItemView));
+        return offset;
     }
 }
