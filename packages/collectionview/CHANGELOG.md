@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.42](https://github.com/nativescript-community/ui-collectionview/compare/v4.0.41...v4.0.42) (2021-08-10)
+
+
+### Bug Fixes
+
+* android computeVerticalScrollOffset fix ([ffa1bce](https://github.com/nativescript-community/ui-collectionview/commit/ffa1bce07a228b9ca8ae6bb96036cda2a7ae36ee))
+
+
+
+
+
 ## [4.0.41](https://github.com/nativescript-community/ui-collectionview/compare/v4.0.40...v4.0.41) (2021-08-08)
 
 **Note:** Version bump only for package @nativescript-community/ui-collectionview
