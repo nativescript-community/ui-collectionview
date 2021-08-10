@@ -103,6 +103,7 @@ export class CollectionView extends CollectionViewBase {
         });
         view.autoresizesSubviews = false;
         view.autoresizingMask = UIViewAutoresizing.None;
+        this.lastContentOffset = view.contentOffset;
 
         return view;
     }
@@ -885,25 +886,42 @@ export class CollectionView extends CollectionViewBase {
         }
         return CGSizeZero;
     }
-    scrollViewDidScroll(scrollView: UIScrollView): void {
-        const offset = this.isHorizontal() ? scrollView.contentOffset.x : scrollView.contentOffset.y;
-        const size = this.isHorizontal() ? scrollView.contentSize.width - scrollView.bounds.size.width : scrollView.contentSize.height - scrollView.bounds.size.height;
-        this.notify({
+
+    private computeScrollEventData(scrollView: UIScrollView, eventName: string, dx?: number, dy?: number) {
+        const horizontal = this.isHorizontal();
+        const safeAreaInsetsTop = this.iosIgnoreSafeArea ? 0 : scrollView.safeAreaInsets.top;
+        const offset = horizontal ? scrollView.contentOffset.x : scrollView.contentOffset.y + safeAreaInsetsTop;
+        const size = horizontal ? scrollView.contentSize.width - scrollView.bounds.size.width : scrollView.contentSize.height - scrollView.bounds.size.height + safeAreaInsetsTop;
+        return {
             object: this,
-            eventName: CollectionViewBase.scrollEvent,
+            eventName,
             scrollOffset: offset,
-            scrollOffsetPercentage: offset / size
-        });
+            scrollOffsetPercentage: offset / size,
+            dx,
+            dy: dy + safeAreaInsetsTop
+        };
+    }
+    lastContentOffset: CGPoint;
+    needsScrollStartEvent = false;
+    scrollViewWillBeginDragging(scrollView: UIScrollView): void {
+        this.lastContentOffset = scrollView.contentOffset;
+        this.needsScrollStartEvent = true;
+    }
+    scrollViewDidScroll(scrollView: UIScrollView): void {
+        const contentOffset = scrollView.contentOffset;
+        const dx = contentOffset.x - this.lastContentOffset.x;
+        const dy = contentOffset.y - this.lastContentOffset.y;
+        this.lastContentOffset = scrollView.contentOffset;
+        if (this.needsScrollStartEvent) {
+            this.needsScrollStartEvent = false;
+            if (this.hasListeners(CollectionViewBase.scrollStartEvent)) {
+                this.notify(this.computeScrollEventData(scrollView, CollectionViewBase.scrollStartEvent, dx, dy));
+            }
+        }
+        this.notify(this.computeScrollEventData(scrollView, CollectionViewBase.scrollEvent, dx, dy));
     }
     scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        const offset = this.isHorizontal() ? scrollView.contentOffset.x : scrollView.contentOffset.y;
-        const size = this.isHorizontal() ? scrollView.contentSize.width - scrollView.bounds.size.width : scrollView.contentSize.height - scrollView.bounds.size.height;
-        this.notify({
-            object: this,
-            eventName: CollectionViewBase.scrollEndEvent,
-            scrollOffset: offset,
-            scrollOffsetPercentage: offset / size
-        });
+        this.notify(this.computeScrollEventData(scrollView, CollectionViewBase.scrollEndEvent));
     }
     scrollViewWillEndDraggingWithVelocityTargetContentOffset?(scrollView: UIScrollView, velocity: CGPoint, targetContentOffset: interop.Pointer | interop.Reference<CGPoint>): void {
         //     this.notify({
@@ -1037,6 +1055,12 @@ class UICollectionViewDelegateImpl extends NSObject implements UICollectionViewD
         const owner = this._owner.get();
         if (owner) {
             owner.scrollViewDidScroll(scrollView);
+        }
+    }
+    scrollViewWillBeginDragging(scrollView: UIScrollView): void {
+        const owner = this._owner.get();
+        if (owner) {
+            owner.scrollViewWillBeginDragging(scrollView);
         }
     }
     scrollViewDidEndDecelerating(scrollView: UIScrollView) {

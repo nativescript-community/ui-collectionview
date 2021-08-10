@@ -216,6 +216,7 @@ export class CollectionView extends CollectionViewBase {
     private _scrollOrLoadMoreChangeCount = 0;
     private _nScrollListener: com.nativescript.collectionview.OnScrollListener.Listener;
     scrolling = false;
+    needsScrollStartEvent = false;
 
     private _hlayoutParams: android.view.ViewGroup.LayoutParams;
     private _vlayoutParams: android.view.ViewGroup.LayoutParams;
@@ -360,22 +361,34 @@ export class CollectionView extends CollectionViewBase {
             }
         }
     }
+    private computeScrollEventData(view: androidx.recyclerview.widget.RecyclerView, eventName: string, dx?: number, dy?: number) {
+        const horizontal = this.isHorizontal();
+        const offset = horizontal ? view.computeHorizontalScrollOffset() : view.computeVerticalScrollOffset();
+        const range = horizontal ? view.computeHorizontalScrollRange() : view.computeVerticalScrollRange();
+        const extent = horizontal ? view.computeHorizontalScrollExtent() : view.computeVerticalScrollExtent();
+        return {
+            object: this,
+            eventName,
+            scrollOffset: offset / layout.getDisplayDensity(),
+            scrollOffsetPercentage: offset / (range - extent),
+            dx,
+            dy
+        };
+    }
 
     public onScrolled(view: androidx.recyclerview.widget.RecyclerView, dx: number, dy: number) {
         if (!this || !this.scrolling) {
             return;
         }
+        if (this.needsScrollStartEvent) {
+            this.needsScrollStartEvent = false;
+            if (this.hasListeners(CollectionViewBase.scrollStartEvent)) {
+                this.notify(this.computeScrollEventData(view, CollectionViewBase.scrollStartEvent, dx, dy));
+            }
+        }
 
         if (this.hasListeners(CollectionViewBase.scrollEvent)) {
-            const offset = this.isHorizontal() ? view.computeHorizontalScrollOffset() : view.computeVerticalScrollOffset();
-            const range = view.computeHorizontalScrollRange();
-            const extent = view.computeHorizontalScrollExtent();
-            this.notify({
-                object: this,
-                eventName: CollectionViewBase.scrollEvent,
-                scrollOffset: offset / layout.getDisplayDensity(),
-                scrollOffsetPercentage: offset / (range - extent)
-            });
+            this.notify(this.computeScrollEventData(view, CollectionViewBase.scrollEvent, dx, dy));
         }
 
         if (this.hasListeners(CollectionViewBase.loadMoreItemsEvent) && this.items) {
@@ -415,25 +428,18 @@ export class CollectionView extends CollectionViewBase {
             this.scrolling = false;
 
             if (this.hasListeners(CollectionViewBase.scrollEndEvent)) {
-                const offset = this.isHorizontal() ? view.computeHorizontalScrollOffset() : view.computeVerticalScrollOffset();
-                const range = view.computeHorizontalScrollRange();
-                const extent = view.computeHorizontalScrollExtent();
-                this.notify({
-                    object: this,
-                    eventName: CollectionViewBase.scrollEndEvent,
-                    scrollOffset: offset / layout.getDisplayDensity(),
-                    scrollOffsetPercentage: offset / (range - extent)
-                });
+                this.notify(this.computeScrollEventData(view, CollectionViewBase.scrollEndEvent));
             }
         } else if (!this.scrolling && newState === 1) {
             //SCROLL_STATE_DRAGGING
+            this.needsScrollStartEvent = true;
             this.scrolling = true;
         }
     }
 
     public addEventListener(arg: string, callback: any, thisArg?: any) {
         super.addEventListener(arg, callback, thisArg);
-        if (arg === CollectionViewBase.scrollEvent || arg === CollectionViewBase.loadMoreItemsEvent) {
+        if (arg === CollectionViewBase.scrollEvent || arg === CollectionViewBase.scrollStartEvent || arg === CollectionViewBase.scrollEndEvent || arg === CollectionViewBase.loadMoreItemsEvent) {
             this._scrollOrLoadMoreChangeCount++;
             this.attachScrollListener();
         }
@@ -442,7 +448,7 @@ export class CollectionView extends CollectionViewBase {
     public removeEventListener(arg: string, callback: any, thisArg?: any) {
         super.removeEventListener(arg, callback, thisArg);
 
-        if (arg === CollectionViewBase.scrollEvent || arg === CollectionViewBase.loadMoreItemsEvent) {
+        if (arg === CollectionViewBase.scrollEvent || arg === CollectionViewBase.scrollStartEvent || arg === CollectionViewBase.scrollEndEvent || arg === CollectionViewBase.loadMoreItemsEvent) {
             this._scrollOrLoadMoreChangeCount--;
             this.dettachScrollListener();
         }
