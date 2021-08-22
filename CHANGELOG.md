@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.43](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.42...v4.0.43) (2021-08-22)
+
+
+### Bug Fixes
+
+* **ios:** trying to fix a layout issue with multiple templates / size ([a89a4cd](https://github.com/Akylas/nativescript-collectionview/commit/a89a4cdbfb5231ec73362390f806ac1eb7027245))
+
+
+
+
+
 ## [4.0.42](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.41...v4.0.42) (2021-08-10)
 
 
