@@ -654,10 +654,10 @@ export class CollectionView extends CollectionViewBase {
                 innerView.view = new WeakRef(view);
                 // for a cell to update correctly on cell layout change we need
                 // to do it ourself instead of "propagating it"
-                view['performLayout'] = () => {
-                    this.measureCell(cell, view, indexPath);
-                    this.layoutCell(indexPath.row, cell, view);
-                };
+                // view['performLayout'] = () => {
+                //     this.measureCell(cell, view, indexPath);
+                //     this.layoutCell(indexPath.row, cell, view);
+                // };
                 innerView.addSubview(view.nativeViewProtected);
                 cell.contentView.addSubview(innerView);
             }
