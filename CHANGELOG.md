@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.44](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.43...v4.0.44) (2021-08-29)
+
+
+### Bug Fixes
+
+* **android:** NPE fix ([eeb8b3b](https://github.com/Akylas/nativescript-collectionview/commit/eeb8b3b881949e9fed3a485e06a924b426c497f7))
+* **ios:** missing scrollEnd event ([3d7bf11](https://github.com/Akylas/nativescript-collectionview/commit/3d7bf11c62728678c2afb0117d58a458ec620cb8))
+
+
+
+
+
 ## [4.0.43](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.42...v4.0.43) (2021-08-22)
 
 

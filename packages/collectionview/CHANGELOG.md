@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.44](https://github.com/nativescript-community/ui-collectionview/compare/v4.0.43...v4.0.44) (2021-08-29)
+
+
+### Bug Fixes
+
+* **android:** NPE fix ([eeb8b3b](https://github.com/nativescript-community/ui-collectionview/commit/eeb8b3b881949e9fed3a485e06a924b426c497f7))
+
+
+
+
+
 ## [4.0.43](https://github.com/nativescript-community/ui-collectionview/compare/v4.0.42...v4.0.43) (2021-08-22)
 
 **Note:** Version bump only for package @nativescript-community/ui-collectionview
