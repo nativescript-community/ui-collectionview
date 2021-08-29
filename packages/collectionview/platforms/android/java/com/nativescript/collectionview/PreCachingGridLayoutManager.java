@@ -33,6 +33,9 @@ public class PreCachingGridLayoutManager extends GridLayoutManager {
         // fixed computeVerticalScrollOffset
         View firstItemView = getChildAt(0);
         View lastItemView = getChildAt(getChildCount() - 1);
+        if (firstItemView == null || lastItemView == null) {
+            return 0;
+        }
 
         int firstItem = getPosition(firstItemView);
         int lastItem = getPosition(lastItemView);

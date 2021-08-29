@@ -28,6 +28,9 @@ public class GridLayoutManager extends androidx.recyclerview.widget.GridLayoutMa
         }
         final int firstChildPosition = findFirstVisibleItemPosition();
         final View firstChild = findViewByPosition(firstChildPosition);
+        if (firstChild == null) {
+            return 0;
+        }
         float scrolledY = -firstChild.getY();
         for (int i = 0; i < firstChildPosition; i++) {
             if (childSizesMap.get(i) != null) {
