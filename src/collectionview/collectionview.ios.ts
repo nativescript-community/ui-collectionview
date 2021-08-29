@@ -903,9 +903,11 @@ export class CollectionView extends CollectionViewBase {
     }
     lastContentOffset: CGPoint;
     needsScrollStartEvent = false;
+    isScrolling = false;
     scrollViewWillBeginDragging(scrollView: UIScrollView): void {
         this.lastContentOffset = scrollView.contentOffset;
         this.needsScrollStartEvent = true;
+        this.isScrolling = true;
     }
     scrollViewDidScroll(scrollView: UIScrollView): void {
         const contentOffset = scrollView.contentOffset;
@@ -920,15 +922,24 @@ export class CollectionView extends CollectionViewBase {
         }
         this.notify(this.computeScrollEventData(scrollView, CollectionViewBase.scrollEvent, dx, dy));
     }
+    stopScrolling(scrollView: UIScrollView) {
+        if (this.isScrolling) {
+            this.isScrolling = false;
+            this.notify(this.computeScrollEventData(scrollView, CollectionViewBase.scrollEndEvent));
+        }
+    }
     scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        this.notify(this.computeScrollEventData(scrollView, CollectionViewBase.scrollEndEvent));
+        this.stopScrolling(scrollView);
     }
     scrollViewWillEndDraggingWithVelocityTargetContentOffset?(scrollView: UIScrollView, velocity: CGPoint, targetContentOffset: interop.Pointer | interop.Reference<CGPoint>): void {
-        //     this.notify({
-        //         object: this,
-        //         eventName: CollectionViewBase.scrollWillEndEvent,
-        //         scrollOffset: this.isHorizontal() ? scrollView.contentOffset.x : scrollView.contentOffset.y,
-        //     });
+        this.stopScrolling(scrollView);
+    }
+    scrollViewDidEndDraggingWillDecelerate(scrollView: UIScrollView, decelerate: boolean): void {
+        this.stopScrolling(scrollView);
+    }
+
+    scrollViewDidEndScrollingAnimation(scrollView: UIScrollView): void {
+        this.stopScrolling(scrollView);
     }
 }
 contentInsetAdjustmentBehaviorProperty.register(CollectionView);
@@ -1073,6 +1084,19 @@ class UICollectionViewDelegateImpl extends NSObject implements UICollectionViewD
         const owner = this._owner.get();
         if (owner) {
             owner.scrollViewWillEndDraggingWithVelocityTargetContentOffset(scrollView, velocity, targetContentOffset);
+        }
+    }
+    scrollViewDidEndDraggingWillDecelerate(scrollView: UIScrollView, decelerate: boolean): void {
+        const owner = this._owner.get();
+        if (owner) {
+            owner.scrollViewDidEndDraggingWillDecelerate(scrollView, decelerate);
+        }
+    }
+
+    scrollViewDidEndScrollingAnimation(scrollView: UIScrollView): void {
+        const owner = this._owner.get();
+        if (owner) {
+            owner.scrollViewDidEndScrollingAnimation(scrollView);
         }
     }
 }
