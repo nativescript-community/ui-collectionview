@@ -37,10 +37,10 @@ class SvelteKeyedTemplate {
         // it will trigger uncessary {N} component updates because the parent view is already attached
 
         (nativeEl as any).__SvelteComponentBuilder__ = (parentView, props) => {
-            profile('__SvelteComponentBuilder__', () => {
+            profile('createView.__SvelteComponentBuilder__', () => {
                 (nativeEl as any).__SvelteComponent__ = new this.component({
                     target: parentView,
-                    props,
+                    props
                 });
             })();
         };
@@ -114,6 +114,8 @@ export default class CollectionViewViewElement extends NativeViewElementNode<Col
             this.nativeView.removeTemplate(key);
         }
     }
+
+    @profile
     private updateListItem(args: ItemEventData & { bindingContext }) {
         const _view = args.view;
         const props = { item: args.bindingContext, index: args.index };
