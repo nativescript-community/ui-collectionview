@@ -1,0 +1,25 @@
+{
+    "uses": [
+        "com.nativescript.collectionview*:*",
+        "androidx.recyclerview.widget:RecyclerView*", 
+        "androidx.recyclerview.widget.RecyclerView:ViewHolder*", 
+        "androidx.recyclerview.widget.RecyclerView:Adapter*", 
+        "androidx.recyclerview.widget.RecyclerView:OnItemTouchListener*", 
+        "androidx.recyclerview.widget.RecyclerView:OnScrollListener*", 
+        "androidx.recyclerview.widget:ItemTouchHelper*", 
+        "androidx.recyclerview.widget.ItemTouchHelper:SimpleCallback*", 
+        "androidx.recyclerview.widget:SimpleItemAnimato*", 
+        "com.h6ah4i.android.widget.advrecyclerview.animator:BaseItemAnimator*", 
+        "com.h6ah4i.android.widget.advrecyclerview.animator:GeneralItemAnimator*", 
+        "com.h6ah4i.android.widget.advrecyclerview.animator:RefactoredDefaultItemAnimator*",
+        "androidx.recyclerview.widget.RecyclerView:LayoutManager*",
+        "androidx.recyclerview.widget:LinearLayoutManager*",
+        "androidx.recyclerview.widget:GridLayoutManager*",
+        "androidx.recyclerview.widget.GridLayoutManager:SpanSizeLookup*",
+        "android.view.ViewGroup:LayoutParams*",
+        "android.view.View:OnClickListener*",
+        "android.view.View:OnLayoutChangeListener*",
+        "android.view.GestureDetector:SimpleOnGestureListener*",
+        "androidx.core.view:GestureDetectorCompat*"
+    ]
+}
