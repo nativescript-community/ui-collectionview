@@ -1,36 +1,94 @@
-﻿# NativeScript CollectionView
+<!-- ⚠️ This README has been generated from the file(s) "blueprint.md" ⚠️-->This monorepo contains multiple packages:
 
-[![npm downloads](https://img.shields.io/npm/dm/@nativescript-community/ui-collectionview.svg)](https://www.npmjs.com/package/@nativescript-community/ui-collectionview)
-[![npm downloads](https://img.shields.io/npm/dt/@nativescript-community/ui-collectionview.svg)](https://www.npmjs.com/package/@nativescript-community/ui-collectionview)
-[![npm](https://img.shields.io/npm/v/@nativescript-community/ui-collectionview.svg)](https://www.npmjs.com/package/@nativescript-community/ui-collectionview)
+<details>
+    <summary><b>collectionview</b></summary>
 
-A NativeScript CollectionView widget. The CollectionView displays data in separate cells, each cell representing one data item. For iOS wraps up [UICollectionView](https://developer.apple.com/library/ios/documentation/UIKit/Reference/UICollectionView_class/) and for Android wraps up [RecyclerView](https://developer.android.com/reference/android/support/v7/widget/RecyclerView.html). This can be used as an Open Source alternative to [RadListView](https://docs.nativescript.org/ui/components/radlistview/overview).
+    <!-- ⚠️ This README has been generated from the file(s) "blueprint.md" ⚠️-->
+<!--  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      DO NOT EDIT THIS READEME DIRECTLY! Edit "bluesprint.md" instead.
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+<h1 align="center">@nativescript-community/ui-collectionview</h1>
+<p align="center">
+		<a href="https://npmcharts.com/compare/@nativescript-community/ui-collectionview?minimal=true"><img alt="Downloads per month" src="https://img.shields.io/npm/dm/@nativescript-community/ui-collectionview.svg" height="20"/></a>
+<a href="https://www.npmjs.com/package/@nativescript-community/ui-collectionview"><img alt="NPM Version" src="https://img.shields.io/npm/v/@nativescript-community/ui-collectionview.svg" height="20"/></a>
+	</p>
 
-| <img src="images/demo-ios.gif" height="500" /> | <img src="images/demo-android.gif" height="500" /> |
+<p align="center">
+  <b>Allows you to easily add a collection view (grid list view) to your projects. Supports vertical and horizontal modes, templating, and more.</b></br>
+  <sub><sub>
+</p>
+
+<br />
+
+
+| <img src="https://github.com/nativescript-community/ui-collectionview/raw/master/images/demo-ios.gif" height="500" /> | <img src="https://github.com/nativescript-community/ui-collectionview/raw/master/images/demo-android.gif" height="500" /> |
 | --- | ----------- |
 | iOS Demo | Android Demo |
 
----
+
+[](#table-of-contents)
+
+
+[](#table-of-contents)
+
 ## Table of Contents
-1. [Installation](#installation)
-2. [Configuration](#configuration)
-3. [API](#api)
-4. [Usage](#usage)
-5. [Usage in Angular](#usage-in-angular)
-6. [Usage in Vue](#usage-in-vue)
-7. [Usage in Svelte](#usage-in-svelte)
-8. [Usage in React](#usage-in-react)
-9. [Demos](#demos)
+
+* [Installation](#installation)
+* [API](#api)
+	* [Events](#events)
+	* [Properties](#properties)
+	* [Methods](#methods)
+* [Usage](#usage)
+	* [Simple Example:](#simple-example)
+	* [Templates Example:](#templates-example)
+* [Usage in Angular](#usage-in-angular)
+	* [Simple Example:](#simple-example-1)
+	* [Templates Example:](#templates-example-1)
+* [Usage in Vue](#usage-in-vue)
+	* [Simple Example:](#simple-example-2)
+* [Usage in Svelte](#usage-in-svelte)
+	* [Simple Example:](#simple-example-3)
+* [Usage in React](#usage-in-react)
+	* [Simple Example:](#simple-example-4)
+* [Demos](#demos)
+* [Demos and Development](#demos-and-development)
+	* [Setup](#setup)
+	* [Build](#build)
+	* [Demos](#demos-1)
+* [Questions](#questions)
+
+
+[](#installation)
+
+
+[](#installation)
 
 ## Installation
 Run the following command from the root of your project:
 
 `ns plugin add @nativescript-community/ui-collectionview`
 
-This command automatically installs the necessary files, as well as stores @nativescript-community/ui-collectionview as a dependency in your project's package.json file.
 
-## Configuration
-There is no additional configuration needed!
+[](#api)
+
+
+[](#api)
 
 ## API
 
@@ -72,6 +130,12 @@ There is no additional configuration needed!
 | scrollToIndex(index: number, animated: boolean = true) | `void` | Scrolls the CollectionView to the item with the given index. This can be either animated or not. Defaults to animated. |
 | isItemAtIndexVisible(index: number)                    | `boolean` | Returns a boolean indicating whether the item is visible. |
 
+
+[](#usage)
+
+
+[](#usage)
+
 ## Usage
 You need to add `xmlns:gv="@nativescript-community/ui-collectionview"` to your page tag, and then simply use `<gv:CollectionView/>` in order to add the widget to your page. Use `<gv:Gridview.itemTemplate/>` to specify the template for each cell:
 
@@ -98,9 +162,9 @@ const items = [
 <!-- test-page.xml -->
 <Page xmlns="http://schemas.nativescript.org/tns.xsd" xmlns:gv="@nativescript-community/ui-collectionview" loaded="pageLoaded">
     <GridLayout>
-        <gv:CollectionView items="{{ items }}" colWidth="50%" rowHeight="100">
+        <gv:CollectionView items="items" colWidth="50%" rowHeight="100">
             <gv:CollectionView.itemTemplate>
-                <Label text="{{ value }}" verticalAlignment="center"/>
+                <Label text="value" verticalAlignment="center"/>
             </gv:CollectionView.itemTemplate>
         </gv:CollectionView>
     </GridLayout>
@@ -110,20 +174,20 @@ const items = [
 ### Templates Example:
 You can also have multiple templates the same way you add them in the builtin `ListView` control:
 ```xml
-<gv:CollectionView id="gv" row="0" class="{{ cssClass }}" items="{{ items }}" 
-                colWidth="{{ colWidth }}" rowHeight="{{ rowHeight }}" itemTemplateSelector="templateSelector"
+<gv:CollectionView id="gv" row="0" class="cssClass" items="items" 
+                colWidth="colWidth" rowHeight="rowHeight" itemTemplateSelector="templateSelector"
                 itemTap="gridViewItemTap" itemLoading="gridViewItemLoading" loadMoreItems="gridViewLoadMoreItems">
     <gv:CollectionView.itemTemplates>
         <template key="odd">
             <GridLayout backgroundColor="#33ffff" style="margin: 10 10 0 0">
-                <Label text="{{ value }}" verticalAlignment="center"/>
+                <Label text="value" verticalAlignment="center"/>
             </GridLayout>
         </template>
 
         <template key="even">
             <GridLayout backgroundColor="#33ffff" rows="auto, auto" style="margin: 10 10 0 0">
-                <Label row="0" text="{{ value }}" verticalAlignment="center"/>
-                <Label row="1" text="{{ value }}" verticalAlignment="center"/>
+                <Label row="0" text="value" verticalAlignment="center"/>
+                <Label row="1" text="value" verticalAlignment="center"/>
             </GridLayout>
         </template>
     </gv:CollectionView.itemTemplates>
@@ -134,6 +198,12 @@ export function templateSelector(item: any, index: number, items: any) {
     return index % 2 === 0 ? "even" : "odd";
 }
 ```
+
+
+[](#usage-in-angular)
+
+
+[](#usage-in-angular)
 
 ## Usage in Angular
 
@@ -208,6 +278,12 @@ If you want to use multiple item templates, you can do that very similarly to ho
 
 For a more complete example, look in the `demo-ng` directory.
 
+
+[](#usage-in-vue)
+
+
+[](#usage-in-vue)
+
 ## Usage in Vue
 
 Register the plugin in your `app.ts`.
@@ -260,6 +336,12 @@ Then add the following XML to your component.
 
 For a more complete example, look in the `demo-vue` directory.
 
+
+[](#usage-in-svelte)
+
+
+[](#usage-in-svelte)
+
 ## Usage in Svelte
 
 Register the plugin in your `app.ts`.
@@ -305,6 +387,12 @@ Then add the following XML to your component:
 ```
 
 For a more complete example, look in the `demo-svelte` directory.
+
+
+[](#usage-in-react)
+
+
+[](#usage-in-react)
 
 ## Usage in React
 
@@ -354,6 +442,12 @@ export function First() {
 
 For a more complete example, look in the `demo-react` directory.
 
+
+[](#demos)
+
+
+[](#demos)
+
 ## Demos
 This repository includes Angular, Vue.js, and Svelte demos. In order to run these execute the following in your shell:
 ```shell
@@ -365,3 +459,189 @@ $ npm run build # && npm run build.angular
 $ cd demo-ng # or demo-vue or demo-svelte
 $ ns run ios|android
 ```
+
+
+[](#demos-and-development)
+
+
+[](#demos-and-development)
+
+## Demos and Development
+
+
+### Setup
+
+To run the demos, you must clone this repo **recursively**.
+
+```
+git clone https://github.com/@nativescript-community/ui-collectionview.git --recursive
+```
+
+**Install Dependencies:**
+```bash
+npm i # or 'yarn install' or 'pnpm install'
+```
+
+**Interactive Menu:**
+
+To start the interactive menu, run `npm start` (or `yarn start` or `pnpm start`). This will list all of the commonly used scripts.
+
+### Build
+
+```bash
+npm run build
+
+npm run build.angular # or for Angular
+```
+
+### Demos
+
+```bash
+npm run demo.[ng|react|svelte|vue].[ios|android]
+
+npm run demo.svelte.ios # Example
+```
+
+[](#questions)
+
+
+[](#questions)
+
+## Questions
+
+If you have any questions/issues/comments please feel free to create an issue or start a conversation in the [NativeScript Community Discord](https://nativescript.org/discord).
+    </details><details>
+    <summary><b>waterfall</b></summary>
+
+    <!-- ⚠️ This README has been generated from the file(s) "blueprint.md" ⚠️-->
+<!--  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      DO NOT EDIT THIS READEME DIRECTLY! Edit "bluesprint.md" instead.
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+<h1 align="center">@nativescript-community/ui-collectionview-waterfall</h1>
+<p align="center">
+		<a href="https://npmcharts.com/compare/@nativescript-community/ui-collectionview-waterfall?minimal=true"><img alt="Downloads per month" src="https://img.shields.io/npm/dm/@nativescript-community/ui-collectionview-waterfall.svg" height="20"/></a>
+<a href="https://www.npmjs.com/package/@nativescript-community/ui-collectionview-waterfall"><img alt="NPM Version" src="https://img.shields.io/npm/v/@nativescript-community/ui-collectionview-waterfall.svg" height="20"/></a>
+	</p>
+
+<p align="center">
+  <b>A NativeScript CollectionView waterfall Plugin.</b></br>
+  <sub><sub>
+</p>
+
+<br />
+
+
+| <img src="https://github.com/nativescript-community/ui-collectionview/raw/master/images/demo-ios.gif" height="500" /> | <img src="https://github.com/nativescript-community/ui-collectionview/raw/master/images/demo-android.gif" height="500" /> |
+| --- | ----------- |
+| iOS Demo | Android Demo |
+
+
+[](#table-of-contents)
+
+
+[](#table-of-contents)
+
+## Table of Contents
+
+* [Installation](#installation)
+* [Configuration](#configuration)
+* [Demos and Development](#demos-and-development)
+	* [Setup](#setup)
+	* [Build](#build)
+	* [Demos](#demos)
+* [Questions](#questions)
+
+
+[](#installation)
+
+
+[](#installation)
+
+## Installation
+Run the following command from the root of your project:
+
+`ns plugin add @nativescript-community/ui-collectionview-waterfall`
+
+
+[](#configuration)
+
+
+[](#configuration)
+
+## Configuration
+
+To install the plugin run:
+```typescript
+import install from '@nativescript-community/ui-collectionview-waterfall';
+install();
+```
+
+then simply use the `layoutStyle="waterfall"` as a collectionview property
+
+
+[](#demos-and-development)
+
+
+[](#demos-and-development)
+
+## Demos and Development
+
+
+### Setup
+
+To run the demos, you must clone this repo **recursively**.
+
+```
+git clone https://github.com/@nativescript-community/ui-collectionview-waterfall.git --recursive
+```
+
+**Install Dependencies:**
+```bash
+npm i # or 'yarn install' or 'pnpm install'
+```
+
+**Interactive Menu:**
+
+To start the interactive menu, run `npm start` (or `yarn start` or `pnpm start`). This will list all of the commonly used scripts.
+
+### Build
+
+```bash
+npm run build
+
+npm run build.angular # or for Angular
+```
+
+### Demos
+
+```bash
+npm run demo.[ng|react|svelte|vue].[ios|android]
+
+npm run demo.svelte.ios # Example
+```
+
+[](#questions)
+
+
+[](#questions)
+
+## Questions
+
+If you have any questions/issues/comments please feel free to create an issue or start a conversation in the [NativeScript Community Discord](https://nativescript.org/discord).
+    </details>
