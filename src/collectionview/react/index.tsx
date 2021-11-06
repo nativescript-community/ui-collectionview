@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { CoreTypes, ItemEventData, ItemsSource, KeyedTemplate, View } from '@nativescript/core';
 import { NSVElement, NSVRoot, NativeScriptProps, render as RNSRender, ViewAttributes, registerElement, unmountComponentAtNode } from 'react-nativescript';
-import { CollectionView as NativeScriptCollectionView } from '../collectionview';
+import { CollectionView as NativeScriptCollectionView } from '..'
 
 export type CellViewContainer = View;
 type CellFactory = (item: any) => React.ReactElement;
 
 
 export function registerCollectionView() {
-    registerElement('collectionView', () => require('../collectionview').CollectionView);
+    registerElement('collectionView', () => require('..').CollectionView);
 }
 
 interface CollectionViewAttributes extends ViewAttributes {

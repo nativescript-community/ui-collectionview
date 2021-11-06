@@ -26,10 +26,10 @@ import {
     reorderingEnabledProperty,
     reverseLayoutProperty,
     scrollBarIndicatorVisibleProperty
-} from './collectionview';
-import { CLog, CLogTypes, CollectionViewBase, ListViewViewTypes, isScrollEnabledProperty, orientationProperty } from './collectionview-common';
+} from '.';
+import { CLog, CLogTypes, CollectionViewBase, ListViewViewTypes, isScrollEnabledProperty, orientationProperty } from './index-common';
 
-export * from './collectionview-common';
+export * from './index-common';
 
 declare module '@nativescript/core/ui/core/view' {
     interface View {

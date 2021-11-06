@@ -21,10 +21,10 @@ import {
 } from '@nativescript/core';
 import { Pointer } from '@nativescript/core/ui/gestures';
 import { layout } from '@nativescript/core/utils/utils';
-import { CollectionViewItemEventData, Orientation, reorderLongPressEnabledProperty, reorderingEnabledProperty, reverseLayoutProperty, scrollBarIndicatorVisibleProperty } from './collectionview';
-import { CLog, CLogTypes, CollectionViewBase, ListViewViewTypes, isBounceEnabledProperty, isScrollEnabledProperty, itemTemplatesProperty, orientationProperty } from './collectionview-common';
+import { CollectionViewItemEventData, Orientation, reorderLongPressEnabledProperty, reorderingEnabledProperty, reverseLayoutProperty, scrollBarIndicatorVisibleProperty } from '.';
+import { CLog, CLogTypes, CollectionViewBase, ListViewViewTypes, isBounceEnabledProperty, isScrollEnabledProperty, itemTemplatesProperty, orientationProperty } from './index-common';
 
-export * from './collectionview-common';
+export * from './index-common';
 
 const infinity = layout.makeMeasureSpec(0, layout.UNSPECIFIED);
 

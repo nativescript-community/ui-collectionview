@@ -1,7 +1,7 @@
 import { profile } from '@nativescript/core';
 import { Observable } from '@nativescript/core/data/observable';
 import { ObservableArray } from '@nativescript/core/data/observable-array';
-import { CollectionView } from '../collectionview';
+import { CollectionView } from '..'
 
 function extend(to, _from): any {
     for (const key in _from) {

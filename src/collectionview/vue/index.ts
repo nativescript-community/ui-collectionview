@@ -1,4 +1,4 @@
-import { CollectionView } from '../collectionview';
+import { CollectionView } from '..'
 
 const CollectionViewPlugin = {
     install(Vue, options) {

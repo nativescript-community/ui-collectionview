@@ -1,7 +1,7 @@
 import { EventData, View } from '@nativescript/core';
 import { Pointer } from '@nativescript/core/ui/gestures';
-import { CollectionViewBase } from './collectionview-common';
-export * from './collectionview-common';
+import { CollectionViewBase } from './index-common';
+export * from './index-common';
 
 export type Orientation = 'horizontal' | 'vertical';
 

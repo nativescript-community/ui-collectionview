@@ -25,7 +25,7 @@ import {
     removeWeakEventListener,
     widthProperty
 } from '@nativescript/core';
-import { CollectionView as CollectionViewDefinition, CollectionViewItemEventData, Orientation } from './collectionview';
+import { CollectionView as CollectionViewDefinition, CollectionViewItemEventData, Orientation } from '.'
 
 export const CollectionViewTraceCategory = 'NativescriptCollectionView';
 
