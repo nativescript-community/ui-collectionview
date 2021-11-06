@@ -1,3 +1,20 @@
 [submodule "tools"]
 	path = tools
 	url = https://github.com/nativescript-community/plugin-seed-tools.git
+	ignore = dirty
+[submodule "demo-vue"]
+	path = demo-vue
+	url = https://github.com/nativescript-community/plugin-seed-demo-vue.git
+	ignore = dirty
+[submodule "demo-svelte"]
+	path = demo-svelte
+	url = https://github.com/nativescript-community/plugin-seed-demo-svelte.git
+	ignore = dirty
+[submodule "demo-react"]
+	path = demo-react
+	url = https://github.com/nativescript-community/plugin-seed-demo-react.git
+	ignore = dirty
+[submodule "demo-ng"]
+	path = demo-ng
+	url = https://github.com/nativescript-community/plugin-seed-demo-ng.git
+	ignore = dirty

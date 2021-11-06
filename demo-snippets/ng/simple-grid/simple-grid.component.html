@@ -1,0 +1,25 @@
+<ActionBar>
+    <NavigationButton android.systemIcon="ic_menu_back" (tap)="goBack()"></NavigationButton>
+    <Label text="Simple Grid"></Label>
+</ActionBar>
+
+<GridLayout>
+    <CollectionView 
+        iosOverflowSafeArea="true"
+        [items]="items"  
+        (itemTap)="onItemTap($event)" 
+        (loadMoreItems)="onLoadMoreItems()"
+        colWidth="50%" 
+        rowHeight="200"
+        automationText="collectionView"
+    >
+        <ng-template let-item="item">
+            <GridLayout rows="*, auto" [backgroundColor]="item.color" padding="10">
+                <StackLayout row="1">
+                    <Label row="1" [text]="item.name" color="white" fontSize="17" fontWeight="bold"></Label>
+                    <Label row="1" [text]="item.color" color="white" fontSize="14"></Label>
+                </StackLayout>
+            </GridLayout>
+        </ng-template>
+    </CollectionView>
+</GridLayout>
