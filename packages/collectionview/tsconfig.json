@@ -2,12 +2,8 @@
     "extends": "../../tsconfig.json",
     "compilerOptions": {
         "rootDir": "../../src/collectionview",
-        "outDir": "./",
-        "paths": {
-            "tns-core-modules": ["./node_modules/@nativescript/core"],
-            "tns-core-modules/*": ["./node_modules/@nativescript/core/*"]
-        }
+        "outDir": "./"
     },
-    "include": ["../../src/collectionview/**/*.ts", "../../references.d.ts", "../../src/references.d.ts"],
+    "include": ["../../src/collectionview/**/*", "../../references.d.ts", "../../src/references.d.ts"],
     "exclude": ["../../src/collectionview/angular/**"]
 }
