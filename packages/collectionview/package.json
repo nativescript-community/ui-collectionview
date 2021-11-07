@@ -2,10 +2,10 @@
     "name": "@nativescript-community/ui-collectionview",
     "version": "4.0.46",
     "description": "Allows you to easily add a collection view (grid list view) to your projects. Supports vertical and horizontal modes, templating, and more.",
-    "main": "./collectionview",
-    "module": "./collectionview.mjs",
+    "main": "./index",
+    "module": "./index.mjs",
     "sideEffects": false,
-    "typings": "./collectionview.d.ts",
+    "typings": "./index.d.ts",
     "scripts": {
         "build": "npm run tsc && npm run readme",
         "build.all": "npm run build && npm run build.angular",
