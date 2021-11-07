@@ -3,12 +3,6 @@
     "compilerOptions": {
         "rootDir": "../../src/waterfall",
         "outDir": "./",
-        "paths": {
-            "tns-core-modules": ["./node_modules/@nativescript/core"],
-            "tns-core-modules/*": ["./node_modules/@nativescript/core/*"],
-            "@nativescript-community/ui-collectionview": ["packages/collectionview/collectionview"],
-            "@nativescript-community/ui-collectionview/*": ["packages/collectionview/*"]
-        }
     },
     "include": ["../../src/waterfall/**/*.ts", "../../references.d.ts", "../../src/references.d.ts"],
     "exclude": ["../../src/waterfall/angular/**"]

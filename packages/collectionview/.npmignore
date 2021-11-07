@@ -9,3 +9,4 @@ tsconfig.json
 !*.d.ts
 *.aar
 *.jar
+blueprint.md

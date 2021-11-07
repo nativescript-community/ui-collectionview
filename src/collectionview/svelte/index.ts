@@ -3,7 +3,7 @@ import { profile } from '@nativescript/core/profiling';
 import { ContentView, LayoutBase, StackLayout, ViewBase } from '@nativescript/core/ui';
 import { NativeViewElementNode, TemplateElement, ViewNode, createElement, registerElement } from 'svelte-native/dom';
 import { flush } from 'svelte/internal';
-import { CollectionView } from '../collectionview';
+import { CollectionView } from '..'
 
 declare module '@nativescript/core/ui/core/view-base' {
     interface ViewBase {

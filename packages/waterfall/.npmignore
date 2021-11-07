@@ -8,3 +8,4 @@ hooks/
 tsconfig.json
 !*.d.ts
 .smooth-releaserc
+blueprint.md
