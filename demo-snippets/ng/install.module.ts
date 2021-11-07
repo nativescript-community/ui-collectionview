@@ -4,9 +4,10 @@ import { CollectionViewModule } from "@nativescript-community/ui-collectionview/
 import install from '@nativescript-community/ui-collectionview-waterfall';
 
 import { SimpleGridComponent } from './simple-grid/simple-grid.component';
+import { HorizontalGridComponent } from './horizontal-grid/horizontal-grid.component';
 import { SimpleWaterfallComponent } from './simple-waterfall/simple-waterfall.component';
 
-export const COMPONENTS = [SimpleGridComponent, SimpleWaterfallComponent];
+export const COMPONENTS = [SimpleGridComponent, HorizontalGridComponent, SimpleWaterfallComponent];
 @NgModule({
     imports: [CollectionViewModule],
     exports: [CollectionViewModule],
@@ -20,5 +21,6 @@ export function installPlugin() {
 
 export const demos = [
     { name: 'Simple Grid', path: 'simple-grid', component: SimpleGridComponent },
+    { name: 'Horizontal Grid', path: 'horizontal-grid', component: HorizontalGridComponent },
     { name: 'Simple Waterfall', path: 'simple-waterfall', component: SimpleWaterfallComponent },
 ];
