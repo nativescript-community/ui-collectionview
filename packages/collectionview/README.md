@@ -47,17 +47,17 @@
 	* [Properties](#properties)
 	* [Methods](#methods)
 * [Usage](#usage)
-	* [Simple Example:](#simple-example)
-	* [Templates Example:](#templates-example)
+	* [Simple Example](#simple-example)
+	* [Templates Example](#templates-example)
 * [Usage in Angular](#usage-in-angular)
-	* [Simple Example:](#simple-example-1)
-	* [Templates Example:](#templates-example-1)
+	* [Simple Example](#simple-example-1)
+	* [Templates Example](#templates-example-1)
 * [Usage in Vue](#usage-in-vue)
-	* [Simple Example:](#simple-example-2)
+	* [Simple Example](#simple-example-2)
 * [Usage in Svelte](#usage-in-svelte)
-	* [Simple Example:](#simple-example-3)
+	* [Simple Example](#simple-example-3)
 * [Usage in React](#usage-in-react)
-	* [Simple Example:](#simple-example-4)
+	* [Simple Example](#simple-example-4)
 * [Demos](#demos)
 * [Demos and Development](#demos-and-development)
 	* [Setup](#setup)
@@ -106,6 +106,7 @@ Run the following command from the root of your project:
 | colWidth      | `PercentLength`  | Gets or sets the width for every column in the CollectionView.    |
 | spanSize      | `function` | Triggered when an item is loaded. Returns the number of columns that the element should occupy taking into account `colWidth` when the device is vertical and `rowHeight` when horizontal. Parameters: (item, index: number).    |
 | scrollOffset  | `number` | Gets the current scroll. |
+| orientation  | `vertical` or `horizontal` | Sets the orientation of the CollectionView. Defaults to `vertical`. |
 
 ### Methods
 
@@ -122,7 +123,7 @@ Run the following command from the root of your project:
 ## Usage
 You need to add `xmlns:gv="@nativescript-community/ui-collectionview"` to your page tag, and then simply use `<gv:CollectionView/>` in order to add the widget to your page. Use `<gv:Gridview.itemTemplate/>` to specify the template for each cell:
 
-### Simple Example:
+### Simple Example
 
 Create a simple array of objects in your JS/TS file.
 
@@ -154,7 +155,7 @@ const items = [
 </Page>
 ```
 
-### Templates Example:
+### Templates Example
 You can also have multiple templates the same way you add them in the builtin `ListView` control:
 ```xml
 <gv:CollectionView id="gv" row="0" class="cssClass" items="items" 
@@ -198,7 +199,7 @@ import { CollectionViewModule } from '@nativescript-community/ui-collectionview/
     ],
 })
 ```
-### Simple Example:
+### Simple Example
 
 Create a simple array of objects in your Typescript file.
 
@@ -226,7 +227,7 @@ Add the following to your component HTML.
 </CollectionView>
 ```
 
-### Templates Example:
+### Templates Example
 If you want to use multiple item templates, you can do that very similarly to how you do it for the builtin `ListView` control. The only difference is that due to current limitations instead of using the `nsTemplateKey` directive you need to use the `cvTemplateKey` directive that comes from the CollectionView. (In a future version, once the framework allows it this will be changed and you will be able to use the same directive for the `CollectionView` as well)
 ```html
 <CollectionView row="1" [items]="items" colWidth="33%" rowHeight="100" [itemTemplateSelector]="templateSelector">
@@ -270,7 +271,7 @@ import CollectionView from '@nativescript-community/ui-collectionview/vue';
 Vue.use(CollectionView);
 ```
 
-### Simple Example:
+### Simple Example
 In your component, add the following to make a simple array of objects.
 
 ```typescript
@@ -325,7 +326,7 @@ import CollectionViewElement from '@nativescript-community/ui-collectionview/sve
 CollectionViewElement.register();
 ```
 
-### Simple Example:
+### Simple Example
 
 In you component, add the following to import Svelte `Templates` and to create a simple array of objects.
 
@@ -374,7 +375,7 @@ import { registerCollectionView } from '@nativescript-community/ui-collectionvie
 registerCollectionView();
 ```
 
-### Simple Example:
+### Simple Example
 
 In your component, add the following code to create a simple list.
 
