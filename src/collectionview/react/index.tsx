@@ -29,7 +29,7 @@ interface CollectionViewAttributes extends ViewAttributes {
     plugins?: string[];
     reverseLayout?: boolean;
     rowHeight?: CoreTypes.PercentLengthType | string;
-    spanSize?: (position: number) => number;
+    spanSize?: (item, index: number) => number;
     verticalSpacing?: CoreTypes.LengthType | string;
 };
 

@@ -6,8 +6,9 @@ import install from '@nativescript-community/ui-collectionview-waterfall';
 import { SimpleGridComponent } from './simple-grid/simple-grid.component';
 import { HorizontalGridComponent } from './horizontal-grid/horizontal-grid.component';
 import { SimpleWaterfallComponent } from './simple-waterfall/simple-waterfall.component';
+import { SimpleTemplatesComponent } from './simple-templates/simple-templates.component';
 
-export const COMPONENTS = [SimpleGridComponent, HorizontalGridComponent, SimpleWaterfallComponent];
+export const COMPONENTS = [SimpleGridComponent, HorizontalGridComponent, SimpleWaterfallComponent, SimpleTemplatesComponent];
 @NgModule({
     imports: [CollectionViewModule],
     exports: [CollectionViewModule],
@@ -23,4 +24,5 @@ export const demos = [
     { name: 'Simple Grid', path: 'simple-grid', component: SimpleGridComponent },
     { name: 'Horizontal Grid', path: 'horizontal-grid', component: HorizontalGridComponent },
     { name: 'Simple Waterfall', path: 'simple-waterfall', component: SimpleWaterfallComponent },
+    { name: 'Simple Template', path: 'simple-template', component: SimpleTemplatesComponent },
 ];

@@ -1,0 +1,29 @@
+<ActionBar>
+    <NavigationButton android.systemIcon="ic_menu_back" (tap)="goBack()"></NavigationButton>
+    <Label text="Simple Templates"></Label>
+</ActionBar>
+
+<GridLayout>
+    <CollectionView 
+        iosOverflowSafeArea="true"
+        [items]="items"  
+        [itemTemplateSelector]="templateSelector"
+        [spanSize]="spanSizeSelector"
+        (itemTap)="onItemTap($event)" 
+        (loadMoreItems)="onLoadMoreItems()"
+        colWidth="50%">
+        <ng-template cvTemplateKey="item" let-item="item">
+            <GridLayout rows="*, auto" [backgroundColor]="item.color">
+                <StackLayout row="1" height="200" padding="10">
+                    <Label row="1" [text]="item.name" color="white" fontSize="17" fontWeight="bold"></Label>
+                    <Label row="1" [text]="item.color" color="white" fontSize="14"></Label>
+                </StackLayout>
+            </GridLayout>
+        </ng-template>
+        <ng-template cvTemplateKey="heading" let-item="item">
+            <StackLayout [backgroundColor]="item.color" verticalAlignment="middle" padding="25">
+                <Label [text]="item.name" textTransform="uppercase" color="white" fontSize="20" fontWeight="bold"></Label>
+            </StackLayout>
+        </ng-template>
+    </CollectionView>
+</GridLayout>
