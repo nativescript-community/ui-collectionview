@@ -111,25 +111,6 @@ class LongPressGestureListenerImpl extends android.view.GestureDetector.SimpleOn
     }
 }
 
-// @NativeClass
-// class PreCachingGridLayoutManager extends com.nativescript.collectionview.PreCachingGridLayoutManager {
-//     owner: WeakRef<CollectionView>;
-//     constructor(context, span) {
-//         super(context, span);
-//         return global.__native(this);
-//     }
-//     onLayoutCompleted(state) {
-//         super.onLayoutCompleted(state);
-//         const owner = this.owner  && this.owner.get();
-//         if (owner) {
-//             owner.notify({
-//                 eventName: 'layoutCompleted',
-//                 object: owner,
-//             });
-//         }
-//     }
-// }
-
 declare module '@nativescript/core/ui/core/view' {
     interface View {
         layoutChangeListenerIsSet: boolean;
@@ -148,40 +129,6 @@ let CellViewHolder: CellViewHolder;
 
 let LayoutParams: typeof android.view.ViewGroup.LayoutParams;
 
-// function initCellViewHolder() {
-//     if (CellViewHolder) {
-//         return;
-//     }
-//     @Interfaces([android.view.View.OnClickListener])
-//     class CellViewHolderImpl extends com.nativescript.collectionview.CollectionViewCellHolder implements android.view.View.OnClickListener {
-//         constructor(private owner: WeakRef<View>, private collectionView: WeakRef<CollectionView>) {
-//             super(owner.get().android);
-
-//             const nativeThis = global.__native(this);
-//             const nativeView = owner.get().android as android.view.View;
-//             nativeView.setOnClickListener(nativeThis);
-
-//             return nativeThis;
-//         }
-
-//         get view(): View {
-//             return this.owner ? this.owner.get() : null;
-//         }
-
-//         public onClick(v: android.view.View) {
-//             const collectionView = this.collectionView.get();
-//             const position = this.getAdapterPosition();
-//             collectionView.notify<CollectionViewItemEventData>({
-//                 eventName: CollectionViewBase.itemTapEvent,
-//                 object: collectionView,
-//                 index: position,
-//                 item: collectionView.getItem(position),
-//                 view: this.view,
-//             });
-//         }
-//     }
-//     CellViewHolder = CellViewHolderImpl as any;
-// }
 const extraLayoutSpaceProperty = new Property<CollectionViewBase, number>({
     name: 'extraLayoutSpace'
 });
@@ -314,9 +261,9 @@ export class CollectionView extends CollectionViewBase {
         this._getSpanSize = inter;
         const layoutManager = this.layoutManager;
         if (layoutManager && layoutManager['setSpanSizeLookup']) {
-            layoutManager['setSpanSizeLookup'](
-                inter
-                    ? new com.nativescript.collectionview.SpanSizeLookup(
+            if (inter) {
+                layoutManager['setSpanSizeLookup'](
+                    new com.nativescript.collectionview.SpanSizeLookup(
                         new com.nativescript.collectionview.SpanSizeLookup.Interface({
                             getSpanSize: (position) => {
                                 const dataItem = this.getItemAtIndex(position);
@@ -324,8 +271,10 @@ export class CollectionView extends CollectionViewBase {
                             }
                         })
                     )
-                    : null
-            );
+                );
+            } else {
+                layoutManager['setSpanSizeLookup'](null);
+            }
         }
     }
     get spanSize() {
