@@ -1,1 +1,1 @@
-pod "CollectionViewWaterfallLayout"
+pod "CollectionViewWaterfallLayout", :git => 'https://github.com/farfromrefug/CollectionViewWaterfallLayout.git'

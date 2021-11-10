@@ -50,8 +50,8 @@ export default function install() {
         createLayout: (collectionview: CollectionView) => {
             const layout = CollectionViewWaterfallLayout.new();
             layout['columnCount'] = collectionview.computeSpanCount();
-            // layout['minimumColumnSpacing'] = 12;
-            // layout['minimumInteritemSpacing'] = 12;
+            layout['minimumColumnSpacing'] = 0;
+            layout['minimumInteritemSpacing'] = 0;
             return layout;
         },
         createDelegate: () => UICollectionViewWaterfallDelegateImpl.new(),
