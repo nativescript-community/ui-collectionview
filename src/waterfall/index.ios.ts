@@ -54,12 +54,12 @@ export default function install() {
             layout['minimumInteritemSpacing'] = 0;
             return layout;
         },
-        createDelegate: () => UICollectionViewWaterfallDelegateImpl.new(),
+        createDelegate: () => UICollectionViewWaterfallDelegateImpl.new()
     });
     CollectionView.registerPlugin('waterfall', {
         onLayout: (collectionview: CollectionView) => {
             const layout = collectionview.nativeViewProtected.collectionViewLayout;
             layout['columnCount'] = collectionview.computeSpanCount();
-        },
+        }
     });
 }
