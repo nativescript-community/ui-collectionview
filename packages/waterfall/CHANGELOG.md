@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.47](https://github.com/nativescript-community/ui-collectionview/compare/v4.0.46...v4.0.47) (2021-11-10)
+
+
+### Bug Fixes
+
+* file permissions ([52babd6](https://github.com/nativescript-community/ui-collectionview/commit/52babd68e7c64a0fded8433deac53cb08d5b3885))
+* **waterfall:** fix issue with item marging ([08543ef](https://github.com/nativescript-community/ui-collectionview/commit/08543ef93b4722612fbc763b43f5bd90a62d9771))
+
+
+
+
+
 ## [4.0.46](https://github.com/nativescript-community/ui-collectionview/compare/v4.0.45...v4.0.46) (2021-10-21)
 
 **Note:** Version bump only for package @nativescript-community/ui-collectionview-waterfall
