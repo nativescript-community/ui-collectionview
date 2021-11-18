@@ -76,6 +76,10 @@ export default {
         templateSelector(item, _index, _items) {
             return item.type;
         },
+        spanSizeSelector(item, _index) {
+            if (item.type === "heading") return 2;
+            return 1;
+        }
     }
 };
 </script>

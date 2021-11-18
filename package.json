@@ -39,6 +39,7 @@
         "sync": "node ./tools/sync.js -w && npx sort-package-json",
         "sync.test": "node ./tools/sync.js",
         "tsc": "cpy '**/*.d.ts' '../plugin' --parents --cwd=src && tsc -skipLibCheck -d",
+        "update": "node ./tools/update.js",
         "watch": "npm run tsc -- -w"
     },
     "commitlint": {
