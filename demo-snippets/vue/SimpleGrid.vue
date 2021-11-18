@@ -5,16 +5,7 @@
         </ActionBar>
 
         <GridLayout>
-            <CollectionView
-                iosOverflowSafeArea="true"
-                :items="itemList"
-                @itemTap="onItemTap"
-                @loadMoreItems="onLoadMoreItems"
-                @itemLoadingEvent="onItemLoadingEvent"
-                itemIdGenerator="index"
-                colWidth="50%"
-                rowHeight="200"
-            >
+            <CollectionView iosOverflowSafeArea="true" :items="itemList" @itemTap="onItemTap" @loadMoreItems="onLoadMoreItems" itemIdGenerator="index" colWidth="50%" rowHeight="200">
                 <v-template>
                     <GridLayout id="test" rows="*, auto" :backgroundColor="item.color" class="item">
                         <StackLayout row="1">
