@@ -15,7 +15,6 @@ import {
     Trace,
     Utils,
     View,
-    ViewBase,
     addWeakEventListener,
     booleanConverter,
     heightProperty,
@@ -25,7 +24,7 @@ import {
     removeWeakEventListener,
     widthProperty
 } from '@nativescript/core';
-import { CollectionView as CollectionViewDefinition, CollectionViewItemEventData, Orientation } from '.'
+import { CollectionView as CollectionViewDefinition, CollectionViewItemEventData, Orientation } from '.';
 
 export const CollectionViewTraceCategory = 'NativescriptCollectionView';
 

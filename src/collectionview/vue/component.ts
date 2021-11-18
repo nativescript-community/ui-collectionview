@@ -1,14 +1,6 @@
-import { profile } from '@nativescript/core';
 import { Observable } from '@nativescript/core/data/observable';
 import { ObservableArray } from '@nativescript/core/data/observable-array';
-import { CollectionView } from '..'
-
-function extend(to, _from): any {
-    for (const key in _from) {
-        to[key] = _from[key];
-    }
-    return to;
-}
+import { CollectionView } from '..';
 
 const VUE_VIEW = '__vueVNodeRef__';
 export default {
@@ -65,7 +57,7 @@ export default {
             return (this.listView as CollectionView).getItemAtIndex(index);
         },
         onItemTap(args) {
-            this.$emit('itemTap', extend({ item: this.getItem(args.index) }, args));
+            this.$emit('itemTap', { item: this.getItem(args.index), ...args });
         },
         updateViewTemplate(args) {
             const listView = args.object as CollectionView;
