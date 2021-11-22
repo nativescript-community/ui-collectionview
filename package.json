@@ -1,13 +1,13 @@
 {
     "name": "@nativescript-community/ui-collectionview",
     "version": "1.0.0",
-    "homepage": "https://github.com/Akylas/nativescript-collectionview#readme",
+    "homepage": "https://github.com/@nativescript-community/ui-collectionview#readme",
     "bugs": {
-        "url": "https://github.com/Akylas/nativescript-collectionview/issues"
+        "url": "https://github.com/@nativescript-community/ui-collectionview/issues"
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/Akylas/nativescript-collectionview.git"
+        "url": "git+https://github.com/@nativescript-community/ui-collectionview.git"
     },
     "license": "ISC",
     "author": "",
@@ -26,9 +26,6 @@
         "demo.svelte.ios": "cd ./demo-svelte && ns run ios --no-hmr",
         "demo.vue.android": "cd ./demo-vue && ns run android --no-hmr",
         "demo.vue.ios": "cd ./demo-vue && ns run ios --no-hmr",
-        "e2e": "./e2e/run-tests.js",
-        "e2e.build": "./e2e/run-tests.js -b",
-        "e2e.run": "./e2e/run-tests.js -r",
         "postinstall": "npm run setup",
         "prepare": "npm run setup",
         "publish": "npm run setup && npm run build.all && lerna publish --create-release=github --force-publish",
@@ -48,62 +45,7 @@
         ]
     },
     "dependencies": {
-        "ts-node": "^9.0.0"
-    },
-    "devDependencies": {
-        "@angular/animations": "~12.2.9",
-        "@angular/common": "~12.2.9",
-        "@angular/compiler": "~12.2.9",
-        "@angular/compiler-cli": "~12.2.9",
-        "@angular/core": "~12.2.9",
-        "@angular/forms": "~12.2.9",
-        "@angular/platform-browser": "~12.2.9",
-        "@angular/platform-browser-dynamic": "~12.2.9",
-        "@angular/router": "~12.2.9",
-        "@appnest/readme": "^1.2.7",
-        "@commitlint/cli": "~13.2.1",
-        "@commitlint/config-conventional": "~13.2.0",
-        "@nativescript/angular": "~12.2.0",
-        "@nativescript/core": "~8.1.4",
-        "@nativescript/eslint-plugin": "0.0.4",
-        "@nativescript/types-android": "~8.1.0",
-        "@nativescript/types-ios": "~8.1.1",
-        "@nativescript/webpack": "~5.0.0",
-        "@types/node": "14.6.4",
-        "@types/react": "16.9.34",
-        "@typescript-eslint/eslint-plugin": "5.0.0",
-        "@typescript-eslint/parser": "5.0.0",
-        "cpy-cli": "^3.1.1",
-        "detox": "18.6.0",
-        "eslint": "8.0.0",
-        "eslint-config-prettier": "^8.3.0",
-        "eslint-plugin-prettier": "^4.0.0",
-        "eslint-plugin-svelte3": "3.2.1",
-        "eslint-plugin-vue": "^7.19.1",
-        "husky": "^7.0.2",
-        "jest": "^26.6.3",
-        "jest-circus": "^26.6.3",
-        "jest-cli": "^26.6.3",
-        "lerna": "^4.0.0",
-        "nativescript-vue": "~2.9.0",
-        "ng-packagr": "~12.2.3",
-        "ntl": "^5.1.0",
-        "package-json-merge": "0.0.1",
-        "patch-package": "~6.4.7",
-        "prettier": "^2.4.1",
-        "prompt": "~1.2.0",
-        "react-nativescript": "3.0.0-beta.3",
-        "rimraf": "~3.0.2",
-        "rxjs": "~6.5.5",
-        "svelte": "3.43.1",
-        "svelte-native": "~1.0.0",
-        "ts-patch": "~1.4.4",
-        "tslib": "2.3.1",
-        "typedoc": "~0.22.5",
-        "typescript": "~4.2.3",
-        "vue": "~2.6.14",
-        "yargs": "^17.2.1",
-        "zone.js": "~0.11.4"
+        "@nativescript-community/plugin-seed-tools": "file:tools"
     },
     "ntl": {
         "descriptions": {

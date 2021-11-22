@@ -1,8 +1,0 @@
-package-lock.json
-node_modules/
-plugin/
-demo-ng/
-demo-react/
-demo-svelte/
-demo-vue/
-docs/

@@ -2,7 +2,7 @@
     "name": "@nativescript-community/template-snippet",
     "version": "0.0.1",
     "dependencies": {
-        "@nativescript-community/ui-collectionview": "../packages/collectionview",
-        "@nativescript-community/ui-collectionview-waterfall": "../packages/waterfall"
+        "@nativescript-community/ui-collectionview": "file:../packages/collectionview",
+        "@nativescript-community/ui-collectionview-waterfall": "file:../packages/waterfall"
     }
 }
