@@ -37,7 +37,7 @@
         "setup": "npm run submodules && ts-patch install",
         "start": "./node_modules/.bin/ntl -A -s 15 -o",
         "submodules": "git submodule update --init",
-        "sync": "node ./tools/sync.js -w && npx sort-package-json",
+        "sync": "node ./tools/sync.js",
         "sync.test": "node ./tools/sync.js",
         "tsc": "cpy '**/*.d.ts' '../plugin' --parents --cwd=src && tsc -skipLibCheck -d",
         "update": "node ./tools/update.js",
@@ -66,6 +66,11 @@
             "demo.vue.android": "Runs the Vue demo on Android.",
             "demo.vue.ios": "Runs the Vue demo on iOS.",
             "watch": "Watch for changes in the plugin source and re-build."
+        }
+    },
+    "dependenciesMeta": {
+        "@nativescript-community/plugin-seed-tools": {
+            "injected": true
         }
     }
 }
