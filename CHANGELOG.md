@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.48](https://github.com/@nativescript-community/ui-collectionview/compare/v4.0.47...v4.0.48) (2021-11-25)
+
+
+### Bug Fixes
+
+* **ios:** measurement fix on orientation change ([62d7ba9](https://github.com/@nativescript-community/ui-collectionview/commit/62d7ba96c7140661c08e94675fdbb8dd864d1b74))
+* vue templates demo span ([5498c02](https://github.com/@nativescript-community/ui-collectionview/commit/5498c02d3b5223b2c732dc66f19c2336d4eab95f))
+
+
+### Reverts
+
+* Revert "chore: cleanup" ([d42d50c](https://github.com/@nativescript-community/ui-collectionview/commit/d42d50cc90c4e8c94d668b7d0ae711f7c8e132c0))
+
+
+
+
+
 ## [4.0.47](https://github.com/Akylas/nativescript-collectionview/compare/v4.0.46...v4.0.47) (2021-11-10)
 
 
