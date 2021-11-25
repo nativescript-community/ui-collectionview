@@ -582,14 +582,6 @@ export class CollectionView extends CollectionViewBase {
         }
     }
 
-    public measure(widthMeasureSpec: number, heightMeasureSpec: number): void {
-        const changed = (this as any)._setCurrentMeasureSpecs(widthMeasureSpec, heightMeasureSpec);
-        super.measure(widthMeasureSpec, heightMeasureSpec);
-        if (changed && this.nativeView) {
-            this.nativeView.reloadData();
-        }
-    }
-
     public _setNativeClipToBounds() {
         this.nativeView.clipsToBounds = true;
     }
