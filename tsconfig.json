@@ -2,13 +2,10 @@
     "extends": "./tools/tsconfig",
     "compilerOptions": {
         "paths": {
-            "tns-core-modules": ["./node_modules/@nativescript/core"],
-            "tns-core-modules/*": ["./node_modules/@nativescript/core/*"],
             "@nativescript-community/ui-collectionview": ["src/collectionview"],
             "@nativescript-community/ui-collectionview/*": ["src/collectionview/*"],
             "@nativescript-community/ui-collectionview-waterfall": ["src/waterfall"],
             "@nativescript-community/ui-collectionview-waterfall/*": ["src/waterfall/*"],
-            "*": ["node_modules/*"]
        },
     }
 }
