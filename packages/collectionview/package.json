@@ -3,7 +3,6 @@
     "version": "4.0.48",
     "description": "Allows you to easily add a collection view (grid list view) to your projects. Supports vertical and horizontal modes, templating, and more.",
     "main": "./index",
-    "module": "./index.mjs",
     "sideEffects": false,
     "typings": "./index.d.ts",
     "scripts": {
