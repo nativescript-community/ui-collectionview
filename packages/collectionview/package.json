@@ -8,7 +8,7 @@
     "scripts": {
         "build": "npm run tsc && npm run readme",
         "build.all": "npm run build && npm run build.angular",
-        "build.angular": "../../node_modules/.bin/ng-packagr -p ../../src/collectionview/angular/package.json -c ../../src/collectionview/angular/tsconfig.json",
+        "build.angular": "../../node_modules/.bin/ng-packagr -p ../../src/collectionview/angular/ng-package.json -c ../../src/collectionview/angular/tsconfig.json",
         "readme": "../../node_modules/.bin/readme generate -c ../../tools/readme/blueprint.json",
         "tsc": "../../node_modules/.bin/cpy '**/*.d.ts' '../../packages/collectionview' --parents --cwd=../../src/collectionview && ../../node_modules/.bin/tsc -skipLibCheck -d",
         "clean": "../../node_modules/.bin/rimraf ./*.d.ts ./*.js ./*.js.map"
