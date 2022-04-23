@@ -654,6 +654,7 @@ export class CollectionView extends CollectionViewBase {
                 cell.contentView.addSubview(innerView);
             }
             cellSize = this.measureCell(cell, view, indexPath);
+            view.notify({ eventName: CollectionViewBase.bindedEvent });
 
             if (Trace.isEnabled()) {
                 CLog(CLogTypes.log, '_prepareCell done', index, cellSize);

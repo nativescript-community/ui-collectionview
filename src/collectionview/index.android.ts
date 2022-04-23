@@ -300,7 +300,7 @@ export class CollectionView extends CollectionViewBase {
         }
     }
 
-    private dettachScrollListener() {
+    private detachScrollListener() {
         if (this._scrollOrLoadMoreChangeCount === 0 && this.isLoaded) {
             const nativeView = this.nativeViewProtected;
             if (nativeView.scrollListener) {
@@ -399,7 +399,7 @@ export class CollectionView extends CollectionViewBase {
 
         if (arg === CollectionViewBase.scrollEvent || arg === CollectionViewBase.scrollStartEvent || arg === CollectionViewBase.scrollEndEvent || arg === CollectionViewBase.loadMoreItemsEvent) {
             this._scrollOrLoadMoreChangeCount--;
-            this.dettachScrollListener();
+            this.detachScrollListener();
         }
     }
 
@@ -1029,6 +1029,7 @@ export class CollectionView extends CollectionViewBase {
             // the view has been changed on the event handler
             (holder.view as ContentView).content = args.view;
         }
+        view.notify({ eventName: CollectionViewBase.bindedEvent });
         let width = this._effectiveColWidth;
         let height = this._effectiveRowHeight;
         if (this._getSpanSize) {
