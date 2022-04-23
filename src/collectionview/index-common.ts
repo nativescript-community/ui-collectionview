@@ -328,7 +328,11 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
         return lbl;
     }
     getTemplateFromSelector(templateKey) {
-        return this._itemTemplatesInternal.get(templateKey.toLowerCase()) || this._itemTemplatesInternal.get('default');
+        const key = templateKey.toLowerCase();
+        if (this._itemTemplatesInternal.has(key)) {
+            return this._itemTemplatesInternal.get(key);
+        }
+        return this._itemTemplatesInternal.get('default');
     }
     getViewForViewType(viewType: ListViewViewTypes, templateKey: string) {
         let newView;
