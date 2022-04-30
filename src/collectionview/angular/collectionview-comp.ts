@@ -18,25 +18,18 @@ import {
     TemplateRef,
     ViewChild,
     ViewContainerRef,
-    ɵisListLikeIterable as isListLikeIterable,
+    ɵisListLikeIterable as isListLikeIterable
 } from '@angular/core';
-import { KeyedTemplate, LayoutBase, ObservableArray, Trace, View } from '@nativescript/core';
 import { CLog, CLogTypes, CollectionView, CollectionViewItemEventData, ListViewViewTypes } from '@nativescript-community/ui-collectionview';
-
-import { getSingleViewRecursive, isKnownView, registerElement } from '@nativescript/angular';
+import { extractSingleViewRecursive, registerElement } from '@nativescript/angular';
+import { KeyedTemplate, LayoutBase, ObservableArray, Trace, View } from '@nativescript/core';
 
 registerElement('CollectionView', () => CollectionView);
 
 const NG_VIEW = '_ngViewRef';
 
 export class ItemContext {
-    constructor(
-        public $implicit?: any,
-        public item?: any,
-        public index?: number,
-        public even?: boolean,
-        public odd?: boolean
-    ) {}
+    constructor(public $implicit?: any, public item?: any, public index?: number, public even?: boolean, public odd?: boolean) {}
 }
 
 export interface SetupItemViewArgs {
@@ -53,7 +46,7 @@ export interface SetupItemViewArgs {
             <Placeholder #loader></Placeholder>
         </DetachedContainer>
     `,
-    changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CollectionViewComponent implements DoCheck, OnDestroy, AfterContentInit {
     public get nativeElement(): any {
@@ -158,7 +151,7 @@ export class CollectionViewComponent implements DoCheck, OnDestroy, AfterContent
 
         const keyedTemplate = {
             key,
-            createView: this.getItemTemplateViewFactory(template),
+            createView: this.getItemTemplateViewFactory(template)
         };
 
         this._templateMap.set(key, keyedTemplate);
@@ -172,10 +165,7 @@ export class CollectionViewComponent implements DoCheck, OnDestroy, AfterContent
         if (!this.items) return;
         const index = args.index;
         const items = (args.object as any).items;
-        const currentItem =
-            typeof items.getItem === 'function'
-                ? items.getItem(index)
-                : items[index];
+        const currentItem = typeof items.getItem === 'function' ? items.getItem(index) : items[index];
         let viewRef: EmbeddedViewRef<ItemContext>;
 
         if (Trace.isEnabled()) {
@@ -185,11 +175,7 @@ export class CollectionViewComponent implements DoCheck, OnDestroy, AfterContent
         viewRef = args.view[NG_VIEW];
         // Getting angular view from original element (in cases when ProxyViewContainer
         // is used NativeScript internally wraps it in a StackLayout)
-        if (
-            !viewRef &&
-            args.view instanceof LayoutBase &&
-            args.view.getChildrenCount() > 0
-        ) {
+        if (!viewRef && args.view instanceof LayoutBase && args.view.getChildrenCount() > 0) {
             viewRef = args.view.getChildAt(0)[NG_VIEW];
         }
 
@@ -204,11 +190,7 @@ export class CollectionViewComponent implements DoCheck, OnDestroy, AfterContent
                 CLog(CLogTypes.info, `onItemLoading: ${index} - Creating view from template`);
             }
 
-            viewRef = this.loader.createEmbeddedView(
-                this.itemTemplate,
-                new ItemContext(),
-                0
-            );
+            viewRef = this.loader.createEmbeddedView(this.itemTemplate, new ItemContext(), 0);
             args.view = getItemViewRoot(viewRef);
             args.view[NG_VIEW] = viewRef;
         }
@@ -230,19 +212,13 @@ export class CollectionViewComponent implements DoCheck, OnDestroy, AfterContent
             context,
             data,
             index,
-            view,
+            view
         });
     }
 
-    protected getItemTemplateViewFactory(
-        template: TemplateRef<ItemContext>
-    ): () => View {
+    protected getItemTemplateViewFactory(template: TemplateRef<ItemContext>): () => View {
         return () => {
-            const viewRef = this.loader.createEmbeddedView(
-                template,
-                new ItemContext(),
-                0
-            );
+            const viewRef = this.loader.createEmbeddedView(template, new ItemContext(), 0);
             const resultView = getItemViewRoot(viewRef);
             resultView[NG_VIEW] = viewRef;
 
@@ -293,7 +269,7 @@ export interface ComponentView {
 
 export type RootLocator = (nodes: any[], nestLevel: number) => View;
 
-export function getItemViewRoot(viewRef: ComponentView, rootLocator: RootLocator = getSingleViewRecursive): View {
+export function getItemViewRoot(viewRef: ComponentView, rootLocator: RootLocator = extractSingleViewRecursive): View {
     const rootView = rootLocator(viewRef.rootNodes, 0);
     return rootView;
 }

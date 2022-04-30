@@ -7,6 +7,6 @@
             "@nativescript-community/ui-collectionview": ["packages/collectionview"]
         }
     },
-    "include": ["./**/*.ts", "../../../references.d.ts", "../../references.d.ts"],
+    "include": ["./**/*.ts"],
     "exclude": ["../node_modules"]
 }
