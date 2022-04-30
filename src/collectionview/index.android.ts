@@ -32,7 +32,11 @@ import { CLog, CLogTypes, CollectionViewBase, ListViewViewTypes, isScrollEnabled
 export * from './index-common';
 
 declare module '@nativescript/core/ui/core/view' {
-    interface View {
+    interface ViewCommon {
+        layoutChangeListenerIsSet: boolean;
+        layoutChangeListener: android.view.View.OnLayoutChangeListener;
+        //@ts-ignore
+        _raiseLayoutChangedEvent();
         handleGestureTouch(event: android.view.MotionEvent);
     }
 }
@@ -108,14 +112,6 @@ class LongPressGestureListenerImpl extends android.view.GestureDetector.SimpleOn
         if (owner) {
             owner.onReorderLongPress(motionEvent);
         }
-    }
-}
-
-declare module '@nativescript/core/ui/core/view' {
-    interface View {
-        layoutChangeListenerIsSet: boolean;
-        layoutChangeListener: android.view.View.OnLayoutChangeListener;
-        _raiseLayoutChangedEvent();
     }
 }
 
@@ -207,7 +203,7 @@ export class CollectionView extends CollectionViewBase {
         this.setOnLayoutChangeListener();
         super.initNativeView();
         const nativeView = this.nativeViewProtected;
-        nativeView.owner = new WeakRef(this);
+        // nativeView.owner = new WeakRef(this);
         // nativeView.sizeChangedListener = new com.nativescript.collectionview.SizeChangedListener({
         //     onSizeChanged: (w, h, oldW, oldH) => this.onSizeChanged(w, h),
         // });
@@ -226,6 +222,10 @@ export class CollectionView extends CollectionViewBase {
         // this.spanSize
         nativeView.setLayoutManager(layoutManager);
         nativeView.layoutManager = layoutManager;
+        nativeView.sizeChangedListener = new com.nativescript.collectionview.SizeChangedListener({
+            onSizeChanged() {},
+            onMeasure: () => this.updateInnerSize()
+        });
         this.spanSize = this._getSpanSize;
 
         const animator = new com.h6ah4i.android.widget.advrecyclerview.animator.RefactoredDefaultItemAnimator();
@@ -236,10 +236,40 @@ export class CollectionView extends CollectionViewBase {
 
         nativeView.setItemAnimator(animator);
         this.refresh();
-
-        // colWidthProperty.coerce(this);
-        // rowHeightProperty.coerce(this);
     }
+    public disposeNativeView() {
+        // clear the cache
+        // this.eachChildView((view) => {
+        //     view.parent._removeView(view);
+        //     return true;
+        // });
+        // this._realizedItems.clear();
+
+        const nativeView = this.nativeViewProtected;
+        if (nativeView.scrollListener) {
+            this.nativeView.removeOnScrollListener(nativeView.scrollListener);
+            nativeView.scrollListener = null;
+            this._nScrollListener = null;
+        }
+        nativeView.sizeChangedListener = null;
+        nativeView.layoutManager = null;
+        this._listViewAdapter = null;
+        this._itemTouchHelper = null;
+        this._simpleItemTouchCallback = null;
+        this.disposeViewHolderViews();
+        this._hlayoutParams = null;
+        this._vlayoutParams = null;
+        this.clearTemplateTypes();
+
+        super.disposeNativeView();
+    }
+
+    onLoaded() {
+        super.onLoaded();
+        this.attachScrollListener();
+        this.refresh();
+    }
+
     _getSpanSize: (item, index) => number;
     public getViewForItemAtIndex(index: number): View {
         let result: View;
@@ -279,10 +309,6 @@ export class CollectionView extends CollectionViewBase {
     }
     get spanSize() {
         return this._getSpanSize;
-    }
-    onLoaded() {
-        super.onLoaded();
-        this.attachScrollListener();
     }
 
     private attachScrollListener() {
@@ -401,32 +427,6 @@ export class CollectionView extends CollectionViewBase {
             this._scrollOrLoadMoreChangeCount--;
             this.detachScrollListener();
         }
-    }
-
-    public disposeNativeView() {
-        // clear the cache
-        // this.eachChildView((view) => {
-        //     view.parent._removeView(view);
-        //     return true;
-        // });
-        // this._realizedItems.clear();
-
-        const nativeView = this.nativeView;
-        if (nativeView.scrollListener) {
-            this.nativeView.removeOnScrollListener(nativeView.scrollListener);
-            nativeView.scrollListener = null;
-            this._nScrollListener = null;
-        }
-        nativeView.layoutManager = null;
-        this._listViewAdapter = null;
-        this._itemTouchHelper = null;
-        this._simpleItemTouchCallback = null;
-        this.disposeViewHolderViews();
-        this._hlayoutParams = null;
-        this._vlayoutParams = null;
-        this.clearTemplateTypes();
-
-        super.disposeNativeView();
     }
 
     //@ts-ignore
@@ -661,10 +661,21 @@ export class CollectionView extends CollectionViewBase {
             this.nativeViewProtected.addOnLayoutChangeListener(this.layoutChangeListener);
         }
     }
+
     _updateSpanCount() {
-        if (this._layedOut && this.layoutManager && this.layoutManager['setSpanCount']) {
-            this.layoutManager['setSpanCount'](this.computeSpanCount());
+        const layoutManager = this.layoutManager;
+        if (layoutManager && layoutManager['setSpanCount']) {
+            const newValue = this.computeSpanCount();
+            if (newValue !== layoutManager['getSpanCount']()) {
+                layoutManager['setSpanCount'](newValue);
+                layoutManager.requestLayout();
+            }
         }
+    }
+
+    updateInnerSize() {
+        super.updateInnerSize();
+        this._updateSpanCount();
     }
     _onColWidthPropertyChanged(oldValue: CoreTypes.PercentLengthType, newValue: CoreTypes.PercentLengthType) {
         this._updateSpanCount();
@@ -685,13 +696,13 @@ export class CollectionView extends CollectionViewBase {
             const p = CollectionViewBase.plugins[k];
             p.onLayout && p.onLayout(this, left, top, right, bottom);
         });
-        this._updateSpanCount();
         // there is no need to call refresh if it was triggered before with same size.
         // this refresh is just to handle size change
         const layoutKey = this._innerWidth + '_' + this._innerHeight;
-        if (this._lastLayoutKey !== layoutKey) {
+        if (this._isDataDirty || (this._lastLayoutKey && this._lastLayoutKey !== layoutKey)) {
             setTimeout(() => this.refresh(), 0);
         }
+        this._lastLayoutKey = layoutKey;
     }
     public onSourceCollectionChanged(event: ChangedData<any>) {
         if (!this._listViewAdapter || this._dataUpdatesSuspended) {
@@ -802,7 +813,7 @@ export class CollectionView extends CollectionViewBase {
             return;
         }
         const view = this.nativeViewProtected;
-        if (!this.isLoaded || !this._layedOut) {
+        if (!this.isLoaded) {
             this._isDataDirty = true;
             return;
         }
@@ -817,10 +828,7 @@ export class CollectionView extends CollectionViewBase {
             view.setAdapter(adapter);
         }
 
-        const layoutManager = view.getLayoutManager();
-        if (layoutManager['setSpanCount']) {
-            layoutManager['setSpanCount'](this.computeSpanCount());
-        }
+        this._updateSpanCount();
         adapter.notifyDataSetChanged();
         const args = {
             eventName: CollectionViewBase.dataPopulatedEvent,

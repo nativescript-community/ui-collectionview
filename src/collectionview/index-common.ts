@@ -189,8 +189,14 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
             }
         }
     }
-    public onLayout(left: number, top: number, right: number, bottom: number) {
-        super.onLayout(left, top, right, bottom);
+    // public onLayout(left: number, top: number, right: number, bottom: number) {
+    //     super.onLayout(left, top, right, bottom);
+    //     // on ios and during device rotation the getMeasuredWidth and getMeasuredHeight are wrong
+    //     // so we use left, top , right, bottom
+    //     this.updateInnerSize();
+    // }
+    public onMeasure(widthMeasureSpec: number, heightMeasureSpec: number) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         // on ios and during device rotation the getMeasuredWidth and getMeasuredHeight are wrong
         // so we use left, top , right, bottom
         this.updateInnerSize();
