@@ -6,7 +6,7 @@
 
         <GridLayout>
             <CollectionView
-                iosOverflowSafeArea="true"
+                
                 :items="itemList"
                 @itemTap="onItemTap"
                 @loadMoreItems="onLoadMoreItems"

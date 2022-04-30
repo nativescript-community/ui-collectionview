@@ -50,7 +50,7 @@ const cellFactory = (item: Item) => (
 
 export function SimpleWaterfall() {
     return (
-        <CollectionView iosOverflowSafeArea={true} items={items} colWidth="50%" cellFactory={cellFactory} layoutStyle="waterfall" width="100%" height="100%" />
+        <CollectionView items={items} colWidth="50%" cellFactory={cellFactory} layoutStyle="waterfall" width="100%" height="100%" />
     );
 }
 

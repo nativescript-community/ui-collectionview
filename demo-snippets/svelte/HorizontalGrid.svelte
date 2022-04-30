@@ -36,7 +36,7 @@
     <gridLayout>
         <collectionView 
             {items} 
-            iosOverflowSafeArea="true"
+            
             colWidth="50%"
             rowHeight="50%"
             on:itemTap="{onItemTap}"

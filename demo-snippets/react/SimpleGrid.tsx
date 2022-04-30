@@ -43,7 +43,7 @@ const cellFactory = (item: Item) => (
 
 export function SimpleGrid() {
     return (
-        <CollectionView iosOverflowSafeArea={true} items={items} colWidth="50%" rowHeight="200" cellFactory={cellFactory} width="100%" height="100%" />
+        <CollectionView items={items} colWidth="50%" rowHeight="200" cellFactory={cellFactory} width="100%" height="100%" />
     );
 }
 

@@ -54,7 +54,7 @@ import { ObservableArray } from '@nativescript/core';
             {items} 
             itemTemplateSelector={templateSelector}
             spanSize={spanSizeSelector}
-            iosOverflowSafeArea="true"
+            
             colWidth="50%"
             on:itemTap="{onItemTap}"
             on:loadMoreItems="{onLoadMoreItems}"

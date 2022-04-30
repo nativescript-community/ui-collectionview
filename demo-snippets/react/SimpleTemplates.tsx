@@ -72,7 +72,6 @@ const cellFactories = new Map([
 export function SimpleTemplates() {
     return (
         <CollectionView 
-            iosOverflowSafeArea={true} 
             items={items} 
             colWidth="50%" 
             rowHeight="200" 
