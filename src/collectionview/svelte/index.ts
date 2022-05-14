@@ -3,7 +3,7 @@ import { profile } from '@nativescript/core/profiling';
 import { ContentView, LayoutBase, StackLayout, ViewBase } from '@nativescript/core/ui';
 import { NativeViewElementNode, TemplateElement, ViewNode, createElement, registerElement } from 'svelte-native/dom';
 import { flush } from 'svelte/internal';
-import { CollectionView } from '..'
+import { CollectionView } from '..';
 
 declare module '@nativescript/core/ui/core/view-base' {
     interface ViewBase {
@@ -72,7 +72,7 @@ export default class CollectionViewViewElement extends NativeViewElementNode<Col
         const builder = (parentView, props: any) => {
             (nativeEl as any).__SvelteComponent__ = new componentClass({
                 target: parentView,
-                props,
+                props
             });
         };
         // in svelte we want to add the wrapper as a child of the collectionview ourselves
@@ -133,8 +133,10 @@ export default class CollectionViewViewElement extends NativeViewElementNode<Col
             // ensure we dont do unnecessary tasks if index did not change
             // console.log('updateListItem', args.index,  _view.__CollectionViewCurrentIndex__);
             _view.__CollectionViewCurrentIndex__ = args.index;
-            componentInstance.$set(props);
-            flush(); // we need to flush to make sure update is applied right away
+            _view._batchUpdate(() => {
+                componentInstance.$set(props);
+                flush(); // we need to flush to make sure update is applied right away
+            });
         }
     }
 
