@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.51](https://github.com/@nativescript-community/ui-collectionview/compare/v4.0.50...v4.0.51) (2022-05-14)
+
+
+### Bug Fixes
+
+* svelte batch update ([f9a708a](https://github.com/@nativescript-community/ui-collectionview/commit/f9a708ab71d9c278cefa4be8f12135ad480297af))
+
+
+
+
+
 ## [4.0.50](https://github.com/@nativescript-community/ui-collectionview/compare/v4.0.49...v4.0.50) (2022-05-12)
 
 
