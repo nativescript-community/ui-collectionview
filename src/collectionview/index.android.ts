@@ -150,6 +150,8 @@ export class CollectionView extends CollectionViewBase {
     private templateStringTypeNumber = new Map<number, string>();
     private _currentNativeItemType = 0;
 
+    private currentSpanCount = 1;
+
     // used to store viewHolder and make sure they are not garbaged
     private _viewHolders = new Array<CollectionViewCellHolder>();
 
@@ -297,7 +299,7 @@ export class CollectionView extends CollectionViewBase {
                         new com.nativescript.collectionview.SpanSizeLookup.Interface({
                             getSpanSize: (position) => {
                                 const dataItem = this.getItemAtIndex(position);
-                                return inter(dataItem, position);
+                                return Math.min(inter(dataItem, position), this.currentSpanCount);
                             }
                         })
                     )
@@ -665,7 +667,7 @@ export class CollectionView extends CollectionViewBase {
     _updateSpanCount() {
         const layoutManager = this.layoutManager;
         if (layoutManager && layoutManager['setSpanCount']) {
-            const newValue = this.computeSpanCount();
+            const newValue = (this.currentSpanCount = this.computeSpanCount());
             if (newValue !== layoutManager['getSpanCount']()) {
                 layoutManager['setSpanCount'](newValue);
                 layoutManager.requestLayout();
