@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.52](https://github.com/@nativescript-community/ui-collectionview/compare/v4.0.51...v4.0.52) (2022-05-17)
+
+
+### Bug Fixes
+
+* **collectionview:** android fix for spanSize ([d29b02b](https://github.com/@nativescript-community/ui-collectionview/commit/d29b02b11ac7b66368da555c07ab93e5bbe89915))
+
+
+
+
+
 ## [4.0.51](https://github.com/@nativescript-community/ui-collectionview/compare/v4.0.50...v4.0.51) (2022-05-14)
 
 
