@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.53](https://github.com/@nativescript-community/ui-collectionview/compare/v4.0.52...v4.0.53) (2022-07-11)
+
+
+### Bug Fixes
+
+* **collection,android:** prevent memory leaks (keeping references to viewHolders) ([845ef09](https://github.com/@nativescript-community/ui-collectionview/commit/845ef09e37325d5013f4d755db2f4a458eb36357))
+
+
+
+
+
 ## [4.0.52](https://github.com/@nativescript-community/ui-collectionview/compare/v4.0.51...v4.0.52) (2022-05-17)
 
 
