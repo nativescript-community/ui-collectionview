@@ -947,6 +947,7 @@ export class CollectionView extends CollectionViewBase {
             v.view = null;
             v.clickListener = null;
         });
+        this._viewHolders = new Set();
     }
     getKeyByValue(viewType: number) {
         return this.templateStringTypeNumber.get(viewType);
