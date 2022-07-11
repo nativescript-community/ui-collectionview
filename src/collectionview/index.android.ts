@@ -4,7 +4,6 @@ import {
     ChangedData,
     ContentView,
     CoreTypes,
-    FlexboxLayout,
     Property,
     ProxyViewContainer,
     Trace,
@@ -18,15 +17,7 @@ import {
     profile
 } from '@nativescript/core';
 import { layout } from '@nativescript/core/utils/utils';
-import {
-    CollectionViewItemDisplayEventData,
-    CollectionViewItemEventData,
-    Orientation,
-    reorderLongPressEnabledProperty,
-    reorderingEnabledProperty,
-    reverseLayoutProperty,
-    scrollBarIndicatorVisibleProperty
-} from '.';
+import { CollectionViewItemEventData, Orientation, reorderLongPressEnabledProperty, reorderingEnabledProperty, reverseLayoutProperty, scrollBarIndicatorVisibleProperty } from '.';
 import { CLog, CLogTypes, CollectionViewBase, ListViewViewTypes, isScrollEnabledProperty, orientationProperty } from './index-common';
 
 export * from './index-common';
@@ -152,11 +143,9 @@ export class CollectionView extends CollectionViewBase {
 
     private currentSpanCount = 1;
 
-    // used to store viewHolder and make sure they are not garbaged
-    private _viewHolders = new Array<CollectionViewCellHolder>();
-
+    // used to store viewHolder and thus their corresponding Views
     // used to "destroy" cells when possible
-    private _viewHolderChildren = new Array();
+    private _viewHolders = new Set<WeakRef<CollectionViewCellHolder>>();
 
     private _scrollOrLoadMoreChangeCount = 0;
     private _nScrollListener: com.nativescript.collectionview.OnScrollListener.Listener;
@@ -274,16 +263,7 @@ export class CollectionView extends CollectionViewBase {
 
     _getSpanSize: (item, index) => number;
     public getViewForItemAtIndex(index: number): View {
-        let result: View;
-        this._viewHolders.some(function (cellItemView, key) {
-            if (cellItemView && cellItemView.getAdapterPosition() === index) {
-                result = cellItemView.view;
-                return true;
-            }
-            return false;
-        });
-
-        return result;
+        return this.enumerateViewHolders<View>((v) => (v.getAdapterPosition() === index ? v.view : undefined));
     }
     //@ts-ignore
     set spanSize(inter: (item, index) => number) {
@@ -538,16 +518,23 @@ export class CollectionView extends CollectionViewBase {
             this.nativeViewProtected.setVerticalScrollBarEnabled(value);
         }
     }
+    private enumerateViewHolders<T = any>(cb: (v: CollectionViewCellHolder) => T) {
+        let result: T, v: CollectionViewCellHolder;
+        for (let it = this._viewHolders.values(), cellItemView: WeakRef<CollectionViewCellHolder> = null; (cellItemView = it.next().value); ) {
+            v = cellItemView?.get();
+            if (v) {
+                result = cb(v);
+                if (result) {
+                    return result;
+                }
+            }
+        }
+        return result;
+    }
     public startDragging(index: number) {
         if (this.reorderEnabled && this._itemTouchHelper) {
-            let viewHolder: CollectionViewCellHolder;
-            this._viewHolders.some((v) => {
-                if (v.getAdapterPosition() === index) {
-                    viewHolder = v;
-                    return true;
-                }
-                return false;
-            });
+            // let viewHolder: CollectionViewCellHolder;
+            const viewHolder = this.enumerateViewHolders<CollectionViewCellHolder>((v) => (v.getAdapterPosition() === index ? v : undefined));
             if (viewHolder) {
                 this.startViewHolderDragging(index, viewHolder);
             }
@@ -637,11 +624,6 @@ export class CollectionView extends CollectionViewBase {
         super.onItemTemplatesChanged(oldValue, newValue); // TODO: update current template with the new one
         this.refresh();
     }
-    // public eachChildView(callback: (child: View) => boolean): void {
-    //     this._realizedItems.forEach((view, key) => {
-    //         callback(view);
-    //     });
-    // }
 
     private setOnLayoutChangeListener() {
         if (this.nativeViewProtected) {
@@ -772,13 +754,16 @@ export class CollectionView extends CollectionViewBase {
 
     eachChild(callback: (child: ViewBase) => boolean) {
         // used for css updates (like theme change)
-        this._viewHolders.forEach(({ view }, nativeView) => {
-            if (view.parent instanceof CollectionView) {
-                callback(view);
-            } else {
-                // in some cases (like item is unloaded from another place (like angular) view.parent becomes undefined)
-                if (view.parent) {
-                    callback(view.parent);
+        this.enumerateViewHolders((v) => {
+            const view = v.view;
+            if (view) {
+                if (view.parent instanceof CollectionView) {
+                    callback(view);
+                } else {
+                    // in some cases (like item is unloaded from another place (like angular) view.parent becomes undefined)
+                    if (view.parent) {
+                        callback(view.parent);
+                    }
                 }
             }
         });
@@ -788,8 +773,9 @@ export class CollectionView extends CollectionViewBase {
         if (!view) {
             return;
         }
-        const ids = this._viewHolders
-            .map((s) => s['position'])
+        const ids = Array.from(this._viewHolders)
+            .filter((s) => s.get())
+            .map((s) => s.get()['position'])
             .filter((s) => s !== null)
             .sort((a, b) => a - b);
         this._listViewAdapter.notifyItemRangeChanged(ids[0], ids[ids.length - 1] - ids[0] + 1);
@@ -956,13 +942,11 @@ export class CollectionView extends CollectionViewBase {
     }
 
     disposeViewHolderViews() {
-        this._viewHolders.forEach((v) => {
+        this.enumerateViewHolders((v) => {
+            this._removeViewCore(v.view);
             v.view = null;
             v.clickListener = null;
         });
-        this._viewHolders = new Array();
-        this._viewHolderChildren.forEach((v) => this._removeViewCore(v));
-        this._viewHolderChildren = new Array();
     }
     getKeyByValue(viewType: number) {
         return this.templateStringTypeNumber.get(viewType);
@@ -978,7 +962,7 @@ export class CollectionView extends CollectionViewBase {
             parentView.id = 'collectionViewHolder';
             view = parentView;
         }
-        this._viewHolderChildren.push(view);
+        // this._viewHolderChildren.push(new WeakRef(view));
         this._addView(view);
         if (!CollectionViewCellHolder) {
             CollectionViewCellHolder = com.nativescript.collectionview.CollectionViewCellHolder as any;
@@ -1007,7 +991,7 @@ export class CollectionView extends CollectionViewBase {
         if (isNonSync) {
             holder['defaultItemView'] = true;
         }
-        this._viewHolders.push(holder);
+        this._viewHolders.add(new WeakRef(holder));
 
         return holder;
     }
