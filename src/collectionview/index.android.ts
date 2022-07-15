@@ -106,14 +106,6 @@ class LongPressGestureListenerImpl extends android.view.GestureDetector.SimpleOn
     }
 }
 
-// Snapshot friendly GridViewAdapter
-interface CellViewHolder extends com.nativescript.collectionview.CollectionViewCellHolder {
-    // tslint:disable-next-line:no-misused-new
-    new (owner: WeakRef<View>, collectionView: WeakRef<CollectionView>): CellViewHolder;
-}
-// eslint-disable-next-line no-redeclare
-let CellViewHolder: CellViewHolder;
-
 let LayoutParams: typeof android.view.ViewGroup.LayoutParams;
 
 const extraLayoutSpaceProperty = new Property<CollectionViewBase, number>({
@@ -145,7 +137,7 @@ export class CollectionView extends CollectionViewBase {
 
     // used to store viewHolder and thus their corresponding Views
     // used to "destroy" cells when possible
-    private _viewHolders = new Set<WeakRef<CollectionViewCellHolder>>();
+    private _viewHolders = new Set<CollectionViewCellHolder>();
 
     private _scrollOrLoadMoreChangeCount = 0;
     private _nScrollListener: com.nativescript.collectionview.OnScrollListener.Listener;
@@ -520,13 +512,10 @@ export class CollectionView extends CollectionViewBase {
     }
     private enumerateViewHolders<T = any>(cb: (v: CollectionViewCellHolder) => T) {
         let result: T, v: CollectionViewCellHolder;
-        for (let it = this._viewHolders.values(), cellItemView: WeakRef<CollectionViewCellHolder> = null; (cellItemView = it.next().value); ) {
-            v = cellItemView?.get();
-            if (v) {
-                result = cb(v);
-                if (result) {
-                    return result;
-                }
+        for (let it = this._viewHolders.values(), cellItemView: CollectionViewCellHolder = null; (cellItemView = it.next().value); ) {
+            result = cb(cellItemView);
+            if (result) {
+                return result;
             }
         }
         return result;
@@ -774,8 +763,7 @@ export class CollectionView extends CollectionViewBase {
             return;
         }
         const ids = Array.from(this._viewHolders)
-            .filter((s) => s.get())
-            .map((s) => s.get()['position'])
+            .map((s) => s['position'])
             .filter((s) => s !== null)
             .sort((a, b) => a - b);
         this._listViewAdapter.notifyItemRangeChanged(ids[0], ids[ids.length - 1] - ids[0] + 1);
@@ -943,12 +931,18 @@ export class CollectionView extends CollectionViewBase {
 
     disposeViewHolderViews() {
         this.enumerateViewHolders((v) => {
-            this._removeViewCore(v.view);
+            const view = v.view;
+            if (view && view.isLoaded) {
+                view.callUnloaded();
+            }
+            view._isAddedToNativeVisualTree = false;
+            view._tearDownUI();
             v.view = null;
             v.clickListener = null;
         });
         this._viewHolders = new Set();
     }
+
     getKeyByValue(viewType: number) {
         return this.templateStringTypeNumber.get(viewType);
     }
@@ -964,7 +958,10 @@ export class CollectionView extends CollectionViewBase {
             view = parentView;
         }
         // this._viewHolderChildren.push(new WeakRef(view));
-        this._addView(view);
+        // this._addView(view);
+        view._setupAsRootView(this._context);
+        view._isAddedToNativeVisualTree = true;
+        view.callLoaded();
         if (!CollectionViewCellHolder) {
             CollectionViewCellHolder = com.nativescript.collectionview.CollectionViewCellHolder as any;
         }
@@ -992,8 +989,11 @@ export class CollectionView extends CollectionViewBase {
         if (isNonSync) {
             holder['defaultItemView'] = true;
         }
-        this._viewHolders.add(new WeakRef(holder));
+        this._viewHolders.add(holder);
 
+        if (Trace.isEnabled()) {
+            CLog(CLogTypes.log, 'onCreateViewHolder', this._viewHolders.size);
+        }
         return holder;
     }
 
