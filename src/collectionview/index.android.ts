@@ -957,8 +957,6 @@ export class CollectionView extends CollectionViewBase {
             parentView.id = 'collectionViewHolder';
             view = parentView;
         }
-        // this._viewHolderChildren.push(new WeakRef(view));
-        // this._addView(view);
         view._setupAsRootView(this._context);
         view._isAddedToNativeVisualTree = true;
         view.callLoaded();
