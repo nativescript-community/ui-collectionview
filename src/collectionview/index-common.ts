@@ -442,14 +442,7 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     // onItemTemplateSelectorPropertyChanged(oldValue, newValue) {
     //     this.onItemTemplateSelectorChanged(oldValue, newValue);
     // }
-    onItemTemplatesPropertyChanged(oldValue, newValue) {
-        this.onItemTemplatesChanged(oldValue, newValue);
-    }
-    onItemTemplatePropertyChanged(oldValue, newValue) {
-        this.onItemTemplateChanged(oldValue, newValue);
-    }
-
-    onItemsChangedInternal = (oldValue, newValue) => {
+    onItemsChanged(oldValue, newValue) {
         const getItem = newValue && (newValue as ItemsSource).getItem;
         this.isItemsSourceIn = typeof getItem === 'function';
         // we override the method to prevent the test on every getItem
@@ -462,6 +455,16 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
             addWeakEventListener(newValue, ObservableArray.changeEvent, this.onSourceCollectionChangedInternal, this);
         }
         this.refresh();
+    }
+
+    onItemTemplatesPropertyChanged(oldValue, newValue) {
+        this.onItemTemplatesChanged(oldValue, newValue);
+    }
+    onItemTemplatePropertyChanged(oldValue, newValue) {
+        this.onItemTemplateChanged(oldValue, newValue);
+    }
+    onItemsChangedInternal = (oldValue, newValue) => {
+        this.onItemsChanged(oldValue, newValue);
     };
     spanSize: (item, index: number) => number;
     onSpanSizeChangedInternal = (oldValue, newValue) => {
