@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.55](https://github.com/nativescript-community/ui-collectionview/compare/v4.0.54...v4.0.55) (2022-07-16)
+
+
+### Bug Fixes
+
+* **collectionview:** recycling/dispose support thanks to [@edusperoni](https://github.com/edusperoni) ([400ebaa](https://github.com/nativescript-community/ui-collectionview/commit/400ebaa3d58bbd9ad5c13da53f28aec099458c1b))
+
+
+
+
+
 ## [4.0.54](https://github.com/nativescript-community/ui-collectionview/compare/v4.0.53...v4.0.54) (2022-07-15)
 
 **Note:** Version bump only for package @nativescript-community/ui-collectionview
