@@ -5,9 +5,11 @@ import { NativeViewElementNode, TemplateElement, ViewNode, createElement, regist
 import { flush } from 'svelte/internal';
 import { CollectionView } from '..';
 
+const SVELTE_VIEW = '_svelteViewRef';
+
 declare module '@nativescript/core/ui/core/view-base' {
     interface ViewBase {
-        __SvelteComponent__?: any;
+        __SvelteComponent__?: SvelteComponent;
         __SvelteComponentBuilder__?: any;
         __CollectionViewCurrentIndex__?: number;
     }
@@ -54,6 +56,7 @@ export default class CollectionViewViewElement extends NativeViewElementNode<Col
         const nativeView = this.nativeView;
         nativeView.itemViewLoader = (viewType: any): View => this.loadView(viewType);
         this.nativeView.on(CollectionView.itemLoadingEvent, this.updateListItem, this);
+        this.nativeView.on(CollectionView.itemDisposingEvent, this.disposeListItem, this);
     }
 
     private loadView(viewType: string): View {
@@ -115,6 +118,14 @@ export default class CollectionViewViewElement extends NativeViewElementNode<Col
         }
     }
 
+    @profile
+    private disposeListItem(args: ItemEventData) {
+        const _view = args.view;
+        if (_view.__SvelteComponent__) {
+            _view.__SvelteComponent__.$destroy();
+            _view.__SvelteComponent__ = null;
+        }
+    }
     @profile
     private updateListItem(args: ItemEventData & { bindingContext }) {
         const _view = args.view;

@@ -2,6 +2,7 @@
     "uses": [
         "com.nativescript.collectionview*:*",
         "androidx.recyclerview.widget:RecyclerView*", 
+        "androidx.recyclerview.widget.RecyclerView:RecycledViewPool*", 
         "androidx.recyclerview.widget.RecyclerView:ViewHolder*", 
         "androidx.recyclerview.widget.RecyclerView:Adapter*", 
         "androidx.recyclerview.widget.RecyclerView:OnItemTouchListener*", 

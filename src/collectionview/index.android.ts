@@ -129,6 +129,8 @@ export class CollectionView extends CollectionViewBase {
         owner?: WeakRef<CollectionView>;
     };
 
+    private recyclerListener: androidx.recyclerview.widget.RecyclerView.RecyclerListener;
+
     private templateTypeNumberString = new Map<string, number>();
     private templateStringTypeNumber = new Map<number, string>();
     private _currentNativeItemType = 0;
@@ -159,6 +161,8 @@ export class CollectionView extends CollectionViewBase {
     public nestedScrollingEnabled: boolean;
     public itemViewCacheSize: number;
     public extraLayoutSpace: number;
+    recycledViewPool: com.nativescript.collectionview.RecycledViewPool;
+    recycledViewPoolDisposeListener: com.nativescript.collectionview.RecycledViewPool.ViewPoolListener;
 
     @profile
     public createNativeView() {
@@ -186,6 +190,53 @@ export class CollectionView extends CollectionViewBase {
         this.setOnLayoutChangeListener();
         super.initNativeView();
         const nativeView = this.nativeViewProtected;
+        this.recycledViewPool = new com.nativescript.collectionview.RecycledViewPool();
+        this.recycledViewPoolDisposeListener = new com.nativescript.collectionview.RecycledViewPool.ViewPoolListener({
+            onViewHolderDisposed: (holder: CollectionViewCellHolder) => {
+                if (Trace.isEnabled()) {
+                    CLog(CLogTypes.log, 'onViewHolderDisposed', holder);
+                }
+                if (this._viewHolders) {
+                    this._viewHolders.delete(holder);
+                }
+                const isNonSync = holder['defaultItemView'] === true;
+                const view = isNonSync ? (holder.view as ContentView).content : holder.view;
+
+                const args = {
+                    eventName: CollectionViewBase.itemDisposingEvent,
+                    index: holder.getAdapterPosition(),
+                    object: this,
+                    view,
+                    android: holder
+                };
+                this.notify(args);
+                if (view && view.isLoaded) {
+                    view.callUnloaded();
+                }
+                view._isAddedToNativeVisualTree = false;
+                view._tearDownUI();
+            }
+        });
+        (this.recycledViewPool as any).mListener = this.recycledViewPoolDisposeListener;
+        const recyclerListener = (this.recyclerListener = new androidx.recyclerview.widget.RecyclerView.RecyclerListener({
+            onViewRecycled: (holder: CollectionViewCellHolder) => {
+                if (Trace.isEnabled()) {
+                    CLog(CLogTypes.log, 'onViewRecycled', holder);
+                }
+                const isNonSync = holder['defaultItemView'] === true;
+                const view = isNonSync ? (holder.view as ContentView).content : holder.view;
+                const args = {
+                    eventName: CollectionViewBase.itemRecyclingEvent,
+                    index: holder.getAdapterPosition(),
+                    object: this,
+                    view,
+                    android: holder
+                };
+                this.notify(args);
+            }
+        }));
+        nativeView.setRecyclerListener(recyclerListener);
+        nativeView.setRecycledViewPool(this.recycledViewPool);
         // nativeView.owner = new WeakRef(this);
         // nativeView.sizeChangedListener = new com.nativescript.collectionview.SizeChangedListener({
         //     onSizeChanged: (w, h, oldW, oldH) => this.onSizeChanged(w, h),
@@ -229,6 +280,10 @@ export class CollectionView extends CollectionViewBase {
         // this._realizedItems.clear();
 
         const nativeView = this.nativeViewProtected;
+        nativeView.setRecyclerListener(null);
+        nativeView.setRecycledViewPool(null);
+        this.recycledViewPoolDisposeListener = null;
+        this.recycledViewPool = null;
         if (nativeView.scrollListener) {
             this.nativeView.removeOnScrollListener(nativeView.scrollListener);
             nativeView.scrollListener = null;
@@ -424,6 +479,34 @@ export class CollectionView extends CollectionViewBase {
             }
             return this._vlayoutParams;
         }
+    }
+
+    defaultPoolSize = 10;
+    desiredPoolSize: Map<string, number> = new Map();
+
+    private setNativePoolSize(key: string, nativeIndex: number) {
+        if (this.desiredPoolSize.has(key)) {
+            this.nativeViewProtected.getRecycledViewPool().setMaxRecycledViews(nativeIndex, this.desiredPoolSize.get(key));
+        } else {
+            if (this.defaultPoolSize >= 0) {
+                this.nativeViewProtected.getRecycledViewPool().setMaxRecycledViews(nativeIndex, this.defaultPoolSize);
+            }
+        }
+    }
+    private setPoolSizes() {
+        if (!this.nativeViewProtected || !this.templateTypeNumberString) {
+            return;
+        }
+        this.desiredPoolSize.forEach((v, k) => {
+            if (this.templateTypeNumberString.has(k)) {
+                this.nativeViewProtected.getRecycledViewPool().setMaxRecycledViews(this.templateTypeNumberString.get(k), v);
+            }
+        });
+    }
+
+    public setPoolSize(key: string, size: number) {
+        this.desiredPoolSize.set(key, size);
+        this.setPoolSizes();
     }
 
     [paddingTopProperty.getDefault](): CoreTypes.LengthType {
@@ -909,7 +992,6 @@ export class CollectionView extends CollectionViewBase {
     }
 
     public getItemViewType(position: number) {
-        let resultType = 0;
         let selectorType: string = 'default';
         if (this._itemTemplateSelector) {
             const selector = this._itemTemplateSelector;
@@ -918,15 +1000,48 @@ export class CollectionView extends CollectionViewBase {
                 selectorType = selector(dataItem, position, this.items);
             }
         }
-        if (!this.templateTypeNumberString.has(selectorType)) {
-            resultType = this._currentNativeItemType;
-            this.templateTypeNumberString.set(selectorType, resultType);
-            this.templateStringTypeNumber.set(resultType, selectorType);
-            this._currentNativeItemType++;
-        } else {
-            resultType = this.templateTypeNumberString.get(selectorType);
+        return this.templateKeyToNativeItem(selectorType);
+        // if (!this.templateTypeNumberString.has(selectorType)) {
+        //     resultType = this._currentNativeItemType;
+        //     this.templateTypeNumberString.set(selectorType, resultType);
+        //     this.templateStringTypeNumber.set(resultType, selectorType);
+        //     this._currentNativeItemType++;
+        // } else {
+        //     resultType = this.templateTypeNumberString.get(selectorType);
+        // }
+        // return resultType;
+    }
+    public templateKeyToNativeItem(key: string): number {
+        if (!this.templateTypeNumberString) {
+            this.templateTypeNumberString = new Map<string, number>();
+            this._currentNativeItemType = 0;
+            this._itemTemplatesInternal.forEach((v, i) => {
+                this.templateTypeNumberString.set(v.key, this._currentNativeItemType);
+                this.templateStringTypeNumber.set(this._currentNativeItemType, v.key);
+                this.setNativePoolSize(v.key, this._currentNativeItemType);
+                this._currentNativeItemType++;
+            });
+            this._currentNativeItemType = Math.max(this._itemTemplatesInternal.size, 100);
+            // templates will be numbered 0,1,2,3... for named templates
+            // default/unnamed templates will be numbered 100, 101, 102, 103...
         }
-        return resultType;
+        if (!this.templateTypeNumberString.has(key)) {
+            this.templateTypeNumberString.set(key, this._currentNativeItemType);
+            this.templateStringTypeNumber.set(this._currentNativeItemType, key);
+            this.setNativePoolSize(key, this._currentNativeItemType);
+            this._currentNativeItemType++;
+        }
+        return this.templateTypeNumberString.get(key);
+    }
+    public nativeItemToTemplateKey(item: number): string {
+        let result: string;
+        this.templateTypeNumberString?.forEach((value, key, map) => {
+            if (value === item) {
+                result = key;
+            }
+        }, this);
+
+        return result;
     }
 
     disposeViewHolderViews() {

@@ -93,6 +93,8 @@ function toDevicePixels(length: CoreTypes.PercentLengthType, auto: number = Numb
 @CSSType('CollectionView')
 export abstract class CollectionViewBase extends View implements CollectionViewDefinition {
     public static itemLoadingEvent = 'itemLoading';
+    public static itemRecyclingEvent = 'itemRecycling';
+    public static itemDisposingEvent = 'itemDisposing';
     public static bindedEvent = 'binded';
     public static scrollEvent = 'scroll';
     public static scrollStartEvent = 'scrollStart';

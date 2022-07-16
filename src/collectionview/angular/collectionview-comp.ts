@@ -2,6 +2,7 @@ import {
     AfterContentInit,
     ChangeDetectionStrategy,
     Component,
+    ComponentRef,
     ContentChild,
     Directive,
     DoCheck,
@@ -9,10 +10,12 @@ import {
     EmbeddedViewRef,
     EventEmitter,
     Host,
+    HostListener,
     Inject,
     Input,
     IterableDiffer,
     IterableDiffers,
+    NgZone,
     OnDestroy,
     Output,
     TemplateRef,
@@ -21,7 +24,7 @@ import {
     ɵisListLikeIterable as isListLikeIterable
 } from '@angular/core';
 import { CLog, CLogTypes, CollectionView, CollectionViewItemEventData, ListViewViewTypes } from '@nativescript-community/ui-collectionview';
-import { extractSingleViewRecursive, registerElement } from '@nativescript/angular';
+import { DetachedLoader, NativeScriptRendererFactory, extractSingleViewRecursive, registerElement } from '@nativescript/angular';
 import { KeyedTemplate, LayoutBase, ObservableArray, Trace, View } from '@nativescript/core';
 
 registerElement('CollectionView', () => CollectionView);
@@ -60,6 +63,16 @@ export class CollectionViewComponent implements DoCheck, OnDestroy, AfterContent
     @Output() public setupItemView = new EventEmitter<SetupItemViewArgs>();
     @ContentChild(TemplateRef, { read: TemplateRef, static: true }) public itemTemplateQuery: TemplateRef<ItemContext>;
 
+    @Input() autoReuseViews = false;
+
+    detachedLoaderFactory() {
+        const ref = this.loader.createComponent(DetachedLoader, {
+            index: 0
+        });
+        this.loader.detach(0);
+        return ref;
+    }
+
     @Input()
     public get itemTemplate() {
         return this._itemTemplate;
@@ -91,26 +104,30 @@ export class CollectionViewComponent implements DoCheck, OnDestroy, AfterContent
     private _itemTemplate: TemplateRef<ItemContext>;
     private _templateMap: Map<string, KeyedTemplate>;
 
-    constructor(@Inject(ElementRef) _elementRef: ElementRef, @Inject(IterableDiffers) private _iterableDiffers: IterableDiffers) {
+    constructor(
+        @Inject(ElementRef) private _elementRef: ElementRef,
+        @Inject(IterableDiffers) private _iterableDiffers: IterableDiffers,
+        @Inject(NativeScriptRendererFactory) private _renderer: NativeScriptRendererFactory,
+        @Inject(NgZone) private _ngZone: NgZone
+    ) {
         this._collectionView = _elementRef.nativeElement;
 
         this._collectionView.on(CollectionView.itemLoadingEvent, this.onItemLoading, this);
         this._collectionView.itemViewLoader = this.itemViewLoader;
     }
 
-    private itemViewLoader = (viewType) => {
-        switch (viewType) {
-            case ListViewViewTypes.ItemView:
-                if (this._itemTemplate && this.loader) {
-                    const nativeItem = this.loader.createEmbeddedView(this._itemTemplate, new ItemContext(), 0);
-                    const typedView = getItemViewRoot(nativeItem);
-                    typedView[NG_VIEW] = nativeItem;
-                    return typedView;
-                }
-                break;
-        }
-        return null;
-    };
+    private itemViewLoader = (viewType) =>
+        this._ngZone.run(() => {
+            switch (viewType) {
+                case ListViewViewTypes.ItemView:
+                    if (this._itemTemplate && this.loader) {
+                        const typedView = this.getOrCreate(this._itemTemplate);
+                        return typedView;
+                    }
+                    break;
+            }
+            return null;
+        });
 
     public ngAfterContentInit() {
         if (Trace.isEnabled()) {
@@ -157,7 +174,7 @@ export class CollectionViewComponent implements DoCheck, OnDestroy, AfterContent
         this._templateMap.set(key, keyedTemplate);
     }
 
-    // @HostListener('itemLoadingInternal', ['$event'])
+    @HostListener('itemLoading', ['$event'])
     public onItemLoading(args: CollectionViewItemEventData) {
         if (!args.view && !this.itemTemplate) {
             return;
@@ -199,6 +216,48 @@ export class CollectionViewComponent implements DoCheck, OnDestroy, AfterContent
 
         this.detectChangesOnChild(viewRef, index);
     }
+    @HostListener('itemRecycling', ['$event'])
+    public onItemRecyclingInternal(args: any) {
+        if (!args.view) {
+            return;
+        }
+        let ngView: EmbeddedViewRef<any> = args.view[NG_VIEW];
+
+        // Getting angular view from original element (in cases when ProxyViewContainer
+        // is used NativeScript internally wraps it in a StackLayout)
+        if (!ngView && args.view instanceof LayoutBase && args.view.getChildrenCount() > 0) {
+            ngView = args.view.getChildAt(0)[NG_VIEW];
+        }
+        // console.log('recycling', args.view);
+
+        if (ngView) {
+            ngView.detach();
+        }
+    }
+
+    @HostListener('itemDisposing', ['$event'])
+    public onItemDisposingInternal(args: any) {
+        if (!args.view) {
+            return;
+        }
+        if (args.view.parent) {
+            args.view.parent.removeChild(args.view);
+        }
+        // console.log('disposing');
+        let ngView: EmbeddedViewRef<any> = args.view[NG_VIEW];
+        // console.log('disposing', args.view);
+
+        // Getting angular view from original element (in cases when ProxyViewContainer
+        // is used NativeScript internally wraps it in a StackLayout)
+        if (!ngView && args.view instanceof LayoutBase && args.view.getChildrenCount() > 0) {
+            ngView = args.view.getChildAt(0)[NG_VIEW];
+        }
+
+        if (ngView) {
+            ngView.detach();
+            this.storeViewRef(ngView);
+        }
+    }
 
     public setupViewRef(view: EmbeddedViewRef<ItemContext>, data: any, index: number): void {
         const context = view.context;
@@ -224,6 +283,68 @@ export class CollectionViewComponent implements DoCheck, OnDestroy, AfterContent
 
             return resultView;
         };
+    }
+    viewPool = new Map<
+    TemplateRef<ItemContext>,
+    {
+        scrapSize: number;
+        scrapHead: Set<EmbeddedViewRef<ItemContext>>;
+    }
+    >();
+    private storeViewRef(viewRef: EmbeddedViewRef<any>) {
+        const templateRef = this.viewToTemplate.get(viewRef);
+        if (templateRef) {
+            const scrap = this.viewPool.get(templateRef);
+            if (scrap) {
+                if (scrap.scrapHead.size >= scrap.scrapSize) {
+                    viewRef.destroy();
+                    this.viewToLoader.get(viewRef)?.destroy();
+                } else {
+                    scrap.scrapHead.add(viewRef);
+                }
+            }
+        }
+    }
+    viewToTemplate = new WeakMap<EmbeddedViewRef<any>, TemplateRef<any>>();
+    viewToLoader = new WeakMap<EmbeddedViewRef<any>, ComponentRef<DetachedLoader>>();
+
+    private getOrCreate(templateRef: TemplateRef<ItemContext>) {
+        return this._ngZone.run(() => {
+            let viewRef = this.getView(templateRef);
+            if (!viewRef) {
+                const loader = this.detachedLoaderFactory();
+                // viewRef = this.loader.createEmbeddedView(templateRef, new ItemContext(), 0);
+                viewRef = loader.instance.vc.createEmbeddedView(templateRef, new ItemContext(), 0);
+                this.viewToLoader.set(viewRef, loader);
+                this.viewToTemplate.set(viewRef, templateRef);
+            }
+            viewRef.detach();
+            const resultView = getItemViewRoot(viewRef);
+            resultView[NG_VIEW] = viewRef;
+            resultView.reusable = this.autoReuseViews;
+            return resultView;
+        });
+    }
+    private getView(templateRef: TemplateRef<ItemContext>) {
+        const pool = this.getViewPool(templateRef);
+        while (pool.scrapHead.size > 0) {
+            const viewRef: EmbeddedViewRef<ItemContext> = pool.scrapHead.values().next().value;
+            pool.scrapHead.delete(viewRef);
+            if (!viewRef.destroyed) {
+                return viewRef;
+            }
+        }
+        return null;
+    }
+
+    private getViewPool(templateRef: TemplateRef<ItemContext>) {
+        if (!this.viewPool.has(templateRef)) {
+            this.viewPool.set(templateRef, {
+                scrapSize: this.autoReuseViews ? Infinity : 0,
+                scrapHead: new Set<EmbeddedViewRef<ItemContext>>()
+            });
+        }
+        return this.viewPool.get(templateRef);
     }
 
     private setItemTemplates() {

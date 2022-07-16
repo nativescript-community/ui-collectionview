@@ -1,6 +1,13 @@
 declare namespace com {
     export namespace nativescript {
         export namespace collectionview {
+            export class RecycledViewPool extends androidx.recyclerview.widget.RecyclerView.RecycledViewPool {}
+            export namespace RecycledViewPool {
+                export class ViewPoolListener {
+                    onViewHolderDisposed(holder: CollectionViewCellHolder);
+                    constructor(implementation?: { onViewHolderDisposed(holder: CollectionViewCellHolder) });
+                }
+            }
             export class GridLayoutManager extends androidx.recyclerview.widget.GridLayoutManager {
                 isScrollEnabled: boolean;
             }

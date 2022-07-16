@@ -21,7 +21,7 @@ export default {
             default: undefined
         }
     },
-    template: `<NativeCollectionView ref="listView" :items="items" v-bind="$attrs" v-on="listeners" @itemTap="onItemTap" @itemLoading="onItemLoadingInternal"
+    template: `<NativeCollectionView ref="listView" :items="items" v-bind="$attrs" v-on="listeners" @itemTap="onItemTap" @itemLoading="onItemLoadingInternal" @itemDisposing="onItemDisposingInternal"
   >
   <slot /></NativeCollectionView>`,
     watch: {
@@ -76,7 +76,16 @@ export default {
             }
         },
         onItemLoadingInternal(args) {
+            console.log('onItemLoadingInternal');
             this.updateViewTemplate(args);
+        },
+        onItemDisposingInternal(args) {
+            console.log('onItemDisposingInternal');
+            const oldVnode = args.view && args.view[VUE_VIEW];
+            if (oldVnode) {
+                oldVnode.$destroy();
+                args.view[VUE_VIEW] = null;
+            }
         },
         refresh() {
             (this.listView as CollectionView).refresh();

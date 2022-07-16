@@ -1,4 +1,4 @@
-import { CollectionView } from '..'
+import { CollectionView } from '..';
 
 const CollectionViewPlugin = {
     install(Vue, options) {
@@ -8,10 +8,10 @@ const CollectionViewPlugin = {
                 return CollectionView;
             },
             {
-                component: require('./component').default,
+                component: require('./component').default
             }
         );
-    },
+    }
 };
 
 export default CollectionViewPlugin;
