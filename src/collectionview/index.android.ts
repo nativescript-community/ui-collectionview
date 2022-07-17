@@ -214,6 +214,8 @@ export class CollectionView extends CollectionViewBase {
                     view.callUnloaded();
                 }
                 view._isAddedToNativeVisualTree = false;
+                //@ts-ignore
+                view.parent = null;
                 view._tearDownUI();
             }
         });
@@ -1074,6 +1076,8 @@ export class CollectionView extends CollectionViewBase {
         }
         view._setupAsRootView(this._context);
         view._isAddedToNativeVisualTree = true;
+        //@ts-ignore
+        view.parent = this;
         view.callLoaded();
         if (!CollectionViewCellHolder) {
             CollectionViewCellHolder = com.nativescript.collectionview.CollectionViewCellHolder as any;
