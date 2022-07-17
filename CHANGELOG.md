@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.56](https://github.com/@nativescript-community/ui-collectionview/compare/v4.0.55...v4.0.56) (2022-07-17)
+
+
+### Bug Fixes
+
+* **android:** fix for collectionview + gesturehandlers ([3f87c16](https://github.com/@nativescript-community/ui-collectionview/commit/3f87c167792e129fe96a4c4cf745fd827362aaf6))
+
+
+
+
+
 ## [4.0.55](https://github.com/@nativescript-community/ui-collectionview/compare/v4.0.54...v4.0.55) (2022-07-16)
 
 
