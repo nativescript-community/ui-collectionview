@@ -76,14 +76,12 @@ export default {
             }
         },
         onItemLoadingInternal(args) {
-            console.log('onItemLoadingInternal');
             this.updateViewTemplate(args);
         },
         onItemDisposingInternal(args) {
-            console.log('onItemDisposingInternal');
             const oldVnode = args.view && args.view[VUE_VIEW];
-            if (oldVnode) {
-                oldVnode.$destroy();
+            if (oldVnode && oldVnode.context) {
+                oldVnode.context.$destroy();
                 args.view[VUE_VIEW] = null;
             }
         },
