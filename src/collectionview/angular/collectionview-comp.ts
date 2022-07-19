@@ -70,6 +70,7 @@ export class CollectionViewComponent implements DoCheck, OnDestroy, AfterContent
             index: 0
         });
         this.loader.detach(0);
+        this._loaders.push(ref);
         return ref;
     }
 
@@ -103,6 +104,7 @@ export class CollectionViewComponent implements DoCheck, OnDestroy, AfterContent
     private _differ: IterableDiffer<KeyedTemplate>;
     private _itemTemplate: TemplateRef<ItemContext>;
     private _templateMap: Map<string, KeyedTemplate>;
+    private _loaders: ComponentRef<DetachedLoader>[];
 
     constructor(
         @Inject(ElementRef) private _elementRef: ElementRef,
@@ -114,6 +116,7 @@ export class CollectionViewComponent implements DoCheck, OnDestroy, AfterContent
 
         this._collectionView.on(CollectionView.itemLoadingEvent, this.onItemLoading, this);
         this._collectionView.itemViewLoader = this.itemViewLoader;
+        this._loaders = [];
     }
 
     private itemViewLoader = (viewType) =>
@@ -138,6 +141,20 @@ export class CollectionViewComponent implements DoCheck, OnDestroy, AfterContent
 
     public ngOnDestroy() {
         this._collectionView.off(CollectionView.itemLoadingEvent, this.onItemLoading, this);
+        this._collectionView = null;
+        this._loaders.forEach((l) => l.destroy());
+        this._loaders = null;
+        this.viewToLoader = null;
+        this.viewToTemplate = null;
+        this.viewPool = null;
+
+        this._items = null;
+        this._differ = null;
+        this._itemTemplate = null;
+        if (this._templateMap) {
+            this._templateMap.clear();
+        }
+        this._templateMap = null;
     }
 
     public ngDoCheck() {
@@ -240,12 +257,7 @@ export class CollectionViewComponent implements DoCheck, OnDestroy, AfterContent
         if (!args.view) {
             return;
         }
-        if (args.view.parent) {
-            args.view.parent.removeChild(args.view);
-        }
-        // console.log('disposing');
         let ngView: EmbeddedViewRef<any> = args.view[NG_VIEW];
-        // console.log('disposing', args.view);
 
         // Getting angular view from original element (in cases when ProxyViewContainer
         // is used NativeScript internally wraps it in a StackLayout)
@@ -285,11 +297,11 @@ export class CollectionViewComponent implements DoCheck, OnDestroy, AfterContent
         };
     }
     viewPool = new Map<
-    TemplateRef<ItemContext>,
-    {
-        scrapSize: number;
-        scrapHead: Set<EmbeddedViewRef<ItemContext>>;
-    }
+        TemplateRef<ItemContext>,
+        {
+            scrapSize: number;
+            scrapHead: Set<EmbeddedViewRef<ItemContext>>;
+        }
     >();
     private storeViewRef(viewRef: EmbeddedViewRef<any>) {
         const templateRef = this.viewToTemplate.get(viewRef);
