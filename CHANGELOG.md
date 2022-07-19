@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.57](https://github.com/@nativescript-community/ui-collectionview/compare/v4.0.56...v4.0.57) (2022-07-19)
+
+
+### Bug Fixes
+
+* **collectionview:** angular view disposing fix ([1cee7b8](https://github.com/@nativescript-community/ui-collectionview/commit/1cee7b8fc2455bd2250f106e8bc396a6e24b4c6a))
+* **collectionview:** view disposing fix ([36bf7bc](https://github.com/@nativescript-community/ui-collectionview/commit/36bf7bc9fcdb8b802a6fe61368a9a82e200a61f1))
+
+
+
+
+
 ## [4.0.56](https://github.com/@nativescript-community/ui-collectionview/compare/v4.0.55...v4.0.56) (2022-07-17)
 
 
