@@ -737,11 +737,10 @@ export class CollectionView extends CollectionViewBase {
     }
 
     private clearRealizedCells() {
-        const that = new WeakRef<CollectionView>(this);
-        this._map.forEach(function (value, key: CollectionViewCell) {
-            that.get()._removeContainer(key);
-            that.get()._clearCellViews(key);
-        }, that);
+        this._map.forEach((value, key: CollectionViewCell) => {
+            this._removeContainer(key);
+            this._clearCellViews(key);
+        });
         this._map.clear();
     }
 
