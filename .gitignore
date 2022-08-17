@@ -21,6 +21,7 @@ yarn-error.log*
 .LSOverride
 .idea
 .cloud
+.gradle
 .project
 tmp/
 package-lock.json
