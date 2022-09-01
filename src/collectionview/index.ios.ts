@@ -717,7 +717,7 @@ export class CollectionView extends CollectionViewBase {
             const widthMeasureSpec = width ? layout.makeMeasureSpec(width, layout.EXACTLY) : horizontal ? infinity : layout.makeMeasureSpec(this._innerWidth, layout.UNSPECIFIED);
             const heightMeasureSpec = height ? layout.makeMeasureSpec(height, layout.EXACTLY) : horizontal ? layout.makeMeasureSpec(this._innerHeight, layout.UNSPECIFIED) : infinity;
             if (Trace.isEnabled()) {
-                CLog(CLogTypes.log, 'measureCell', width, height, widthMeasureSpec, heightMeasureSpec);
+                CLog(CLogTypes.log, 'measureCell', index.row, width, height, widthMeasureSpec, heightMeasureSpec);
             }
             const measuredSize = View.measureChild(this, cellView, widthMeasureSpec, heightMeasureSpec);
             const result: [number, number] = [measuredSize.measuredWidth, measuredSize.measuredHeight];
@@ -861,13 +861,18 @@ export class CollectionView extends CollectionViewBase {
             if (templateType) {
                 const measureData: any = this._measureCellMap.get(templateType);
                 let cell: any = measureData && measureData.cell;
+                let needsSet = false;
                 if (!cell) {
                     cell = CollectionViewCell.new();
+                    needsSet = true;
                 } else if (!cell.view) {
                     cell.owner = new WeakRef(measureData.view);
+                    needsSet = true;
                 }
                 measuredSize = this._prepareCell(cell, indexPath, templateType, false);
-                this._measureCellMap.set(templateType, { cell, view: cell.view });
+                if (needsSet) {
+                    this._measureCellMap.set(templateType, { cell, view: cell.view });
+                }
             }
         }
         if (Trace.isEnabled()) {
