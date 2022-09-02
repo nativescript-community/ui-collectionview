@@ -790,6 +790,9 @@ export class CollectionView extends CollectionViewBase {
     }
 
     numberOfSectionsInCollectionView(collectionView: UICollectionView) {
+        if (!this._lastLayoutKey) {
+            return 0;
+        }
         return 1;
     }
 
