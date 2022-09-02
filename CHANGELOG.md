@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.59](https://github.com/@nativescript-community/ui-collectionview/compare/v4.0.58...v4.0.59) (2022-09-02)
+
+
+### Features
+
+* **collectionview:** iOS added `autoReloadItemOnLayout` ([554b2d5](https://github.com/@nativescript-community/ui-collectionview/commit/554b2d50b74750555070dde8067105256b61fd81))
+
+
+
+
+
 ## [4.0.58](https://github.com/@nativescript-community/ui-collectionview/compare/v4.0.57...v4.0.58) (2022-07-28)
 
 **Note:** Version bump only for package @nativescript-community/ui-collectionview
