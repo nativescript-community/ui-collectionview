@@ -601,23 +601,19 @@ export class CollectionView extends CollectionViewBase {
     getItemTemplateContent(index, templateType) {
         return this.getViewForViewType(ListViewViewTypes.ItemView, templateType);
     }
-    public _prepareCell(cell: CollectionViewCell, indexPath: NSIndexPath, templateType: string, addToMap = true) {
+    public _prepareCell(cell: CollectionViewCell, indexPath: NSIndexPath, templateType: string, notForCellSizeComp = true) {
         let cellSize: [number, number];
         try {
             this._preparingCell = true;
             let view = cell.view;
             const index = indexPath.row;
-            let needsLayout = false;
             if (!view) {
-                needsLayout = true;
                 view = this.getItemTemplateContent(index, templateType);
             }
-            const oldBindingContext = view && view.bindingContext;
             const bindingContext = this._prepareItem(view, index);
-            needsLayout = needsLayout || oldBindingContext !== bindingContext;
 
             if (Trace.isEnabled()) {
-                CLog(CLogTypes.log, '_prepareCell', index, !!cell.view, !!view, cell.view !== view, needsLayout);
+                CLog(CLogTypes.log, '_prepareCell', index, templateType, !!cell.view, !!view, cell.view !== view, notForCellSizeComp);
             }
             const args = this.notifyForItemAtIndex(this, cell, view, CollectionViewBase.itemLoadingEvent, indexPath, bindingContext);
             view = args.view;
@@ -636,7 +632,7 @@ export class CollectionView extends CollectionViewBase {
                 cell.owner = new WeakRef(view);
             }
 
-            if (addToMap) {
+            if (notForCellSizeComp) {
                 this._map.set(cell, view);
             }
 
@@ -644,25 +640,26 @@ export class CollectionView extends CollectionViewBase {
                 this._addView(view);
                 const innerView = NSCellView.new() as NSCellView;
                 innerView.view = new WeakRef(view);
-                if(this.autoReloadItemOnLayout) {
+                if(!notForCellSizeComp || this.autoReloadItemOnLayout) {
                     // for a cell to update correctly on cell layout change we need
                     // to do it ourself instead of "propagating it"
                     view['performLayout'] = () => {
-                        const indexes = NSMutableArray.new<NSIndexPath>();
-                        indexes.addObject(indexPath);
-                        const nativeViewProtected = this.nativeViewProtected;
-                        UIView.performWithoutAnimation(() => {
-                            nativeViewProtected.performBatchUpdatesCompletion(() => {
-                                nativeViewProtected.reloadItemsAtIndexPaths(indexes);
-                            }, null);
-                        });
+                        if (notForCellSizeComp) {
+                            this.measureCell(cell, view, indexPath);
+                            this.layoutCell(indexPath.row, cell, view);
+                            this.nativeViewProtected.collectionViewLayout.invalidateLayout()
+                        }
                     };
+                } else {
+                    console.log('prepared for template')
                 }
                 innerView.addSubview(view.nativeViewProtected);
                 cell.contentView.addSubview(innerView);
             }
             cellSize = this.measureCell(cell, view, indexPath);
-            view.notify({ eventName: CollectionViewBase.bindedEvent });
+            if (notForCellSizeComp) {
+                view.notify({ eventName: CollectionViewBase.bindedEvent });
+            }
 
             if (Trace.isEnabled()) {
                 CLog(CLogTypes.log, '_prepareCell done', index, cellSize);
