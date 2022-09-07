@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.61](https://github.com/@nativescript-community/ui-collectionview/compare/v4.0.60...v4.0.61) (2022-09-07)
+
+
+### Bug Fixes
+
+* **collectionview:** default `autoReloadItemOnLayout` to false ([f826394](https://github.com/@nativescript-community/ui-collectionview/commit/f826394765116415fd4ded81f8da7b63552d853b))
+
+
+
+
+
 ## [4.0.60](https://github.com/@nativescript-community/ui-collectionview/compare/v4.0.59...v4.0.60) (2022-09-02)
 
 
