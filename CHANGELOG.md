@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.62](https://github.com/@nativescript-community/ui-collectionview/compare/v4.0.61...v4.0.62) (2022-09-07)
+
+
+### Bug Fixes
+
+* **collectionview:** ios removed logs ([556fbb2](https://github.com/@nativescript-community/ui-collectionview/commit/556fbb21056d076a92dadc7cab3e1b05800f792f))
+
+
+
+
+
 ## [4.0.61](https://github.com/@nativescript-community/ui-collectionview/compare/v4.0.60...v4.0.61) (2022-09-07)
 
 
