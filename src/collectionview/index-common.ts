@@ -718,7 +718,7 @@ scrollBarIndicatorVisibleProperty.register(CollectionViewBase);
 
 export const autoReloadItemOnLayoutProperty = new Property<CollectionViewBase, boolean>({
     name: 'autoReloadItemOnLayout',
-    defaultValue: true,
+    defaultValue: false,
     valueConverter: booleanConverter
 });
 autoReloadItemOnLayoutProperty.register(CollectionViewBase);
