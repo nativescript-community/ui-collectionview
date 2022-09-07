@@ -650,8 +650,6 @@ export class CollectionView extends CollectionViewBase {
                             this.nativeViewProtected.collectionViewLayout.invalidateLayout()
                         }
                     };
-                } else {
-                    console.log('prepared for template')
                 }
                 innerView.addSubview(view.nativeViewProtected);
                 cell.contentView.addSubview(innerView);
