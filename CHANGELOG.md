@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.63](https://github.com/@nativescript-community/ui-collectionview/compare/v4.0.62...v4.0.63) (2022-10-05)
+
+
+### Bug Fixes
+
+* core xml builder fix ([d6ca2b6](https://github.com/@nativescript-community/ui-collectionview/commit/d6ca2b6aead2f43f2ee456435cbf846ed225d1a5))
+
+
+
+
+
 ## [4.0.62](https://github.com/@nativescript-community/ui-collectionview/compare/v4.0.61...v4.0.62) (2022-09-07)
 
 
