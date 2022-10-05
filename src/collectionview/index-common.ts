@@ -106,7 +106,7 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     public static itemReorderStartedEvent = 'itemReorderStarted';
     public static loadMoreItemsEvent = 'loadMoreItems';
     public static dataPopulatedEvent = 'dataPopulated';
-    public static knownFunctions = ['itemTemplateSelector', 'itemIdGenerator']; // See component-builder.ts isKnownFunction
+    public static knownFunctions = ['itemTemplateSelector', 'itemIdGenerator', 'spanSize']; // See component-builder.ts isKnownFunction
 
     public isBounceEnabled: boolean;
     public isScrollEnabled: boolean;
