@@ -1,4 +1,4 @@
-<script lang="typescript">
+<script lang="ts">
 import { ObservableArray } from '@nativescript/core';
 
     import { Template } from 'svelte-native/components';

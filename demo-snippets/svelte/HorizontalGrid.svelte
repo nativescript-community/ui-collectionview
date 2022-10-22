@@ -1,4 +1,4 @@
-<script lang="typescript">
+<script lang="ts">
     import { Template } from 'svelte-native/components';
     const items = [
             { index: 0, name: 'TURQUOISE', color: '#1abc9c' },
