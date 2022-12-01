@@ -31,7 +31,7 @@
         "demo.vue.ios": "cd ./demo-vue && ns run ios --no-hmr",
         "postinstall": "npm run setup",
         "prepare": "npm run setup",
-        "publish": "npm run setup && npm run clean && npm run build.all && lerna publish --create-release=github --force-publish",
+        "publish": "npm run clean && npm run build.all && lerna publish --create-release=github --force-publish",
         "readme": "node ./tools/readme.js",
         "setup": "npm run submodules && ts-patch install",
         "start": "./node_modules/.bin/ntl -A -s 15 -o",
