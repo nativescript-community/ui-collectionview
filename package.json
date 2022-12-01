@@ -1,5 +1,4 @@
 {
-    "name": "@nativescript-community/ui-collectionview",
     "version": "1.0.0",
     "homepage": "https://github.com/@nativescript-community/ui-collectionview#readme",
     "bugs": {
@@ -16,7 +15,7 @@
         "build.all": "lerna run build.all",
         "build.angular": "lerna run build.angular",
         "build.win": "lerna run build-win",
-        "clean": "rimraf 'packages/**/*.d.ts' 'packages/**/*.js' 'packages/**/*.js.map' 'packages/**/*.metadata.json' 'packages/**/*.ngsummary.json' 'packages/**/*.mjs' 'packages/**/*.mjs.map' 'packages/**/node_modules' 'packages/**/angular/package.json' 'package-lock.json' 'pnpm-lock.yaml' 'node_modules'",
+        "clean": "rimraf 'packages/**/*.d.ts' 'packages/**/*.js' 'packages/**/*.js.map' 'packages/**/*.metada 'packages/**/angular/ng-package.json'",
         "commitmsg": "commitlint -e $GIT_PARAMS",
         "demo.ng.android": "cd ./demo-ng && ns run android --no-hmr",
         "demo.ng.clean": "cd ./demo-ng && ns clean",
@@ -32,7 +31,7 @@
         "demo.vue.ios": "cd ./demo-vue && ns run ios --no-hmr",
         "postinstall": "npm run setup",
         "prepare": "npm run setup",
-        "publish": "npm run setup && npm run build.all && lerna publish --create-release=github --force-publish",
+        "publish": "npm run setup && npm run clean && npm run build.all && lerna publish --create-release=github --force-publish",
         "readme": "node ./tools/readme.js",
         "setup": "npm run submodules && ts-patch install",
         "start": "./node_modules/.bin/ntl -A -s 15 -o",
@@ -41,7 +40,9 @@
         "sync.test": "node ./tools/sync.js",
         "tsc": "cpy '**/*.d.ts' '../plugin' --parents --cwd=src && tsc -skipLibCheck -d",
         "update": "node ./tools/update.js",
-        "watch": "npm run tsc -- -w"
+        "watch": "npm run tsc -- -w",
+        "fullclean": "npm run clean && rimraf 'packages/**/node_modules' 'package-lock.json' 'pnpm-lock.yaml' 'node_modules'",
+        "doc": "node tools/builddoc.mjs && git add docs/* && git commit -m \"chore:doc\""
     },
     "commitlint": {
         "extends": [
@@ -67,5 +68,13 @@
             "demo.vue.ios": "Runs the Vue demo on iOS.",
             "watch": "Watch for changes in the plugin source and re-build."
         }
-    }
+    },
+    "engines": {
+        "npm": "please use yarn or pnpm",
+        "yarn": ">= 1.19.1",
+        "pnpm": ">= 7.0.0"
+    },
+    "workspaces": [
+        "packages/*"
+    ]
 }

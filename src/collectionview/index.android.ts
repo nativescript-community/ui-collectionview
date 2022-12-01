@@ -16,7 +16,7 @@ import {
     paddingTopProperty,
     profile
 } from '@nativescript/core';
-import { layout } from '@nativescript/core/utils/utils';
+import { layout } from '@nativescript/core/utils/layout-helper';
 import { CollectionViewItemEventData, Orientation, reorderLongPressEnabledProperty, reorderingEnabledProperty, reverseLayoutProperty, scrollBarIndicatorVisibleProperty } from '.';
 import { CLog, CLogTypes, CollectionViewBase, ListViewViewTypes, isScrollEnabledProperty, orientationProperty } from './index-common';
 

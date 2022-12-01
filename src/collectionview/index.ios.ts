@@ -20,7 +20,7 @@ import {
     profile
 } from '@nativescript/core';
 import { Pointer } from '@nativescript/core/ui/gestures';
-import { layout } from '@nativescript/core/utils/utils';
+import { layout } from '@nativescript/core/utils/layout-helper';
 import { CollectionViewItemEventData, Orientation, reorderLongPressEnabledProperty, reorderingEnabledProperty, reverseLayoutProperty, scrollBarIndicatorVisibleProperty } from '.';
 import { CLog, CLogTypes, CollectionViewBase, ListViewViewTypes, isBounceEnabledProperty, isScrollEnabledProperty, itemTemplatesProperty, orientationProperty } from './index-common';
 
