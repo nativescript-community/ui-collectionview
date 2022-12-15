@@ -10,6 +10,7 @@
     },
     "license": "ISC",
     "author": "",
+    "private": true,
     "scripts": {
         "build": "lerna run build",
         "build.all": "lerna run build.all",
