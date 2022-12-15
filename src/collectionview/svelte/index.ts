@@ -1,6 +1,4 @@
-import { ItemEventData, View } from '@nativescript/core';
-import { profile } from '@nativescript/core/profiling';
-import { ContentView, LayoutBase, StackLayout, ViewBase } from '@nativescript/core/ui';
+import { ItemEventData, View, ContentView, profile } from '@nativescript/core';
 import { NativeViewElementNode, TemplateElement, ViewNode, createElement, registerElement } from 'svelte-native/dom';
 import { flush } from 'svelte/internal';
 import { CollectionView } from '..';

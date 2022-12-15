@@ -10,23 +10,22 @@ import {
     ProxyViewContainer,
     TouchGestureEventData,
     Trace,
-    Utils,
     View,
     ViewBase,
     paddingBottomProperty,
     paddingLeftProperty,
     paddingRightProperty,
     paddingTopProperty,
-    profile
+    profile,
+    Utils
 } from '@nativescript/core';
 import { Pointer } from '@nativescript/core/ui/gestures';
-import { layout } from '@nativescript/core/utils/layout-helper';
 import { CollectionViewItemEventData, Orientation, reorderLongPressEnabledProperty, reorderingEnabledProperty, reverseLayoutProperty, scrollBarIndicatorVisibleProperty } from '.';
 import { CLog, CLogTypes, CollectionViewBase, ListViewViewTypes, isBounceEnabledProperty, isScrollEnabledProperty, itemTemplatesProperty, orientationProperty } from './index-common';
 
 export * from './index-common';
 
-const infinity = layout.makeMeasureSpec(0, layout.UNSPECIFIED);
+const infinity = Utils.layout.makeMeasureSpec(0, Utils.layout.UNSPECIFIED);
 
 export enum ContentInsetAdjustmentBehavior {
     Always = UIScrollViewContentInsetAdjustmentBehavior.Always,
@@ -269,19 +268,19 @@ export class CollectionView extends CollectionViewBase {
     }
 
     [paddingTopProperty.setNative](value: CoreTypes.LengthType) {
-        this._setPadding({ top: layout.toDeviceIndependentPixels(this.effectivePaddingTop) });
+        this._setPadding({ top: Utils.layout.toDeviceIndependentPixels(this.effectivePaddingTop) });
     }
 
     [paddingRightProperty.setNative](value: CoreTypes.LengthType) {
-        this._setPadding({ right: layout.toDeviceIndependentPixels(this.effectivePaddingRight) });
+        this._setPadding({ right: Utils.layout.toDeviceIndependentPixels(this.effectivePaddingRight) });
     }
 
     [paddingBottomProperty.setNative](value: CoreTypes.LengthType) {
-        this._setPadding({ bottom: layout.toDeviceIndependentPixels(this.effectivePaddingBottom) });
+        this._setPadding({ bottom: Utils.layout.toDeviceIndependentPixels(this.effectivePaddingBottom) });
     }
 
     [paddingLeftProperty.setNative](value: CoreTypes.LengthType) {
-        this._setPadding({ left: layout.toDeviceIndependentPixels(this.effectivePaddingLeft) });
+        this._setPadding({ left: Utils.layout.toDeviceIndependentPixels(this.effectivePaddingLeft) });
     }
 
     [orientationProperty.setNative](value: Orientation) {
@@ -717,8 +716,8 @@ export class CollectionView extends CollectionViewBase {
                 }
             }
 
-            const widthMeasureSpec = width ? layout.makeMeasureSpec(width, layout.EXACTLY) : horizontal ? infinity : layout.makeMeasureSpec(this._innerWidth, layout.UNSPECIFIED);
-            const heightMeasureSpec = height ? layout.makeMeasureSpec(height, layout.EXACTLY) : horizontal ? layout.makeMeasureSpec(this._innerHeight, layout.UNSPECIFIED) : infinity;
+            const widthMeasureSpec = width ? Utils.layout.makeMeasureSpec(width, Utils.layout.EXACTLY) : horizontal ? infinity : Utils.layout.makeMeasureSpec(this._innerWidth, Utils.layout.UNSPECIFIED);
+            const heightMeasureSpec = height ? Utils.layout.makeMeasureSpec(height, Utils.layout.EXACTLY) : horizontal ? Utils.layout.makeMeasureSpec(this._innerHeight, Utils.layout.UNSPECIFIED) : infinity;
             if (Trace.isEnabled()) {
                 CLog(CLogTypes.log, 'measureCell', index.row, width, height, widthMeasureSpec, heightMeasureSpec);
             }
@@ -885,7 +884,7 @@ export class CollectionView extends CollectionViewBase {
             CLog(CLogTypes.log, 'collectionViewLayoutSizeForItemAtIndexPath', row, measuredSize);
         }
         if (measuredSize) {
-            return CGSizeMake(layout.toDeviceIndependentPixels(measuredSize[0]), layout.toDeviceIndependentPixels(measuredSize[1]));
+            return CGSizeMake(Utils.layout.toDeviceIndependentPixels(measuredSize[0]), Utils.layout.toDeviceIndependentPixels(measuredSize[1]));
         }
         return CGSizeZero;
     }
