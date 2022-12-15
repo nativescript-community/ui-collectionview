@@ -370,7 +370,7 @@ export class CollectionView extends CollectionViewBase {
         }
         if ((layoutView instanceof UICollectionViewFlowLayout && this._effectiveColWidth) || this._effectiveRowHeight) {
             // @ts-ignore
-            layoutView.estimatedItemSize = layoutView.itemSize = CGSizeMake(layout.toDeviceIndependentPixels(this._effectiveColWidth), layout.toDeviceIndependentPixels(this._effectiveRowHeight));
+            layoutView.estimatedItemSize = layoutView.itemSize = CGSizeMake(Utils.layout.toDeviceIndependentPixels(this._effectiveColWidth), Utils.layout.toDeviceIndependentPixels(this._effectiveRowHeight));
         }
 
         layoutView.invalidateLayout();
