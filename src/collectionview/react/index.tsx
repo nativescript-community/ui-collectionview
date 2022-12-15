@@ -236,6 +236,7 @@ export class _CollectionView extends React.Component<Props, State> {
         const {
             // Only used by the class component; not the JSX element.
             forwardedRef,
+            //@ts-ignore
             children,
             _debug,
             cellFactories,
