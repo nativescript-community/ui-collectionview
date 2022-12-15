@@ -70,6 +70,11 @@
             "watch": "Watch for changes in the plugin source and re-build."
         }
     },
+    "engines": {
+        "npm": "please use yarn or pnpm",
+        "yarn": ">= 1.19.1",
+        "pnpm": ">= 7.0.0"
+    },
     "workspaces": [
         "packages/*",
         "demo-vue",
