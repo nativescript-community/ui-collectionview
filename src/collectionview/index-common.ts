@@ -106,7 +106,7 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     public static itemReorderStartedEvent = 'itemReorderStarted';
     public static loadMoreItemsEvent = 'loadMoreItems';
     public static dataPopulatedEvent = 'dataPopulated';
-    public static knownFunctions = ['itemTemplateSelector', 'itemIdGenerator']; // See component-builder.ts isKnownFunction
+    public static knownFunctions = ['itemTemplateSelector', 'itemIdGenerator', 'spanSize']; // See component-builder.ts isKnownFunction
 
     public isBounceEnabled: boolean;
     public isScrollEnabled: boolean;
@@ -128,6 +128,11 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     public scrollOffset: number;
 
     public reorderEnabled: boolean;
+
+    /** Used on iOS to auto update cells size if the cell request a layout change (like image itemLoading).
+    * Experimental and true by default
+    */
+    public autoReloadItemOnLayout: boolean;
     public reorderLongPressEnabled: boolean;
     protected _dataUpdatesSuspended = false;
     public scrollBarIndicatorVisible: boolean;
@@ -710,3 +715,10 @@ export const scrollBarIndicatorVisibleProperty = new Property<CollectionViewBase
     valueConverter: booleanConverter
 });
 scrollBarIndicatorVisibleProperty.register(CollectionViewBase);
+
+export const autoReloadItemOnLayoutProperty = new Property<CollectionViewBase, boolean>({
+    name: 'autoReloadItemOnLayout',
+    defaultValue: false,
+    valueConverter: booleanConverter
+});
+autoReloadItemOnLayoutProperty.register(CollectionViewBase);

@@ -14,9 +14,9 @@ import {
     paddingLeftProperty,
     paddingRightProperty,
     paddingTopProperty,
-    profile
+    profile,
+    Utils
 } from '@nativescript/core';
-import { layout } from '@nativescript/core/utils/utils';
 import { CollectionViewItemEventData, Orientation, reorderLongPressEnabledProperty, reorderingEnabledProperty, reverseLayoutProperty, scrollBarIndicatorVisibleProperty } from '.';
 import { CLog, CLogTypes, CollectionViewBase, ListViewViewTypes, isScrollEnabledProperty, orientationProperty } from './index-common';
 
@@ -375,7 +375,7 @@ export class CollectionView extends CollectionViewBase {
         return {
             object: this,
             eventName,
-            scrollOffset: offset / layout.getDisplayDensity(),
+            scrollOffset: offset / Utils.layout.getDisplayDensity(),
             scrollOffsetPercentage: offset / (range - extent),
             dx,
             dy
@@ -904,21 +904,21 @@ export class CollectionView extends CollectionViewBase {
         if (!view) {
             return 0;
         }
-        return (this.isHorizontal() ? view.computeHorizontalScrollOffset() : view.computeVerticalScrollOffset()) / layout.getDisplayDensity();
+        return (this.isHorizontal() ? view.computeHorizontalScrollOffset() : view.computeVerticalScrollOffset()) / Utils.layout.getDisplayDensity();
     }
     get verticalOffsetX() {
         const view = this.nativeViewProtected;
         if (!view) {
             return 0;
         }
-        return view.computeHorizontalScrollOffset() / layout.getDisplayDensity();
+        return view.computeHorizontalScrollOffset() / Utils.layout.getDisplayDensity();
     }
     get verticalOffsetY() {
         const view = this.nativeViewProtected;
         if (!view) {
             return 0;
         }
-        return view.computeVerticalScrollOffset() / layout.getDisplayDensity();
+        return view.computeVerticalScrollOffset() / Utils.layout.getDisplayDensity();
     }
     public scrollToIndex(index: number, animated: boolean = true) {
         if (!this.nativeViewProtected) {
@@ -1154,10 +1154,10 @@ export class CollectionView extends CollectionViewBase {
             }
         }
         if (width || !view.width) {
-            view.width = layout.toDeviceIndependentPixels(width);
+            view.width = Utils.layout.toDeviceIndependentPixels(width);
         }
         if (height || !view.height) {
-            view.height = layout.toDeviceIndependentPixels(height);
+            view.height = Utils.layout.toDeviceIndependentPixels(height);
         }
 
         // if (this.hasListeners(CollectionViewBase.displayItemEvent) ) {

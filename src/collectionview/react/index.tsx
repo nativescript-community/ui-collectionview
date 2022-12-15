@@ -1,11 +1,10 @@
 import * as React from 'react';
 import { CoreTypes, ItemEventData, ItemsSource, KeyedTemplate, View } from '@nativescript/core';
 import { NSVElement, NSVRoot, NativeScriptProps, render as RNSRender, ViewAttributes, registerElement, unmountComponentAtNode } from 'react-nativescript';
-import { CollectionView as NativeScriptCollectionView } from '..'
+import { CollectionView as NativeScriptCollectionView } from '..';
 
 export type CellViewContainer = View;
 type CellFactory = (item: any) => React.ReactElement;
-
 
 export function registerCollectionView() {
     registerElement('collectionView', () => require('..').CollectionView);
@@ -31,7 +30,7 @@ interface CollectionViewAttributes extends ViewAttributes {
     rowHeight?: CoreTypes.PercentLengthType | string;
     spanSize?: (item, index: number) => number;
     verticalSpacing?: CoreTypes.LengthType | string;
-};
+}
 
 declare global {
     namespace JSX {
@@ -63,7 +62,10 @@ type OwnProps = {
 type Props = OwnProps & { forwardedRef?: React.RefObject<NSVElement<NativeScriptCollectionView>> };
 
 type NumberKey = number | string;
-interface RootKeyAndTNSView { rootKey: string; nativeView: View }
+interface RootKeyAndTNSView {
+    rootKey: string;
+    nativeView: View;
+}
 
 interface State {
     nativeCells: Record<NumberKey, CellViewContainer>;
@@ -82,8 +84,8 @@ export class _CollectionView extends React.Component<Props, State> {
         _debug: {
             logLevel: 'info' as 'info',
             onCellFirstLoad: undefined,
-            onCellRecycle: undefined,
-        },
+            onCellRecycle: undefined
+        }
     };
 
     constructor(props: Props) {
@@ -92,7 +94,7 @@ export class _CollectionView extends React.Component<Props, State> {
         this.state = {
             nativeCells: {},
             nativeCellToItemIndex: new Map(),
-            itemIndexToNativeCell: props._debug.logLevel === 'debug' ? new Map() : undefined,
+            itemIndexToNativeCell: props._debug.logLevel === 'debug' ? new Map() : undefined
         };
     }
 
@@ -190,7 +192,7 @@ export class _CollectionView extends React.Component<Props, State> {
 
         return {
             rootKey,
-            nativeView: root.baseRef.nativeView,
+            nativeView: root.baseRef.nativeView
         };
     };
 
@@ -213,7 +215,7 @@ export class _CollectionView extends React.Component<Props, State> {
                         this.argsViewToRootKeyAndRef.set(rootKeyAndRef.nativeView, rootKeyAndRef);
 
                         return rootKeyAndRef.nativeView;
-                    },
+                    }
                 });
             });
             node.itemTemplates = itemTemplates;
@@ -253,4 +255,6 @@ export class _CollectionView extends React.Component<Props, State> {
     }
 }
 
-export const CollectionView = React.forwardRef<NSVElement<NativeScriptCollectionView>, OwnProps>((props: OwnProps, ref: React.RefObject<NSVElement<NativeScriptCollectionView>>) => <_CollectionView {...props} forwardedRef={ref} />);
+export const CollectionView = React.forwardRef<NSVElement<NativeScriptCollectionView>, OwnProps>((props: OwnProps, ref: React.RefObject<NSVElement<NativeScriptCollectionView>>) => (
+    <_CollectionView {...props} forwardedRef={ref} />
+));

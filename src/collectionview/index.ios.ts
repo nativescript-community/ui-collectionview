@@ -10,23 +10,22 @@ import {
     ProxyViewContainer,
     TouchGestureEventData,
     Trace,
-    Utils,
     View,
     ViewBase,
     paddingBottomProperty,
     paddingLeftProperty,
     paddingRightProperty,
     paddingTopProperty,
-    profile
+    profile,
+    Utils
 } from '@nativescript/core';
 import { Pointer } from '@nativescript/core/ui/gestures';
-import { layout } from '@nativescript/core/utils/utils';
 import { CollectionViewItemEventData, Orientation, reorderLongPressEnabledProperty, reorderingEnabledProperty, reverseLayoutProperty, scrollBarIndicatorVisibleProperty } from '.';
 import { CLog, CLogTypes, CollectionViewBase, ListViewViewTypes, isBounceEnabledProperty, isScrollEnabledProperty, itemTemplatesProperty, orientationProperty } from './index-common';
 
 export * from './index-common';
 
-const infinity = layout.makeMeasureSpec(0, layout.UNSPECIFIED);
+const infinity = Utils.layout.makeMeasureSpec(0, Utils.layout.UNSPECIFIED);
 
 export enum ContentInsetAdjustmentBehavior {
     Always = UIScrollViewContentInsetAdjustmentBehavior.Always,
@@ -269,19 +268,19 @@ export class CollectionView extends CollectionViewBase {
     }
 
     [paddingTopProperty.setNative](value: CoreTypes.LengthType) {
-        this._setPadding({ top: layout.toDeviceIndependentPixels(this.effectivePaddingTop) });
+        this._setPadding({ top: Utils.layout.toDeviceIndependentPixels(this.effectivePaddingTop) });
     }
 
     [paddingRightProperty.setNative](value: CoreTypes.LengthType) {
-        this._setPadding({ right: layout.toDeviceIndependentPixels(this.effectivePaddingRight) });
+        this._setPadding({ right: Utils.layout.toDeviceIndependentPixels(this.effectivePaddingRight) });
     }
 
     [paddingBottomProperty.setNative](value: CoreTypes.LengthType) {
-        this._setPadding({ bottom: layout.toDeviceIndependentPixels(this.effectivePaddingBottom) });
+        this._setPadding({ bottom: Utils.layout.toDeviceIndependentPixels(this.effectivePaddingBottom) });
     }
 
     [paddingLeftProperty.setNative](value: CoreTypes.LengthType) {
-        this._setPadding({ left: layout.toDeviceIndependentPixels(this.effectivePaddingLeft) });
+        this._setPadding({ left: Utils.layout.toDeviceIndependentPixels(this.effectivePaddingLeft) });
     }
 
     [orientationProperty.setNative](value: Orientation) {
@@ -371,7 +370,7 @@ export class CollectionView extends CollectionViewBase {
         }
         if ((layoutView instanceof UICollectionViewFlowLayout && this._effectiveColWidth) || this._effectiveRowHeight) {
             // @ts-ignore
-            layoutView.estimatedItemSize = layoutView.itemSize = CGSizeMake(layout.toDeviceIndependentPixels(this._effectiveColWidth), layout.toDeviceIndependentPixels(this._effectiveRowHeight));
+            layoutView.estimatedItemSize = layoutView.itemSize = CGSizeMake(Utils.layout.toDeviceIndependentPixels(this._effectiveColWidth), Utils.layout.toDeviceIndependentPixels(this._effectiveRowHeight));
         }
 
         layoutView.invalidateLayout();
@@ -601,23 +600,19 @@ export class CollectionView extends CollectionViewBase {
     getItemTemplateContent(index, templateType) {
         return this.getViewForViewType(ListViewViewTypes.ItemView, templateType);
     }
-    public _prepareCell(cell: CollectionViewCell, indexPath: NSIndexPath, templateType: string, addToMap = true) {
+    public _prepareCell(cell: CollectionViewCell, indexPath: NSIndexPath, templateType: string, notForCellSizeComp = true) {
         let cellSize: [number, number];
         try {
             this._preparingCell = true;
             let view = cell.view;
             const index = indexPath.row;
-            let needsLayout = false;
             if (!view) {
-                needsLayout = true;
                 view = this.getItemTemplateContent(index, templateType);
             }
-            const oldBindingContext = view && view.bindingContext;
             const bindingContext = this._prepareItem(view, index);
-            needsLayout = needsLayout || oldBindingContext !== bindingContext;
 
             if (Trace.isEnabled()) {
-                CLog(CLogTypes.log, '_prepareCell', index, !!cell.view, !!view, cell.view !== view, needsLayout);
+                CLog(CLogTypes.log, '_prepareCell', index, templateType, !!cell.view, !!view, cell.view !== view, notForCellSizeComp);
             }
             const args = this.notifyForItemAtIndex(this, cell, view, CollectionViewBase.itemLoadingEvent, indexPath, bindingContext);
             view = args.view;
@@ -636,7 +631,7 @@ export class CollectionView extends CollectionViewBase {
                 cell.owner = new WeakRef(view);
             }
 
-            if (addToMap) {
+            if (notForCellSizeComp) {
                 this._map.set(cell, view);
             }
 
@@ -644,17 +639,24 @@ export class CollectionView extends CollectionViewBase {
                 this._addView(view);
                 const innerView = NSCellView.new() as NSCellView;
                 innerView.view = new WeakRef(view);
-                // for a cell to update correctly on cell layout change we need
-                // to do it ourself instead of "propagating it"
-                // view['performLayout'] = () => {
-                //     this.measureCell(cell, view, indexPath);
-                //     this.layoutCell(indexPath.row, cell, view);
-                // };
+                if(!notForCellSizeComp || this.autoReloadItemOnLayout) {
+                    // for a cell to update correctly on cell layout change we need
+                    // to do it ourself instead of "propagating it"
+                    view['performLayout'] = () => {
+                        if (notForCellSizeComp) {
+                            this.measureCell(cell, view, indexPath);
+                            this.layoutCell(indexPath.row, cell, view);
+                            this.nativeViewProtected.collectionViewLayout.invalidateLayout()
+                        }
+                    };
+                }
                 innerView.addSubview(view.nativeViewProtected);
                 cell.contentView.addSubview(innerView);
             }
             cellSize = this.measureCell(cell, view, indexPath);
-            view.notify({ eventName: CollectionViewBase.bindedEvent });
+            if (notForCellSizeComp) {
+                view.notify({ eventName: CollectionViewBase.bindedEvent });
+            }
 
             if (Trace.isEnabled()) {
                 CLog(CLogTypes.log, '_prepareCell done', index, cellSize);
@@ -714,10 +716,10 @@ export class CollectionView extends CollectionViewBase {
                 }
             }
 
-            const widthMeasureSpec = width ? layout.makeMeasureSpec(width, layout.EXACTLY) : horizontal ? infinity : layout.makeMeasureSpec(this._innerWidth, layout.UNSPECIFIED);
-            const heightMeasureSpec = height ? layout.makeMeasureSpec(height, layout.EXACTLY) : horizontal ? layout.makeMeasureSpec(this._innerHeight, layout.UNSPECIFIED) : infinity;
+            const widthMeasureSpec = width ? Utils.layout.makeMeasureSpec(width, Utils.layout.EXACTLY) : horizontal ? infinity : Utils.layout.makeMeasureSpec(this._innerWidth, Utils.layout.UNSPECIFIED);
+            const heightMeasureSpec = height ? Utils.layout.makeMeasureSpec(height, Utils.layout.EXACTLY) : horizontal ? Utils.layout.makeMeasureSpec(this._innerHeight, Utils.layout.UNSPECIFIED) : infinity;
             if (Trace.isEnabled()) {
-                CLog(CLogTypes.log, 'measureCell', width, height, widthMeasureSpec, heightMeasureSpec);
+                CLog(CLogTypes.log, 'measureCell', index.row, width, height, widthMeasureSpec, heightMeasureSpec);
             }
             const measuredSize = View.measureChild(this, cellView, widthMeasureSpec, heightMeasureSpec);
             const result: [number, number] = [measuredSize.measuredWidth, measuredSize.measuredHeight];
@@ -782,6 +784,9 @@ export class CollectionView extends CollectionViewBase {
     }
 
     numberOfSectionsInCollectionView(collectionView: UICollectionView) {
+        if (!this._lastLayoutKey) {
+            return 0;
+        }
         return 1;
     }
 
@@ -861,20 +866,25 @@ export class CollectionView extends CollectionViewBase {
             if (templateType) {
                 const measureData: any = this._measureCellMap.get(templateType);
                 let cell: any = measureData && measureData.cell;
+                let needsSet = false;
                 if (!cell) {
                     cell = CollectionViewCell.new();
+                    needsSet = true;
                 } else if (!cell.view) {
                     cell.owner = new WeakRef(measureData.view);
+                    needsSet = true;
                 }
                 measuredSize = this._prepareCell(cell, indexPath, templateType, false);
-                this._measureCellMap.set(templateType, { cell, view: cell.view });
+                if (needsSet) {
+                    this._measureCellMap.set(templateType, { cell, view: cell.view });
+                }
             }
         }
         if (Trace.isEnabled()) {
             CLog(CLogTypes.log, 'collectionViewLayoutSizeForItemAtIndexPath', row, measuredSize);
         }
         if (measuredSize) {
-            return CGSizeMake(layout.toDeviceIndependentPixels(measuredSize[0]), layout.toDeviceIndependentPixels(measuredSize[1]));
+            return CGSizeMake(Utils.layout.toDeviceIndependentPixels(measuredSize[0]), Utils.layout.toDeviceIndependentPixels(measuredSize[1]));
         }
         return CGSizeZero;
     }

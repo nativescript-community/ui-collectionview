@@ -1,5 +1,4 @@
-import { Observable } from '@nativescript/core/data/observable';
-import { ObservableArray } from '@nativescript/core/data/observable-array';
+import { Observable, ObservableArray } from '@nativescript/core';
 import { CollectionView } from '..';
 
 const VUE_VIEW = '__vueVNodeRef__';

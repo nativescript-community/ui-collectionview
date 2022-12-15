@@ -3,6 +3,70 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.64](https://github.com/@nativescript-community/ui-collectionview/compare/v4.0.63...v4.0.64) (2022-12-01)
+
+**Note:** Version bump only for package nativeScript-collectionview
+
+
+
+
+
+## [4.0.63](https://github.com/@nativescript-community/ui-collectionview/compare/v4.0.62...v4.0.63) (2022-10-05)
+
+
+### Bug Fixes
+
+* core xml builder fix ([d6ca2b6](https://github.com/@nativescript-community/ui-collectionview/commit/d6ca2b6aead2f43f2ee456435cbf846ed225d1a5))
+
+
+
+
+
+## [4.0.62](https://github.com/@nativescript-community/ui-collectionview/compare/v4.0.61...v4.0.62) (2022-09-07)
+
+
+### Bug Fixes
+
+* **collectionview:** ios removed logs ([556fbb2](https://github.com/@nativescript-community/ui-collectionview/commit/556fbb21056d076a92dadc7cab3e1b05800f792f))
+
+
+
+
+
+## [4.0.61](https://github.com/@nativescript-community/ui-collectionview/compare/v4.0.60...v4.0.61) (2022-09-07)
+
+
+### Bug Fixes
+
+* **collectionview:** default `autoReloadItemOnLayout` to false ([f826394](https://github.com/@nativescript-community/ui-collectionview/commit/f826394765116415fd4ded81f8da7b63552d853b))
+
+
+
+
+
+## [4.0.60](https://github.com/@nativescript-community/ui-collectionview/compare/v4.0.59...v4.0.60) (2022-09-02)
+
+
+### Bug Fixes
+
+* **collectionview:** ios fixes for `autoReloadItemOnLayout` ([d19393d](https://github.com/@nativescript-community/ui-collectionview/commit/d19393d77080f8cf8f778107a25f5c42849b8fad))
+* **ios:** no need to display cells if collectionview not layed out ([ef61912](https://github.com/@nativescript-community/ui-collectionview/commit/ef6191252a3c5ddbb4a9eae0018769b16397cde7))
+
+
+
+
+
+## [4.0.59](https://github.com/@nativescript-community/ui-collectionview/compare/v4.0.58...v4.0.59) (2022-09-02)
+
+
+### Features
+
+* **collectionview:** iOS added `autoReloadItemOnLayout` ([554b2d5](https://github.com/@nativescript-community/ui-collectionview/commit/554b2d50b74750555070dde8067105256b61fd81))
+
+
+
+
+
 ## [4.0.58](https://github.com/@nativescript-community/ui-collectionview/compare/v4.0.57...v4.0.58) (2022-07-28)
 
 **Note:** Version bump only for package @nativescript-community/ui-collectionview

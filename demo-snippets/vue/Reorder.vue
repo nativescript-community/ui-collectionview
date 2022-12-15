@@ -2,20 +2,14 @@
     <Page>
         <ActionBar>
             <Label text="Simple Templates" />
+            <ActionItem @tap="switchLongPress" ios.systemIcon="16" ios.position="right" text="refresh" />
         </ActionBar>
 
         <GridLayout>
-            <CollectionView
-                ref="collectionView"
-                :items="itemList"
-                itemIdGenerator="color"
-                rowHeight="100"
-                reorderEnabled
-                @itemReordered="onItemReordered"
-            >
+            <CollectionView ref="collectionView" :items="itemList" itemIdGenerator="color" rowHeight="100" reorderEnabled @itemReorderStarting="onItemReorderStarting" @itemReordered="onItemReordered" :reorderLongPressEnabled="useLongPress">
                 <v-template>
                     <GridLayout id="test" rows="*, auto" :backgroundColor="item.color">
-                        <StackLayout row="1" class="item"  @touch="onTouch(item, $event)">
+                        <StackLayout row="1" class="item" @touch="onTouch(item, $event)">
                             <Label row="1" :text="item.name" class="title" />
                             <Label row="1" :text="item.color" class="subtitle" />
                         </StackLayout>
@@ -26,8 +20,8 @@
     </Page>
 </template>
 
-<script>
-import { ObservableArray } from '@nativescript/core';
+<script lang="ts">
+import { ContentView, ObservableArray } from '@nativescript/core';
 export default {
     data() {
         const items = new ObservableArray([
@@ -46,23 +40,36 @@ export default {
             { type: 'item', name: 'CLOUDS', color: '#ecf0f1' },
             { type: 'item', name: 'CONCRETE', color: '#95a5a6' },
             { type: 'item', name: 'ORANGE', color: '#f39c12' },
-            { type: 'item', name: 'PUMPKIN', color: '#d35400' },
+            { type: 'item', name: 'PUMPKIN', color: '#d35400' }
         ]);
         return {
-            itemList: items
+            itemList: items,
+            useLongPress:false
         };
     },
     methods: {
         logEvent(e) {
             console.log('logEvent', e.eventName, e.extraData);
         },
-    onItemReordered() {},
+        onItemReordered(e) {
+            console.log('onItemReordered', e.index);
+            (e.view as ContentView).content.opacity=1;
+
+        },
+        onItemReorderStarting(e) {
+            console.log('onItemReorderStarting', e.index, e.view, (e.view as ContentView).content);
+            (e.view as ContentView).content.opacity=0.7;
+
+        },
         onTouch(item, event) {
-        if (event.action === 'down') {
-            const pointer = event.getActivePointers()[0];
-            this.$refs.collectionView.nativeView.startDragging(this.itemList.indexOf(item), pointer);
+            if (!this.useLongPress && event.action === 'down') {
+                const pointer = event.getActivePointers()[0];
+                this.$refs.collectionView.nativeView.startDragging(this.itemList.indexOf(item), pointer);
+            }
+        },
+        switchLongPress() {
+            this.useLongPress = !this.useLongPress;
         }
-    }
     }
 };
 </script>
