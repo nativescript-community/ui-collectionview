@@ -1,6 +1,33 @@
-<!-- ⚠️ This README has been generated from the file(s) "blueprint.md" ⚠️-->This monorepo contains multiple packages:<br><br><details>
-<summary><b>collectionview</b></summary>
+<!-- ⚠️ This README has been generated from the file(s) "blueprint.md" ⚠️-->This monorepo contains multiple packages:<br>## Demos and Development
 
+
+### Repo Setup
+
+The package manager used to install and link dependencies must be `pnpm` or `yarn`. `npm` wont work.
+
+To develop and test:
+if you use `yarn` then run `yarn`
+if you use `pnpm` then run `pnpm i`
+
+**Interactive Menu:**
+
+To start the interactive menu, run `npm start` (or `yarn start` or `pnpm start`). This will list all of the commonly used scripts.
+
+### Build
+
+```bash
+npm run build.all
+```
+
+### Demos
+
+```bash
+npm run demo.[ng|react|svelte|vue].[ios|android]
+
+npm run demo.svelte.ios # Example
+```
+<br><br><details>
+<summary><b>collectionview</b></summary>
 <!-- ⚠️ This README has been generated from the file(s) "blueprint.md" ⚠️-->
 <!--  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -66,7 +93,7 @@
 	* [Simple Example](#simple-example-4)
 * [Demos](#demos)
 * [Demos and Development](#demos-and-development)
-	* [Setup](#setup)
+	* [Repo Setup](#repo-setup)
 	* [Build](#build)
 	* [Demos](#demos-1)
 * [Questions](#questions)
@@ -468,18 +495,13 @@ $ ns run ios|android
 ## Demos and Development
 
 
-### Setup
+### Repo Setup
 
-To run the demos, you must clone this repo **recursively**.
+The package manager used to install and link dependencies must be `pnpm` or `yarn`. `npm` wont work.
 
-```
-git clone https://github.com/@nativescript-community/ui-collectionview.git --recursive
-```
-
-**Install Dependencies:**
-```bash
-npm i # or 'yarn install' or 'pnpm install'
-```
+To develop and test:
+if you use `yarn` then run `yarn`
+if you use `pnpm` then run `pnpm i`
 
 **Interactive Menu:**
 
@@ -488,9 +510,7 @@ To start the interactive menu, run `npm start` (or `yarn start` or `pnpm start`)
 ### Build
 
 ```bash
-npm run build
-
-npm run build.angular # or for Angular
+npm run build.all
 ```
 
 ### Demos
@@ -511,7 +531,6 @@ npm run demo.svelte.ios # Example
 If you have any questions/issues/comments please feel free to create an issue or start a conversation in the [NativeScript Community Discord](https://nativescript.org/discord).
 </details><details>
 <summary><b>waterfall</b></summary>
-
 <!-- ⚠️ This README has been generated from the file(s) "blueprint.md" ⚠️-->
 <!--  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -557,7 +576,7 @@ If you have any questions/issues/comments please feel free to create an issue or
 * [Installation](#installation)
 * [Configuration](#configuration)
 * [Demos and Development](#demos-and-development)
-	* [Setup](#setup)
+	* [Repo Setup](#repo-setup)
 	* [Build](#build)
 	* [Demos](#demos)
 * [Questions](#questions)
@@ -598,18 +617,13 @@ then simply use the `layoutStyle="waterfall"` as a collectionview property
 ## Demos and Development
 
 
-### Setup
+### Repo Setup
 
-To run the demos, you must clone this repo **recursively**.
+The package manager used to install and link dependencies must be `pnpm` or `yarn`. `npm` wont work.
 
-```
-git clone https://github.com/@nativescript-community/ui-collectionview-waterfall.git --recursive
-```
-
-**Install Dependencies:**
-```bash
-npm i # or 'yarn install' or 'pnpm install'
-```
+To develop and test:
+if you use `yarn` then run `yarn`
+if you use `pnpm` then run `pnpm i`
 
 **Interactive Menu:**
 
@@ -618,9 +632,7 @@ To start the interactive menu, run `npm start` (or `yarn start` or `pnpm start`)
 ### Build
 
 ```bash
-npm run build
-
-npm run build.angular # or for Angular
+npm run build.all
 ```
 
 ### Demos

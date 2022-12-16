@@ -35,16 +35,16 @@
 <script lang="ts">
 import { Animation, CoreTypes, ObservableArray, Utils, View } from '@nativescript/core';
 
-import {
-    GestureHandlerStateEvent,
-    GestureHandlerTouchEvent,
-    GestureState,
-    GestureStateEventData,
-    GestureTouchEventData,
-    HandlerType,
-    Manager,
-    PanGestureHandler
-} from '@nativescript-community/gesturehandler';
+// import {
+//     GestureHandlerStateEvent,
+//     GestureHandlerTouchEvent,
+//     GestureState,
+//     GestureStateEventData,
+//     GestureTouchEventData,
+//     HandlerType,
+//     Manager,
+//     PanGestureHandler
+// } from '@nativescript-community/gesturehandler';
 
 const DEFAULT_TRIGGER_WIDTH = 20;
 const OPEN_DURATION = 200;
@@ -108,15 +108,15 @@ export default {
         },
         onTemplateLoaded(e) {
             const view = e.object;
-            const manager = Manager.getInstance();
-            const gestureHandler = manager.createGestureHandler(HandlerType.PAN, 12351, {
+            // const manager = Manager.getInstance();
+            // const gestureHandler = manager.createGestureHandler(HandlerType.PAN, 12351, {
                 // shouldStartGesture: this.shouldStartGesture.bind(this),
                 // simultaneousHandlers: this.simultaneousHandlers,
                 // simultaneousHandlers: [12350],
-                activeOffsetXStart: -10,
-                activeOffsetXEnd: 10
+                // activeOffsetXStart: -10,
+                // activeOffsetXEnd: 10
                 // minDist: 15
-            });
+            // });
             // gestureHandler.on(GestureHandlerTouchEvent, this.onGestureTouch, this);
             // gestureHandler.on(GestureHandlerStateEvent, this.onGestureState, this);
             // gestureHandler.attachToView(view);
@@ -124,69 +124,69 @@ export default {
         },
         onTemplateUnloaded(e) {
             const view = e.object;
-            const panGestureHandler = view.panGestureHandler;
-            if (panGestureHandler) {
-                panGestureHandler.off(GestureHandlerTouchEvent, this.onGestureTouch, this);
-                panGestureHandler.off(GestureHandlerStateEvent, this.onGestureState, this);
-                panGestureHandler.detachFromView();
-                view.panGestureHandler = null;
-            }
+            // const panGestureHandler = view.panGestureHandler;
+            // if (panGestureHandler) {
+            //     panGestureHandler.off(GestureHandlerTouchEvent, this.onGestureTouch, this);
+            //     panGestureHandler.off(GestureHandlerStateEvent, this.onGestureState, this);
+            //     panGestureHandler.detachFromView();
+            //     view.panGestureHandler = null;
+            // }
         },
-        onGestureState(args: GestureStateEventData) {
-            const { state, prevState, extraData, view } = args.data;
-            if (state === GestureState.ACTIVE) {
-                let gestureData = view['gestureData'];
-                if (!gestureData) {
-                    gestureData = view['gestureData'] = { translationX: 0, prevDeltaX: 0 };
-                    gestureData.viewWidth = Math.ceil(Utils.layout.toDeviceIndependentPixels(view.getMeasuredWidth()));
-                }
-            }
-            // this.updateIsPanning(state);
+        // onGestureState(args: GestureStateEventData) {
+        //     const { state, prevState, extraData, view } = args.data;
+        //     if (state === GestureState.ACTIVE) {
+        //         let gestureData = view['gestureData'];
+        //         if (!gestureData) {
+        //             gestureData = view['gestureData'] = { translationX: 0, prevDeltaX: 0 };
+        //             gestureData.viewWidth = Math.ceil(Utils.layout.toDeviceIndependentPixels(view.getMeasuredWidth()));
+        //         }
+        //     }
+        //     // this.updateIsPanning(state);
 
-            if (prevState === GestureState.ACTIVE) {
-                // this.needToSetSide = null;
-                // const side = this.showingSide;
-                // if (!side || (this.shouldPan && !this.shouldPan(side))) {
-                //     return;
-                // }
-                const { velocityX, velocityY, translationX, translationY } = extraData;
+        //     if (prevState === GestureState.ACTIVE) {
+        //         // this.needToSetSide = null;
+        //         // const side = this.showingSide;
+        //         // if (!side || (this.shouldPan && !this.shouldPan(side))) {
+        //         //     return;
+        //         // }
+        //         const { velocityX, velocityY, translationX, translationY } = extraData;
 
-                const dragToss = 0.05;
+        //         const dragToss = 0.05;
 
-                const gestureData = view['gestureData'];
+        //         const gestureData = view['gestureData'];
 
-                let destSnapPoint = 0;
-                const viewWidth = gestureData.viewWidth;
-                const viewX = gestureData.translationX;
-                const x = translationX - gestureData.prevDeltaX;
-                gestureData.prevDeltaX = 0;
-                const totalDelta = x + dragToss * velocityX;
-                console.log('totalDelta', viewX, x, totalDelta)
+        //         let destSnapPoint = 0;
+        //         const viewWidth = gestureData.viewWidth;
+        //         const viewX = gestureData.translationX;
+        //         const x = translationX - gestureData.prevDeltaX;
+        //         gestureData.prevDeltaX = 0;
+        //         const totalDelta = x + dragToss * velocityX;
+        //         console.log('totalDelta', viewX, x, totalDelta)
 
-                // if (side === 'left') {
-                if (totalDelta < -DEFAULT_TRIGGER_WIDTH) {
-                    destSnapPoint = 0;
-                } else if (totalDelta > DEFAULT_TRIGGER_WIDTH) {
-                    destSnapPoint = viewWidth;
-                } else {
-                    const endOffsetX = viewX + totalDelta;
-                    const progress = Math.abs(endOffsetX / viewWidth);
-                    destSnapPoint = progress > 0.8 ? viewWidth : 0;
-                }
-                // } else if (side === 'right') {
-                //     if (-totalDelta < -DEFAULT_TRIGGER_WIDTH) {
-                //         destSnapPoint = 0;
-                //     } else if (-totalDelta > DEFAULT_TRIGGER_WIDTH) {
-                //         destSnapPoint = viewWidth;
-                //     } else {
-                //         const endOffsetX = viewX + totalDelta;
-                //         const progress = Math.abs(endOffsetX / viewWidth);
-                //         destSnapPoint = progress > 0.5 ? viewWidth : 0;
-                //     }
-                // }
-                this.animateToPosition(destSnapPoint, view, { view: view.getViewById('scroller') });
-            }
-        },
+        //         // if (side === 'left') {
+        //         if (totalDelta < -DEFAULT_TRIGGER_WIDTH) {
+        //             destSnapPoint = 0;
+        //         } else if (totalDelta > DEFAULT_TRIGGER_WIDTH) {
+        //             destSnapPoint = viewWidth;
+        //         } else {
+        //             const endOffsetX = viewX + totalDelta;
+        //             const progress = Math.abs(endOffsetX / viewWidth);
+        //             destSnapPoint = progress > 0.8 ? viewWidth : 0;
+        //         }
+        //         // } else if (side === 'right') {
+        //         //     if (-totalDelta < -DEFAULT_TRIGGER_WIDTH) {
+        //         //         destSnapPoint = 0;
+        //         //     } else if (-totalDelta > DEFAULT_TRIGGER_WIDTH) {
+        //         //         destSnapPoint = viewWidth;
+        //         //     } else {
+        //         //         const endOffsetX = viewX + totalDelta;
+        //         //         const progress = Math.abs(endOffsetX / viewWidth);
+        //         //         destSnapPoint = progress > 0.5 ? viewWidth : 0;
+        //         //     }
+        //         // }
+        //         this.animateToPosition(destSnapPoint, view, { view: view.getViewById('scroller') });
+        //     }
+        // },
         async animateToPosition(position, view, views, duration = OPEN_DURATION) {
             // if (this.showingSide && side !== this.showingSide) {
             //     this.animateToPosition(this.showingSide, 0, duration);
@@ -247,34 +247,34 @@ export default {
                 // }
             }
         },
-        onGestureTouch(args: GestureTouchEventData) {
-            const { state, extraData, view } = args.data;
-            if (state !== GestureState.ACTIVE) {
-                return;
-            }
-            const deltaX = extraData.translationX;
-            // if (this.isAnimating || !this.isPanning || deltaX === 0 || (this.shouldPan && !this.shouldPan(side))) {
-            //     this.prevDeltaX = deltaX;
-            //     return;
-            // }
+        // onGestureTouch(args: GestureTouchEventData) {
+        //     const { state, extraData, view } = args.data;
+        //     if (state !== GestureState.ACTIVE) {
+        //         return;
+        //     }
+        //     const deltaX = extraData.translationX;
+        //     // if (this.isAnimating || !this.isPanning || deltaX === 0 || (this.shouldPan && !this.shouldPan(side))) {
+        //     //     this.prevDeltaX = deltaX;
+        //     //     return;
+        //     // }
 
-            const gestureData = view['gestureData'];
-            const width = gestureData.viewWidth;
+        //     const gestureData = view['gestureData'];
+        //     const width = gestureData.viewWidth;
 
-            const viewX = gestureData.translationX - width;
+        //     const viewX = gestureData.translationX - width;
 
-            const x = deltaX - gestureData.prevDeltaX;
-            // if (this.showingSide === 'left') {
-            // x = -x;
-            // }
-            // const trX = this.constrainX(this.showingSide, viewX + x);
-            const trX = viewX + x;
+        //     const x = deltaX - gestureData.prevDeltaX;
+        //     // if (this.showingSide === 'left') {
+        //     // x = -x;
+        //     // }
+        //     // const trX = this.constrainX(this.showingSide, viewX + x);
+        //     const trX = viewX + x;
 
-            gestureData.translationX = width + trX;
-            const trData = this.computeTranslationData(gestureData, Math.max(0, width + trX));
-            this.applyTrData(trData, { view: view.getViewById('scroller') });
-            gestureData.prevDeltaX = deltaX;
-        },
+        //     gestureData.translationX = width + trX;
+        //     const trData = this.computeTranslationData(gestureData, Math.max(0, width + trX));
+        //     this.applyTrData(trData, { view: view.getViewById('scroller') });
+        //     gestureData.prevDeltaX = deltaX;
+        // },
         applyTrData(trData: { [k: string]: any }, views: { [k: string]: View }) {
             Object.keys(trData).forEach((k) => {
                 if (views[k]) {

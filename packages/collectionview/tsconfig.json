@@ -4,6 +4,6 @@
         "rootDir": "../../src/collectionview",
         "outDir": "./"
     },
-    "include": ["../../src/collectionview/**/*", "../../references.d.ts", "../../src/references.d.ts"],
+    "include": ["../../src/collectionview/**/*", "../../references.d.ts", "../../tools/references.d.ts", "../../src/references.d.ts"],
     "exclude": ["../../src/collectionview/angular/**"]
 }

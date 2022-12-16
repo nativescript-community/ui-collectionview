@@ -40,7 +40,7 @@
 * [Installation](#installation)
 * [Configuration](#configuration)
 * [Demos and Development](#demos-and-development)
-	* [Setup](#setup)
+	* [Repo Setup](#repo-setup)
 	* [Build](#build)
 	* [Demos](#demos)
 * [Questions](#questions)
@@ -72,18 +72,13 @@ then simply use the `layoutStyle="waterfall"` as a collectionview property
 ## Demos and Development
 
 
-### Setup
+### Repo Setup
 
-To run the demos, you must clone this repo **recursively**.
+The package manager used to install and link dependencies must be `pnpm` or `yarn`. `npm` wont work.
 
-```
-git clone https://github.com/@nativescript-community/ui-collectionview-waterfall.git --recursive
-```
-
-**Install Dependencies:**
-```bash
-npm i # or 'yarn install' or 'pnpm install'
-```
+To develop and test:
+if you use `yarn` then run `yarn`
+if you use `pnpm` then run `pnpm i`
 
 **Interactive Menu:**
 
@@ -92,9 +87,7 @@ To start the interactive menu, run `npm start` (or `yarn start` or `pnpm start`)
 ### Build
 
 ```bash
-npm run build
-
-npm run build.angular # or for Angular
+npm run build.all
 ```
 
 ### Demos
