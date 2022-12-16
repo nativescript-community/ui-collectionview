@@ -55,5 +55,5 @@ packages/*.metadata.json
 packages/angular
 packages/typings
 pnpm-lock.yaml
+
 /blueprint.md
-yarn.lock
