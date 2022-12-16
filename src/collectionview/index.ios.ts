@@ -10,14 +10,14 @@ import {
     ProxyViewContainer,
     TouchGestureEventData,
     Trace,
+    Utils,
     View,
     ViewBase,
     paddingBottomProperty,
     paddingLeftProperty,
     paddingRightProperty,
     paddingTopProperty,
-    profile,
-    Utils
+    profile
 } from '@nativescript/core';
 import { Pointer } from '@nativescript/core/ui/gestures';
 import { CollectionViewItemEventData, Orientation, reorderLongPressEnabledProperty, reorderingEnabledProperty, reverseLayoutProperty, scrollBarIndicatorVisibleProperty } from '.';
@@ -370,7 +370,10 @@ export class CollectionView extends CollectionViewBase {
         }
         if ((layoutView instanceof UICollectionViewFlowLayout && this._effectiveColWidth) || this._effectiveRowHeight) {
             // @ts-ignore
-            layoutView.estimatedItemSize = layoutView.itemSize = CGSizeMake(Utils.layout.toDeviceIndependentPixels(this._effectiveColWidth), Utils.layout.toDeviceIndependentPixels(this._effectiveRowHeight));
+            layoutView.estimatedItemSize = layoutView.itemSize = CGSizeMake(
+                Utils.layout.toDeviceIndependentPixels(this._effectiveColWidth),
+                Utils.layout.toDeviceIndependentPixels(this._effectiveRowHeight)
+            );
         }
 
         layoutView.invalidateLayout();
@@ -639,14 +642,14 @@ export class CollectionView extends CollectionViewBase {
                 this._addView(view);
                 const innerView = NSCellView.new() as NSCellView;
                 innerView.view = new WeakRef(view);
-                if(!notForCellSizeComp || this.autoReloadItemOnLayout) {
+                if (!notForCellSizeComp || this.autoReloadItemOnLayout) {
                     // for a cell to update correctly on cell layout change we need
                     // to do it ourself instead of "propagating it"
                     view['performLayout'] = () => {
                         if (notForCellSizeComp) {
                             this.measureCell(cell, view, indexPath);
                             this.layoutCell(indexPath.row, cell, view);
-                            this.nativeViewProtected.collectionViewLayout.invalidateLayout()
+                            this.nativeViewProtected.collectionViewLayout.invalidateLayout();
                         }
                     };
                 }
@@ -716,8 +719,16 @@ export class CollectionView extends CollectionViewBase {
                 }
             }
 
-            const widthMeasureSpec = width ? Utils.layout.makeMeasureSpec(width, Utils.layout.EXACTLY) : horizontal ? infinity : Utils.layout.makeMeasureSpec(this._innerWidth, Utils.layout.UNSPECIFIED);
-            const heightMeasureSpec = height ? Utils.layout.makeMeasureSpec(height, Utils.layout.EXACTLY) : horizontal ? Utils.layout.makeMeasureSpec(this._innerHeight, Utils.layout.UNSPECIFIED) : infinity;
+            const widthMeasureSpec = width
+                ? Utils.layout.makeMeasureSpec(width, Utils.layout.EXACTLY)
+                : horizontal
+                    ? infinity
+                    : Utils.layout.makeMeasureSpec(this._innerWidth, Utils.layout.UNSPECIFIED);
+            const heightMeasureSpec = height
+                ? Utils.layout.makeMeasureSpec(height, Utils.layout.EXACTLY)
+                : horizontal
+                    ? Utils.layout.makeMeasureSpec(this._innerHeight, Utils.layout.UNSPECIFIED)
+                    : infinity;
             if (Trace.isEnabled()) {
                 CLog(CLogTypes.log, 'measureCell', index.row, width, height, widthMeasureSpec, heightMeasureSpec);
             }

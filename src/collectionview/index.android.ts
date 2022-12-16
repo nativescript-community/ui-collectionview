@@ -7,6 +7,7 @@ import {
     Property,
     ProxyViewContainer,
     Trace,
+    Utils,
     View,
     ViewBase,
     booleanConverter,
@@ -14,8 +15,7 @@ import {
     paddingLeftProperty,
     paddingRightProperty,
     paddingTopProperty,
-    profile,
-    Utils
+    profile
 } from '@nativescript/core';
 import { CollectionViewItemEventData, Orientation, reorderLongPressEnabledProperty, reorderingEnabledProperty, reverseLayoutProperty, scrollBarIndicatorVisibleProperty } from '.';
 import { CLog, CLogTypes, CollectionViewBase, ListViewViewTypes, isScrollEnabledProperty, orientationProperty } from './index-common';
