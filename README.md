@@ -1,4 +1,7 @@
-<!-- ⚠️ This README has been generated from the file(s) "blueprint.md" ⚠️-->This monorepo contains multiple packages:<br>## Demos and Development
+<!-- ⚠️ This README has been generated from the file(s) "blueprint.md" ⚠️-->
+[](#demos-and-development)
+
+## Demos and Development
 
 
 ### Repo Setup
@@ -26,7 +29,7 @@ npm run demo.[ng|react|svelte|vue].[ios|android]
 
 npm run demo.svelte.ios # Example
 ```
-<br><br><details>
+<br><br>This monorepo contains multiple packages:<br><br><details>
 <summary><b>collectionview</b></summary>
 <!-- ⚠️ This README has been generated from the file(s) "blueprint.md" ⚠️-->
 <!--  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
