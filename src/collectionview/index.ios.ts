@@ -20,7 +20,7 @@ import {
     profile
 } from '@nativescript/core';
 import { Pointer } from '@nativescript/core/ui/gestures';
-import { CollectionViewItemEventData, Orientation, reorderLongPressEnabledProperty, reorderingEnabledProperty, reverseLayoutProperty, scrollBarIndicatorVisibleProperty } from '.';
+import { CollectionViewItemEventData, Orientation, reorderLongPressEnabledProperty, reorderingEnabledProperty, reverseLayoutProperty, scrollBarIndicatorVisibleProperty, CollectionViewItemDisplayEventData } from '.';
 import { CLog, CLogTypes, CollectionViewBase, ListViewViewTypes, isBounceEnabledProperty, isScrollEnabledProperty, itemTemplatesProperty, orientationProperty } from './index-common';
 
 export * from './index-common';
@@ -84,6 +84,11 @@ export class CollectionView extends CollectionViewBase {
         this._sizes = new Array<number[]>();
     }
 
+    // @ts-ignore
+    get ios(): UICollectionView {
+        return this.nativeViewProtected;
+    }
+
     public createNativeView() {
         let layout: UICollectionViewLayout;
         if (CollectionViewBase.layoutStyles[this.layoutStyle]) {
@@ -109,17 +114,16 @@ export class CollectionView extends CollectionViewBase {
 
     onTemplateAdded(t) {
         super.onTemplateAdded(t);
-        if (this.nativeViewProtected) {
-            this.nativeViewProtected.registerClassForCellWithReuseIdentifier(CollectionViewCell.class(), t.key.toLowerCase());
+        if (this.ios) {
+            this.ios.registerClassForCellWithReuseIdentifier(CollectionViewCell.class(), t.key.toLowerCase());
         }
     }
 
     public initNativeView() {
         super.initNativeView();
 
-        const nativeView = this.nativeView;
         this._dataSource = CollectionViewDataSource.initWithOwner(this);
-        nativeView.dataSource = this._dataSource;
+        this.ios.dataSource = this._dataSource;
 
         const layoutStyle = CollectionViewBase.layoutStyles[this.layoutStyle];
         if (layoutStyle && layoutStyle.createDelegate) {
@@ -129,7 +133,7 @@ export class CollectionView extends CollectionViewBase {
         }
         this._delegate._owner = new WeakRef(this);
         this._measureCellMap = new Map<string, { cell: CollectionViewCell; view: View }>();
-        this.nativeView.delegate = this._delegate;
+        this.ios.delegate = this._delegate;
 
         this._setNativeClipToBounds();
     }
@@ -138,10 +142,11 @@ export class CollectionView extends CollectionViewBase {
         if (Trace.isEnabled()) {
             CLog(CLogTypes.log, 'disposeNativeView');
         }
-        const nativeView = this.nativeView;
-        nativeView.delegate = null;
+        if (this.ios) {
+            this.ios.delegate = null;
+            this.ios.dataSource = null;
+        }
         this._delegate = null;
-        nativeView.dataSource = null;
         this._dataSource = null;
         this._layout = null;
         this.reorderLongPressHandler = null;
@@ -173,15 +178,15 @@ export class CollectionView extends CollectionViewBase {
     }
     public getViewForItemAtIndex(index: number): View {
         let result: View;
-        if (this.nativeViewProtected) {
-            const cell = this.nativeViewProtected.cellForItemAtIndexPath(NSIndexPath.indexPathForRowInSection(index, 0)) as CollectionViewCell;
+        if (this.ios) {
+            const cell = this.ios.cellForItemAtIndexPath(NSIndexPath.indexPathForRowInSection(index, 0)) as CollectionViewCell;
             return cell?.view;
         }
 
         return result;
     }
     public startDragging(index: number, pointer?: Pointer) {
-        if (this.reorderEnabled && this.nativeViewProtected) {
+        if (this.reorderEnabled && this.ios) {
             this.manualDragging = true;
             this.draggingStartDelta = null;
             if (pointer) {
@@ -192,16 +197,15 @@ export class CollectionView extends CollectionViewBase {
                     this.draggingStartDelta = [point.x - size.width / 2, point.y - size.height / 2];
                 }
             }
-            this.nativeViewProtected.beginInteractiveMovementForItemAtIndexPath(NSIndexPath.indexPathForRowInSection(index, 0));
+            this.ios.beginInteractiveMovementForItemAtIndexPath(NSIndexPath.indexPathForRowInSection(index, 0));
             this.scrollEnabledBeforeDragging = this.isScrollEnabled;
-            this.nativeViewProtected.scrollEnabled = false;
+            this.ios.scrollEnabled = false;
         }
     }
     onReorderingTouch(event: TouchGestureEventData) {
         if (!this.manualDragging) {
             return;
         }
-        const collectionView = this.nativeViewProtected;
         const pointer = event.getActivePointers()[0];
         switch (event.action) {
             case 'move':
@@ -211,18 +215,24 @@ export class CollectionView extends CollectionViewBase {
                     x -= this.draggingStartDelta[0];
                     y -= this.draggingStartDelta[1];
                 }
-                collectionView.updateInteractiveMovementTargetPosition(CGPointMake(x, y));
+                if (this.ios) {
+                    this.ios.updateInteractiveMovementTargetPosition(CGPointMake(x, y));
+                }
                 break;
             case 'up':
                 this.manualDragging = false;
-                collectionView && collectionView.endInteractiveMovement();
-                this.nativeViewProtected.scrollEnabled = this.scrollEnabledBeforeDragging;
+                if (this.ios) {
+                    this.ios.endInteractiveMovement();
+                    this.ios.scrollEnabled = this.scrollEnabledBeforeDragging;
+                }
                 this.handleReorderEnd();
                 break;
             case 'cancel':
                 this.manualDragging = false;
-                collectionView && collectionView.cancelInteractiveMovement();
-                this.nativeViewProtected.scrollEnabled = this.scrollEnabledBeforeDragging;
+                if (this.ios) {
+                    this.ios.cancelInteractiveMovement();
+                    this.ios.scrollEnabled = this.scrollEnabledBeforeDragging;
+                }
                 this.handleReorderEnd();
                 break;
         }
@@ -240,31 +250,32 @@ export class CollectionView extends CollectionViewBase {
         this.reorderEndingRow = -1;
     }
     onReorderLongPress(gesture: UILongPressGestureRecognizer) {
-        const collectionView = this.nativeViewProtected;
-        if (!collectionView) {
+        if (!this.ios) {
             return;
         }
         switch (gesture.state) {
             case UIGestureRecognizerState.Began:
-                const selectedIndexPath = collectionView.indexPathForItemAtPoint(gesture.locationInView(collectionView));
-                collectionView.beginInteractiveMovementForItemAtIndexPath(selectedIndexPath);
+                const selectedIndexPath = this.ios.indexPathForItemAtPoint(gesture.locationInView(this.ios));
+                this.ios.beginInteractiveMovementForItemAtIndexPath(selectedIndexPath);
                 break;
             case UIGestureRecognizerState.Changed:
-                collectionView.updateInteractiveMovementTargetPosition(gesture.locationInView(collectionView));
+                this.ios.updateInteractiveMovementTargetPosition(gesture.locationInView(this.ios));
                 break;
             case UIGestureRecognizerState.Ended:
-                collectionView.endInteractiveMovement();
+                this.ios.endInteractiveMovement();
                 this.handleReorderEnd();
                 break;
             default:
-                collectionView.cancelInteractiveMovement();
+                this.ios.cancelInteractiveMovement();
                 this.handleReorderEnd();
                 break;
         }
     }
 
     [contentInsetAdjustmentBehaviorProperty.setNative](value: ContentInsetAdjustmentBehavior) {
-        this.nativeViewProtected.contentInsetAdjustmentBehavior = value as any;
+        if (this.ios) {
+            this.ios.contentInsetAdjustmentBehavior = value as any;
+        }
     }
 
     [paddingTopProperty.setNative](value: CoreTypes.LengthType) {
@@ -295,26 +306,34 @@ export class CollectionView extends CollectionViewBase {
         this.updateScrollBarVisibility(this.scrollBarIndicatorVisible);
     }
     [isScrollEnabledProperty.setNative](value: boolean) {
-        this.nativeViewProtected.scrollEnabled = value;
+        if (this.ios) {
+            this.ios.scrollEnabled = value;
+        }
         this.scrollEnabledBeforeDragging = value;
     }
     [isBounceEnabledProperty.setNative](value: boolean) {
-        this.nativeViewProtected.bounces = value;
-        // this.nativeViewProtected.alwaysBounceHorizontal = value;
+        if (this.ios) {
+            this.ios.bounces = value;
+            // this.ios.alwaysBounceHorizontal = value;
+        }
     }
 
     [itemTemplatesProperty.getDefault](): KeyedTemplate[] {
         return null;
     }
     [reverseLayoutProperty.setNative](value: boolean) {
-        this.nativeViewProtected.transform = value ? CGAffineTransformMakeRotation(-Math.PI) : null;
+        if (this.ios) {
+            this.ios.transform = value ? CGAffineTransformMakeRotation(-Math.PI) : null;
+        }
     }
     [reorderLongPressEnabledProperty.setNative](value: boolean) {
         if (value) {
             if (!this.reorderLongPressGesture) {
                 this.reorderLongPressHandler = ReorderLongPressImpl.initWithOwner(new WeakRef(this));
                 this.reorderLongPressGesture = UILongPressGestureRecognizer.alloc().initWithTargetAction(this.reorderLongPressHandler, 'longPress');
-                this.nativeViewProtected.addGestureRecognizer(this.reorderLongPressGesture);
+                if (this.ios) {
+                    this.ios.addGestureRecognizer(this.reorderLongPressGesture);
+                }
             } else {
                 this.reorderLongPressGesture.enabled = true;
             }
@@ -338,13 +357,13 @@ export class CollectionView extends CollectionViewBase {
         this.updateScrollBarVisibility(value);
     }
     protected updateScrollBarVisibility(value) {
-        if (!this.nativeViewProtected) {
+        if (!this.ios) {
             return;
         }
         if (this.orientation === 'horizontal') {
-            this.nativeViewProtected.showsHorizontalScrollIndicator = value;
+            this.ios.showsHorizontalScrollIndicator = value;
         } else {
-            this.nativeViewProtected.showsVerticalScrollIndicator = value;
+            this.ios.showsVerticalScrollIndicator = value;
         }
     }
     public eachChildView(callback: (child: View) => boolean): void {
@@ -364,7 +383,7 @@ export class CollectionView extends CollectionViewBase {
             p.onLayout && p.onLayout(this, left, top, right, bottom);
         });
 
-        const layoutView = this.nativeViewProtected.collectionViewLayout;
+        const layoutView = this.ios?.collectionViewLayout;
         if (!layoutView) {
             return;
         }
@@ -391,8 +410,7 @@ export class CollectionView extends CollectionViewBase {
     }
 
     public onSourceCollectionChanged(event: ChangedData<any>) {
-        const view = this.nativeViewProtected;
-        if (!view || this._dataUpdatesSuspended) {
+        if (!this.ios || this._dataUpdatesSuspended) {
             return;
         }
         if (Trace.isEnabled()) {
@@ -411,8 +429,10 @@ export class CollectionView extends CollectionViewBase {
                 if (Trace.isEnabled()) {
                     CLog(CLogTypes.info, 'deleteItemsAtIndexPaths', indexes.count);
                 }
-                view.performBatchUpdatesCompletion(() => {
-                    view.deleteItemsAtIndexPaths(indexes);
+                this.ios.performBatchUpdatesCompletion(() => {
+                    if (this.ios) {
+                        this.ios.deleteItemsAtIndexPaths(indexes);
+                    }
                 }, null);
                 return;
             }
@@ -423,8 +443,10 @@ export class CollectionView extends CollectionViewBase {
                     CLog(CLogTypes.info, 'reloadItemsAtIndexPaths', event.index, indexes.count);
                 }
                 UIView.performWithoutAnimation(() => {
-                    view.performBatchUpdatesCompletion(() => {
-                        view.reloadItemsAtIndexPaths(indexes);
+                    this.ios.performBatchUpdatesCompletion(() => {
+                        if (this.ios) {
+                            this.ios.reloadItemsAtIndexPaths(indexes);
+                        }
                     }, null);
                 });
                 return;
@@ -437,13 +459,18 @@ export class CollectionView extends CollectionViewBase {
                 if (Trace.isEnabled()) {
                     CLog(CLogTypes.info, 'insertItemsAtIndexPaths', indexes.count);
                 }
-                view.performBatchUpdatesCompletion(() => {
-                    view.insertItemsAtIndexPaths(indexes);
+                this.ios.performBatchUpdatesCompletion(() => {
+                    if (this.ios) {
+                        this.ios.insertItemsAtIndexPaths(indexes);
+                    }
                 }, null);
                 return;
             }
             case ChangeType.Splice: {
-                view.performBatchUpdatesCompletion(() => {
+                this.ios.performBatchUpdatesCompletion(() => {
+                    if (!this.ios) {
+                        return;
+                    }
                     const added = event.addedCount;
                     const removed = (event.removed && event.removed.length) || 0;
                     if (added > 0 && added === removed) {
@@ -451,14 +478,14 @@ export class CollectionView extends CollectionViewBase {
                         for (let index = 0; index < added; index++) {
                             indexes.addObject(NSIndexPath.indexPathForRowInSection(event.index + index, 0));
                         }
-                        view.reloadItemsAtIndexPaths(indexes);
+                        this.ios.reloadItemsAtIndexPaths(indexes);
                     } else {
                         if (event.addedCount > 0) {
                             const indexes = NSMutableArray.alloc<NSIndexPath>().init();
                             for (let index = 0; index < event.addedCount; index++) {
                                 indexes.addObject(NSIndexPath.indexPathForItemInSection(event.index + index, 0));
                             }
-                            view.insertItemsAtIndexPaths(indexes);
+                            this.ios.insertItemsAtIndexPaths(indexes);
                         }
                         if (event.removed && event.removed.length > 0) {
                             const indexes = NSMutableArray.new<NSIndexPath>();
@@ -469,8 +496,10 @@ export class CollectionView extends CollectionViewBase {
                             if (Trace.isEnabled()) {
                                 CLog(CLogTypes.info, 'deleteItemsAtIndexPaths', indexes.count);
                             }
-                            view.performBatchUpdatesCompletion(() => {
-                                view.deleteItemsAtIndexPaths(indexes);
+                            this.ios.performBatchUpdatesCompletion(() => {
+                                if (this.ios) {
+                                    this.ios.deleteItemsAtIndexPaths(indexes);
+                                }
                             }, null);
                         }
                     }
@@ -483,12 +512,13 @@ export class CollectionView extends CollectionViewBase {
 
     onItemTemplatesChanged(oldValue, newValue) {
         super.onItemTemplatesChanged(oldValue, newValue);
-        if (!this.nativeViewProtected) {
+        if (!this.ios) {
             return;
         }
-        const view = this.nativeViewProtected;
         this._itemTemplatesInternal.forEach((t) => {
-            view.registerClassForCellWithReuseIdentifier(CollectionViewCell.class(), t.key.toLowerCase());
+            if (this.ios) {
+                this.ios.registerClassForCellWithReuseIdentifier(CollectionViewCell.class(), t.key.toLowerCase());
+            }
         });
     }
 
@@ -504,30 +534,30 @@ export class CollectionView extends CollectionViewBase {
     }
 
     refreshVisibleItems() {
-        const view = this.nativeViewProtected;
-        if (!view) {
+        if (!this.ios) {
             return;
         }
-        const visibles = view.indexPathsForVisibleItems;
+        const visibles = this.ios.indexPathsForVisibleItems;
         UIView.performWithoutAnimation(() => {
-            view.performBatchUpdatesCompletion(() => {
-                view.reloadItemsAtIndexPaths(visibles);
+            this.ios.performBatchUpdatesCompletion(() => {
+                if (this.ios) {
+                    this.ios.reloadItemsAtIndexPaths(visibles);
+                }
             }, null);
         });
     }
     public isItemAtIndexVisible(itemIndex: number): boolean {
-        const view = this.nativeViewProtected;
-        if (!view) {
+        if (!this.ios) {
             return false;
         }
-        const indexes: NSIndexPath[] = Array.from(view.indexPathsForVisibleItems);
+        const indexes: NSIndexPath[] = Array.from(this.ios.indexPathsForVisibleItems);
 
         return indexes.some((visIndex) => visIndex.row === itemIndex);
     }
 
     @profile
     public refresh() {
-        if (!this.isLoaded || !this.nativeView) {
+        if (!this.isLoaded || !this.ios) {
             this._isDataDirty = true;
             return;
         }
@@ -549,7 +579,7 @@ export class CollectionView extends CollectionViewBase {
         // TODO: this is ugly look here: https://github.com/nativescript-vue/nativescript-vue/issues/525
         // this.clearRealizedCells();
         // dispatch_async(main_queue, () => {
-        this.nativeViewProtected.reloadData();
+        this.ios.reloadData();
         // });
 
         const args = {
@@ -560,21 +590,22 @@ export class CollectionView extends CollectionViewBase {
     }
     //@ts-ignore
     get scrollOffset() {
-        const view = this.nativeViewProtected;
-        return (this.isHorizontal() ? view?.contentOffset.x : view?.contentOffset.y) || 0;
+        return (this.isHorizontal() ? this.ios?.contentOffset.x : this.ios?.contentOffset.y) || 0;
     }
     get verticalOffsetX() {
-        return this.nativeViewProtected?.contentOffset.x || 0;
+        return this.ios?.contentOffset.x || 0;
     }
     get verticalOffsetY() {
-        return this.nativeViewProtected?.contentOffset.y || 0;
+        return this.ios?.contentOffset.y || 0;
     }
     public scrollToIndex(index: number, animated: boolean = true) {
-        this.nativeViewProtected.scrollToItemAtIndexPathAtScrollPositionAnimated(
-            NSIndexPath.indexPathForItemInSection(index, 0),
-            this.orientation === 'vertical' ? UICollectionViewScrollPosition.Top : UICollectionViewScrollPosition.Left,
-            animated
-        );
+        if (this.ios) {
+            this.ios.scrollToItemAtIndexPathAtScrollPositionAnimated(
+                NSIndexPath.indexPathForItemInSection(index, 0),
+                this.orientation === 'vertical' ? UICollectionViewScrollPosition.Top : UICollectionViewScrollPosition.Left,
+                animated
+            );
+        }
     }
 
     public requestLayout(): void {
@@ -585,7 +616,9 @@ export class CollectionView extends CollectionViewBase {
     }
 
     public _setNativeClipToBounds() {
-        this.nativeView.clipsToBounds = true;
+        if (this.ios) {
+            this.ios.clipsToBounds = true;
+        }
     }
     notifyForItemAtIndex(listView: CollectionViewBase, cell: any, view: View, eventName: string, indexPath: NSIndexPath, bindingContext?) {
         const args = { eventName, object: listView, index: indexPath.row, view, ios: cell, bindingContext };
@@ -649,7 +682,9 @@ export class CollectionView extends CollectionViewBase {
                         if (notForCellSizeComp) {
                             this.measureCell(cell, view, indexPath);
                             this.layoutCell(indexPath.row, cell, view);
-                            this.nativeViewProtected.collectionViewLayout.invalidateLayout();
+                            if (this.ios) {
+                                this.ios.collectionViewLayout.invalidateLayout();
+                            }
                         }
                     };
                 }
@@ -835,13 +870,14 @@ export class CollectionView extends CollectionViewBase {
                 });
             }
         }
-        // if (this.hasListeners(CollectionViewBase.displayItemEvent) ) {
-        //     this.notify<CollectionViewItemDisplayEventData>({
-        //         eventName: CollectionViewBase.displayItemEvent,
-        //         index:indexPath.row,
-        //         object: this,
-        //     });
-        // }
+        if (this.hasListeners(CollectionViewBase.displayItemEvent) ) {
+            this.notify<CollectionViewItemDisplayEventData>({
+                eventName: CollectionViewBase.displayItemEvent,
+                index:indexPath.row,
+                object: this,
+                cell,
+            });
+        }
 
         if (cell.preservesSuperviewLayoutMargins) {
             cell.preservesSuperviewLayoutMargins = false;
@@ -865,6 +901,28 @@ export class CollectionView extends CollectionViewBase {
         cell.highlighted = false;
 
         return indexPath;
+    }
+    collectionViewDidHighlightItemAtIndexPath(collectionView: UICollectionView, indexPath: NSIndexPath): void {
+        const cell = collectionView.cellForItemAtIndexPath(indexPath) as CollectionViewCell;
+        const position = indexPath?.row;
+        this.notify<CollectionViewItemEventData>({
+            eventName: CollectionViewBase.itemHighlightEvent,
+            object: this,
+            item: this.getItemAtIndex(position),
+            index: position,
+            view: cell?.view
+        });
+    }
+    collectionViewDidUnhighlightItemAtIndexPath(collectionView: UICollectionView, indexPath: NSIndexPath): void {
+        const cell = collectionView.cellForItemAtIndexPath(indexPath) as CollectionViewCell;
+        const position = indexPath?.row;
+        this.notify<CollectionViewItemEventData>({
+            eventName: CollectionViewBase.itemHighlightEndEvent,
+            object: this,
+            item: this.getItemAtIndex(position),
+            index: position,
+            view: cell?.view
+        });
     }
     collectionViewLayoutSizeForItemAtIndexPath(collectionView: UICollectionView, collectionViewLayout: UICollectionViewLayout, indexPath: NSIndexPath) {
         const row = indexPath.row;
@@ -966,7 +1024,7 @@ class NSCellView extends UIView {
     view: WeakRef<View>;
     layoutSubviews() {
         super.layoutSubviews();
-        const view = this.view && this.view.get();
+        const view = this.view && this.view.deref();
         if (!view) {
             return;
         }
@@ -981,7 +1039,7 @@ class CollectionViewCell extends UICollectionViewCell {
     owner: WeakRef<ItemView>;
 
     get view(): ItemView {
-        return this.owner ? this.owner.get() : null;
+        return this.owner ? this.owner.deref() : null;
     }
 }
 
@@ -996,7 +1054,7 @@ class CollectionViewDataSource extends NSObject implements UICollectionViewDataS
         return delegate;
     }
     numberOfSectionsInCollectionView(collectionView: UICollectionView) {
-        const owner = this._owner.get();
+        const owner = this._owner.deref();
         if (owner) {
             return owner.numberOfSectionsInCollectionView(collectionView);
         }
@@ -1004,7 +1062,7 @@ class CollectionViewDataSource extends NSObject implements UICollectionViewDataS
     }
 
     collectionViewNumberOfItemsInSection(collectionView: UICollectionView, section: number) {
-        const owner = this._owner.get();
+        const owner = this._owner.deref();
         if (owner) {
             return owner.collectionViewNumberOfItemsInSection(collectionView, section);
         }
@@ -1012,14 +1070,14 @@ class CollectionViewDataSource extends NSObject implements UICollectionViewDataS
     }
 
     collectionViewCellForItemAtIndexPath(collectionView: UICollectionView, indexPath: NSIndexPath): UICollectionViewCell {
-        const owner = this._owner.get();
+        const owner = this._owner.deref();
         if (owner) {
             return owner.collectionViewCellForItemAtIndexPath(collectionView, indexPath);
         }
         return null;
     }
     collectionViewMoveItemAtIndexPathToIndexPath(collectionView: UICollectionView, sourceIndexPath: NSIndexPath, destinationIndexPath: NSIndexPath) {
-        const owner = this._owner.get();
+        const owner = this._owner.deref();
         if (owner) {
             owner.reorderStartingRow = sourceIndexPath.row;
             owner.reorderEndingRow = destinationIndexPath.row;
@@ -1027,14 +1085,14 @@ class CollectionViewDataSource extends NSObject implements UICollectionViewDataS
         }
     }
     collectionViewTargetIndexPathForMoveFromItemAtIndexPathToProposedIndexPath?(collectionView: UICollectionView, originalIndexPath: NSIndexPath, proposedIndexPath: NSIndexPath): NSIndexPath {
-        const owner = this._owner.get();
+        const owner = this._owner.deref();
         if (owner) {
             owner.reorderEndingRow = proposedIndexPath.row;
         }
         return proposedIndexPath;
     }
     collectionViewCanMoveItemAtIndexPath(collectionView: UICollectionView, indexPath: NSIndexPath) {
-        const owner = this._owner.get();
+        const owner = this._owner.deref();
         if (owner) {
             const result = owner.shouldMoveItemAtIndex(indexPath.row);
             if (result) {
@@ -1056,58 +1114,70 @@ class UICollectionViewDelegateImpl extends NSObject implements UICollectionViewD
         return delegate;
     }
     collectionViewWillDisplayCellForItemAtIndexPath(collectionView: UICollectionView, cell: UICollectionViewCell, indexPath: NSIndexPath) {
-        const owner = this._owner.get();
+        const owner = this._owner.deref();
         if (owner) {
             owner.collectionViewWillDisplayCellForItemAtIndexPath(collectionView, cell, indexPath);
         }
     }
     collectionViewDidSelectItemAtIndexPath(collectionView: UICollectionView, indexPath: NSIndexPath) {
-        const owner = this._owner.get();
+        const owner = this._owner.deref();
         if (owner) {
             return owner.collectionViewDidSelectItemAtIndexPath(collectionView, indexPath);
         }
         return indexPath;
     }
+    collectionViewDidHighlightItemAtIndexPath(collectionView: UICollectionView, indexPath: NSIndexPath): void {
+        const owner = this._owner.deref();
+        if (owner) {
+            return owner.collectionViewDidHighlightItemAtIndexPath(collectionView, indexPath);
+        }
+    }
+    collectionViewDidUnhighlightItemAtIndexPath(collectionView: UICollectionView, indexPath: NSIndexPath): void {
+        const owner = this._owner.deref();
+        if (owner) {
+            return owner.collectionViewDidUnhighlightItemAtIndexPath(collectionView, indexPath);
+        }
+    }
     collectionViewLayoutSizeForItemAtIndexPath(collectionView: UICollectionView, collectionViewLayout: UICollectionViewLayout, indexPath: NSIndexPath) {
-        const owner = this._owner.get();
+        const owner = this._owner.deref();
         if (owner) {
             return owner.collectionViewLayoutSizeForItemAtIndexPath(collectionView, collectionViewLayout, indexPath);
         }
         return CGSizeZero;
     }
     scrollViewDidScroll(scrollView: UIScrollView): void {
-        const owner = this._owner.get();
+        const owner = this._owner.deref();
         if (owner) {
             owner.scrollViewDidScroll(scrollView);
         }
     }
     scrollViewWillBeginDragging(scrollView: UIScrollView): void {
-        const owner = this._owner.get();
+        const owner = this._owner.deref();
         if (owner) {
             owner.scrollViewWillBeginDragging(scrollView);
         }
     }
     scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        const owner = this._owner.get();
+        const owner = this._owner.deref();
         if (owner) {
             owner.scrollViewDidEndDecelerating(scrollView);
         }
     }
     scrollViewWillEndDraggingWithVelocityTargetContentOffset?(scrollView: UIScrollView, velocity: CGPoint, targetContentOffset: interop.Pointer | interop.Reference<CGPoint>): void {
-        const owner = this._owner.get();
+        const owner = this._owner.deref();
         if (owner) {
             owner.scrollViewWillEndDraggingWithVelocityTargetContentOffset(scrollView, velocity, targetContentOffset);
         }
     }
     scrollViewDidEndDraggingWillDecelerate(scrollView: UIScrollView, decelerate: boolean): void {
-        const owner = this._owner.get();
+        const owner = this._owner.deref();
         if (owner) {
             owner.scrollViewDidEndDraggingWillDecelerate(scrollView, decelerate);
         }
     }
 
     scrollViewDidEndScrollingAnimation(scrollView: UIScrollView): void {
-        const owner = this._owner.get();
+        const owner = this._owner.deref();
         if (owner) {
             owner.scrollViewDidEndScrollingAnimation(scrollView);
         }
@@ -1125,7 +1195,7 @@ class ReorderLongPressImpl extends NSObject {
     }
 
     public longPress(recognizer: UILongPressGestureRecognizer): void {
-        const owner = this._owner && this._owner.get();
+        const owner = this._owner && this._owner.deref();
         if (owner) {
             owner.onReorderLongPress(recognizer);
         }

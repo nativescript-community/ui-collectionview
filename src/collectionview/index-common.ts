@@ -100,6 +100,8 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     public static scrollStartEvent = 'scrollStart';
     public static scrollEndEvent = 'scrollEnd';
     public static itemTapEvent = 'itemTap';
+    public static itemHighlightEvent = 'itemHighlight';
+    public static itemHighlightEndEvent = 'itemHighlightEnd';
     public static displayItemEvent = 'displayItem';
     public static itemReorderedEvent = 'itemReordered';
     public static itemReorderStartingEvent = 'itemReorderStarting';
