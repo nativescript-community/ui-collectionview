@@ -60,6 +60,9 @@ export declare abstract class CollectionViewBase extends View implements Collect
     loadMoreThreshold: number;
     scrollOffset: number;
     reorderEnabled: boolean;
+    /** Used on iOS to auto update cells size if the cell request a layout change (like image itemLoading).
+    * Experimental and true by default
+    */
     autoReloadItemOnLayout: boolean;
     reorderLongPressEnabled: boolean;
     protected _dataUpdatesSuspended: boolean;
