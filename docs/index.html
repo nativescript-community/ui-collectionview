@@ -1,0 +1,643 @@
+<!DOCTYPE html><html class="default" lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>Documentation</title><meta name="description" content="Documentation for Documentation"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script async src="assets/search.js" id="search-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os"</script><header class="tsd-page-toolbar">
+<div class="tsd-toolbar-contents container">
+<div class="table-cell" id="tsd-search" data-base=".">
+<div class="field"><label for="tsd-search-field" class="tsd-widget tsd-toolbar-icon search no-caption"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M15.7824 13.833L12.6666 10.7177C12.5259 10.5771 12.3353 10.499 12.1353 10.499H11.6259C12.4884 9.39596 13.001 8.00859 13.001 6.49937C13.001 2.90909 10.0914 0 6.50048 0C2.90959 0 0 2.90909 0 6.49937C0 10.0896 2.90959 12.9987 6.50048 12.9987C8.00996 12.9987 9.39756 12.4863 10.5008 11.6239V12.1332C10.5008 12.3332 10.5789 12.5238 10.7195 12.6644L13.8354 15.7797C14.1292 16.0734 14.6042 16.0734 14.8948 15.7797L15.7793 14.8954C16.0731 14.6017 16.0731 14.1267 15.7824 13.833ZM6.50048 10.499C4.29094 10.499 2.50018 8.71165 2.50018 6.49937C2.50018 4.29021 4.28781 2.49976 6.50048 2.49976C8.71001 2.49976 10.5008 4.28708 10.5008 6.49937C10.5008 8.70852 8.71314 10.499 6.50048 10.499Z" fill="var(--color-text)"></path></svg></label><input type="text" id="tsd-search-field" aria-label="Search"/></div>
+<div class="field">
+<div id="tsd-toolbar-links"><a href="https://docs.nativescript.org">Nativescript Doc</a></div></div>
+<ul class="results">
+<li class="state loading">Preparing search index...</li>
+<li class="state failure">The search index is not available</li></ul><a href="index.html" class="title">Documentation</a></div>
+<div class="table-cell" id="tsd-widgets"><a href="#" class="tsd-widget tsd-toolbar-icon menu no-caption" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="2" fill="var(--color-text)"></rect><rect x="1" y="7" width="14" height="2" fill="var(--color-text)"></rect><rect x="1" y="11" width="14" height="2" fill="var(--color-text)"></rect></svg></a></div></div></header>
+<div class="container container-main">
+<div class="col-8 col-content">
+<div class="tsd-page-title">
+<h2>Documentation</h2></div>
+<div class="tsd-panel tsd-typography"><!-- ⚠️ This README has been generated from the file(s) "blueprint.md" ⚠️-->This monorepo contains multiple packages:<br><br><details>
+<summary><b>collectionview</b></summary>
+<!-- ⚠️ This README has been generated from the file(s) "blueprint.md" ⚠️-->
+<!--  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      DO NOT EDIT THIS READEME DIRECTLY! Edit "bluesprint.md" instead.
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+<h1 align="center">@nativescript-community/ui-collectionview</h1>
+<p align="center">
+        <a href="https://npmcharts.com/compare/@nativescript-community/ui-collectionview?minimal=true"><img alt="Downloads per month" src="https://img.shields.io/npm/dm/@nativescript-community/ui-collectionview.svg" height="20"/></a>
+<a href="https://www.npmjs.com/package/@nativescript-community/ui-collectionview"><img alt="NPM Version" src="https://img.shields.io/npm/v/@nativescript-community/ui-collectionview.svg" height="20"/></a>
+    </p>
+
+<p align="center">
+  <b>Allows you to easily add a collection view (grid list view) to your projects. Supports vertical and horizontal modes, templating, and more.</b></br>
+  <sub><sub>
+</p>
+
+<br />
+
+
+<table>
+<thead>
+<tr>
+<th><img src="https://github.com/nativescript-community/ui-collectionview/raw/master/images/demo-ios.gif" height="500" /></th>
+<th><img src="https://github.com/nativescript-community/ui-collectionview/raw/master/images/demo-android.gif" height="500" /></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>iOS Demo</td>
+<td>Android Demo</td>
+</tr>
+</tbody></table>
+<p><a href="#table-of-contents"></a></p>
+<p><a href="#table-of-contents"></a></p>
+
+<a href="#table-of-contents" id="table-of-contents" style="color: inherit; text-decoration: none;">
+  <h2>Table of Contents</h2>
+</a>
+<ul>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#api">API</a><ul>
+<li><a href="#events">Events</a></li>
+<li><a href="#properties">Properties</a></li>
+<li><a href="#methods">Methods</a></li>
+</ul>
+</li>
+<li><a href="#usage">Usage</a><ul>
+<li><a href="#simple-example">Simple Example</a></li>
+<li><a href="#templates-example">Templates Example</a></li>
+</ul>
+</li>
+<li><a href="#usage-in-angular">Usage in Angular</a><ul>
+<li><a href="#simple-example-1">Simple Example</a></li>
+<li><a href="#templates-example-1">Templates Example</a></li>
+</ul>
+</li>
+<li><a href="#usage-in-vue">Usage in Vue</a><ul>
+<li><a href="#simple-example-2">Simple Example</a></li>
+</ul>
+</li>
+<li><a href="#usage-in-svelte">Usage in Svelte</a><ul>
+<li><a href="#simple-example-3">Simple Example</a></li>
+</ul>
+</li>
+<li><a href="#usage-in-react">Usage in React</a><ul>
+<li><a href="#simple-example-4">Simple Example</a></li>
+</ul>
+</li>
+<li><a href="#demos">Demos</a></li>
+<li><a href="#demos-and-development">Demos and Development</a><ul>
+<li><a href="#repo-setup">Repo Setup</a></li>
+<li><a href="#build">Build</a></li>
+<li><a href="#demos-1">Demos</a></li>
+</ul>
+</li>
+<li><a href="#contributing">Contributing</a><ul>
+<li><a href="#update-repo-">Update repo </a></li>
+<li><a href="#update-readme-">Update readme </a></li>
+<li><a href="#update-doc-">Update doc </a></li>
+<li><a href="#publish">Publish</a></li>
+</ul>
+</li>
+<li><a href="#questions">Questions</a></li>
+</ul>
+<p><a href="#installation"></a></p>
+<p><a href="#installation"></a></p>
+
+<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
+  <h2>Installation</h2>
+</a>
+<p>Run the following command from the root of your project:</p>
+<p><code>ns plugin add @nativescript-community/ui-collectionview</code></p>
+<p><a href="#api"></a></p>
+<p><a href="#api"></a></p>
+
+<a href="#api" id="api" style="color: inherit; text-decoration: none;">
+  <h2>API</h2>
+</a>
+
+<a href="#events" id="events" style="color: inherit; text-decoration: none;">
+  <h3>Events</h3>
+</a>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>itemLoading</td>
+<td>Triggered when generating an item in the CollectionView.</td>
+</tr>
+<tr>
+<td>itemTap</td>
+<td>Triggered when the user taps on an item in the CollectionView.</td>
+</tr>
+<tr>
+<td>loadMoreItems</td>
+<td>Triggered when the generated items reached the end of the items property.</td>
+</tr>
+<tr>
+<td>scroll</td>
+<td>Triggered on collectionview scroll.</td>
+</tr>
+<tr>
+<td>scrollEnd</td>
+<td>Triggered on collectionview scroll end.</td>
+</tr>
+<tr>
+<td>itemReorderStarting</td>
+<td>Triggered when a reorder is starting. Changing the <code>returnValue</code> of the event data allows you to cancel it</td>
+</tr>
+<tr>
+<td>itemReorderStarted</td>
+<td>Triggered when a reorder started.</td>
+</tr>
+<tr>
+<td>itemReordered</td>
+<td>Triggered when a reorder finished.</td>
+</tr>
+<tr>
+<td>dataPopulated</td>
+<td>Triggered when a refresh has been called.</td>
+</tr>
+</tbody></table>
+
+<a href="#properties" id="properties" style="color: inherit; text-decoration: none;">
+  <h3>Properties</h3>
+</a>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ios</td>
+<td><a href="https://tinyurl.com/y4ugbfgc">UICollectionView</a></td>
+<td>Gets the native iOS view that represents the user interface for this component. Valid only when running on iOS.</td>
+</tr>
+<tr>
+<td>android</td>
+<td><a href="https://tinyurl.com/lvqebpq">android.support.v7.widget.RecyclerView</a></td>
+<td>Gets the native android widget that represents the user interface for this component. Valid only when running on Android OS.</td>
+</tr>
+<tr>
+<td>items</td>
+<td><code>array</code> or <code>ItemsSource</code></td>
+<td>Gets or sets the items collection of the CollectionView. The items property can be set to an array or an object defining length and getItem(index) method.</td>
+</tr>
+<tr>
+<td>itemTemplate</td>
+<td><code>string</code></td>
+<td>Gets or sets the item template of the CollectionView.</td>
+</tr>
+<tr>
+<td>rowHeight</td>
+<td><code>PercentLength</code></td>
+<td>Gets or sets the height for every row in the CollectionView.</td>
+</tr>
+<tr>
+<td>colWidth</td>
+<td><code>PercentLength</code></td>
+<td>Gets or sets the width for every column in the CollectionView.</td>
+</tr>
+<tr>
+<td>spanSize</td>
+<td><code>function</code></td>
+<td>Triggered when an item is loaded. Returns the number of columns that the element should occupy taking into account <code>colWidth</code> when the device is vertical and <code>rowHeight</code> when horizontal. Parameters: (item, index: number).</td>
+</tr>
+<tr>
+<td>scrollOffset</td>
+<td><code>number</code></td>
+<td>Gets the current scroll.</td>
+</tr>
+<tr>
+<td>orientation</td>
+<td><code>vertical</code> or <code>horizontal</code></td>
+<td>Sets the orientation of the CollectionView. Defaults to <code>vertical</code>.</td>
+</tr>
+</tbody></table>
+
+<a href="#methods" id="methods" style="color: inherit; text-decoration: none;">
+  <h3>Methods</h3>
+</a>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Return</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>refresh()</td>
+<td><code>void</code></td>
+<td>Forces the CollectionView to reload all its items.</td>
+</tr>
+<tr>
+<td>refreshVisibleItem()</td>
+<td><code>void</code></td>
+<td>Forces CollectionView to reload visible items.</td>
+</tr>
+<tr>
+<td>scrollToIndex(index: number, animated: boolean = true)</td>
+<td><code>void</code></td>
+<td>Scrolls the CollectionView to the item with the given index. This can be either animated or not. Defaults to animated.</td>
+</tr>
+<tr>
+<td>isItemAtIndexVisible(index: number)</td>
+<td><code>boolean</code></td>
+<td>Returns a boolean indicating whether the item is visible.</td>
+</tr>
+</tbody></table>
+<p><a href="#usage"></a></p>
+<p><a href="#usage"></a></p>
+
+<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
+  <h2>Usage</h2>
+</a>
+<p>You need to add <code>xmlns:gv=&quot;@nativescript-community/ui-collectionview&quot;</code> to your page tag, and then simply use <code>&lt;gv:CollectionView/&gt;</code> in order to add the widget to your page. Use <code>&lt;gv:Gridview.itemTemplate/&gt;</code> to specify the template for each cell:</p>
+
+<a href="#simple-example" id="simple-example" style="color: inherit; text-decoration: none;">
+  <h3>Simple Example</h3>
+</a>
+<p>Create a simple array of objects in your JS/TS file.</p>
+<pre><code class="language-typescript"><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-2">items</span><span class="hl-1"> = [</span><br/><span class="hl-1">    { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">0</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;TURQUOISE&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#1abc9c&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">    { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">1</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;EMERALD&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#2ecc71&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">    { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">2</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;PETER RIVER&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#3498db&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">    { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">3</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;AMETHYST&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#9b59b6&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">    { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">4</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;WET ASPHALT&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#34495e&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">    { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">5</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;GREEN SEA&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#16a085&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">    { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">6</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;NEPHRITIS&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#27ae60&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">    { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">7</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;BELIZE HOLE&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#2980b9&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">    { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">8</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;WISTERIA&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#8e44ad&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">    { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">9</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;MIDNIGHT BLUE&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#2c3e50&#39;</span><span class="hl-1"> }</span><br/><span class="hl-1">];</span>
+</code></pre>
+<pre><code class="language-xml"><span class="hl-6">&lt;!-- test-page.xml --&gt;</span><br/><span class="hl-7">&lt;</span><span class="hl-8">Page</span><span class="hl-1"> </span><span class="hl-9">xmlns</span><span class="hl-1">=</span><span class="hl-10">&quot;http://schemas.nativescript.org/tns.xsd&quot;</span><span class="hl-1"> </span><span class="hl-9">xmlns:gv</span><span class="hl-1">=</span><span class="hl-10">&quot;@nativescript-community/ui-collectionview&quot;</span><span class="hl-1"> </span><span class="hl-9">loaded</span><span class="hl-1">=</span><span class="hl-10">&quot;pageLoaded&quot;</span><span class="hl-7">&gt;</span><br/><span class="hl-1">    </span><span class="hl-7">&lt;</span><span class="hl-8">GridLayout</span><span class="hl-7">&gt;</span><br/><span class="hl-1">        </span><span class="hl-7">&lt;</span><span class="hl-8">gv:CollectionView</span><span class="hl-1"> </span><span class="hl-9">items</span><span class="hl-1">=</span><span class="hl-10">&quot;items&quot;</span><span class="hl-1"> </span><span class="hl-9">colWidth</span><span class="hl-1">=</span><span class="hl-10">&quot;50%&quot;</span><span class="hl-1"> </span><span class="hl-9">rowHeight</span><span class="hl-1">=</span><span class="hl-10">&quot;100&quot;</span><span class="hl-7">&gt;</span><br/><span class="hl-1">            </span><span class="hl-7">&lt;</span><span class="hl-8">gv:CollectionView.itemTemplate</span><span class="hl-7">&gt;</span><br/><span class="hl-1">                </span><span class="hl-7">&lt;</span><span class="hl-8">Label</span><span class="hl-1"> </span><span class="hl-9">text</span><span class="hl-1">=</span><span class="hl-10">&quot;value&quot;</span><span class="hl-1"> </span><span class="hl-9">verticalAlignment</span><span class="hl-1">=</span><span class="hl-10">&quot;center&quot;</span><span class="hl-7">/&gt;</span><br/><span class="hl-1">            </span><span class="hl-7">&lt;/</span><span class="hl-8">gv:CollectionView.itemTemplate</span><span class="hl-7">&gt;</span><br/><span class="hl-1">        </span><span class="hl-7">&lt;/</span><span class="hl-8">gv:CollectionView</span><span class="hl-7">&gt;</span><br/><span class="hl-1">    </span><span class="hl-7">&lt;/</span><span class="hl-8">GridLayout</span><span class="hl-7">&gt;</span><br/><span class="hl-7">&lt;/</span><span class="hl-8">Page</span><span class="hl-7">&gt;</span>
+</code></pre>
+
+<a href="#templates-example" id="templates-example" style="color: inherit; text-decoration: none;">
+  <h3>Templates Example</h3>
+</a>
+<p>You can also have multiple templates the same way you add them in the builtin <code>ListView</code> control:</p>
+<pre><code class="language-xml"><span class="hl-7">&lt;</span><span class="hl-8">gv:CollectionView</span><span class="hl-1"> </span><span class="hl-9">id</span><span class="hl-1">=</span><span class="hl-10">&quot;gv&quot;</span><span class="hl-1"> </span><span class="hl-9">row</span><span class="hl-1">=</span><span class="hl-10">&quot;0&quot;</span><span class="hl-1"> </span><span class="hl-9">class</span><span class="hl-1">=</span><span class="hl-10">&quot;cssClass&quot;</span><span class="hl-1"> </span><span class="hl-9">items</span><span class="hl-1">=</span><span class="hl-10">&quot;items&quot;</span><span class="hl-1"> </span><br/><span class="hl-1">                </span><span class="hl-9">colWidth</span><span class="hl-1">=</span><span class="hl-10">&quot;colWidth&quot;</span><span class="hl-1"> </span><span class="hl-9">rowHeight</span><span class="hl-1">=</span><span class="hl-10">&quot;rowHeight&quot;</span><span class="hl-1"> </span><span class="hl-9">itemTemplateSelector</span><span class="hl-1">=</span><span class="hl-10">&quot;templateSelector&quot;</span><br/><span class="hl-1">                </span><span class="hl-9">itemTap</span><span class="hl-1">=</span><span class="hl-10">&quot;gridViewItemTap&quot;</span><span class="hl-1"> </span><span class="hl-9">itemLoading</span><span class="hl-1">=</span><span class="hl-10">&quot;gridViewItemLoading&quot;</span><span class="hl-1"> </span><span class="hl-9">loadMoreItems</span><span class="hl-1">=</span><span class="hl-10">&quot;gridViewLoadMoreItems&quot;</span><span class="hl-7">&gt;</span><br/><span class="hl-1">    </span><span class="hl-7">&lt;</span><span class="hl-8">gv:CollectionView.itemTemplates</span><span class="hl-7">&gt;</span><br/><span class="hl-1">        </span><span class="hl-7">&lt;</span><span class="hl-8">template</span><span class="hl-1"> </span><span class="hl-9">key</span><span class="hl-1">=</span><span class="hl-10">&quot;odd&quot;</span><span class="hl-7">&gt;</span><br/><span class="hl-1">            </span><span class="hl-7">&lt;</span><span class="hl-8">GridLayout</span><span class="hl-1"> </span><span class="hl-9">backgroundColor</span><span class="hl-1">=</span><span class="hl-10">&quot;#33ffff&quot;</span><span class="hl-1"> </span><span class="hl-9">style</span><span class="hl-1">=</span><span class="hl-10">&quot;margin: 10 10 0 0&quot;</span><span class="hl-7">&gt;</span><br/><span class="hl-1">                </span><span class="hl-7">&lt;</span><span class="hl-8">Label</span><span class="hl-1"> </span><span class="hl-9">text</span><span class="hl-1">=</span><span class="hl-10">&quot;value&quot;</span><span class="hl-1"> </span><span class="hl-9">verticalAlignment</span><span class="hl-1">=</span><span class="hl-10">&quot;center&quot;</span><span class="hl-7">/&gt;</span><br/><span class="hl-1">            </span><span class="hl-7">&lt;/</span><span class="hl-8">GridLayout</span><span class="hl-7">&gt;</span><br/><span class="hl-1">        </span><span class="hl-7">&lt;/</span><span class="hl-8">template</span><span class="hl-7">&gt;</span><br/><br/><span class="hl-1">        </span><span class="hl-7">&lt;</span><span class="hl-8">template</span><span class="hl-1"> </span><span class="hl-9">key</span><span class="hl-1">=</span><span class="hl-10">&quot;even&quot;</span><span class="hl-7">&gt;</span><br/><span class="hl-1">            </span><span class="hl-7">&lt;</span><span class="hl-8">GridLayout</span><span class="hl-1"> </span><span class="hl-9">backgroundColor</span><span class="hl-1">=</span><span class="hl-10">&quot;#33ffff&quot;</span><span class="hl-1"> </span><span class="hl-9">rows</span><span class="hl-1">=</span><span class="hl-10">&quot;auto, auto&quot;</span><span class="hl-1"> </span><span class="hl-9">style</span><span class="hl-1">=</span><span class="hl-10">&quot;margin: 10 10 0 0&quot;</span><span class="hl-7">&gt;</span><br/><span class="hl-1">                </span><span class="hl-7">&lt;</span><span class="hl-8">Label</span><span class="hl-1"> </span><span class="hl-9">row</span><span class="hl-1">=</span><span class="hl-10">&quot;0&quot;</span><span class="hl-1"> </span><span class="hl-9">text</span><span class="hl-1">=</span><span class="hl-10">&quot;value&quot;</span><span class="hl-1"> </span><span class="hl-9">verticalAlignment</span><span class="hl-1">=</span><span class="hl-10">&quot;center&quot;</span><span class="hl-7">/&gt;</span><br/><span class="hl-1">                </span><span class="hl-7">&lt;</span><span class="hl-8">Label</span><span class="hl-1"> </span><span class="hl-9">row</span><span class="hl-1">=</span><span class="hl-10">&quot;1&quot;</span><span class="hl-1"> </span><span class="hl-9">text</span><span class="hl-1">=</span><span class="hl-10">&quot;value&quot;</span><span class="hl-1"> </span><span class="hl-9">verticalAlignment</span><span class="hl-1">=</span><span class="hl-10">&quot;center&quot;</span><span class="hl-7">/&gt;</span><br/><span class="hl-1">            </span><span class="hl-7">&lt;/</span><span class="hl-8">GridLayout</span><span class="hl-7">&gt;</span><br/><span class="hl-1">        </span><span class="hl-7">&lt;/</span><span class="hl-8">template</span><span class="hl-7">&gt;</span><br/><span class="hl-1">    </span><span class="hl-7">&lt;/</span><span class="hl-8">gv:CollectionView.itemTemplates</span><span class="hl-7">&gt;</span><br/><span class="hl-7">&lt;/</span><span class="hl-8">gv:CollectionView</span><span class="hl-7">&gt;</span>
+</code></pre>
+<pre><code class="language-ts"><span class="hl-11">export</span><span class="hl-1"> </span><span class="hl-0">function</span><span class="hl-1"> </span><span class="hl-12">templateSelector</span><span class="hl-1">(</span><span class="hl-3">item</span><span class="hl-1">: </span><span class="hl-13">any</span><span class="hl-1">, </span><span class="hl-3">index</span><span class="hl-1">: </span><span class="hl-13">number</span><span class="hl-1">, </span><span class="hl-3">items</span><span class="hl-1">: </span><span class="hl-13">any</span><span class="hl-1">) {</span><br/><span class="hl-1">    </span><span class="hl-11">return</span><span class="hl-1"> </span><span class="hl-3">index</span><span class="hl-1"> % </span><span class="hl-4">2</span><span class="hl-1"> === </span><span class="hl-4">0</span><span class="hl-1"> ? </span><span class="hl-5">&quot;even&quot;</span><span class="hl-1"> : </span><span class="hl-5">&quot;odd&quot;</span><span class="hl-1">;</span><br/><span class="hl-1">}</span>
+</code></pre>
+<p><a href="#usage-in-angular"></a></p>
+<p><a href="#usage-in-angular"></a></p>
+
+<a href="#usage-in-angular" id="usage-in-angular" style="color: inherit; text-decoration: none;">
+  <h2>Usage in Angular</h2>
+</a>
+<p>Import the module into your project.</p>
+<pre><code class="language-typescript"><span class="hl-11">import</span><span class="hl-1"> { </span><span class="hl-3">CollectionViewModule</span><span class="hl-1"> } </span><span class="hl-11">from</span><span class="hl-1"> </span><span class="hl-5">&#39;@nativescript-community/ui-collectionview/angular&#39;</span><span class="hl-1">;</span><br/><br/><span class="hl-1">@</span><span class="hl-12">NgModule</span><span class="hl-1">({</span><br/><span class="hl-1">    </span><span class="hl-3">imports:</span><span class="hl-1"> [</span><br/><span class="hl-1">        </span><span class="hl-3">CollectionViewModule</span><span class="hl-1">,</span><br/><span class="hl-1">    ],</span><br/><span class="hl-1">})</span>
+</code></pre>
+
+<a href="#simple-example-1" id="simple-example-1" style="color: inherit; text-decoration: none;">
+  <h3>Simple Example</h3>
+</a>
+<p>Create a simple array of objects in your Typescript file.</p>
+<pre><code class="language-typescript"><span class="hl-3">items</span><span class="hl-1"> = [</span><br/><span class="hl-1">    { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">0</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;TURQUOISE&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#1abc9c&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">    { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">1</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;EMERALD&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#2ecc71&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">    { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">2</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;PETER RIVER&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#3498db&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">    { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">3</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;AMETHYST&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#9b59b6&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">    { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">4</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;WET ASPHALT&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#34495e&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">    { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">5</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;GREEN SEA&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#16a085&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">    { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">6</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;NEPHRITIS&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#27ae60&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">    { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">7</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;BELIZE HOLE&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#2980b9&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">    { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">8</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;WISTERIA&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#8e44ad&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">    { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">9</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;MIDNIGHT BLUE&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#2c3e50&#39;</span><span class="hl-1"> }</span><br/><span class="hl-1">];</span>
+</code></pre>
+<p>Add the following to your component HTML.</p>
+<pre><code class="language-xml"><span class="hl-7">&lt;</span><span class="hl-8">CollectionView</span><span class="hl-1"> [items]=</span><span class="hl-10">&quot;items&quot;</span><span class="hl-1"> </span><span class="hl-9">colWidth</span><span class="hl-1">=</span><span class="hl-10">&quot;50%&quot;</span><span class="hl-1"> </span><span class="hl-9">rowHeight</span><span class="hl-1">=</span><span class="hl-10">&quot;100&quot;</span><span class="hl-7">&gt;</span><br/><span class="hl-1">    </span><span class="hl-7">&lt;</span><span class="hl-8">ng-template</span><span class="hl-1"> </span><span class="hl-9">let-item</span><span class="hl-1">=</span><span class="hl-10">&quot;item&quot;</span><span class="hl-7">&gt;</span><br/><span class="hl-1">        </span><span class="hl-7">&lt;</span><span class="hl-8">Label</span><span class="hl-1"> [text]=</span><span class="hl-10">&quot;item.name&quot;</span><span class="hl-7">&gt;&lt;/</span><span class="hl-8">Label</span><span class="hl-7">&gt;</span><br/><span class="hl-1">    </span><span class="hl-7">&lt;/</span><span class="hl-8">ng-template</span><span class="hl-7">&gt;</span><br/><span class="hl-7">&lt;/</span><span class="hl-8">CollectionView</span><span class="hl-7">&gt;</span>
+</code></pre>
+
+<a href="#templates-example-1" id="templates-example-1" style="color: inherit; text-decoration: none;">
+  <h3>Templates Example</h3>
+</a>
+<p>If you want to use multiple item templates, you can do that very similarly to how you do it for the builtin <code>ListView</code> control. The only difference is that due to current limitations instead of using the <code>nsTemplateKey</code> directive you need to use the <code>cvTemplateKey</code> directive that comes from the CollectionView. (In a future version, once the framework allows it this will be changed and you will be able to use the same directive for the <code>CollectionView</code> as well)</p>
+<pre><code class="language-html"><span class="hl-7">&lt;</span><span class="hl-14">CollectionView</span><span class="hl-1"> </span><span class="hl-9">row</span><span class="hl-1">=</span><span class="hl-10">&quot;1&quot;</span><span class="hl-1"> </span><span class="hl-9">[items]</span><span class="hl-1">=</span><span class="hl-10">&quot;items&quot;</span><span class="hl-1"> </span><span class="hl-9">colWidth</span><span class="hl-1">=</span><span class="hl-10">&quot;33%&quot;</span><span class="hl-1"> </span><span class="hl-9">rowHeight</span><span class="hl-1">=</span><span class="hl-10">&quot;100&quot;</span><span class="hl-1"> </span><span class="hl-9">[itemTemplateSelector]</span><span class="hl-1">=</span><span class="hl-10">&quot;templateSelector&quot;</span><span class="hl-7">&gt;</span><br/><span class="hl-1">    </span><span class="hl-7">&lt;</span><span class="hl-8">ng-template</span><span class="hl-1"> </span><span class="hl-9">cvTemplateKey</span><span class="hl-1">=</span><span class="hl-10">&quot;Defender&quot;</span><span class="hl-1"> </span><span class="hl-9">let-item</span><span class="hl-1">=</span><span class="hl-10">&quot;item&quot;</span><span class="hl-1"> </span><span class="hl-9">let-odd</span><span class="hl-1">=</span><span class="hl-10">&quot;odd&quot;</span><span class="hl-7">&gt;</span><br/><span class="hl-1">        </span><span class="hl-7">&lt;</span><span class="hl-14">StackLayout</span><span class="hl-1"> </span><span class="hl-9">[nsRouterLink]</span><span class="hl-1">=</span><span class="hl-10">&quot;[&#39;/item&#39;, item.id]&quot;</span><span class="hl-1"> </span><span class="hl-9">borderColor</span><span class="hl-1">=</span><span class="hl-10">&quot;blue&quot;</span><span class="hl-1"> </span><span class="hl-9">borderWidth</span><span class="hl-1">=</span><span class="hl-10">&quot;2&quot;</span><span class="hl-1"> </span><span class="hl-9">borderRadius</span><span class="hl-1">=</span><span class="hl-10">&quot;5&quot;</span><span class="hl-1"> </span><span class="hl-9">verticalAlignment</span><span class="hl-1">=</span><span class="hl-10">&quot;stretch&quot;</span><span class="hl-1"> </span><span class="hl-9">class</span><span class="hl-1">=</span><span class="hl-10">&quot;list-group-item&quot;</span><span class="hl-1"> </span><span class="hl-9">[class.odd]</span><span class="hl-1">=</span><span class="hl-10">&quot;odd&quot;</span><span class="hl-7">&gt;</span><br/><span class="hl-1">        </span><span class="hl-7">&lt;</span><span class="hl-8">Label</span><span class="hl-1"> </span><span class="hl-9">verticalAlignment</span><span class="hl-1">=</span><span class="hl-10">&quot;center&quot;</span><span class="hl-1"> </span><span class="hl-9">[text]</span><span class="hl-1">=</span><span class="hl-10">&quot;item.name&quot;</span><span class="hl-1"> </span><span class="hl-9">class</span><span class="hl-1">=</span><span class="hl-10">&quot;list-group-item-text&quot;</span><span class="hl-1"> </span><span class="hl-9">textWrap</span><span class="hl-1">=</span><span class="hl-10">&quot;true&quot;</span><span class="hl-7">&gt;&lt;/</span><span class="hl-8">Label</span><span class="hl-7">&gt;</span><br/><span class="hl-1">        </span><span class="hl-7">&lt;/</span><span class="hl-14">StackLayout</span><span class="hl-7">&gt;</span><br/><span class="hl-1">    </span><span class="hl-7">&lt;/</span><span class="hl-8">ng-template</span><span class="hl-7">&gt;</span><br/><br/><span class="hl-1">    </span><span class="hl-7">&lt;</span><span class="hl-8">ng-template</span><span class="hl-1"> </span><span class="hl-9">cvTemplateKey</span><span class="hl-1">=</span><span class="hl-10">&quot;Goalkeeper&quot;</span><span class="hl-1"> </span><span class="hl-9">let-item</span><span class="hl-1">=</span><span class="hl-10">&quot;item&quot;</span><span class="hl-1"> </span><span class="hl-9">let-odd</span><span class="hl-1">=</span><span class="hl-10">&quot;odd&quot;</span><span class="hl-7">&gt;</span><br/><span class="hl-1">        </span><span class="hl-7">&lt;</span><span class="hl-14">StackLayout</span><span class="hl-1"> </span><span class="hl-9">[nsRouterLink]</span><span class="hl-1">=</span><span class="hl-10">&quot;[&#39;/item&#39;, item.id]&quot;</span><span class="hl-1"> </span><span class="hl-9">borderColor</span><span class="hl-1">=</span><span class="hl-10">&quot;black&quot;</span><span class="hl-1"> </span><span class="hl-9">borderWidth</span><span class="hl-1">=</span><span class="hl-10">&quot;2&quot;</span><span class="hl-1"> </span><span class="hl-9">borderRadius</span><span class="hl-1">=</span><span class="hl-10">&quot;5&quot;</span><span class="hl-1"> </span><span class="hl-9">verticalAlignment</span><span class="hl-1">=</span><span class="hl-10">&quot;stretch&quot;</span><span class="hl-1"> </span><span class="hl-9">class</span><span class="hl-1">=</span><span class="hl-10">&quot;list-group-item&quot;</span><span class="hl-1"> </span><span class="hl-9">[class.odd]</span><span class="hl-1">=</span><span class="hl-10">&quot;odd&quot;</span><span class="hl-7">&gt;</span><br/><span class="hl-1">        </span><span class="hl-7">&lt;</span><span class="hl-8">Label</span><span class="hl-1"> </span><span class="hl-9">verticalAlignment</span><span class="hl-1">=</span><span class="hl-10">&quot;center&quot;</span><span class="hl-1"> </span><span class="hl-9">[text]</span><span class="hl-1">=</span><span class="hl-10">&quot;item.name&quot;</span><span class="hl-1"> </span><span class="hl-9">class</span><span class="hl-1">=</span><span class="hl-10">&quot;list-group-item-text&quot;</span><span class="hl-1"> </span><span class="hl-9">textWrap</span><span class="hl-1">=</span><span class="hl-10">&quot;true&quot;</span><span class="hl-7">&gt;&lt;/</span><span class="hl-8">Label</span><span class="hl-7">&gt;</span><br/><span class="hl-1">        </span><span class="hl-7">&lt;/</span><span class="hl-14">StackLayout</span><span class="hl-7">&gt;</span><br/><span class="hl-1">    </span><span class="hl-7">&lt;/</span><span class="hl-8">ng-template</span><span class="hl-7">&gt;</span><br/><br/><span class="hl-1">    </span><span class="hl-7">&lt;</span><span class="hl-8">ng-template</span><span class="hl-1"> </span><span class="hl-9">cvTemplateKey</span><span class="hl-1">=</span><span class="hl-10">&quot;Midfielder&quot;</span><span class="hl-1"> </span><span class="hl-9">let-item</span><span class="hl-1">=</span><span class="hl-10">&quot;item&quot;</span><span class="hl-1"> </span><span class="hl-9">let-odd</span><span class="hl-1">=</span><span class="hl-10">&quot;odd&quot;</span><span class="hl-7">&gt;</span><br/><span class="hl-1">        </span><span class="hl-7">&lt;</span><span class="hl-14">StackLayout</span><span class="hl-1"> </span><span class="hl-9">[nsRouterLink]</span><span class="hl-1">=</span><span class="hl-10">&quot;[&#39;/item&#39;, item.id]&quot;</span><span class="hl-1"> </span><span class="hl-9">borderColor</span><span class="hl-1">=</span><span class="hl-10">&quot;yellow&quot;</span><span class="hl-1"> </span><span class="hl-9">borderWidth</span><span class="hl-1">=</span><span class="hl-10">&quot;2&quot;</span><span class="hl-1"> </span><span class="hl-9">borderRadius</span><span class="hl-1">=</span><span class="hl-10">&quot;5&quot;</span><span class="hl-1"> </span><span class="hl-9">verticalAlignment</span><span class="hl-1">=</span><span class="hl-10">&quot;stretch&quot;</span><span class="hl-1"> </span><span class="hl-9">class</span><span class="hl-1">=</span><span class="hl-10">&quot;list-group-item&quot;</span><span class="hl-1"> </span><span class="hl-9">[class.odd]</span><span class="hl-1">=</span><span class="hl-10">&quot;odd&quot;</span><span class="hl-7">&gt;</span><br/><span class="hl-1">        </span><span class="hl-7">&lt;</span><span class="hl-8">Label</span><span class="hl-1"> </span><span class="hl-9">verticalAlignment</span><span class="hl-1">=</span><span class="hl-10">&quot;center&quot;</span><span class="hl-1"> </span><span class="hl-9">[text]</span><span class="hl-1">=</span><span class="hl-10">&quot;item.name&quot;</span><span class="hl-1"> </span><span class="hl-9">class</span><span class="hl-1">=</span><span class="hl-10">&quot;list-group-item-text&quot;</span><span class="hl-1"> </span><span class="hl-9">textWrap</span><span class="hl-1">=</span><span class="hl-10">&quot;true&quot;</span><span class="hl-7">&gt;&lt;/</span><span class="hl-8">Label</span><span class="hl-7">&gt;</span><br/><span class="hl-1">        </span><span class="hl-7">&lt;/</span><span class="hl-14">StackLayout</span><span class="hl-7">&gt;</span><br/><span class="hl-1">    </span><span class="hl-7">&lt;/</span><span class="hl-8">ng-template</span><span class="hl-7">&gt;</span><br/><br/><span class="hl-1">    </span><span class="hl-7">&lt;</span><span class="hl-8">ng-template</span><span class="hl-1"> </span><span class="hl-9">cvTemplateKey</span><span class="hl-1">=</span><span class="hl-10">&quot;Forward&quot;</span><span class="hl-1"> </span><span class="hl-9">let-item</span><span class="hl-1">=</span><span class="hl-10">&quot;item&quot;</span><span class="hl-1"> </span><span class="hl-9">let-odd</span><span class="hl-1">=</span><span class="hl-10">&quot;odd&quot;</span><span class="hl-7">&gt;</span><br/><span class="hl-1">        </span><span class="hl-7">&lt;</span><span class="hl-14">StackLayout</span><span class="hl-1"> </span><span class="hl-9">[nsRouterLink]</span><span class="hl-1">=</span><span class="hl-10">&quot;[&#39;/item&#39;, item.id]&quot;</span><span class="hl-1"> </span><span class="hl-9">borderColor</span><span class="hl-1">=</span><span class="hl-10">&quot;red&quot;</span><span class="hl-1"> </span><span class="hl-9">borderWidth</span><span class="hl-1">=</span><span class="hl-10">&quot;2&quot;</span><span class="hl-1"> </span><span class="hl-9">borderRadius</span><span class="hl-1">=</span><span class="hl-10">&quot;5&quot;</span><span class="hl-1"> </span><span class="hl-9">verticalAlignment</span><span class="hl-1">=</span><span class="hl-10">&quot;stretch&quot;</span><span class="hl-1"> </span><span class="hl-9">class</span><span class="hl-1">=</span><span class="hl-10">&quot;list-group-item&quot;</span><span class="hl-1"> </span><span class="hl-9">[class.odd]</span><span class="hl-1">=</span><span class="hl-10">&quot;odd&quot;</span><span class="hl-7">&gt;</span><br/><span class="hl-1">        </span><span class="hl-7">&lt;</span><span class="hl-8">Label</span><span class="hl-1"> </span><span class="hl-9">verticalAlignment</span><span class="hl-1">=</span><span class="hl-10">&quot;center&quot;</span><span class="hl-1"> </span><span class="hl-9">[text]</span><span class="hl-1">=</span><span class="hl-10">&quot;item.name&quot;</span><span class="hl-1"> </span><span class="hl-9">class</span><span class="hl-1">=</span><span class="hl-10">&quot;list-group-item-text&quot;</span><span class="hl-1"> </span><span class="hl-9">textWrap</span><span class="hl-1">=</span><span class="hl-10">&quot;true&quot;</span><span class="hl-7">&gt;&lt;/</span><span class="hl-8">Label</span><span class="hl-7">&gt;</span><br/><span class="hl-1">        </span><span class="hl-7">&lt;/</span><span class="hl-14">StackLayout</span><span class="hl-7">&gt;</span><br/><span class="hl-1">    </span><span class="hl-7">&lt;/</span><span class="hl-8">ng-template</span><span class="hl-7">&gt;</span><br/><span class="hl-7">&lt;/</span><span class="hl-14">CollectionView</span><span class="hl-7">&gt;</span>
+</code></pre>
+<p>For a more complete example, look in the <code>demo-ng</code> directory.</p>
+<p><a href="#usage-in-vue"></a></p>
+<p><a href="#usage-in-vue"></a></p>
+
+<a href="#usage-in-vue" id="usage-in-vue" style="color: inherit; text-decoration: none;">
+  <h2>Usage in Vue</h2>
+</a>
+<p>Register the plugin in your <code>app.ts</code>.</p>
+<pre><code class="language-typescript"><span class="hl-11">import</span><span class="hl-1"> </span><span class="hl-3">CollectionView</span><span class="hl-1"> </span><span class="hl-11">from</span><span class="hl-1"> </span><span class="hl-5">&#39;@nativescript-community/ui-collectionview/vue&#39;</span><span class="hl-1">;</span><br/><span class="hl-3">Vue</span><span class="hl-1">.</span><span class="hl-12">use</span><span class="hl-1">(</span><span class="hl-3">CollectionView</span><span class="hl-1">);</span>
+</code></pre>
+
+<a href="#simple-example-2" id="simple-example-2" style="color: inherit; text-decoration: none;">
+  <h3>Simple Example</h3>
+</a>
+<p>In your component, add the following to make a simple array of objects.</p>
+<pre><code class="language-typescript"><span class="hl-11">export</span><span class="hl-1"> </span><span class="hl-11">default</span><span class="hl-1"> {</span><br/><span class="hl-1">    </span><span class="hl-6">// ...</span><br/><span class="hl-1">    </span><span class="hl-12">data</span><span class="hl-1">() {</span><br/><span class="hl-1">        </span><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-2">items</span><span class="hl-1"> = [</span><br/><span class="hl-1">            { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">0</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;TURQUOISE&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#1abc9c&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">            { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">1</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;EMERALD&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#2ecc71&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">            { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">2</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;PETER RIVER&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#3498db&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">            { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">3</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;AMETHYST&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#9b59b6&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">            { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">4</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;WET ASPHALT&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#34495e&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">            { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">5</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;GREEN SEA&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#16a085&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">            { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">6</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;NEPHRITIS&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#27ae60&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">            { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">7</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;BELIZE HOLE&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#2980b9&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">            { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">8</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;WISTERIA&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#8e44ad&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">            { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">9</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;MIDNIGHT BLUE&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#2c3e50&#39;</span><span class="hl-1"> }</span><br/><span class="hl-1">        ];</span><br/><span class="hl-1">        </span><span class="hl-11">return</span><span class="hl-1"> {</span><br/><span class="hl-1">            </span><span class="hl-3">itemList:</span><span class="hl-1"> </span><span class="hl-3">items</span><br/><span class="hl-1">        };</span><br/><span class="hl-1">    },</span><br/><span class="hl-1">    </span><span class="hl-6">// ...</span><br/><span class="hl-1">};</span>
+</code></pre>
+<p>Then add the following XML to your component.</p>
+<pre><code class="language-xml"><span class="hl-7">&lt;</span><span class="hl-8">CollectionView</span><br/><span class="hl-1">    </span><span class="hl-9">:items</span><span class="hl-1">=</span><span class="hl-10">&quot;itemList&quot;</span><br/><span class="hl-1">    </span><span class="hl-9">colWidth</span><span class="hl-1">=</span><span class="hl-10">&quot;50%&quot;</span><br/><span class="hl-1">    </span><span class="hl-9">rowHeight</span><span class="hl-1">=</span><span class="hl-10">&quot;100&quot;</span><br/><span class="hl-7">&gt;</span><br/><span class="hl-1">    </span><span class="hl-7">&lt;</span><span class="hl-8">v-template</span><span class="hl-7">&gt;</span><br/><span class="hl-1">        </span><span class="hl-7">&lt;</span><span class="hl-8">Label</span><span class="hl-1"> </span><span class="hl-9">:text</span><span class="hl-1">=</span><span class="hl-10">&quot;item.name&quot;</span><span class="hl-7">&gt;&lt;/</span><span class="hl-8">Label</span><span class="hl-7">&gt;</span><br/><span class="hl-1">    </span><span class="hl-7">&lt;/</span><span class="hl-8">v-template</span><span class="hl-7">&gt;</span><br/><span class="hl-7">&lt;/</span><span class="hl-8">CollectionView</span><span class="hl-7">&gt;</span>
+</code></pre>
+<p>For a more complete example, look in the <code>demo-vue</code> directory.</p>
+<p><a href="#usage-in-svelte"></a></p>
+<p><a href="#usage-in-svelte"></a></p>
+
+<a href="#usage-in-svelte" id="usage-in-svelte" style="color: inherit; text-decoration: none;">
+  <h2>Usage in Svelte</h2>
+</a>
+<p>Register the plugin in your <code>app.ts</code>.</p>
+<pre><code class="language-typescript"><span class="hl-11">import</span><span class="hl-1"> </span><span class="hl-3">CollectionViewElement</span><span class="hl-1"> </span><span class="hl-11">from</span><span class="hl-1"> </span><span class="hl-5">&#39;@nativescript-community/ui-collectionview/svelte&#39;</span><span class="hl-1">;</span><br/><span class="hl-3">CollectionViewElement</span><span class="hl-1">.</span><span class="hl-12">register</span><span class="hl-1">();</span>
+</code></pre>
+
+<a href="#simple-example-3" id="simple-example-3" style="color: inherit; text-decoration: none;">
+  <h3>Simple Example</h3>
+</a>
+<p>In you component, add the following to import Svelte <code>Templates</code> and to create a simple array of objects.</p>
+<pre><code class="language-typescript"><span class="hl-11">import</span><span class="hl-1"> { </span><span class="hl-3">Template</span><span class="hl-1"> } </span><span class="hl-11">from</span><span class="hl-1"> </span><span class="hl-5">&#39;svelte-native/components&#39;</span><span class="hl-1">;</span><br/><br/><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-2">items</span><span class="hl-1"> = [</span><br/><span class="hl-1">    { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">0</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;TURQUOISE&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#1abc9c&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">    { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">1</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;EMERALD&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#2ecc71&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">    { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">2</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;PETER RIVER&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#3498db&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">    { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">3</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;AMETHYST&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#9b59b6&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">    { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">4</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;WET ASPHALT&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#34495e&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">    { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">5</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;GREEN SEA&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#16a085&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">    { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">6</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;NEPHRITIS&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#27ae60&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">    { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">7</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;BELIZE HOLE&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#2980b9&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">    { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">8</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;WISTERIA&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#8e44ad&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">    { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">9</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;MIDNIGHT BLUE&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#2c3e50&#39;</span><span class="hl-1"> }</span><br/><span class="hl-1">];</span>
+</code></pre>
+<p>Then add the following XML to your component:</p>
+<pre><code class="language-xml"><span class="hl-7">&lt;</span><span class="hl-8">collectionView</span><span class="hl-1"> </span><br/><span class="hl-1">    {items} </span><br/><span class="hl-1">    </span><span class="hl-9">colWidth</span><span class="hl-1">=</span><span class="hl-10">&quot;50%&quot;</span><br/><span class="hl-1">    </span><span class="hl-9">rowHeight</span><span class="hl-1">=</span><span class="hl-10">&quot;100&quot;</span><br/><span class="hl-7">&gt;</span><br/><span class="hl-1">    </span><span class="hl-7">&lt;</span><span class="hl-8">Template</span><span class="hl-1"> let:item</span><span class="hl-7">&gt;</span><br/><span class="hl-1">        </span><span class="hl-7">&lt;</span><span class="hl-8">label</span><span class="hl-1"> </span><span class="hl-9">text</span><span class="hl-1">=</span><span class="hl-10">&quot;{item.name}&quot;</span><span class="hl-1"> </span><span class="hl-7">/&gt;</span><br/><span class="hl-1">    </span><span class="hl-7">&lt;/</span><span class="hl-8">Template</span><span class="hl-7">&gt;</span><br/><span class="hl-7">&lt;/</span><span class="hl-8">collectionView</span><span class="hl-7">&gt;</span>
+</code></pre>
+<p>For a more complete example, look in the <code>demo-svelte</code> directory.</p>
+<p><a href="#usage-in-react"></a></p>
+<p><a href="#usage-in-react"></a></p>
+
+<a href="#usage-in-react" id="usage-in-react" style="color: inherit; text-decoration: none;">
+  <h2>Usage in React</h2>
+</a>
+<p>Register the plugin in your <code>app.ts</code>.</p>
+<pre><code class="language-typescript"><span class="hl-11">import</span><span class="hl-1"> { </span><span class="hl-3">registerCollectionView</span><span class="hl-1"> } </span><span class="hl-11">from</span><span class="hl-1"> </span><span class="hl-5">&#39;@nativescript-community/ui-collectionview/react&#39;</span><span class="hl-1">;</span><br/><span class="hl-12">registerCollectionView</span><span class="hl-1">();</span>
+</code></pre>
+
+<a href="#simple-example-4" id="simple-example-4" style="color: inherit; text-decoration: none;">
+  <h3>Simple Example</h3>
+</a>
+<p>In your component, add the following code to create a simple list.</p>
+<pre><code class="language-tsx"><span class="hl-11">import</span><span class="hl-1"> { </span><span class="hl-3">CollectionView</span><span class="hl-1"> } </span><span class="hl-11">from</span><span class="hl-1"> </span><span class="hl-5">&#39;@nativescript-community/ui-collectionview/react&#39;</span><span class="hl-1">;</span><br/><br/><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-2">items</span><span class="hl-1"> = [</span><br/><span class="hl-1">    { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">0</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;TURQUOISE&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#1abc9c&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">    { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">1</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;EMERALD&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#2ecc71&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">    { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">2</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;PETER RIVER&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#3498db&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">    { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">3</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;AMETHYST&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#9b59b6&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">    { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">4</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;WET ASPHALT&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#34495e&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">    { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">5</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;GREEN SEA&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#16a085&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">    { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">6</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;NEPHRITIS&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#27ae60&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">    { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">7</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;BELIZE HOLE&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#2980b9&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">    { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">8</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;WISTERIA&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#8e44ad&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">    { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">9</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;MIDNIGHT BLUE&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#2c3e50&#39;</span><span class="hl-1"> }</span><br/><span class="hl-1">];</span><br/><br/><span class="hl-0">interface</span><span class="hl-1"> </span><span class="hl-13">Item</span><span class="hl-1"> {</span><br/><span class="hl-1">    </span><span class="hl-3">index</span><span class="hl-1">: </span><span class="hl-13">number</span><span class="hl-1">;</span><br/><span class="hl-1">    </span><span class="hl-3">name</span><span class="hl-1">: </span><span class="hl-13">string</span><span class="hl-1">;</span><br/><span class="hl-1">    </span><span class="hl-3">color</span><span class="hl-1">: </span><span class="hl-13">string</span><span class="hl-1">;</span><br/><span class="hl-1">}</span><br/><br/><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-12">cellFactory</span><span class="hl-1"> = (</span><span class="hl-3">item</span><span class="hl-1">: </span><span class="hl-13">Item</span><span class="hl-1">) </span><span class="hl-0">=&gt;</span><span class="hl-1"> (</span><br/><span class="hl-1">    </span><span class="hl-7">&lt;</span><span class="hl-8">label</span><span class="hl-1"> </span><span class="hl-9">text</span><span class="hl-1">=</span><span class="hl-0">{</span><span class="hl-3">item</span><span class="hl-15">.</span><span class="hl-3">name</span><span class="hl-0">}</span><span class="hl-1"> </span><span class="hl-7">/&gt;</span><br/><span class="hl-1">);</span><br/><br/><span class="hl-11">export</span><span class="hl-1"> </span><span class="hl-0">function</span><span class="hl-1"> </span><span class="hl-12">First</span><span class="hl-1">() {</span><br/><span class="hl-1">    </span><span class="hl-11">return</span><span class="hl-1"> (</span><br/><span class="hl-1">        </span><span class="hl-7">&lt;</span><span class="hl-13">CollectionView</span><span class="hl-1"> </span><span class="hl-9">items</span><span class="hl-1">=</span><span class="hl-0">{</span><span class="hl-3">items</span><span class="hl-0">}</span><span class="hl-1"> </span><span class="hl-9">colWidth</span><span class="hl-1">=</span><span class="hl-5">&quot;50%&quot;</span><span class="hl-1"> </span><span class="hl-9">rowHeight</span><span class="hl-1">=</span><span class="hl-5">&quot;100&quot;</span><span class="hl-1"> </span><span class="hl-9">cellFactory</span><span class="hl-1">=</span><span class="hl-0">{</span><span class="hl-3">cellFactory</span><span class="hl-0">}</span><span class="hl-1"> </span><span class="hl-9">width</span><span class="hl-1">=</span><span class="hl-5">&quot;100%&quot;</span><span class="hl-1"> </span><span class="hl-9">height</span><span class="hl-1">=</span><span class="hl-5">&quot;100%&quot;</span><span class="hl-1"> </span><span class="hl-7">/&gt;</span><br/><span class="hl-1">    );</span><br/><span class="hl-1">}</span>
+</code></pre>
+<p>For a more complete example, look in the <code>demo-react</code> directory.</p>
+<p><a href="#demos"></a></p>
+<p><a href="#demos"></a></p>
+
+<a href="#demos" id="demos" style="color: inherit; text-decoration: none;">
+  <h2>Demos</h2>
+</a>
+<p>This repository includes Angular, Vue.js, and Svelte demos. In order to run these execute the following in your shell:</p>
+<pre><code class="language-shell"><span class="hl-1">$ git clone https://github.com/@nativescript-community/ui-collectionview</span><br/><span class="hl-1">$ </span><span class="hl-12">cd</span><span class="hl-1"> ui-collectionview</span><br/><span class="hl-1">$ npm i</span><br/><span class="hl-1">$ npm run setup</span><br/><span class="hl-1">$ npm run build </span><span class="hl-6"># &amp;&amp; npm run build.angular</span><br/><span class="hl-1">$ </span><span class="hl-12">cd</span><span class="hl-1"> demo-ng </span><span class="hl-6"># or demo-vue or demo-svelte</span><br/><span class="hl-1">$ ns run ios|android</span>
+</code></pre>
+<p><a href="#demos-and-development"></a></p>
+<p><a href="#demos-and-development"></a></p>
+
+<a href="#demos-and-development" id="demos-and-development" style="color: inherit; text-decoration: none;">
+  <h2>Demos and Development</h2>
+</a>
+
+<a href="#repo-setup" id="repo-setup" style="color: inherit; text-decoration: none;">
+  <h3>Repo Setup</h3>
+</a>
+<p>The repo uses submodules. If you did not clone with <code> --recursive</code> then you need to call</p>
+<pre><code><span class="hl-3">git</span><span class="hl-1"> </span><span class="hl-3">submodule</span><span class="hl-1"> </span><span class="hl-3">update</span><span class="hl-1"> --</span><span class="hl-3">init</span>
+</code></pre>
+<p>The package manager used to install and link dependencies must be <code>pnpm</code> or <code>yarn</code>. <code>npm</code> wont work.</p>
+<p>To develop and test:
+if you use <code>yarn</code> then run <code>yarn</code>
+if you use <code>pnpm</code> then run <code>pnpm i</code></p>
+<p><strong>Interactive Menu:</strong></p>
+<p>To start the interactive menu, run <code>npm start</code> (or <code>yarn start</code> or <code>pnpm start</code>). This will list all of the commonly used scripts.</p>
+
+<a href="#build" id="build" style="color: inherit; text-decoration: none;">
+  <h3>Build</h3>
+</a>
+<pre><code class="language-bash"><span class="hl-1">npm run build.all</span>
+</code></pre>
+
+<a href="#demos-1" id="demos-1" style="color: inherit; text-decoration: none;">
+  <h3>Demos</h3>
+</a>
+<pre><code class="language-bash"><span class="hl-1">npm run demo.[ng|react|svelte|vue].[ios|android]</span><br/><br/><span class="hl-1">npm run demo.svelte.ios </span><span class="hl-6"># Example</span>
+</code></pre>
+<p><a href="#contributing"></a></p>
+<p><a href="#contributing"></a></p>
+
+<a href="#contributing" id="contributing" style="color: inherit; text-decoration: none;">
+  <h2>Contributing</h2>
+</a>
+
+<a href="#update-repo" id="update-repo" style="color: inherit; text-decoration: none;">
+  <h3>Update repo</h3>
+</a>
+<p>You can update the repo files quite easily</p>
+<p>First update the submodules</p>
+<pre><code class="language-bash"><span class="hl-1">npm run update</span>
+</code></pre>
+<p>Then commit the changes
+Then update common files</p>
+<pre><code class="language-bash"><span class="hl-1">npm run sync</span>
+</code></pre>
+<p>Then you can run <code>yarn|pnpm</code>, commit changed files if any</p>
+
+<a href="#update-readme" id="update-readme" style="color: inherit; text-decoration: none;">
+  <h3>Update readme</h3>
+</a>
+<pre><code class="language-bash"><span class="hl-1">npm run readme</span>
+</code></pre>
+
+<a href="#update-doc" id="update-doc" style="color: inherit; text-decoration: none;">
+  <h3>Update doc</h3>
+</a>
+<pre><code class="language-bash"><span class="hl-1">npm run doc</span>
+</code></pre>
+
+<a href="#publish" id="publish" style="color: inherit; text-decoration: none;">
+  <h3>Publish</h3>
+</a>
+<p>The publishing is completely handled by <code>lerna</code> (you can add <code>-- --bump major</code> to force a major release)
+Simply run </p>
+<pre><code class="language-shell"><span class="hl-1">npm run publish</span>
+</code></pre>
+<p><a href="#questions"></a></p>
+<p><a href="#questions"></a></p>
+
+<a href="#questions" id="questions" style="color: inherit; text-decoration: none;">
+  <h2>Questions</h2>
+</a>
+<p>If you have any questions/issues/comments please feel free to create an issue or start a conversation in the <a href="https://nativescript.org/discord">NativeScript Community Discord</a>.</p>
+</details><details>
+<summary><b>waterfall</b></summary>
+<!-- ⚠️ This README has been generated from the file(s) "blueprint.md" ⚠️-->
+<!--  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      DO NOT EDIT THIS READEME DIRECTLY! Edit "bluesprint.md" instead.
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+<h1 align="center">@nativescript-community/ui-collectionview-waterfall</h1>
+<p align="center">
+        <a href="https://npmcharts.com/compare/@nativescript-community/ui-collectionview-waterfall?minimal=true"><img alt="Downloads per month" src="https://img.shields.io/npm/dm/@nativescript-community/ui-collectionview-waterfall.svg" height="20"/></a>
+<a href="https://www.npmjs.com/package/@nativescript-community/ui-collectionview-waterfall"><img alt="NPM Version" src="https://img.shields.io/npm/v/@nativescript-community/ui-collectionview-waterfall.svg" height="20"/></a>
+    </p>
+
+<p align="center">
+  <b>A NativeScript CollectionView waterfall Plugin.</b></br>
+  <sub><sub>
+</p>
+
+<br />
+
+
+
+<p><a href="#table-of-contents"></a></p>
+<p><a href="#table-of-contents"></a></p>
+
+<a href="#table-of-contents-1" id="table-of-contents-1" style="color: inherit; text-decoration: none;">
+  <h2>Table of Contents</h2>
+</a>
+<ul>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#configuration">Configuration</a></li>
+<li><a href="#demos-and-development">Demos and Development</a><ul>
+<li><a href="#repo-setup">Repo Setup</a></li>
+<li><a href="#build">Build</a></li>
+<li><a href="#demos">Demos</a></li>
+</ul>
+</li>
+<li><a href="#contributing">Contributing</a><ul>
+<li><a href="#update-repo-">Update repo </a></li>
+<li><a href="#update-readme-">Update readme </a></li>
+<li><a href="#update-doc-">Update doc </a></li>
+<li><a href="#publish">Publish</a></li>
+</ul>
+</li>
+<li><a href="#questions">Questions</a></li>
+</ul>
+<p><a href="#installation"></a></p>
+<p><a href="#installation"></a></p>
+
+<a href="#installation-1" id="installation-1" style="color: inherit; text-decoration: none;">
+  <h2>Installation</h2>
+</a>
+<p>Run the following command from the root of your project:</p>
+<p><code>ns plugin add @nativescript-community/ui-collectionview-waterfall</code></p>
+<p><a href="#configuration"></a></p>
+<p><a href="#configuration"></a></p>
+
+<a href="#configuration" id="configuration" style="color: inherit; text-decoration: none;">
+  <h2>Configuration</h2>
+</a>
+<p>To install the plugin run:</p>
+<pre><code class="language-typescript"><span class="hl-11">import</span><span class="hl-1"> </span><span class="hl-3">install</span><span class="hl-1"> </span><span class="hl-11">from</span><span class="hl-1"> </span><span class="hl-5">&#39;@nativescript-community/ui-collectionview-waterfall&#39;</span><span class="hl-1">;</span><br/><span class="hl-12">install</span><span class="hl-1">();</span>
+</code></pre>
+<p>then simply use the <code>layoutStyle=&quot;waterfall&quot;</code> as a collectionview property</p>
+<p><a href="#demos-and-development"></a></p>
+<p><a href="#demos-and-development"></a></p>
+
+<a href="#demos-and-development-1" id="demos-and-development-1" style="color: inherit; text-decoration: none;">
+  <h2>Demos and Development</h2>
+</a>
+
+<a href="#repo-setup-1" id="repo-setup-1" style="color: inherit; text-decoration: none;">
+  <h3>Repo Setup</h3>
+</a>
+<p>The repo uses submodules. If you did not clone with <code> --recursive</code> then you need to call</p>
+<pre><code><span class="hl-3">git</span><span class="hl-1"> </span><span class="hl-3">submodule</span><span class="hl-1"> </span><span class="hl-3">update</span><span class="hl-1"> --</span><span class="hl-3">init</span>
+</code></pre>
+<p>The package manager used to install and link dependencies must be <code>pnpm</code> or <code>yarn</code>. <code>npm</code> wont work.</p>
+<p>To develop and test:
+if you use <code>yarn</code> then run <code>yarn</code>
+if you use <code>pnpm</code> then run <code>pnpm i</code></p>
+<p><strong>Interactive Menu:</strong></p>
+<p>To start the interactive menu, run <code>npm start</code> (or <code>yarn start</code> or <code>pnpm start</code>). This will list all of the commonly used scripts.</p>
+
+<a href="#build-1" id="build-1" style="color: inherit; text-decoration: none;">
+  <h3>Build</h3>
+</a>
+<pre><code class="language-bash"><span class="hl-1">npm run build.all</span>
+</code></pre>
+
+<a href="#demos-2" id="demos-2" style="color: inherit; text-decoration: none;">
+  <h3>Demos</h3>
+</a>
+<pre><code class="language-bash"><span class="hl-1">npm run demo.[ng|react|svelte|vue].[ios|android]</span><br/><br/><span class="hl-1">npm run demo.svelte.ios </span><span class="hl-6"># Example</span>
+</code></pre>
+<p><a href="#contributing"></a></p>
+<p><a href="#contributing"></a></p>
+
+<a href="#contributing-1" id="contributing-1" style="color: inherit; text-decoration: none;">
+  <h2>Contributing</h2>
+</a>
+
+<a href="#update-repo-1" id="update-repo-1" style="color: inherit; text-decoration: none;">
+  <h3>Update repo</h3>
+</a>
+<p>You can update the repo files quite easily</p>
+<p>First update the submodules</p>
+<pre><code class="language-bash"><span class="hl-1">npm run update</span>
+</code></pre>
+<p>Then commit the changes
+Then update common files</p>
+<pre><code class="language-bash"><span class="hl-1">npm run sync</span>
+</code></pre>
+<p>Then you can run <code>yarn|pnpm</code>, commit changed files if any</p>
+
+<a href="#update-readme-1" id="update-readme-1" style="color: inherit; text-decoration: none;">
+  <h3>Update readme</h3>
+</a>
+<pre><code class="language-bash"><span class="hl-1">npm run readme</span>
+</code></pre>
+
+<a href="#update-doc-1" id="update-doc-1" style="color: inherit; text-decoration: none;">
+  <h3>Update doc</h3>
+</a>
+<pre><code class="language-bash"><span class="hl-1">npm run doc</span>
+</code></pre>
+
+<a href="#publish-1" id="publish-1" style="color: inherit; text-decoration: none;">
+  <h3>Publish</h3>
+</a>
+<p>The publishing is completely handled by <code>lerna</code> (you can add <code>-- --bump major</code> to force a major release)
+Simply run </p>
+<pre><code class="language-shell"><span class="hl-1">npm run publish</span>
+</code></pre>
+<p><a href="#questions"></a></p>
+<p><a href="#questions"></a></p>
+
+<a href="#questions-1" id="questions-1" style="color: inherit; text-decoration: none;">
+  <h2>Questions</h2>
+</a>
+<p>If you have any questions/issues/comments please feel free to create an issue or start a conversation in the <a href="https://nativescript.org/discord">NativeScript Community Discord</a>.</p>
+</details></div></div>
+<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+<div class="tsd-navigation settings">
+<details class="tsd-index-accordion"><summary class="tsd-accordion-summary">
+<h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4.93896 8.531L12 15.591L19.061 8.531L16.939 6.409L12 11.349L7.06098 6.409L4.93896 8.531Z" fill="var(--color-text)"></path></svg> Settings</h3></summary>
+<div class="tsd-accordion-details">
+<div class="tsd-filter-visibility">
+<h4 class="uppercase">Member Visibility</h4><form>
+<ul id="tsd-filter-options">
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-protected" name="protected"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Protected</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-private" name="private"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Private</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li></ul></form></div>
+<div class="tsd-theme-toggle">
+<h4 class="uppercase">Theme</h4><select id="theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div>
+<nav class="tsd-navigation primary">
+<details class="tsd-index-accordion" open><summary class="tsd-accordion-summary">
+<h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4.93896 8.531L12 15.591L19.061 8.531L16.939 6.409L12 11.349L7.06098 6.409L4.93896 8.531Z" fill="var(--color-text)"></path></svg> Modules</h3></summary>
+<div class="tsd-accordion-details">
+<ul>
+<li class="current selected"><a href="modules.html">Documentation</a>
+<ul></ul></li></ul></div></details></nav>
+<nav class="tsd-navigation secondary menu-sticky"></nav></div></div>
+<div class="container tsd-generator">
+<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div>
+<div class="overlay"></div><script src="assets/main.js"></script></body></html>
