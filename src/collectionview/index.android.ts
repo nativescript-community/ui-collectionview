@@ -999,7 +999,7 @@ export class CollectionView extends CollectionViewBase {
             const selector = this._itemTemplateSelector;
             const dataItem = this.getItemAtIndex(position);
             if (dataItem) {
-                selectorType = selector(dataItem, position, this.items);
+                selectorType = selector.call(this, dataItem, position, this.items);
             }
         }
         return this.templateKeyToNativeItem(selectorType);

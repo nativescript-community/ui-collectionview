@@ -596,7 +596,7 @@ export class CollectionView extends CollectionViewBase {
         const selector = this._itemTemplateSelector;
         let type = this._defaultTemplate.key;
         if (selector) {
-            type = selector(this.getItemAtIndex(indexPath.item), indexPath.item, this.items);
+            type = selector.call(this, this.getItemAtIndex(indexPath.item), indexPath.item, this.items);
         }
         return type.toLowerCase();
     }
