@@ -17,7 +17,7 @@
         "build.angular": "lerna run build.angular",
         "build.win": "lerna run build-win",
         "clean": "rimraf 'packages/**/*.d.ts' 'packages/**/*.js' 'packages/**/*.js.map' 'packages/**/*.metada' 'packages/**/angular/ng-package.json'",
-        "fullclean": "npm run clean && rimraf 'packages/**/node_modules' 'demo-*/hooks' 'package-lock.json' 'pnpm-lock.yaml' 'node_modules'",
+        "fullclean": "npm run clean && rimraf 'packages/**/node_modules' 'demo-*/hooks' 'demo-*/node_modules' 'package-lock.json' 'pnpm-lock.yaml' 'node_modules'",
         "commitmsg": "commitlint -e $GIT_PARAMS",
         "demo.ng.android": "cd ./demo-ng && ns run android --no-hmr --env.watchNodeModules",
         "demo.ng.clean": "cd ./demo-ng && ns clean",
@@ -34,7 +34,7 @@
         "postinstall": "npm run setup",
         "prepare": "npm run setup",
         "publish": "npm run clean && npm run build.all && npm run readme && lerna publish --no-private --create-release=github --force-publish",
-        "readme": "node ./tools/readme.js",
+        "readme": "lerna run readme && node ./tools/readme.js",
         "setup": "npm run submodules && ts-patch install",
         "start": "./node_modules/.bin/ntl -A -s 15 -o",
         "submodules": "git submodule update --init",
@@ -43,7 +43,7 @@
         "tsc": "cpy '**/*.d.ts' '../plugin' --parents --cwd=src && tsc -skipLibCheck -d",
         "update": "node ./tools/update.js",
         "watch": "npm run tsc -- -w",
-        "doc": "node tools/builddoc.mjs && git add docs/* && git commit -m \"chore:doc\"",
+        "doc": "node tools/builddoc.mjs",
         "pnpm.setup": "npm run setup && pnpm --filter @nativescript/template-* install"
     },
     "commitlint": {
@@ -74,7 +74,8 @@
     "engines": {
         "npm": "please use yarn or pnpm",
         "yarn": ">=1.19.1",
-        "pnpm": ">=7.0.0"
+        "pnpm": ">=7.0.0",
+        "node": "^14.20.0 || ^16.13.0 || >=18.10.0"
     },
     "workspaces": [
         "packages/*",
