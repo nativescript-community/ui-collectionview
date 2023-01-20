@@ -130,8 +130,8 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     public reorderEnabled: boolean;
 
     /** Used on iOS to auto update cells size if the cell request a layout change (like image itemLoading).
-    * Experimental and true by default
-    */
+     * Experimental and true by default
+     */
     public autoReloadItemOnLayout: boolean;
     public reorderLongPressEnabled: boolean;
     protected _dataUpdatesSuspended = false;

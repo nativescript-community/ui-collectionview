@@ -722,13 +722,13 @@ export class CollectionView extends CollectionViewBase {
             const widthMeasureSpec = width
                 ? Utils.layout.makeMeasureSpec(width, Utils.layout.EXACTLY)
                 : horizontal
-                    ? infinity
-                    : Utils.layout.makeMeasureSpec(this._innerWidth, Utils.layout.UNSPECIFIED);
+                ? infinity
+                : Utils.layout.makeMeasureSpec(this._innerWidth, Utils.layout.UNSPECIFIED);
             const heightMeasureSpec = height
                 ? Utils.layout.makeMeasureSpec(height, Utils.layout.EXACTLY)
                 : horizontal
-                    ? Utils.layout.makeMeasureSpec(this._innerHeight, Utils.layout.UNSPECIFIED)
-                    : infinity;
+                ? Utils.layout.makeMeasureSpec(this._innerHeight, Utils.layout.UNSPECIFIED)
+                : infinity;
             if (Trace.isEnabled()) {
                 CLog(CLogTypes.log, 'measureCell', index.row, width, height, widthMeasureSpec, heightMeasureSpec);
             }
