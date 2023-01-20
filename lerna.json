@@ -1,22 +1,41 @@
 {
-  "packages": [
-    "packages/*"
-  ],
-  "npmClient": "yarn",
-  "useWorkspaces": true,
-  "command": {
-    "publish": {
-      "conventionalCommits": true,
-      "ignoreChanges": [
-        "ignored-file",
-        "*.md"
-      ]
-    },
-    "bootstrap": {
-      "npmClientArgs": [
-        "--no-package-lock"
-      ]
+    "version": "4.0.65",
+    "packages": [
+        "packages/*"
+    ],
+    "npmClient": "yarn",
+    "useWorkspaces": true,
+    "command": {
+        "publish": {
+            "conventionalCommits": true,
+            "conventionalBlacklist": [
+                "chore"
+            ],
+            "changelogPreset": "angular",
+            "createRelease": "github",
+            "commitHooks": false,
+            "private": false,
+            "ignoreChanges": [
+                "*.md"
+            ]
+        },
+        "version": {
+            "conventionalCommits": true,
+            "conventionalBlacklist": [
+                "chore"
+            ],
+            "changelogPreset": "angular",
+            "createRelease": "github",
+            "commitHooks": false,
+            "private": false,
+            "ignoreChanges": [
+                "*.md"
+            ]
+        },
+        "bootstrap": {
+            "npmClientArgs": [
+                "--no-package-lock"
+            ]
+        }
     }
-  },
-  "version": "4.0.65"
 }
