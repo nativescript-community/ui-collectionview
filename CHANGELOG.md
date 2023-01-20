@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.66](https://github.com/@nativescript-community/ui-collectionview/compare/v4.0.65...v4.0.66) (2023-01-20)
+
+
+### Bug Fixes
+
+* ensure `itemTemplateSelector` is called with the right context ([3c45096](https://github.com/@nativescript-community/ui-collectionview/commit/3c450965a70c33d2c7f6edbfde6f4ad4058a15f6))
+
+
+
+
+
 ## [4.0.65](https://github.com/@nativescript-community/ui-collectionview/compare/v4.0.64...v4.0.65) (2022-12-18)
 
 
