@@ -1109,7 +1109,7 @@ export class CollectionView extends CollectionViewBase {
         this._viewHolders.add(holder);
 
         if (Trace.isEnabled()) {
-            CLog(CLogTypes.log, 'onCreateViewHolder', this._viewHolders.size);
+            CLog(CLogTypes.log, 'onCreateViewHolder', viewType, this.getKeyByValue(viewType));
         }
         return holder;
     }
