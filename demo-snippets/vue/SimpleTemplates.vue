@@ -12,10 +12,11 @@
                 @itemTap="onItemTap"
                 @loadMoreItems="onLoadMoreItems"
                 @itemLoadingEvent="onItemLoadingEvent"
+                :itemTemplateSelector="templateSelector"
                 itemIdGenerator="color"
                 colWidth="50%"
             >
-                <v-template name="item" if="item.type === 'item'">
+                <v-template name="item">
                     <GridLayout id="test" rows="*, auto" :backgroundColor="item.color">
                         <StackLayout row="1" height="200" class="item">
                             <Label row="1" :text="item.name" class="title" />
@@ -23,7 +24,7 @@
                         </StackLayout>
                     </GridLayout>
                 </v-template>
-                <v-template name="heading" if="item.type === 'heading'">
+                <v-template name="heading">
                     <GridLayout id="test" rows="*, auto" :backgroundColor="item.color" verticalAlignment="middle" padding="25">
                         <Label :text="item.name" textTransform="uppercase" color="white" fontSize="20" fontWeight="bold"></Label>
                     </GridLayout>
