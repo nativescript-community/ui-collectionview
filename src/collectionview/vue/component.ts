@@ -79,8 +79,8 @@ export default {
         },
         onItemDisposingInternal(args) {
             const oldVnode = args.view && args.view[VUE_VIEW];
-            if (oldVnode && oldVnode.context) {
-                oldVnode.context.$destroy();
+            if (oldVnode && oldVnode.componentInstance) {
+                oldVnode.componentInstance.$destroy();
                 args.view[VUE_VIEW] = null;
             }
         },
