@@ -73,6 +73,7 @@
 	* [Update readme ](#update-readme-)
 	* [Update doc ](#update-doc-)
 	* [Publish](#publish)
+	* [modifying submodules](#modifying-submodules)
 * [Questions](#questions)
 
 
@@ -494,6 +495,7 @@ To start the interactive menu, run `npm start` (or `yarn start` or `pnpm start`)
 ```bash
 npm run build.all
 ```
+WARNING: it seems `yarn build.all` wont always work (not finding binaries in `node_modules/.bin`) which is why the doc explicitly uses `npm run`
 
 ### Demos
 
@@ -502,6 +504,10 @@ npm run demo.[ng|react|svelte|vue].[ios|android]
 
 npm run demo.svelte.ios # Example
 ```
+
+Demo setup is a bit special in the sense that if you want to modify/add demos you dont work directly in `demo-[ng|react|svelte|vue]`
+Instead you work in `demo-snippets/[ng|react|svelte|vue]`
+You can start from the `install.ts` of each flavor to see how to register new demos 
 
 
 [](#contributing)
@@ -545,6 +551,15 @@ The publishing is completely handled by `lerna` (you can add `-- --bump major` t
 Simply run 
 ```shell
 npm run publish
+```
+
+### modifying submodules
+
+The repo uses https:// for submodules which means you won't be able to push directly into the submodules.
+One easy solution is t modify `~/.gitconfig` and add
+```
+[url "ssh://git@github.com/"]
+	pushInsteadOf = https://github.com/
 ```
 
 
@@ -611,6 +626,7 @@ If you have any questions/issues/comments please feel free to create an issue or
 	* [Update readme ](#update-readme-)
 	* [Update doc ](#update-doc-)
 	* [Publish](#publish)
+	* [modifying submodules](#modifying-submodules)
 * [Questions](#questions)
 
 
@@ -671,6 +687,7 @@ To start the interactive menu, run `npm start` (or `yarn start` or `pnpm start`)
 ```bash
 npm run build.all
 ```
+WARNING: it seems `yarn build.all` wont always work (not finding binaries in `node_modules/.bin`) which is why the doc explicitly uses `npm run`
 
 ### Demos
 
@@ -679,6 +696,10 @@ npm run demo.[ng|react|svelte|vue].[ios|android]
 
 npm run demo.svelte.ios # Example
 ```
+
+Demo setup is a bit special in the sense that if you want to modify/add demos you dont work directly in `demo-[ng|react|svelte|vue]`
+Instead you work in `demo-snippets/[ng|react|svelte|vue]`
+You can start from the `install.ts` of each flavor to see how to register new demos 
 
 
 [](#contributing)
@@ -722,6 +743,15 @@ The publishing is completely handled by `lerna` (you can add `-- --bump major` t
 Simply run 
 ```shell
 npm run publish
+```
+
+### modifying submodules
+
+The repo uses https:// for submodules which means you won't be able to push directly into the submodules.
+One easy solution is t modify `~/.gitconfig` and add
+```
+[url "ssh://git@github.com/"]
+	pushInsteadOf = https://github.com/
 ```
 
 

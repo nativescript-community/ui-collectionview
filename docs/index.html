@@ -108,6 +108,7 @@
 <li><a href="#update-readme-">Update readme </a></li>
 <li><a href="#update-doc-">Update doc </a></li>
 <li><a href="#publish">Publish</a></li>
+<li><a href="#modifying-submodules">modifying submodules</a></li>
 </ul>
 </li>
 <li><a href="#questions">Questions</a></li>
@@ -408,12 +409,16 @@ if you use <code>pnpm</code> then run <code>pnpm i</code></p>
 </a>
 <pre><code class="language-bash"><span class="hl-1">npm run build.all</span>
 </code></pre>
+<p>WARNING: it seems <code>yarn build.all</code> wont always work (not finding binaries in <code>node_modules/.bin</code>) which is why the doc explicitly uses <code>npm run</code></p>
 
 <a href="#demos-1" id="demos-1" style="color: inherit; text-decoration: none;">
   <h3>Demos</h3>
 </a>
 <pre><code class="language-bash"><span class="hl-1">npm run demo.[ng|react|svelte|vue].[ios|android]</span><br/><br/><span class="hl-1">npm run demo.svelte.ios </span><span class="hl-6"># Example</span>
 </code></pre>
+<p>Demo setup is a bit special in the sense that if you want to modify/add demos you dont work directly in <code>demo-[ng|react|svelte|vue]</code>
+Instead you work in <code>demo-snippets/[ng|react|svelte|vue]</code>
+You can start from the <code>install.ts</code> of each flavor to see how to register new demos </p>
 <p><a href="#contributing"></a></p>
 <p><a href="#contributing"></a></p>
 
@@ -452,6 +457,14 @@ Then update common files</p>
 <p>The publishing is completely handled by <code>lerna</code> (you can add <code>-- --bump major</code> to force a major release)
 Simply run </p>
 <pre><code class="language-shell"><span class="hl-1">npm run publish</span>
+</code></pre>
+
+<a href="#modifying-submodules" id="modifying-submodules" style="color: inherit; text-decoration: none;">
+  <h3>modifying submodules</h3>
+</a>
+<p>The repo uses https:// for submodules which means you won&#39;t be able to push directly into the submodules.
+One easy solution is t modify <code>~/.gitconfig</code> and add</p>
+<pre><code><span class="hl-1">[</span><span class="hl-3">url</span><span class="hl-1"> </span><span class="hl-5">&quot;ssh://git@github.com/&quot;</span><span class="hl-1">]</span><br/><span class="hl-1">    </span><span class="hl-3">pushInsteadOf</span><span class="hl-1"> = </span><span class="hl-16">https</span><span class="hl-1">:</span><span class="hl-6">//github.com/</span>
 </code></pre>
 <p><a href="#questions"></a></p>
 <p><a href="#questions"></a></p>
@@ -517,6 +530,7 @@ Simply run </p>
 <li><a href="#update-readme-">Update readme </a></li>
 <li><a href="#update-doc-">Update doc </a></li>
 <li><a href="#publish">Publish</a></li>
+<li><a href="#modifying-submodules">modifying submodules</a></li>
 </ul>
 </li>
 <li><a href="#questions">Questions</a></li>
@@ -564,12 +578,16 @@ if you use <code>pnpm</code> then run <code>pnpm i</code></p>
 </a>
 <pre><code class="language-bash"><span class="hl-1">npm run build.all</span>
 </code></pre>
+<p>WARNING: it seems <code>yarn build.all</code> wont always work (not finding binaries in <code>node_modules/.bin</code>) which is why the doc explicitly uses <code>npm run</code></p>
 
 <a href="#demos-2" id="demos-2" style="color: inherit; text-decoration: none;">
   <h3>Demos</h3>
 </a>
 <pre><code class="language-bash"><span class="hl-1">npm run demo.[ng|react|svelte|vue].[ios|android]</span><br/><br/><span class="hl-1">npm run demo.svelte.ios </span><span class="hl-6"># Example</span>
 </code></pre>
+<p>Demo setup is a bit special in the sense that if you want to modify/add demos you dont work directly in <code>demo-[ng|react|svelte|vue]</code>
+Instead you work in <code>demo-snippets/[ng|react|svelte|vue]</code>
+You can start from the <code>install.ts</code> of each flavor to see how to register new demos </p>
 <p><a href="#contributing"></a></p>
 <p><a href="#contributing"></a></p>
 
@@ -608,6 +626,14 @@ Then update common files</p>
 <p>The publishing is completely handled by <code>lerna</code> (you can add <code>-- --bump major</code> to force a major release)
 Simply run </p>
 <pre><code class="language-shell"><span class="hl-1">npm run publish</span>
+</code></pre>
+
+<a href="#modifying-submodules-1" id="modifying-submodules-1" style="color: inherit; text-decoration: none;">
+  <h3>modifying submodules</h3>
+</a>
+<p>The repo uses https:// for submodules which means you won&#39;t be able to push directly into the submodules.
+One easy solution is t modify <code>~/.gitconfig</code> and add</p>
+<pre><code><span class="hl-1">[</span><span class="hl-3">url</span><span class="hl-1"> </span><span class="hl-5">&quot;ssh://git@github.com/&quot;</span><span class="hl-1">]</span><br/><span class="hl-1">    </span><span class="hl-3">pushInsteadOf</span><span class="hl-1"> = </span><span class="hl-16">https</span><span class="hl-1">:</span><span class="hl-6">//github.com/</span>
 </code></pre>
 <p><a href="#questions"></a></p>
 <p><a href="#questions"></a></p>
