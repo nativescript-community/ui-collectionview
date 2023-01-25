@@ -79,9 +79,9 @@ export default {
         },
         onItemDisposingInternal(args) {
             const oldVnode = args.view && args.view[VUE_VIEW];
-            if (oldVnode && oldVnode.componentInstance) {
-                oldVnode.componentInstance.$destroy();
-                args.view[VUE_VIEW] = null;
+            if (oldVnode) {
+                // properly dispose the oldVnode (this will unmount the tree)
+                this.__patch__(oldVnode, null);
             }
         },
         refresh() {
