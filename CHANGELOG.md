@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.69](https://github.com/@nativescript-community/ui-collectionview/compare/v4.0.68...v4.0.69) (2023-01-26)
+
+
+### Bug Fixes
+
+* **vue:** destroy componentInstance and not the parent component ([e55f054](https://github.com/@nativescript-community/ui-collectionview/commit/e55f054c043a8d3ccc48da20b1dfbf2ae6039029))
+* **vue:** properly dispose vnodes ([8ecfc4a](https://github.com/@nativescript-community/ui-collectionview/commit/8ecfc4a8ffa0d5f14122ebeff5a91502a3fc2121))
+
+
+
+
+
 ## [4.0.68](https://github.com/@nativescript-community/ui-collectionview/compare/v4.0.67...v4.0.68) (2023-01-24)
 
 
