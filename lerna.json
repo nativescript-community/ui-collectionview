@@ -16,7 +16,8 @@
             "commitHooks": false,
             "private": false,
             "ignoreChanges": [
-                "*.md"
+                "*.md",
+                "docs/**"
             ]
         },
         "version": {
@@ -29,7 +30,8 @@
             "commitHooks": false,
             "private": false,
             "ignoreChanges": [
-                "*.md"
+                "*.md",
+                "docs/**"
             ]
         },
         "bootstrap": {

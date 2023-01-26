@@ -33,7 +33,7 @@
         "demo.vue.ios": "cd ./demo-vue && ns run ios --no-hmr --env.watchNodeModules",
         "postinstall": "npm run setup",
         "prepare": "npm run setup",
-        "publish": "npm run clean && npm run build.all && npm run readme && npm run doc && lerna publish",
+        "publish": "npm run clean ; npm run build.all ; npm run readme ; npm run doc ; npm run commit_readme_doc_changes ; lerna publish",
         "readme": "lerna run readme && node ./tools/readme.js",
         "setup": "npm run submodules && ts-patch install",
         "start": "./node_modules/.bin/ntl -A -s 15 -o",
@@ -44,7 +44,8 @@
         "update": "node ./tools/update.js",
         "watch": "npm run tsc -- -w",
         "doc": "node tools/builddoc.mjs",
-        "pnpm.setup": "npm run setup && pnpm --filter @nativescript/template-* install"
+        "pnpm.setup": "npm run setup && pnpm --filter @nativescript/template-* install",
+        "commit_readme_doc_changes": "git add docs *.md ; git commit -m \"readme/doc\""
     },
     "commitlint": {
         "extends": [
