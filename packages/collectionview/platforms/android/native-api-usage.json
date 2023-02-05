@@ -24,6 +24,6 @@
         "com.h6ah4i.android.widget.advrecyclerview.animator:BaseItemAnimator", 
         "com.h6ah4i.android.widget.advrecyclerview.animator:GeneralItemAnimator", 
         "com.h6ah4i.android.widget.advrecyclerview.animator:RefactoredDefaultItemAnimator",
-        "com.nativescript.collectionview*:"
+        "com.nativescript.collectionview*:*"
     ]
 }
