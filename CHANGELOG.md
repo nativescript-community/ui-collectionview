@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.70](https://github.com/@nativescript-community/ui-collectionview/compare/v4.0.69...v4.0.70) (2023-02-05)
+
+
+### Bug Fixes
+
+* **collectionview:** native-api-usage fix ([8720ccc](https://github.com/@nativescript-community/ui-collectionview/commit/8720ccc13762bf98db12874d27e42a9371728d4f))
+
+
+
+
+
 ## [4.0.69](https://github.com/@nativescript-community/ui-collectionview/compare/v4.0.68...v4.0.69) (2023-01-26)
 
 
