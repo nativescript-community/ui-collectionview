@@ -31,6 +31,7 @@ export interface CollectionViewItemDisplayEventData extends EventData {
     eventName: string;
     object: CollectionView;
     index: number;
+    cell: any; /* UICollectionViewCell on iOS, CollectionViewCellHolder on Android */
 }
 
 /**
