@@ -288,7 +288,56 @@ For a more complete example, look in the `demo-ng` directory.
 
 [](#usage-in-vue)
 
-## Usage in Vue
+## Usage in Vue 3
+
+Register the plugin in your `app.ts`.
+
+```typescript
+import { createApp } from 'nativescript-vue';
+import CollectionView from '@nativescript-community/ui-collectionview/vue3';
+
+const app = createApp(...);
+app.use(CollectionView);
+```
+
+### Simple Example
+In your component, add the following to make a simple array of objects.
+
+```typescript
+const items = ref(
+    new ObservableArray([
+        { index: 0, name: 'TURQUOISE', color: '#1abc9c' },
+        { index: 1, name: 'EMERALD', color: '#2ecc71' },
+        { index: 2, name: 'PETER RIVER', color: '#3498db' },
+        { index: 3, name: 'AMETHYST', color: '#9b59b6' },
+        { index: 4, name: 'WET ASPHALT', color: '#34495e' },
+        { index: 5, name: 'GREEN SEA', color: '#16a085' },
+        { index: 6, name: 'NEPHRITIS', color: '#27ae60' },
+        { index: 7, name: 'BELIZE HOLE', color: '#2980b9' },
+        { index: 8, name: 'WISTERIA', color: '#8e44ad' },
+        { index: 9, name: 'MIDNIGHT BLUE', color: '#2c3e50' }
+        ]
+    )
+);
+```
+
+Then add the following XML to your component.
+
+```xml
+<CollectionView
+    :items="itemList"
+    colWidth="50%"
+    rowHeight="100"
+>
+    <template #default="{ item }">
+        <Label :text="item.name"></Label>
+    </template>
+</CollectionView>
+```
+
+For a more complete example, look in the `demo-vue3` directory.
+
+## Usage in Vue 2
 
 Register the plugin in your `app.ts`.
 

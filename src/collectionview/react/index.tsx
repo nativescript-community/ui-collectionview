@@ -254,7 +254,8 @@ export class _CollectionView extends React.Component<Props, State> {
         return <collectionView {...rest} onItemLoading={this.defaultOnItemLoading} ref={forwardedRef || this.myRef} />;
     }
 }
-
+//@ts-ignore
 export const CollectionView = React.forwardRef<NSVElement<NativeScriptCollectionView>, OwnProps>((props: OwnProps, ref: React.RefObject<NSVElement<NativeScriptCollectionView>>) => (
+    //@ts-ignore
     <_CollectionView {...props} forwardedRef={ref} />
 ));
