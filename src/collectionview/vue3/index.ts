@@ -1,5 +1,6 @@
 import { CollectionView as VueCollectionView } from './component';
 import { CollectionView as NSCollectionView } from '..';
+import "@vue/runtime-core"
 
 const CollectionViewPlugin = {
     install(app: any) {

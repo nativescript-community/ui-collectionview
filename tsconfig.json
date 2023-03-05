@@ -7,5 +7,8 @@
             "@nativescript-community/ui-collectionview-waterfall": ["src/waterfall"],
             "@nativescript-community/ui-collectionview-waterfall/*": ["src/waterfall/*"],
        },
-    }
+    },
+    "references": [
+        {"path": "./tsconfig.vue3.json"}
+    ]
 }

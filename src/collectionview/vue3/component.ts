@@ -1,5 +1,5 @@
 import { ItemEventData, ObservableArray } from '@nativescript/core';
-import { defineComponent, getCurrentInstance, h, ref, watch, PropType } from 'nativescript-vue3';
+import { defineComponent, getCurrentInstance, h, ref, watch, PropType } from 'nativescript-vue';
 
 const ELEMENT_REF = Symbol(__DEV__ ? `elementRef` : ``);
 
