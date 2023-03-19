@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.71](https://github.com/@nativescript-community/ui-collectionview/compare/v4.0.70...v4.0.71) (2023-03-19)
+
+
+### Bug Fixes
+
+* **ios:** prevent crash if ObservableArray triggers a change before a first refresh has been triggered ([4a216ad](https://github.com/@nativescript-community/ui-collectionview/commit/4a216ad5b7e5e87ddd9d9a75424b02475f658148))
+
+
+
+
+
 ## [4.0.70](https://github.com/@nativescript-community/ui-collectionview/compare/v4.0.69...v4.0.70) (2023-02-05)
 
 
