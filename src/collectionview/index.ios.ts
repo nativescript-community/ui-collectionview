@@ -392,7 +392,7 @@ export class CollectionView extends CollectionViewBase {
 
     public onSourceCollectionChanged(event: ChangedData<any>) {
         const view = this.nativeViewProtected;
-        if (!view || this._dataUpdatesSuspended) {
+        if (!view || this._dataUpdatesSuspended || !this._lastLayoutKey) {
             return;
         }
         if (Trace.isEnabled()) {
