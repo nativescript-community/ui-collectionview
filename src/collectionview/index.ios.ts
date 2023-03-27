@@ -399,7 +399,7 @@ export class CollectionView extends CollectionViewBase {
             CLog(CLogTypes.log, 'onItemsChanged', ChangeType.Update, event.action, event.index, event.addedCount, event.removed && event.removed.length);
         }
         // we need to clear stored cell sizes and it wont be correct anymore
-        this.clearCellSize();
+        // this.clearCellSize();
 
         switch (event.action) {
             case ChangeType.Delete: {
@@ -407,6 +407,7 @@ export class CollectionView extends CollectionViewBase {
                 for (let index = 0; index < event.addedCount; index++) {
                     indexes.addObject(NSIndexPath.indexPathForRowInSection(event.index + index, 0));
                 }
+                this._sizes.splice(event.index, event.addedCount);
                 this.unbindUnusedCells(event.removed);
                 if (Trace.isEnabled()) {
                     CLog(CLogTypes.info, 'deleteItemsAtIndexPaths', indexes.count);
@@ -419,6 +420,7 @@ export class CollectionView extends CollectionViewBase {
             case ChangeType.Update: {
                 const indexes = NSMutableArray.new<NSIndexPath>();
                 indexes.addObject(NSIndexPath.indexPathForRowInSection(event.index, 0));
+                this._sizes[event.index] = null;
                 if (Trace.isEnabled()) {
                     CLog(CLogTypes.info, 'reloadItemsAtIndexPaths', event.index, indexes.count);
                 }
@@ -433,6 +435,7 @@ export class CollectionView extends CollectionViewBase {
                 const indexes = NSMutableArray.new<NSIndexPath>();
                 for (let index = 0; index < event.addedCount; index++) {
                     indexes.addObject(NSIndexPath.indexPathForRowInSection(event.index + index, 0));
+                    this._sizes.splice(event.index, 0, null);
                 }
                 if (Trace.isEnabled()) {
                     CLog(CLogTypes.info, 'insertItemsAtIndexPaths', indexes.count);
@@ -450,6 +453,7 @@ export class CollectionView extends CollectionViewBase {
                         const indexes = NSMutableArray.new<NSIndexPath>();
                         for (let index = 0; index < added; index++) {
                             indexes.addObject(NSIndexPath.indexPathForRowInSection(event.index + index, 0));
+                            this._sizes[event.index + index] = null;
                         }
                         view.reloadItemsAtIndexPaths(indexes);
                     } else {
@@ -457,6 +461,7 @@ export class CollectionView extends CollectionViewBase {
                             const indexes = NSMutableArray.alloc<NSIndexPath>().init();
                             for (let index = 0; index < event.addedCount; index++) {
                                 indexes.addObject(NSIndexPath.indexPathForItemInSection(event.index + index, 0));
+                                this._sizes.splice(event.index, 0, null);
                             }
                             view.insertItemsAtIndexPaths(indexes);
                         }
@@ -465,15 +470,15 @@ export class CollectionView extends CollectionViewBase {
                             for (let index = 0; index < event.removed.length; index++) {
                                 indexes.addObject(NSIndexPath.indexPathForItemInSection(event.index + index, 0));
                             }
+                            this._sizes.splice(event.index, event.removed.length);
                             this.unbindUnusedCells(event.removed);
                             if (Trace.isEnabled()) {
                                 CLog(CLogTypes.info, 'deleteItemsAtIndexPaths', indexes.count);
                             }
-                            view.performBatchUpdatesCompletion(() => {
-                                view.deleteItemsAtIndexPaths(indexes);
-                            }, null);
+                            view.deleteItemsAtIndexPaths(indexes);
                         }
                     }
+                    // view.collectionViewLayout.invalidateLayout();
                 }, null);
                 return;
             }
