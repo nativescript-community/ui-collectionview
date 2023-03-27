@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.72](https://github.com/@nativescript-community/ui-collectionview/compare/v4.0.71...v4.0.72) (2023-03-27)
+
+
+### Bug Fixes
+
+* **ios:** dont reset all cell sizes on ObservableArray updates. Only the ones needed ([b06ede3](https://github.com/@nativescript-community/ui-collectionview/commit/b06ede3880bf8d60fbd06564ab85faa27bc6f463))
+
+
+
+
+
 ## [4.0.71](https://github.com/@nativescript-community/ui-collectionview/compare/v4.0.70...v4.0.71) (2023-03-19)
 
 
