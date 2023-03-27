@@ -3429,11 +3429,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@nativescript-community/ui-collectionview-waterfall@workspace:packages/waterfall"
   dependencies:
-    "@nativescript-community/ui-collectionview": ^4.0.70
+    "@nativescript-community/ui-collectionview": ^4.0.71
   languageName: unknown
   linkType: soft
 
-"@nativescript-community/ui-collectionview@^4.0.70, @nativescript-community/ui-collectionview@workspace:packages/collectionview":
+"@nativescript-community/ui-collectionview@^4.0.71, @nativescript-community/ui-collectionview@workspace:packages/collectionview":
   version: 0.0.0-use.local
   resolution: "@nativescript-community/ui-collectionview@workspace:packages/collectionview"
   languageName: unknown
@@ -3480,6 +3480,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nativescript/android@npm:8.5.0-alpha.1":
+  version: 8.5.0-alpha.1
+  resolution: "@nativescript/android@npm:8.5.0-alpha.1"
+  checksum: c536c045c0b805a11062843e78f6703ca54b2e9e9ff689a8edf3e729c94849092b27fae1c5b6ea98e9a5620fd3e4c09065c747fb7551eec9832559e6ac06942f
+  languageName: node
+  linkType: hard
+
 "@nativescript/android@npm:~8.4.0":
   version: 8.4.0
   resolution: "@nativescript/android@npm:8.4.0"
@@ -3523,6 +3530,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nativescript/core@npm:~8.4.7":
+  version: 8.4.7
+  resolution: "@nativescript/core@npm:8.4.7"
+  dependencies:
+    "@nativescript/hook": ~2.0.0
+    acorn: ^8.7.0
+    css-tree: ^1.1.2
+    emoji-regex: ^10.2.1
+    reduce-css-calc: ^2.1.7
+    tslib: ^2.0.0
+  checksum: f568e09b1e97b3381089af9dc408e96c4dcf75b1449f86cc7458158d975d50d19a64fe8e991ca954ee847cee1492defb9d0b95dfa142d1180e5a17d8ebd20747
+  languageName: node
+  linkType: hard
+
 "@nativescript/eslint-plugin@npm:0.0.4":
   version: 0.0.4
   resolution: "@nativescript/eslint-plugin@npm:0.0.4"
@@ -3554,6 +3575,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nativescript/ios@npm:8.4.1":
+  version: 8.4.1
+  resolution: "@nativescript/ios@npm:8.4.1"
+  checksum: 321ccf5f0f619dc456c60bba9159d8407335ee780d019e67b2b59b4a9faa56494ec91e34e5355447b0fdf541fae992891bc4383d79d8562db32a10329d028ab5
+  languageName: node
+  linkType: hard
+
 "@nativescript/template-blank-react@workspace:demo-react":
   version: 0.0.0-use.local
   resolution: "@nativescript/template-blank-react@workspace:demo-react"
@@ -3582,9 +3610,9 @@ __metadata:
   resolution: "@nativescript/template-blank-svelte@workspace:demo-svelte"
   dependencies:
     "@nativescript-community/template-snippet": 0.0.1
-    "@nativescript/android": ~8.4.0
-    "@nativescript/core": ~8.4.1
-    "@nativescript/ios": 8.4.0
+    "@nativescript/android": 8.5.0-alpha.1
+    "@nativescript/core": ~8.4.7
+    "@nativescript/ios": 8.4.1
     "@nativescript/theme": ~3.0.2
     "@nativescript/types": ~8.4.0
     "@nativescript/webpack": ~5.0.12
