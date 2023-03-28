@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.73](https://github.com/@nativescript-community/ui-collectionview/compare/v4.0.72...v4.0.73) (2023-03-28)
+
+
+### Bug Fixes
+
+* **ios:** regression fix for items size ([9df1290](https://github.com/@nativescript-community/ui-collectionview/commit/9df129032da958e7e23685d90944ca18bb8641fa))
+
+
+
+
+
 ## [4.0.72](https://github.com/@nativescript-community/ui-collectionview/compare/v4.0.71...v4.0.72) (2023-03-27)
 
 
