@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.0.0](https://github.com/nativescript-community/ui-collectionview/compare/v4.0.73...v5.0.0) (2023-03-30)
+
+
+### Features
+
+* **ios:** improved cell size computation ([00d2350](https://github.com/nativescript-community/ui-collectionview/commit/00d23502fa9f9ecf0bd50395eae38a92531d2193))
+
+
+### BREAKING CHANGES
+
+* **ios:** this needs testing to ensure it does not break anything for fixed size and dynamic size templates
+
+
+
+
+
 ## [4.0.73](https://github.com/nativescript-community/ui-collectionview/compare/v4.0.72...v4.0.73) (2023-03-28)
 
 **Note:** Version bump only for package @nativescript-community/ui-collectionview
