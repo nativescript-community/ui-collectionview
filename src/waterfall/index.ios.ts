@@ -54,7 +54,7 @@ export default function install() {
             layout['minimumInteritemSpacing'] = 0;
             return layout;
         },
-        createDelegate: () => UICollectionViewWaterfallDelegateImpl.new()
+        createDelegate: (collectionview: CollectionView) => UICollectionViewWaterfallDelegateImpl.new()
     });
     CollectionView.registerPlugin('waterfall', {
         onLayout: (collectionview: CollectionView) => {

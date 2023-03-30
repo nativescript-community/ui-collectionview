@@ -1,0 +1,5 @@
+module NSCollectionView {
+  umbrella header "NSCollectionView.h"
+  export *
+  module * { export * }
+}
