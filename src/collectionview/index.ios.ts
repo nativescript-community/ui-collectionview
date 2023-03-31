@@ -444,6 +444,7 @@ export class CollectionView extends CollectionViewBase {
                 if (Trace.isEnabled()) {
                     CLog(CLogTypes.info, 'reloadItemsAtIndexPaths', event.index, indexes.count);
                 }
+                // TODO: for now we dont animate to be like android
                 UIView.performWithoutAnimation(() => {
                     view.performBatchUpdatesCompletion(() => {
                         view.reloadItemsAtIndexPaths(indexes);
@@ -674,6 +675,7 @@ export class CollectionView extends CollectionViewBase {
                 cell.view.nativeViewProtected.removeFromSuperview();
                 cell.owner = new WeakRef(view);
             }
+            cell.currentIndex = indexPath.row;
 
             if (notForCellSizeComp) {
                 this._map.set(cell, view);
@@ -682,14 +684,26 @@ export class CollectionView extends CollectionViewBase {
             if (view && !view.parent) {
                 this._addView(view);
                 const innerView = NSCellView.new() as NSCellView;
+                innerView.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight;
                 innerView.view = new WeakRef(view);
-                if (!notForCellSizeComp || this.autoReloadItemOnLayout) {
+                if (notForCellSizeComp && this.autoReloadItemOnLayout) {
                     // for a cell to update correctly on cell layout change we need
                     // to do it ourself instead of "propagating it"
                     view['performLayout'] = () => {
-                        if (notForCellSizeComp) {
-                            this.measureCell(cell, view, indexPath);
-                            this.layoutCell(indexPath.row, cell, view);
+                        if (!this._preparingCell) {
+                            const nativeView = this.nativeViewProtected;
+                            const sizes: NSMutableArray<NSValue> = this._delegate instanceof UICollectionViewDelegateImpl ? this._delegate.cachedSizes : null;
+                            if (sizes) {
+                                sizes.replaceObjectAtIndexWithObject(cell.currentIndex, NSValue.valueWithCGSize(CGSizeZero));
+                            }
+                            // TODO: for now we dont animate to be like android
+                            UIView.performWithoutAnimation(() => {
+                                nativeView.performBatchUpdatesCompletion(() => {
+                                    this.measureCell(cell, view, cell.currentIndex);
+                                    // this.layoutCell(indexPath.row, cell, view);
+                                    // cell.layoutIfNeeded();
+                                }, null);
+                            });
                             this.nativeViewProtected.collectionViewLayout.invalidateLayout();
                         }
                     };
@@ -697,7 +711,7 @@ export class CollectionView extends CollectionViewBase {
                 innerView.addSubview(view.nativeViewProtected);
                 cell.contentView.addSubview(innerView);
             }
-            cellSize = this.measureCell(cell, view, indexPath);
+            cellSize = this.measureCell(cell, view, indexPath.row);
             if (notForCellSizeComp) {
                 view.notify({ eventName: CollectionViewBase.bindedEvent });
             }
@@ -745,13 +759,12 @@ export class CollectionView extends CollectionViewBase {
     // public clearCellSize() {
     //     this._sizes = new Array<number[]>();
     // }
-    private measureCell(cell: CollectionViewCell, cellView: View, index: NSIndexPath): [number, number] {
+    private measureCell(cell: CollectionViewCell, cellView: View, position: number): [number, number] {
         if (cellView) {
             let width = this._effectiveColWidth;
             let height = this._effectiveRowHeight;
             const horizontal = this.isHorizontal();
             if (this.spanSize) {
-                const position = index.row;
                 const dataItem = this.getItemAtIndex(position);
                 const spanSize = this.spanSize(dataItem, position);
                 if (horizontal) {
@@ -772,7 +785,7 @@ export class CollectionView extends CollectionViewBase {
                 ? Utils.layout.makeMeasureSpec(this._innerHeight, Utils.layout.UNSPECIFIED)
                 : infinity;
             if (Trace.isEnabled()) {
-                CLog(CLogTypes.log, 'measureCell', index.row, width, height, widthMeasureSpec, heightMeasureSpec);
+                CLog(CLogTypes.log, 'measureCell', position, width, height, widthMeasureSpec, heightMeasureSpec);
             }
             const measuredSize = View.measureChild(this, cellView, widthMeasureSpec, heightMeasureSpec);
             const result: [number, number] = [measuredSize.measuredWidth, measuredSize.measuredHeight];
@@ -851,6 +864,8 @@ export class CollectionView extends CollectionViewBase {
     collectionViewCellForItemAtIndexPath(collectionView: UICollectionView, indexPath: NSIndexPath): UICollectionViewCell {
         const templateType = this._getItemTemplateType(indexPath);
         let cell = collectionView.dequeueReusableCellWithReuseIdentifierForIndexPath(templateType, indexPath) as CollectionViewCell;
+
+        const firstRender = !cell.view;
         if (!cell) {
             cell = CollectionViewCell.new() as CollectionViewCell;
         }
@@ -860,10 +875,12 @@ export class CollectionView extends CollectionViewBase {
         this._prepareCell(cell, indexPath, templateType);
 
         // the cell layout will be called from NSCellView layoutSubviews
-        const cellView: View = cell.view;
-        if (cellView['isLayoutRequired']) {
-            this.layoutCell(indexPath.row, cell, cellView);
-        }
+        // const cellView: View = cell.view;
+        // if (!firstRender && cellView['isLayoutRequired']) {
+        // cell.setNeedsLayout();
+        // cell.layoutSubviews();
+        // this.layoutCell(indexPath.row, cell, cellView);
+        // }
         return cell;
     }
     collectionViewWillDisplayCellForItemAtIndexPath(collectionView: UICollectionView, cell: UICollectionViewCell, indexPath: NSIndexPath) {
@@ -1023,6 +1040,7 @@ class NSCellView extends UIView {
 @NativeClass
 class CollectionViewCell extends UICollectionViewCell {
     owner: WeakRef<ItemView>;
+    currentIndex: number;
 
     get view(): ItemView {
         return this.owner ? this.owner.get() : null;
