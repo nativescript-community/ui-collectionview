@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.1](https://github.com/@nativescript-community/ui-collectionview/compare/v5.0.0...v5.0.1) (2023-03-31)
+
+
+### Bug Fixes
+
+* **ios:** much faster cells layout + improved `autoReloadItemOnLayout` ([bd71225](https://github.com/@nativescript-community/ui-collectionview/commit/bd712259df448c87b7bc455179bba33be89cd0bd))
+
+
+
+
+
 # [5.0.0](https://github.com/@nativescript-community/ui-collectionview/compare/v4.0.73...v5.0.0) (2023-03-30)
 
 
