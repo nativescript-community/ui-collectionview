@@ -3,6 +3,46 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.1](https://github.com/nativescript-community/ui-collectionview/compare/v5.0.0...v5.0.1) (2023-03-31)
+
+**Note:** Version bump only for package @nativescript-community/ui-collectionview-waterfall
+
+
+
+
+
+# [5.0.0](https://github.com/nativescript-community/ui-collectionview/compare/v4.0.73...v5.0.0) (2023-03-30)
+
+**Note:** Version bump only for package @nativescript-community/ui-collectionview-waterfall
+
+
+
+
+
+## [4.0.73](https://github.com/nativescript-community/ui-collectionview/compare/v4.0.72...v4.0.73) (2023-03-28)
+
+**Note:** Version bump only for package @nativescript-community/ui-collectionview-waterfall
+
+
+
+
+
+## [4.0.72](https://github.com/nativescript-community/ui-collectionview/compare/v4.0.71...v4.0.72) (2023-03-27)
+
+**Note:** Version bump only for package @nativescript-community/ui-collectionview-waterfall
+
+
+
+
+
+## [4.0.71](https://github.com/nativescript-community/ui-collectionview/compare/v4.0.70...v4.0.71) (2023-03-19)
+
+**Note:** Version bump only for package @nativescript-community/ui-collectionview-waterfall
+
+
+
+
+
 ## [4.0.70](https://github.com/nativescript-community/ui-collectionview/compare/v4.0.69...v4.0.70) (2023-02-05)
 
 **Note:** Version bump only for package @nativescript-community/ui-collectionview-waterfall
