@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.2](https://github.com/@nativescript-community/ui-collectionview/compare/v5.0.1...v5.0.2) (2023-04-06)
+
+
+### Bug Fixes
+
+* fix for angular 15.x ([c21085c](https://github.com/@nativescript-community/ui-collectionview/commit/c21085cbe145c0b8168655b252f3eb208c82b4e3))
+
+
+
+
+
 ## [5.0.1](https://github.com/@nativescript-community/ui-collectionview/compare/v5.0.0...v5.0.1) (2023-03-31)
 
 

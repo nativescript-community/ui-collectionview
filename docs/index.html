@@ -382,7 +382,7 @@
   <h2>Demos</h2>
 </a>
 <p>This repository includes Angular, Vue.js, and Svelte demos. In order to run these execute the following in your shell:</p>
-<pre><code class="language-shell"><span class="hl-1">$ git clone https://github.com/@nativescript-community/ui-collectionview</span><br/><span class="hl-1">$ </span><span class="hl-12">cd</span><span class="hl-1"> ui-collectionview</span><br/><span class="hl-1">$ npm i</span><br/><span class="hl-1">$ npm run setup</span><br/><span class="hl-1">$ npm run build </span><span class="hl-6"># &amp;&amp; npm run build.angular</span><br/><span class="hl-1">$ </span><span class="hl-12">cd</span><span class="hl-1"> demo-ng </span><span class="hl-6"># or demo-vue or demo-svelte</span><br/><span class="hl-1">$ ns run ios|android</span>
+<pre><code class="language-shell"><span class="hl-1">$ </span><span class="hl-5">git</span><span class="hl-1"> </span><span class="hl-5">clone</span><span class="hl-1"> </span><span class="hl-5">https://github.com/@nativescript-community/ui-collectionview</span><br/><span class="hl-1">$ </span><span class="hl-5">cd</span><span class="hl-1"> </span><span class="hl-5">ui-collectionview</span><br/><span class="hl-1">$ </span><span class="hl-5">npm</span><span class="hl-1"> </span><span class="hl-5">i</span><br/><span class="hl-1">$ </span><span class="hl-5">npm</span><span class="hl-1"> </span><span class="hl-5">run</span><span class="hl-1"> </span><span class="hl-5">setup</span><br/><span class="hl-1">$ </span><span class="hl-5">npm</span><span class="hl-1"> </span><span class="hl-5">run</span><span class="hl-1"> </span><span class="hl-5">build</span><span class="hl-1"> </span><span class="hl-6"># &amp;&amp; npm run build.angular</span><br/><span class="hl-1">$ </span><span class="hl-5">cd</span><span class="hl-1"> </span><span class="hl-5">demo-ng</span><span class="hl-1"> </span><span class="hl-6"># or demo-vue or demo-svelte</span><br/><span class="hl-1">$ </span><span class="hl-5">ns</span><span class="hl-1"> </span><span class="hl-5">run</span><span class="hl-1"> </span><span class="hl-5">ios</span><span class="hl-1">|android</span>
 </code></pre>
 <p><a href="#demos-and-development"></a></p>
 <p><a href="#demos-and-development"></a></p>
@@ -407,14 +407,14 @@ if you use <code>pnpm</code> then run <code>pnpm i</code></p>
 <a href="#build" id="build" style="color: inherit; text-decoration: none;">
   <h3>Build</h3>
 </a>
-<pre><code class="language-bash"><span class="hl-1">npm run build.all</span>
+<pre><code class="language-bash"><span class="hl-1">npm </span><span class="hl-5">run</span><span class="hl-1"> </span><span class="hl-5">build.all</span>
 </code></pre>
 <p>WARNING: it seems <code>yarn build.all</code> wont always work (not finding binaries in <code>node_modules/.bin</code>) which is why the doc explicitly uses <code>npm run</code></p>
 
 <a href="#demos-1" id="demos-1" style="color: inherit; text-decoration: none;">
   <h3>Demos</h3>
 </a>
-<pre><code class="language-bash"><span class="hl-1">npm run demo.[ng|react|svelte|vue].[ios|android]</span><br/><br/><span class="hl-1">npm run demo.svelte.ios </span><span class="hl-6"># Example</span>
+<pre><code class="language-bash"><span class="hl-1">npm </span><span class="hl-5">run</span><span class="hl-1"> </span><span class="hl-5">demo.[ng</span><span class="hl-1">|react|svelte|vue].[ios|android]</span><br/><br/><span class="hl-1">npm </span><span class="hl-5">run</span><span class="hl-1"> </span><span class="hl-5">demo.svelte.ios</span><span class="hl-1"> </span><span class="hl-6"># Example</span>
 </code></pre>
 <p>Demo setup is a bit special in the sense that if you want to modify/add demos you dont work directly in <code>demo-[ng|react|svelte|vue]</code>
 Instead you work in <code>demo-snippets/[ng|react|svelte|vue]</code>
@@ -431,24 +431,24 @@ You can start from the <code>install.ts</code> of each flavor to see how to regi
 </a>
 <p>You can update the repo files quite easily</p>
 <p>First update the submodules</p>
-<pre><code class="language-bash"><span class="hl-1">npm run update</span>
+<pre><code class="language-bash"><span class="hl-1">npm </span><span class="hl-5">run</span><span class="hl-1"> </span><span class="hl-5">update</span>
 </code></pre>
 <p>Then commit the changes
 Then update common files</p>
-<pre><code class="language-bash"><span class="hl-1">npm run sync</span>
+<pre><code class="language-bash"><span class="hl-1">npm </span><span class="hl-5">run</span><span class="hl-1"> </span><span class="hl-5">sync</span>
 </code></pre>
 <p>Then you can run <code>yarn|pnpm</code>, commit changed files if any</p>
 
 <a href="#update-readme" id="update-readme" style="color: inherit; text-decoration: none;">
   <h3>Update readme</h3>
 </a>
-<pre><code class="language-bash"><span class="hl-1">npm run readme</span>
+<pre><code class="language-bash"><span class="hl-1">npm </span><span class="hl-5">run</span><span class="hl-1"> </span><span class="hl-5">readme</span>
 </code></pre>
 
 <a href="#update-doc" id="update-doc" style="color: inherit; text-decoration: none;">
   <h3>Update doc</h3>
 </a>
-<pre><code class="language-bash"><span class="hl-1">npm run doc</span>
+<pre><code class="language-bash"><span class="hl-1">npm </span><span class="hl-5">run</span><span class="hl-1"> </span><span class="hl-5">doc</span>
 </code></pre>
 
 <a href="#publish" id="publish" style="color: inherit; text-decoration: none;">
@@ -456,7 +456,7 @@ Then update common files</p>
 </a>
 <p>The publishing is completely handled by <code>lerna</code> (you can add <code>-- --bump major</code> to force a major release)
 Simply run </p>
-<pre><code class="language-shell"><span class="hl-1">npm run publish</span>
+<pre><code class="language-shell"><span class="hl-1">npm </span><span class="hl-5">run</span><span class="hl-1"> </span><span class="hl-5">publish</span>
 </code></pre>
 
 <a href="#modifying-submodules" id="modifying-submodules" style="color: inherit; text-decoration: none;">
@@ -576,14 +576,14 @@ if you use <code>pnpm</code> then run <code>pnpm i</code></p>
 <a href="#build-1" id="build-1" style="color: inherit; text-decoration: none;">
   <h3>Build</h3>
 </a>
-<pre><code class="language-bash"><span class="hl-1">npm run build.all</span>
+<pre><code class="language-bash"><span class="hl-1">npm </span><span class="hl-5">run</span><span class="hl-1"> </span><span class="hl-5">build.all</span>
 </code></pre>
 <p>WARNING: it seems <code>yarn build.all</code> wont always work (not finding binaries in <code>node_modules/.bin</code>) which is why the doc explicitly uses <code>npm run</code></p>
 
 <a href="#demos-2" id="demos-2" style="color: inherit; text-decoration: none;">
   <h3>Demos</h3>
 </a>
-<pre><code class="language-bash"><span class="hl-1">npm run demo.[ng|react|svelte|vue].[ios|android]</span><br/><br/><span class="hl-1">npm run demo.svelte.ios </span><span class="hl-6"># Example</span>
+<pre><code class="language-bash"><span class="hl-1">npm </span><span class="hl-5">run</span><span class="hl-1"> </span><span class="hl-5">demo.[ng</span><span class="hl-1">|react|svelte|vue].[ios|android]</span><br/><br/><span class="hl-1">npm </span><span class="hl-5">run</span><span class="hl-1"> </span><span class="hl-5">demo.svelte.ios</span><span class="hl-1"> </span><span class="hl-6"># Example</span>
 </code></pre>
 <p>Demo setup is a bit special in the sense that if you want to modify/add demos you dont work directly in <code>demo-[ng|react|svelte|vue]</code>
 Instead you work in <code>demo-snippets/[ng|react|svelte|vue]</code>
@@ -600,24 +600,24 @@ You can start from the <code>install.ts</code> of each flavor to see how to regi
 </a>
 <p>You can update the repo files quite easily</p>
 <p>First update the submodules</p>
-<pre><code class="language-bash"><span class="hl-1">npm run update</span>
+<pre><code class="language-bash"><span class="hl-1">npm </span><span class="hl-5">run</span><span class="hl-1"> </span><span class="hl-5">update</span>
 </code></pre>
 <p>Then commit the changes
 Then update common files</p>
-<pre><code class="language-bash"><span class="hl-1">npm run sync</span>
+<pre><code class="language-bash"><span class="hl-1">npm </span><span class="hl-5">run</span><span class="hl-1"> </span><span class="hl-5">sync</span>
 </code></pre>
 <p>Then you can run <code>yarn|pnpm</code>, commit changed files if any</p>
 
 <a href="#update-readme-1" id="update-readme-1" style="color: inherit; text-decoration: none;">
   <h3>Update readme</h3>
 </a>
-<pre><code class="language-bash"><span class="hl-1">npm run readme</span>
+<pre><code class="language-bash"><span class="hl-1">npm </span><span class="hl-5">run</span><span class="hl-1"> </span><span class="hl-5">readme</span>
 </code></pre>
 
 <a href="#update-doc-1" id="update-doc-1" style="color: inherit; text-decoration: none;">
   <h3>Update doc</h3>
 </a>
-<pre><code class="language-bash"><span class="hl-1">npm run doc</span>
+<pre><code class="language-bash"><span class="hl-1">npm </span><span class="hl-5">run</span><span class="hl-1"> </span><span class="hl-5">doc</span>
 </code></pre>
 
 <a href="#publish-1" id="publish-1" style="color: inherit; text-decoration: none;">
@@ -625,7 +625,7 @@ Then update common files</p>
 </a>
 <p>The publishing is completely handled by <code>lerna</code> (you can add <code>-- --bump major</code> to force a major release)
 Simply run </p>
-<pre><code class="language-shell"><span class="hl-1">npm run publish</span>
+<pre><code class="language-shell"><span class="hl-1">npm </span><span class="hl-5">run</span><span class="hl-1"> </span><span class="hl-5">publish</span>
 </code></pre>
 
 <a href="#modifying-submodules-1" id="modifying-submodules-1" style="color: inherit; text-decoration: none;">
@@ -666,14 +666,14 @@ if you use <code>pnpm</code> then run <code>pnpm i</code></p>
 <a href="#build-2" id="build-2" style="color: inherit; text-decoration: none;">
   <h3>Build</h3>
 </a>
-<pre><code class="language-bash"><span class="hl-1">npm run build.all</span>
+<pre><code class="language-bash"><span class="hl-1">npm </span><span class="hl-5">run</span><span class="hl-1"> </span><span class="hl-5">build.all</span>
 </code></pre>
 <p>WARNING: it seems <code>yarn build.all</code> wont always work (not finding binaries in <code>node_modules/.bin</code>) which is why the doc explicitly uses <code>npm run</code></p>
 
 <a href="#demos-3" id="demos-3" style="color: inherit; text-decoration: none;">
   <h3>Demos</h3>
 </a>
-<pre><code class="language-bash"><span class="hl-1">npm run demo.[ng|react|svelte|vue].[ios|android]</span><br/><br/><span class="hl-1">npm run demo.svelte.ios </span><span class="hl-6"># Example</span>
+<pre><code class="language-bash"><span class="hl-1">npm </span><span class="hl-5">run</span><span class="hl-1"> </span><span class="hl-5">demo.[ng</span><span class="hl-1">|react|svelte|vue].[ios|android]</span><br/><br/><span class="hl-1">npm </span><span class="hl-5">run</span><span class="hl-1"> </span><span class="hl-5">demo.svelte.ios</span><span class="hl-1"> </span><span class="hl-6"># Example</span>
 </code></pre>
 <p>Demo setup is a bit special in the sense that if you want to modify/add demos you dont work directly in <code>demo-[ng|react|svelte|vue]</code>
 Instead you work in <code>demo-snippets/[ng|react|svelte|vue]</code>
@@ -689,24 +689,24 @@ You can start from the <code>install.ts</code> of each flavor to see how to regi
 </a>
 <p>You can update the repo files quite easily</p>
 <p>First update the submodules</p>
-<pre><code class="language-bash"><span class="hl-1">npm run update</span>
+<pre><code class="language-bash"><span class="hl-1">npm </span><span class="hl-5">run</span><span class="hl-1"> </span><span class="hl-5">update</span>
 </code></pre>
 <p>Then commit the changes
 Then update common files</p>
-<pre><code class="language-bash"><span class="hl-1">npm run sync</span>
+<pre><code class="language-bash"><span class="hl-1">npm </span><span class="hl-5">run</span><span class="hl-1"> </span><span class="hl-5">sync</span>
 </code></pre>
 <p>Then you can run <code>yarn|pnpm</code>, commit changed files if any</p>
 
 <a href="#update-readme-2" id="update-readme-2" style="color: inherit; text-decoration: none;">
   <h3>Update readme</h3>
 </a>
-<pre><code class="language-bash"><span class="hl-1">npm run readme</span>
+<pre><code class="language-bash"><span class="hl-1">npm </span><span class="hl-5">run</span><span class="hl-1"> </span><span class="hl-5">readme</span>
 </code></pre>
 
 <a href="#update-doc-2" id="update-doc-2" style="color: inherit; text-decoration: none;">
   <h3>Update doc</h3>
 </a>
-<pre><code class="language-bash"><span class="hl-1">npm run doc</span>
+<pre><code class="language-bash"><span class="hl-1">npm </span><span class="hl-5">run</span><span class="hl-1"> </span><span class="hl-5">doc</span>
 </code></pre>
 
 <a href="#publish-2" id="publish-2" style="color: inherit; text-decoration: none;">
@@ -714,7 +714,7 @@ Then update common files</p>
 </a>
 <p>The publishing is completely handled by <code>lerna</code> (you can add <code>-- --bump major</code> to force a major release)
 Simply run </p>
-<pre><code class="language-shell"><span class="hl-1">npm run publish</span>
+<pre><code class="language-shell"><span class="hl-1">npm </span><span class="hl-5">run</span><span class="hl-1"> </span><span class="hl-5">publish</span>
 </code></pre>
 
 <a href="#modifying-submodules-2" id="modifying-submodules-2" style="color: inherit; text-decoration: none;">
