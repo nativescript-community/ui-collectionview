@@ -875,12 +875,10 @@ export class CollectionView extends CollectionViewBase {
         this._prepareCell(cell, indexPath, templateType);
 
         // the cell layout will be called from NSCellView layoutSubviews
-        // const cellView: View = cell.view;
-        // if (!firstRender && cellView['isLayoutRequired']) {
-        // cell.setNeedsLayout();
-        // cell.layoutSubviews();
-        // this.layoutCell(indexPath.row, cell, cellView);
-        // }
+        const cellView: View = cell.view;
+        if (!firstRender && cellView['isLayoutRequired']) {
+            this.layoutCell(indexPath.row, cell, cellView);
+        }
         return cell;
     }
     collectionViewWillDisplayCellForItemAtIndexPath(collectionView: UICollectionView, cell: UICollectionViewCell, indexPath: NSIndexPath) {
