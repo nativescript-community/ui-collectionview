@@ -546,7 +546,18 @@ export class CollectionView extends CollectionViewBase {
         if (!view) {
             return;
         }
+        const sizes: NSMutableArray<NSValue> = this._delegate instanceof UICollectionViewDelegateImpl ? this._delegate.cachedSizes : null;
+
         const visibles = view.indexPathsForVisibleItems;
+
+        if (sizes) {
+            const indexes: NSIndexPath[] = Array.from(visibles);
+            indexes.forEach((value) => {
+                console.log('OK resetting size at row', value.row);
+                sizes.replaceObjectAtIndexWithObject(value.row, NSValue.valueWithCGSize(CGSizeZero));
+            });
+        }
+
         UIView.performWithoutAnimation(() => {
             view.performBatchUpdatesCompletion(() => {
                 view.reloadItemsAtIndexPaths(visibles);
