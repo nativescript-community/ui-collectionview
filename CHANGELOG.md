@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.4](https://github.com/@nativescript-community/ui-collectionview/compare/v5.0.3...v5.0.4) (2023-04-19)
+
+
+### Bug Fixes
+
+* **ios:** Fix refreshVisibleItems not recalculating heights ([4042b45](https://github.com/@nativescript-community/ui-collectionview/commit/4042b45b65d212a9d588b358735d645d769d2c35))
+* support items on which we might have called delete on a property ([4b15df2](https://github.com/@nativescript-community/ui-collectionview/commit/4b15df21b38c0b23faaf45b358ac9b667ebc7549))
+
+
+
+
+
 ## [5.0.3](https://github.com/@nativescript-community/ui-collectionview/compare/v5.0.2...v5.0.3) (2023-04-14)
 
 
