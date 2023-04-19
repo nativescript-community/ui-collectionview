@@ -671,6 +671,7 @@ export class CollectionView extends CollectionViewBase {
             }
             const args = this.notifyForItemAtIndex(this, cell, view, CollectionViewBase.itemLoadingEvent, indexPath, bindingContext);
             view = args.view;
+            view.bindingContext = bindingContext;
 
             if (view instanceof ProxyViewContainer) {
                 const sp = new ContentView();

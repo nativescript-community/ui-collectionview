@@ -1141,6 +1141,7 @@ export class CollectionView extends CollectionViewBase {
             // the view has been changed on the event handler
             (holder.view as ContentView).content = args.view;
         }
+        view.bindingContext = bindingContext;
         view.notify({ eventName: CollectionViewBase.bindedEvent });
         let width = this._effectiveColWidth;
         let height = this._effectiveRowHeight;

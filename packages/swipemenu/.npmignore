@@ -1,0 +1,11 @@
+node_modules/
+pnpm-global/
+src/
+bin/
+hooks/
+*.ts
+*.old
+tsconfig.json
+!*.d.ts
+.smooth-releaserc
+blueprint.md

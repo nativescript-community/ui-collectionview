@@ -53,7 +53,10 @@
         ]
     },
     "dependencies": {
-        "@nativescript-community/plugin-seed-tools": "file:tools"
+        "@nativescript-community/class-mixins": "^1.0.0",
+        "@nativescript-community/plugin-seed-tools": "file:tools",
+        "@nativescript-community/template-snippet": "file:demo-snippets",
+        "@nativescript-community/ui-drawer": "^0.1.12"
     },
     "ntl": {
         "descriptions": {

@@ -1,0 +1,13 @@
+{
+    "extends": "../../../tsconfig.json",
+    "compilerOptions": {
+        "rootDir": "./",
+        "plugins": [],
+        "paths": {
+            "@nativescript-community/ui-swipemenu": ["packages/ui-collectionview-swipemenu"],
+            "@nativescript-community/ui-swipemenu/*": ["packages/ui-collectionview-swipemenu/*"]
+        }
+    },
+    "include": ["./**/*.ts", "../../../references.d.ts", "../references.d.ts"],
+    "exclude": ["../node_modules"]
+}
