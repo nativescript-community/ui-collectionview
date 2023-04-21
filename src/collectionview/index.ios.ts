@@ -444,12 +444,10 @@ export class CollectionView extends CollectionViewBase {
                 if (Trace.isEnabled()) {
                     CLog(CLogTypes.info, 'reloadItemsAtIndexPaths', event.index, indexes.count);
                 }
-                // TODO: for now we dont animate to be like android
-                UIView.performWithoutAnimation(() => {
-                    view.performBatchUpdatesCompletion(() => {
-                        view.reloadItemsAtIndexPaths(indexes);
-                    }, null);
-                });
+
+                view.performBatchUpdatesCompletion(() => {
+                    view.reloadItemsAtIndexPaths(indexes);
+                }, null);
                 return;
             }
             case ChangeType.Add: {
