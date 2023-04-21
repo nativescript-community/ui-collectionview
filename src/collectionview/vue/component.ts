@@ -65,7 +65,7 @@ export default {
             const currentItem = args.bindingContext;
             const name = (listView as any)._itemTemplateSelector(currentItem, index, items);
             const context = this.getItemContext(currentItem, index);
-            const oldVnode = args.view && args.view[VUE_VIEW];
+            const oldVnode = args.view?.[VUE_VIEW];
             if (args.view) {
                 args.view._batchUpdate(() => {
                     args.view = this.$templates.patchTemplate(name, context, oldVnode);
