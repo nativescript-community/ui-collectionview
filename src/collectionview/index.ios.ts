@@ -702,20 +702,18 @@ export class CollectionView extends CollectionViewBase {
                     // to do it ourself instead of "propagating it"
                     view['performLayout'] = () => {
                         if (!this._preparingCell) {
+                            const index = cell.currentIndex;
                             const nativeView = this.nativeViewProtected;
                             const sizes: NSMutableArray<NSValue> = this._delegate instanceof UICollectionViewDelegateImpl ? this._delegate.cachedSizes : null;
                             if (sizes) {
-                                sizes.replaceObjectAtIndexWithObject(cell.currentIndex, NSValue.valueWithCGSize(CGSizeZero));
+                                sizes.replaceObjectAtIndexWithObject(index, NSValue.valueWithCGSize(CGSizeZero));
                             }
-                            // TODO: for now we dont animate to be like android
-                            UIView.performWithoutAnimation(() => {
-                                nativeView.performBatchUpdatesCompletion(() => {
-                                    this.measureCell(cell, view, cell.currentIndex);
-                                    // this.layoutCell(indexPath.row, cell, view);
-                                    // cell.layoutIfNeeded();
-                                }, null);
-                            });
-                            this.nativeViewProtected.collectionViewLayout.invalidateLayout();
+
+                            nativeView.performBatchUpdatesCompletion(() => {
+                                this.measureCell(cell, view, index);
+                                this.notifyForItemAtIndex(this, cell, view, CollectionViewBase.itemLoadingEvent, indexPath, view.bindingContext);
+                             }, null);
+                            nativeView.collectionViewLayout.invalidateLayout();
                         }
                     };
                 }
