@@ -1,6 +1,6 @@
 import { applyMixins } from '@nativescript-community/class-mixins';
 import { CollectionView } from '@nativescript-community/ui-collectionview';
-import { Drawer } from '@nativescript-community/ui-drawer';
+import { Drawer, install as installDrawer } from '@nativescript-community/ui-drawer';
 import { CSSType, ContentView, ItemsSource, Property, booleanConverter } from '@nativescript/core';
 
 export { Side } from '@nativescript-community/ui-drawer';
@@ -132,6 +132,7 @@ export class SwipeMenu extends Drawer {
 export function install() {
     if (!mixinInstalled) {
         mixinInstalled = true;
+        installDrawer();
         overrideCollectionView();
     }
 }
