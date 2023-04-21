@@ -247,7 +247,7 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
         if (view) {
             // we check old bindingContext to see if properties disappeared.
             // if so we set them to null for the View to update
-            if (view.bindingContext) {
+            if (view.bindingContext && view.bindingContext !== context) {
                 const removed = {};
                 Object.keys(view.bindingContext).forEach((k) => {
                     if (!context.hasOwnProperty(k)) {
