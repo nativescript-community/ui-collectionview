@@ -637,10 +637,10 @@ export class CollectionView extends CollectionViewBase {
     public _setNativeClipToBounds() {
         this.nativeView.clipsToBounds = true;
     }
-    notifyForItemAtIndex(listView: CollectionViewBase, cell: any, view: View, eventName: string, indexPath: NSIndexPath, bindingContext?) {
-        const args = { eventName, object: listView, index: indexPath.row, view, ios: cell, bindingContext };
-        listView.notify(args);
-        return args;
+    notifyForItemAtIndex(eventName: string, view: View, index: number, bindingContext?, native?: any) {
+        const args = { eventName, object: this, index, view, ios: native, bindingContext };
+        this.notify(args);
+        return args as any;
     }
     _getItemTemplateType(indexPath) {
         const selector = this._itemTemplateSelector;
@@ -667,7 +667,7 @@ export class CollectionView extends CollectionViewBase {
             if (Trace.isEnabled()) {
                 CLog(CLogTypes.log, '_prepareCell', index, templateType, !!cell.view, !!view, cell.view !== view, notForCellSizeComp);
             }
-            const args = this.notifyForItemAtIndex(this, cell, view, CollectionViewBase.itemLoadingEvent, indexPath, bindingContext);
+            const args = this.notifyForItemAtIndex(CollectionViewBase.itemLoadingEvent, view, indexPath.row, bindingContext, cell);
             view = args.view;
             view.bindingContext = bindingContext;
 
@@ -709,8 +709,8 @@ export class CollectionView extends CollectionViewBase {
 
                             nativeView.performBatchUpdatesCompletion(() => {
                                 this.measureCell(cell, view, index);
-                                this.notifyForItemAtIndex(this, cell, view, CollectionViewBase.itemLoadingEvent, indexPath, view.bindingContext);
-                             }, null);
+                                this.notifyForItemAtIndex(CollectionViewBase.itemLoadingEvent, view, indexPath.row, view.bindingContext, cell);
+                            }, null);
                             nativeView.collectionViewLayout.invalidateLayout();
                         }
                     };
