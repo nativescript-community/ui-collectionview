@@ -1,7 +1,7 @@
 import { applyMixins } from '@nativescript-community/class-mixins';
-import { CollectionView } from '@nativescript-community/ui-collectionview';
+import { CollectionView, CollectionViewBase } from '@nativescript-community/ui-collectionview';
 import { Drawer, install as installDrawer } from '@nativescript-community/ui-drawer';
-import { CSSType, ContentView, ItemsSource, Property, booleanConverter } from '@nativescript/core';
+import { CSSType, ContentView, ItemsSource, Property, View, booleanConverter } from '@nativescript/core';
 
 export { Side } from '@nativescript-community/ui-drawer';
 
@@ -10,6 +10,12 @@ export const onlyOneMenuOpenedProperty = new Property<CollectionView, boolean>({
     valueConverter: booleanConverter,
     name: 'onlyOneMenuOpened'
 });
+
+declare module '@nativescript-community/ui-collectionview' {
+    interface CollectionView {
+        notifyForItemAtIndex(eventName: string, view: View, index: number, bindingContext?, native?: any);
+    }
+}
 
 let mixinInstalled = false;
 class CollectionViewWithSwipeMenu extends CollectionView {
@@ -37,48 +43,51 @@ class CollectionViewWithSwipeMenu extends CollectionView {
                 view.close();
             } else {
                 const oldItem = this.getItemAtIndex(openedIndex);
+                // console.log('closeCurrentMenu', view, openedIndex, oldItem, new Error().stack);
                 oldItem.startingSide = null;
-                // this.setItemAtIndex(openedIndex, oldItem);
+                // this.notifyForItemAtIndex(CollectionViewBase.itemLoadingEvent, view, openedIndex, oldItem);
+                setTimeout(() => {
+                    this.setItemAtIndex(openedIndex, oldItem);
+                }, 0);
             }
         } catch (error) {
-            console.error(error);
+            console.error('closeCurrentMenu', error, error.stack);
         } finally {
         }
     }
     async onItemMenuStart(event) {
-        const item = event.object.bindingContext;
-        const index = (this.items as any).findIndex((i) => i === item);
-        // console.log('onItemMenuStart', index, item, event.object, this.openedDrawerIndex);
-        if (this.openedDrawerIndex >= 0) {
+        const view = event.object;
+        const bindingContext = view.bindingContext;
+        const index = (this.items as any).findIndex((i) => i === bindingContext);
+        // console.error('onItemMenuStart', index, bindingContext, view, this.openedDrawerIndex);
+        if (this.openedDrawerIndex !== index && this.openedDrawerIndex >= 0) {
             this.closeCurrentMenu();
         }
         this.openedDrawerIndex = index;
     }
     onItemMenuOpened(event) {
-        const item = event.object.bindingContext;
-        const index = (this.items as any).findIndex((i) => i === item);
-        // console.log('onItemMenuOpened', index, item, event.object, this.openedDrawerIndex);
+        const view = event.object;
+        const bindingContext = view.bindingContext;
+        const index = (this.items as any).findIndex((i) => i === bindingContext);
+        // console.error('onItemMenuOpened', index, bindingContext, view, this.openedDrawerIndex);
         if (this.openedDrawerIndex >= 0 && this.openedDrawerIndex !== index) {
-            // console.log('onItemMenuOpened', 'closing current', index, this.openedDrawerIndex);
             this.closeCurrentMenu();
         }
         this.openedDrawerIndex = index;
-        // setTimeout(() => {
-            item.startingSide = event.object.startingSide = 'left';
-            // this.setItemAtIndex(index, item);
-        // }, 1000);
-        // console.log('onItemMenuOpened done', index, item, event.object, this.openedDrawerIndex);
+        bindingContext.startingSide = view.startingSide = 'left';
+        this.notifyForItemAtIndex(CollectionViewBase.itemLoadingEvent, view, index, bindingContext);
     }
     onItemMenuClosed(event) {
-        const item = event.object.bindingContext;
-        const index = (this.items as any).findIndex((i) => i === item);
-        // console.log('onItemMenuClosed', index, event.object, this.openedDrawerIndex, new Error().stack);
-        if (item.startingSide !== null) {
+        const view = event.object;
+        const bindingContext = view.bindingContext;
+        const index = (this.items as any).findIndex((i) => i === bindingContext);
+        // console.error('onItemMenuClosed', index, bindingContext, view, this.openedDrawerIndex);
+        if (bindingContext.startingSide !== null) {
             if (index === this.openedDrawerIndex) {
                 this.openedDrawerIndex = -1;
             }
-            item.startingSide = event.object.startingSide = null;
-            // this.setItemAtIndex(index, item);
+            bindingContext.startingSide = view.startingSide = null;
+            this.notifyForItemAtIndex(CollectionViewBase.itemLoadingEvent, view, index, bindingContext);
         }
     }
 }
