@@ -601,12 +601,7 @@ export class CollectionView extends CollectionViewBase {
         // dispatch_async(main_queue, () => {
         this.nativeViewProtected.reloadData();
         // });
-
-        const args = {
-            eventName: CollectionViewBase.dataPopulatedEvent,
-            object: this
-        };
-        this.notify(args);
+        this.notify({ eventName: CollectionViewBase.dataPopulatedEvent });
     }
     //@ts-ignore
     get scrollOffset() {
