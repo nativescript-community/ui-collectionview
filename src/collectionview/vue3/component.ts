@@ -1,38 +1,60 @@
-import { ItemEventData, ObservableArray } from '@nativescript/core';
-import { defineComponent, getCurrentInstance, h, ref, watch, PropType } from 'nativescript-vue';
+import { CollectionView as NSCollectionView } from '..';
+import { ItemEventData, Observable, ObservableArray } from '@nativescript/core';
+import {
+    defineComponent,
+    getCurrentInstance,
+    h,
+    VNode,
+    warn,
+    watch,
+    ref,
+    toRaw, computed, PropType
+} from "nativescript-vue";
 
-const ELEMENT_REF = Symbol(__DEV__ ? `elementRef` : ``);
-
-export interface ListItem<T = any> {
-    item: T;
+interface ListItem {
+    [key: string]: any;
     index: number;
     even: boolean;
     odd: boolean;
 }
 
-function getListItem(item: any, index: number): ListItem {
+interface ItemCellData {
+    itemCtx: ListItem;
+    slotName: string;
+}
+
+const LIST_CELL_ID = Symbol("list_cell_id");
+
+function getListItem(item: any, index: number, itemAlias: string, indexAlias: string): ListItem {
     return {
-        item,
+        [itemAlias]: item,
+        [indexAlias]: index,
         index,
         even: index % 2 === 0,
         odd: index % 2 !== 0,
     };
 }
 
-const LIST_CELL_ID = Symbol("list_cell_id");
-
-export const CollectionView = /*#__PURE__*/ defineComponent({
+export const CollectionView = defineComponent({
     props: {
+
         items: {
             type: Object as PropType<Array<any> | ObservableArray<any>>,
-            validator(value) {
-                return Array.isArray(value) || value instanceof ObservableArray;
-            },
+            required: true
+        },
+        'alias': {
+            type: String,
+            default: 'item'
+        },
+        'itemIdGenerator': {
+            type: String,
+            default: '$index'
         },
         itemTemplateSelector: Function,
     },
-    emits: ['itemTap', 'loadMoreItems', 'itemLoadingEvent'],
     setup(props, ctx) {
+        const itemsCtx = computed(() => (props.items as []).map((item, index) => getListItem(item, index, props.alias, props.itemIdGenerator)));
+
         const itemTemplates = Object.keys(ctx.slots).map((slotName) => {
             return {
                 key: slotName,
@@ -42,115 +64,99 @@ export const CollectionView = /*#__PURE__*/ defineComponent({
             };
         });
 
-        const getSlotName = (itemCtx: ListItem) =>
-            props.itemTemplateSelector?.(itemCtx) ?? "default";
+        const getSlotName = (itemCtx: ListItem, index: number, items: ListItem[]) =>
+            props.itemTemplateSelector?.(itemCtx[props.alias], index, items.map(itemCtx => itemCtx[props.alias])) ?? "default";
 
-        const listView = ref(null);
+        const collectionView = ref<any & { nativeView: NSCollectionView }>(null);
 
         const vm = getCurrentInstance();
 
-        watch(props, () => {
-            try {
-                if (props.items instanceof ObservableArray) {
-                    return;
-                }
-
-                const lv = listView.value?.nativeView;
-                lv?.refresh();
-            } catch (err) {
-                console.error("Error while refreshing ListView", err);
+        watch(() => props.items, (oldVal, newVal) => {
+            if (!(oldVal instanceof Observable)) {
+                collectionView.value.setAttribute('items', newVal);
             }
         });
 
         let cellId = 0;
-
-        interface ItemCellData {
-            itemCtx: ListItem;
-            slotName: string;
-        }
-
         const cells = ref<Record<string, ItemCellData>>({});
 
-        function onItemTap(e) {
-            ctx.emit("itemTap", e)
-        }
+        function onItemLoading(event: any & ItemEventData) {
+            const index = event.index;
 
-        function onLoadMoreItems(e) {
-            ctx.emit("loadMoreItems", e)
-        }
-
-        function onItemLoading(event: ItemEventData) {
-            const el = event.view?.[ELEMENT_REF];
-            const id = el?.nativeView[LIST_CELL_ID] ?? `LIST_CELL_${cellId++}`;
+            const id = event.view?.[LIST_CELL_ID] ?? `${cellId++}`;
 
             const itemCtx: ListItem = getListItem(
                 props.items instanceof ObservableArray
-                    ? props.items.getItem(event.index)
-                    : props.items[event.index],
-                event.index
+                    ? props.items.getItem(index)
+                    : props.items[index],
+                index,
+                props.alias, props.itemIdGenerator
             );
 
             // update the cell data with the current row
             cells.value[id] = {
                 itemCtx,
-                slotName: getSlotName(itemCtx),
+                slotName: getSlotName(itemCtx, index, event.object.items),
             };
 
             // trigger an update!
-            vm.update();
+            vm?.update();
 
             // find the vnode rendering this cell
-            const vnode = (vm.subTree.children as { key: any, el: any }[]).find((vnode) => {
+            const vnode = (vm?.subTree.children as VNode[]).find((vnode) => {
                 return vnode.key === id;
             });
-
-            // store the cell id on the Element itself so we can retrieve it when recycling kicks in
-            const cellEl = vnode.el.nativeView;
+            const cellEl = toRaw(vnode?.el?.nativeView);
             cellEl[LIST_CELL_ID] = id;
 
-            // finally, set the event.view to the rendered cellEl
-            event.view = cellEl;
-        }
-
-        function itemTemplateSelector(item, index) {
-            // pass on the template selector call with the ListItem context
-            return getSlotName(getListItem(item, index));
+            if (event.view) {
+                event.view._batchUpdate(() => {
+                    event.view = cellEl;
+                });
+            }
+            else {
+                event.view = cellEl;
+            }
         }
 
         // render all realized templates as children
         const cellVNODES = () =>
             Object.entries(cells.value).map(([id, entry]) => {
-                const vnodes: any[] = ctx.slots[entry.slotName]?.(entry.itemCtx) ?? [
+
+                const vnodes: VNode[] = ctx.slots[entry.slotName]?.(entry.itemCtx) ?? [
                     // default template is just a label
                     h("Label", {
-                        text: entry.itemCtx.item,
+                        text: entry.itemCtx[props.alias],
                     }),
                 ];
 
                 if (vnodes.length > 1) {
-                    console.log(
-                        `CollectionView template must contain a single root element. Found: ${vnodes.length}. Only the first one will be used.`
+                    warn(
+                        `ListView template must contain a single root element. Found: ${vnodes.length}. Only the first one will be used.`
                     );
                 }
 
-                const vnode = vnodes[0];
+                const vnode: VNode = vnodes[0];
                 // set the key to the list cell id, so we can find this cell later...
                 vnode.key = id;
 
                 return vnode;
             });
 
+
+        function scrollToIndex(index: number, animate = false) {
+            (collectionView.value.nativeView as NSCollectionView).scrollToIndex(index, animate);
+        }
+
         return () => {
             return h(
-                "NSCollectionView",
+                "NativeCollectionView",
                 {
-                    ref: listView,
-                    items: props.items,
+                    ref: collectionView,
+                    items: itemsCtx.value,
                     itemTemplates,
-                    itemTemplateSelector,
                     onItemLoading,
-                    onItemTap,
-                    onLoadMoreItems
+                    scrollToIndex,
                 },
                 cellVNODES()
             );
