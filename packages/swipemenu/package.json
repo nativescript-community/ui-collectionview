@@ -1,7 +1,7 @@
 {
-    "name": "@nativescript-community/ui-collectionview-waterfall",
-    "version": "5.0.4",
-    "description": "A NativeScript CollectionView waterfall Plugin.",
+    "name": "@nativescript-community/ui-collectionview-swipemenu",
+    "version": "5.0.3",
+    "description": "A NativeScript CollectionView SwipeMenu Plugin.",
     "main": "./index",
     "sideEffects": false,
     "typings": "./index.d.ts",
@@ -11,9 +11,10 @@
     },
     "scripts": {
         "build": "npm run tsc && npm run readme",
-        "build.all": "npm run build",
+        "build.all": "npm run build && npm run build.angular",
+        "build.angular": "ng-packagr -p ../../src/swipemenu/angular/ng-package.json -c ../../src/swipemenu/angular/tsconfig.json",
         "readme": "readme generate -c ../../tools/readme/blueprint.json",
-        "tsc": "cpy '**/*.d.ts' '../../packages/waterfall' --parents --cwd=../../src/waterfall && tsc -skipLibCheck -d",
+        "tsc": "cpy '**/*.d.ts' '../../packages/swipemenu' --parents --cwd=../../src/swipemenu && tsc -skipLibCheck -d",
         "clean": "rimraf ./*.d.ts ./*.js ./*.js.map"
     },
     "nativescript": {
@@ -38,6 +39,8 @@
     },
     "homepage": "https://github.com/nativescript-community/ui-collectionview#readme",
     "dependencies": {
-        "@nativescript-community/ui-collectionview": "^5.0.4"
+        "@nativescript-community/class-mixins": "^1.0.0",
+        "@nativescript-community/ui-collectionview": "^5.0.4",
+        "@nativescript-community/ui-drawer": "^0.1.12"
     }
 }

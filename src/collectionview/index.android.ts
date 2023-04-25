@@ -1114,33 +1114,31 @@ export class CollectionView extends CollectionViewBase {
         return holder;
     }
 
+    notifyForItemAtIndex(eventName: string, view: View, index: number, bindingContext?, native?: any) {
+        const args = { eventName, object: this, index, view, ios: native, bindingContext };
+        this.notify(args);
+        return args as any;
+    }
+
     @profile
     public onBindViewHolder(holder: CollectionViewCellHolder, position: number) {
         if (Trace.isEnabled()) {
             CLog(CLogTypes.log, 'onBindViewHolder', position);
         }
         let view = holder.view;
-        const bindingContext = this._prepareItem(view, position);
         const isNonSync = holder['defaultItemView'] === true;
+        view = isNonSync ? (view as ContentView).content : view;
+        const bindingContext = this._prepareItem(view, position);
         holder['position'] = position;
 
-        view = isNonSync ? (view as ContentView).content : view;
-
-        const args = {
-            eventName: CollectionViewBase.itemLoadingEvent,
-            index: position,
-            object: this,
-            view,
-            bindingContext,
-            android: holder
-        };
-        this.notify(args);
+        const args = this.notifyForItemAtIndex(CollectionViewBase.itemLoadingEvent, view, position, bindingContext, holder);
 
         if (isNonSync && args.view !== view) {
             view = args.view;
             // the view has been changed on the event handler
             (holder.view as ContentView).content = args.view;
         }
+        view.bindingContext = bindingContext;
         view.notify({ eventName: CollectionViewBase.bindedEvent });
         let width = this._effectiveColWidth;
         let height = this._effectiveRowHeight;

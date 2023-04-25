@@ -4,6 +4,7 @@
     "private": true,
     "dependencies": {
         "@nativescript-community/ui-collectionview": "link:../packages/collectionview",
+        "@nativescript-community/ui-collectionview-swipemenu": "link:../packages/swipemenu",
         "@nativescript-community/ui-collectionview-waterfall": "link:../packages/waterfall"
     }
 }

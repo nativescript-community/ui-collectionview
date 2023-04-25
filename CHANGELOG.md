@@ -3,6 +3,100 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.4](https://github.com/@nativescript-community/ui-collectionview/compare/v5.0.3...v5.0.4) (2023-04-19)
+
+
+### Bug Fixes
+
+* **ios:** Fix refreshVisibleItems not recalculating heights ([4042b45](https://github.com/@nativescript-community/ui-collectionview/commit/4042b45b65d212a9d588b358735d645d769d2c35))
+* support items on which we might have called delete on a property ([4b15df2](https://github.com/@nativescript-community/ui-collectionview/commit/4b15df21b38c0b23faaf45b358ac9b667ebc7549))
+
+
+
+
+
+## [5.0.3](https://github.com/@nativescript-community/ui-collectionview/compare/v5.0.2...v5.0.3) (2023-04-14)
+
+
+### Bug Fixes
+
+* **ios:** revert change which broke some refresh ([b90793f](https://github.com/@nativescript-community/ui-collectionview/commit/b90793f497da686f976145cd3022f9f2c4afda15))
+
+
+
+
+
+## [5.0.2](https://github.com/@nativescript-community/ui-collectionview/compare/v5.0.1...v5.0.2) (2023-04-06)
+
+
+### Bug Fixes
+
+* fix for angular 15.x ([c21085c](https://github.com/@nativescript-community/ui-collectionview/commit/c21085cbe145c0b8168655b252f3eb208c82b4e3))
+
+
+
+
+
+## [5.0.1](https://github.com/@nativescript-community/ui-collectionview/compare/v5.0.0...v5.0.1) (2023-03-31)
+
+
+### Bug Fixes
+
+* **ios:** much faster cells layout + improved `autoReloadItemOnLayout` ([bd71225](https://github.com/@nativescript-community/ui-collectionview/commit/bd712259df448c87b7bc455179bba33be89cd0bd))
+
+
+
+
+
+# [5.0.0](https://github.com/@nativescript-community/ui-collectionview/compare/v4.0.73...v5.0.0) (2023-03-30)
+
+
+### Features
+
+* **ios:** improved cell size computation ([00d2350](https://github.com/@nativescript-community/ui-collectionview/commit/00d23502fa9f9ecf0bd50395eae38a92531d2193))
+
+
+### BREAKING CHANGES
+
+* **ios:** this needs testing to ensure it does not break anything for fixed size and dynamic size templates
+
+
+
+
+
+## [4.0.73](https://github.com/@nativescript-community/ui-collectionview/compare/v4.0.72...v4.0.73) (2023-03-28)
+
+
+### Bug Fixes
+
+* **ios:** regression fix for items size ([9df1290](https://github.com/@nativescript-community/ui-collectionview/commit/9df129032da958e7e23685d90944ca18bb8641fa))
+
+
+
+
+
+## [4.0.72](https://github.com/@nativescript-community/ui-collectionview/compare/v4.0.71...v4.0.72) (2023-03-27)
+
+
+### Bug Fixes
+
+* **ios:** dont reset all cell sizes on ObservableArray updates. Only the ones needed ([b06ede3](https://github.com/@nativescript-community/ui-collectionview/commit/b06ede3880bf8d60fbd06564ab85faa27bc6f463))
+
+
+
+
+
+## [4.0.71](https://github.com/@nativescript-community/ui-collectionview/compare/v4.0.70...v4.0.71) (2023-03-19)
+
+
+### Bug Fixes
+
+* **ios:** prevent crash if ObservableArray triggers a change before a first refresh has been triggered ([4a216ad](https://github.com/@nativescript-community/ui-collectionview/commit/4a216ad5b7e5e87ddd9d9a75424b02475f658148))
+
+
+
+
+
 ## [4.0.70](https://github.com/@nativescript-community/ui-collectionview/compare/v4.0.69...v4.0.70) (2023-02-05)
 
 

@@ -60,9 +60,9 @@ export const contentInsetAdjustmentBehaviorProperty = new Property<CollectionVie
 export class CollectionView extends CollectionViewBase {
     private _layout: UICollectionViewLayout;
     private _dataSource: CollectionViewDataSource;
-    private _delegate: UICollectionViewDelegateImpl;
+    private _delegate: UICollectionViewDelegateImpl | UICollectionViewDelegateFixedSizeImpl;
     private _preparingCell: boolean = false;
-    private _sizes: number[][];
+    // private _sizes: number[][];
     private _map: Map<CollectionViewCell, ItemView>;
     _measureCellMap: Map<string, { cell: CollectionViewCell; view: View }>;
     _lastLayoutKey: string;
@@ -81,7 +81,7 @@ export class CollectionView extends CollectionViewBase {
     constructor() {
         super();
         this._map = new Map<CollectionViewCell, View>();
-        this._sizes = new Array<number[]>();
+        // this._sizes = new Array<number[]>();
     }
 
     public createNativeView() {
@@ -121,15 +121,9 @@ export class CollectionView extends CollectionViewBase {
         this._dataSource = CollectionViewDataSource.initWithOwner(this);
         nativeView.dataSource = this._dataSource;
 
-        const layoutStyle = CollectionViewBase.layoutStyles[this.layoutStyle];
-        if (layoutStyle && layoutStyle.createDelegate) {
-            this._delegate = layoutStyle.createDelegate();
-        } else {
-            this._delegate = UICollectionViewDelegateImpl.initWithOwner(this);
-        }
-        this._delegate._owner = new WeakRef(this);
+        // delegate will be set in first onLayout because we need computed _effectiveColWidth and _effectiveRowHeight
+
         this._measureCellMap = new Map<string, { cell: CollectionViewCell; view: View }>();
-        this.nativeView.delegate = this._delegate;
 
         this._setNativeClipToBounds();
     }
@@ -368,12 +362,29 @@ export class CollectionView extends CollectionViewBase {
         if (!layoutView) {
             return;
         }
-        if ((layoutView instanceof UICollectionViewFlowLayout && this._effectiveColWidth) || this._effectiveRowHeight) {
-            // @ts-ignore
-            layoutView.estimatedItemSize = layoutView.itemSize = CGSizeMake(
-                Utils.layout.toDeviceIndependentPixels(this._effectiveColWidth),
-                Utils.layout.toDeviceIndependentPixels(this._effectiveRowHeight)
-            );
+        if (!this._delegate) {
+            const layoutStyle = CollectionViewBase.layoutStyles[this.layoutStyle];
+            if (layoutStyle && layoutStyle.createDelegate) {
+                this._delegate = layoutStyle.createDelegate(this);
+            } else {
+                // if we use fixed col and row size we want a delegate
+                // without collectionViewLayoutSizeForItemAtIndexPath
+                // because it is not needed and faster
+                if (this._effectiveColWidth && this._effectiveRowHeight) {
+                    this._delegate = UICollectionViewDelegateFixedSizeImpl.initWithOwner(this);
+                } else {
+                    this._delegate = UICollectionViewDelegateImpl.initWithOwner(this);
+                }
+            }
+            // this._delegate._owner = new WeakRef(this);
+            this.nativeViewProtected.delegate = this._delegate;
+        }
+        if (layoutView instanceof UICollectionViewFlowLayout) {
+            if (this._effectiveRowHeight && this._effectiveColWidth) {
+                layoutView.itemSize = CGSizeMake(Utils.layout.toDeviceIndependentPixels(this._effectiveColWidth), Utils.layout.toDeviceIndependentPixels(this._effectiveRowHeight));
+            } else {
+                layoutView.estimatedItemSize = CGSizeMake(Utils.layout.toDeviceIndependentPixels(this._effectiveColWidth), Utils.layout.toDeviceIndependentPixels(this._effectiveRowHeight));
+            }
         }
 
         layoutView.invalidateLayout();
@@ -392,21 +403,28 @@ export class CollectionView extends CollectionViewBase {
 
     public onSourceCollectionChanged(event: ChangedData<any>) {
         const view = this.nativeViewProtected;
-        if (!view || this._dataUpdatesSuspended) {
+        if (!view || this._dataUpdatesSuspended || !this._lastLayoutKey) {
             return;
         }
         if (Trace.isEnabled()) {
             CLog(CLogTypes.log, 'onItemsChanged', ChangeType.Update, event.action, event.index, event.addedCount, event.removed && event.removed.length);
         }
+
         // we need to clear stored cell sizes and it wont be correct anymore
-        this.clearCellSize();
+        // this.clearCellSize();
+
+        const sizes: NSMutableArray<NSValue> = this._delegate instanceof UICollectionViewDelegateImpl ? this._delegate.cachedSizes : null;
 
         switch (event.action) {
             case ChangeType.Delete: {
                 const indexes = NSMutableArray.new<NSIndexPath>();
                 for (let index = 0; index < event.addedCount; index++) {
                     indexes.addObject(NSIndexPath.indexPathForRowInSection(event.index + index, 0));
+                    if (sizes) {
+                        sizes.removeObjectAtIndex(event.index);
+                    }
                 }
+                // this._sizes.splice(event.index, event.addedCount);
                 this.unbindUnusedCells(event.removed);
                 if (Trace.isEnabled()) {
                     CLog(CLogTypes.info, 'deleteItemsAtIndexPaths', indexes.count);
@@ -419,20 +437,27 @@ export class CollectionView extends CollectionViewBase {
             case ChangeType.Update: {
                 const indexes = NSMutableArray.new<NSIndexPath>();
                 indexes.addObject(NSIndexPath.indexPathForRowInSection(event.index, 0));
+                if (sizes) {
+                    sizes.replaceObjectAtIndexWithObject(event.index, NSValue.valueWithCGSize(CGSizeZero));
+                }
+                // this._sizes[event.index] = null;
                 if (Trace.isEnabled()) {
                     CLog(CLogTypes.info, 'reloadItemsAtIndexPaths', event.index, indexes.count);
                 }
-                UIView.performWithoutAnimation(() => {
-                    view.performBatchUpdatesCompletion(() => {
-                        view.reloadItemsAtIndexPaths(indexes);
-                    }, null);
-                });
+
+                view.performBatchUpdatesCompletion(() => {
+                    view.reloadItemsAtIndexPaths(indexes);
+                }, null);
                 return;
             }
             case ChangeType.Add: {
                 const indexes = NSMutableArray.new<NSIndexPath>();
                 for (let index = 0; index < event.addedCount; index++) {
                     indexes.addObject(NSIndexPath.indexPathForRowInSection(event.index + index, 0));
+                    if (sizes) {
+                        sizes.insertObjectAtIndex(NSValue.valueWithCGSize(CGSizeZero), event.index);
+                    }
+                    // this._sizes.splice(index, 0, null);
                 }
                 if (Trace.isEnabled()) {
                     CLog(CLogTypes.info, 'insertItemsAtIndexPaths', indexes.count);
@@ -450,6 +475,10 @@ export class CollectionView extends CollectionViewBase {
                         const indexes = NSMutableArray.new<NSIndexPath>();
                         for (let index = 0; index < added; index++) {
                             indexes.addObject(NSIndexPath.indexPathForRowInSection(event.index + index, 0));
+                            if (sizes) {
+                                sizes.replaceObjectAtIndexWithObject(event.index + index, NSValue.valueWithCGSize(CGSizeZero));
+                            }
+                            // this._sizes[event.index + index] = null;
                         }
                         view.reloadItemsAtIndexPaths(indexes);
                     } else {
@@ -457,6 +486,10 @@ export class CollectionView extends CollectionViewBase {
                             const indexes = NSMutableArray.alloc<NSIndexPath>().init();
                             for (let index = 0; index < event.addedCount; index++) {
                                 indexes.addObject(NSIndexPath.indexPathForItemInSection(event.index + index, 0));
+                                if (sizes) {
+                                    sizes.insertObjectAtIndex(NSValue.valueWithCGSize(CGSizeZero), event.index);
+                                }
+                                // this._sizes.splice(event.index, 0, null);
                             }
                             view.insertItemsAtIndexPaths(indexes);
                         }
@@ -464,16 +497,19 @@ export class CollectionView extends CollectionViewBase {
                             const indexes = NSMutableArray.new<NSIndexPath>();
                             for (let index = 0; index < event.removed.length; index++) {
                                 indexes.addObject(NSIndexPath.indexPathForItemInSection(event.index + index, 0));
+                                if (sizes) {
+                                    sizes.removeObjectAtIndex(event.index);
+                                }
                             }
+                            // this._sizes.splice(event.index, event.removed.length);
                             this.unbindUnusedCells(event.removed);
                             if (Trace.isEnabled()) {
                                 CLog(CLogTypes.info, 'deleteItemsAtIndexPaths', indexes.count);
                             }
-                            view.performBatchUpdatesCompletion(() => {
-                                view.deleteItemsAtIndexPaths(indexes);
-                            }, null);
+                            view.deleteItemsAtIndexPaths(indexes);
                         }
                     }
+                    // view.collectionViewLayout.invalidateLayout();
                 }, null);
                 return;
             }
@@ -508,7 +544,17 @@ export class CollectionView extends CollectionViewBase {
         if (!view) {
             return;
         }
+        const sizes: NSMutableArray<NSValue> = this._delegate instanceof UICollectionViewDelegateImpl ? this._delegate.cachedSizes : null;
+
         const visibles = view.indexPathsForVisibleItems;
+
+        if (sizes) {
+            const indexes: NSIndexPath[] = Array.from(visibles);
+            indexes.forEach((value) => {
+                sizes.replaceObjectAtIndexWithObject(value.row, NSValue.valueWithCGSize(CGSizeZero));
+            });
+        }
+
         UIView.performWithoutAnimation(() => {
             view.performBatchUpdatesCompletion(() => {
                 view.reloadItemsAtIndexPaths(visibles);
@@ -537,7 +583,11 @@ export class CollectionView extends CollectionViewBase {
             CLog(CLogTypes.info, 'refresh');
         }
         // we need to clear stored cell sizes and it wont be correct anymore
-        this.clearCellSize();
+        // this.clearCellSize();
+        const sizes: NSMutableArray<NSValue> = this._delegate instanceof UICollectionViewDelegateImpl ? this._delegate.cachedSizes : null;
+        if (sizes) {
+            sizes.removeAllObjects();
+        }
 
         // clear bindingContext when it is not observable because otherwise bindings to items won't reevaluate
         this._map.forEach((view, nativeView, map) => {
@@ -587,10 +637,10 @@ export class CollectionView extends CollectionViewBase {
     public _setNativeClipToBounds() {
         this.nativeView.clipsToBounds = true;
     }
-    notifyForItemAtIndex(listView: CollectionViewBase, cell: any, view: View, eventName: string, indexPath: NSIndexPath, bindingContext?) {
-        const args = { eventName, object: listView, index: indexPath.row, view, ios: cell, bindingContext };
-        listView.notify(args);
-        return args;
+    notifyForItemAtIndex(eventName: string, view: View, index: number, bindingContext?, native?: any) {
+        const args = { eventName, object: this, index, view, ios: native, bindingContext };
+        this.notify(args);
+        return args as any;
     }
     _getItemTemplateType(indexPath) {
         const selector = this._itemTemplateSelector;
@@ -617,8 +667,9 @@ export class CollectionView extends CollectionViewBase {
             if (Trace.isEnabled()) {
                 CLog(CLogTypes.log, '_prepareCell', index, templateType, !!cell.view, !!view, cell.view !== view, notForCellSizeComp);
             }
-            const args = this.notifyForItemAtIndex(this, cell, view, CollectionViewBase.itemLoadingEvent, indexPath, bindingContext);
+            const args = this.notifyForItemAtIndex(CollectionViewBase.itemLoadingEvent, view, indexPath.row, bindingContext, cell);
             view = args.view;
+            view.bindingContext = bindingContext;
 
             if (view instanceof ProxyViewContainer) {
                 const sp = new ContentView();
@@ -633,6 +684,7 @@ export class CollectionView extends CollectionViewBase {
                 cell.view.nativeViewProtected.removeFromSuperview();
                 cell.owner = new WeakRef(view);
             }
+            cell.currentIndex = indexPath.row;
 
             if (notForCellSizeComp) {
                 this._map.set(cell, view);
@@ -641,22 +693,32 @@ export class CollectionView extends CollectionViewBase {
             if (view && !view.parent) {
                 this._addView(view);
                 const innerView = NSCellView.new() as NSCellView;
+                innerView.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight;
                 innerView.view = new WeakRef(view);
-                if (!notForCellSizeComp || this.autoReloadItemOnLayout) {
+                if (notForCellSizeComp && this.autoReloadItemOnLayout) {
                     // for a cell to update correctly on cell layout change we need
                     // to do it ourself instead of "propagating it"
                     view['performLayout'] = () => {
-                        if (notForCellSizeComp) {
-                            this.measureCell(cell, view, indexPath);
-                            this.layoutCell(indexPath.row, cell, view);
-                            this.nativeViewProtected.collectionViewLayout.invalidateLayout();
+                        if (!this._preparingCell) {
+                            const index = cell.currentIndex;
+                            const nativeView = this.nativeViewProtected;
+                            const sizes: NSMutableArray<NSValue> = this._delegate instanceof UICollectionViewDelegateImpl ? this._delegate.cachedSizes : null;
+                            if (sizes) {
+                                sizes.replaceObjectAtIndexWithObject(index, NSValue.valueWithCGSize(CGSizeZero));
+                            }
+
+                            nativeView.performBatchUpdatesCompletion(() => {
+                                this.measureCell(cell, view, index);
+                                this.notifyForItemAtIndex(CollectionViewBase.itemLoadingEvent, view, indexPath.row, view.bindingContext, cell);
+                            }, null);
+                            nativeView.collectionViewLayout.invalidateLayout();
                         }
                     };
                 }
                 innerView.addSubview(view.nativeViewProtected);
                 cell.contentView.addSubview(innerView);
             }
-            cellSize = this.measureCell(cell, view, indexPath);
+            cellSize = this.measureCell(cell, view, indexPath.row);
             if (notForCellSizeComp) {
                 view.notify({ eventName: CollectionViewBase.bindedEvent });
             }
@@ -670,7 +732,8 @@ export class CollectionView extends CollectionViewBase {
         return cellSize;
     }
     public getCellSize(index: number) {
-        let result = this._sizes[index];
+        // let result = this._sizes[index];
+        let result;
         // CLog(CLogTypes.log, 'getCellSize', index, result, this._effectiveColWidth, this._effectiveRowHeight, this.getMeasuredWidth(), this.getMeasuredHeight());
         if (!result) {
             let width = this._effectiveColWidth;
@@ -697,19 +760,18 @@ export class CollectionView extends CollectionViewBase {
         // return undefined;
         return result;
     }
-    public storeCellSize(index: number, value) {
-        this._sizes[index] = value;
-    }
-    public clearCellSize() {
-        this._sizes = new Array<number[]>();
-    }
-    private measureCell(cell: CollectionViewCell, cellView: View, index: NSIndexPath): [number, number] {
+    // public storeCellSize(index: number, value) {
+    //     this._sizes[index] = value;
+    // }
+    // public clearCellSize() {
+    //     this._sizes = new Array<number[]>();
+    // }
+    private measureCell(cell: CollectionViewCell, cellView: View, position: number): [number, number] {
         if (cellView) {
             let width = this._effectiveColWidth;
             let height = this._effectiveRowHeight;
             const horizontal = this.isHorizontal();
             if (this.spanSize) {
-                const position = index.row;
                 const dataItem = this.getItemAtIndex(position);
                 const spanSize = this.spanSize(dataItem, position);
                 if (horizontal) {
@@ -730,20 +792,21 @@ export class CollectionView extends CollectionViewBase {
                 ? Utils.layout.makeMeasureSpec(this._innerHeight, Utils.layout.UNSPECIFIED)
                 : infinity;
             if (Trace.isEnabled()) {
-                CLog(CLogTypes.log, 'measureCell', index.row, width, height, widthMeasureSpec, heightMeasureSpec);
+                CLog(CLogTypes.log, 'measureCell', position, width, height, widthMeasureSpec, heightMeasureSpec);
             }
             const measuredSize = View.measureChild(this, cellView, widthMeasureSpec, heightMeasureSpec);
             const result: [number, number] = [measuredSize.measuredWidth, measuredSize.measuredHeight];
 
-            this.storeCellSize(index.row, result);
+            // this.storeCellSize(index.row, result);
             return result;
         }
         return undefined;
     }
     layoutCell(index: number, cell: CollectionViewCell, cellView: View): any {
-        const cellSize = this.getCellSize(index);
+        // const cellSize = this.getCellSize(index);
         cellView['iosIgnoreSafeArea'] = true;
-        View.layoutChild(this, cellView, 0, 0, cellSize[0], cellSize[1]);
+        const size = cell.bounds.size;
+        View.layoutChild(this, cellView, 0, 0, Utils.layout.toDevicePixels(size.width), Utils.layout.toDevicePixels(size.height));
         if (Trace.isEnabled()) {
             CLog(CLogTypes.log, 'layoutCell', index, cellView.getMeasuredWidth(), cellView.getMeasuredHeight());
         }
@@ -808,6 +871,8 @@ export class CollectionView extends CollectionViewBase {
     collectionViewCellForItemAtIndexPath(collectionView: UICollectionView, indexPath: NSIndexPath): UICollectionViewCell {
         const templateType = this._getItemTemplateType(indexPath);
         let cell = collectionView.dequeueReusableCellWithReuseIdentifierForIndexPath(templateType, indexPath) as CollectionViewCell;
+
+        const firstRender = !cell.view;
         if (!cell) {
             cell = CollectionViewCell.new() as CollectionViewCell;
         }
@@ -816,8 +881,9 @@ export class CollectionView extends CollectionViewBase {
         }
         this._prepareCell(cell, indexPath, templateType);
 
+        // the cell layout will be called from NSCellView layoutSubviews
         const cellView: View = cell.view;
-        if (cellView['isLayoutRequired']) {
+        if (!firstRender && cellView['isLayoutRequired']) {
             this.layoutCell(indexPath.row, cell, cellView);
         }
         return cell;
@@ -979,6 +1045,7 @@ class NSCellView extends UIView {
 @NativeClass
 class CollectionViewCell extends UICollectionViewCell {
     owner: WeakRef<ItemView>;
+    currentIndex: number;
 
     get view(): ItemView {
         return this.owner ? this.owner.get() : null;
@@ -1046,7 +1113,7 @@ class CollectionViewDataSource extends NSObject implements UICollectionViewDataS
     }
 }
 @NativeClass
-class UICollectionViewDelegateImpl extends NSObject implements UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+class UICollectionViewDelegateImpl extends UICollectionViewCacheDelegateFlowLayout implements UICollectionViewDelegate {
     _owner: WeakRef<CollectionView>;
     public static ObjCProtocols = [UICollectionViewDelegate, UICollectionViewDelegateFlowLayout];
 
@@ -1068,12 +1135,74 @@ class UICollectionViewDelegateImpl extends NSObject implements UICollectionViewD
         }
         return indexPath;
     }
-    collectionViewLayoutSizeForItemAtIndexPath(collectionView: UICollectionView, collectionViewLayout: UICollectionViewLayout, indexPath: NSIndexPath) {
+    collectionViewLayoutComputedSizeForItemAtIndexPath(collectionView: UICollectionView, collectionViewLayout: UICollectionViewLayout, indexPath: NSIndexPath) {
         const owner = this._owner.get();
         if (owner) {
             return owner.collectionViewLayoutSizeForItemAtIndexPath(collectionView, collectionViewLayout, indexPath);
         }
         return CGSizeZero;
+    }
+    scrollViewDidScroll(scrollView: UIScrollView): void {
+        const owner = this._owner.get();
+        if (owner) {
+            owner.scrollViewDidScroll(scrollView);
+        }
+    }
+    scrollViewWillBeginDragging(scrollView: UIScrollView): void {
+        const owner = this._owner.get();
+        if (owner) {
+            owner.scrollViewWillBeginDragging(scrollView);
+        }
+    }
+    scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        const owner = this._owner.get();
+        if (owner) {
+            owner.scrollViewDidEndDecelerating(scrollView);
+        }
+    }
+    scrollViewWillEndDraggingWithVelocityTargetContentOffset?(scrollView: UIScrollView, velocity: CGPoint, targetContentOffset: interop.Pointer | interop.Reference<CGPoint>): void {
+        const owner = this._owner.get();
+        if (owner) {
+            owner.scrollViewWillEndDraggingWithVelocityTargetContentOffset(scrollView, velocity, targetContentOffset);
+        }
+    }
+    scrollViewDidEndDraggingWillDecelerate(scrollView: UIScrollView, decelerate: boolean): void {
+        const owner = this._owner.get();
+        if (owner) {
+            owner.scrollViewDidEndDraggingWillDecelerate(scrollView, decelerate);
+        }
+    }
+
+    scrollViewDidEndScrollingAnimation(scrollView: UIScrollView): void {
+        const owner = this._owner.get();
+        if (owner) {
+            owner.scrollViewDidEndScrollingAnimation(scrollView);
+        }
+    }
+}
+
+@NativeClass
+class UICollectionViewDelegateFixedSizeImpl extends NSObject implements UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+    _owner: WeakRef<CollectionView>;
+    public static ObjCProtocols = [UICollectionViewDelegate, UICollectionViewDelegateFlowLayout];
+
+    static initWithOwner(owner: CollectionView) {
+        const delegate = UICollectionViewDelegateFixedSizeImpl.new() as UICollectionViewDelegateFixedSizeImpl;
+        delegate._owner = new WeakRef(owner);
+        return delegate;
+    }
+    collectionViewWillDisplayCellForItemAtIndexPath(collectionView: UICollectionView, cell: UICollectionViewCell, indexPath: NSIndexPath) {
+        const owner = this._owner.get();
+        if (owner) {
+            owner.collectionViewWillDisplayCellForItemAtIndexPath(collectionView, cell, indexPath);
+        }
+    }
+    collectionViewDidSelectItemAtIndexPath(collectionView: UICollectionView, indexPath: NSIndexPath) {
+        const owner = this._owner.get();
+        if (owner) {
+            return owner.collectionViewDidSelectItemAtIndexPath(collectionView, indexPath);
+        }
+        return indexPath;
     }
     scrollViewDidScroll(scrollView: UIScrollView): void {
         const owner = this._owner.get();

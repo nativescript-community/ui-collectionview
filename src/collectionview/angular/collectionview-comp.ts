@@ -20,11 +20,10 @@ import {
     Output,
     TemplateRef,
     ViewChild,
-    ViewContainerRef,
-    ɵisListLikeIterable as isListLikeIterable
+    ViewContainerRef
 } from '@angular/core';
 import { CLog, CLogTypes, CollectionView, CollectionViewItemEventData, ListViewViewTypes } from '@nativescript-community/ui-collectionview';
-import { DetachedLoader, NativeScriptRendererFactory, extractSingleViewRecursive, registerElement } from '@nativescript/angular';
+import { DetachedLoader, NativeScriptRendererFactory, extractSingleViewRecursive, isListLikeIterable, registerElement } from '@nativescript/angular';
 import { KeyedTemplate, LayoutBase, ObservableArray, Trace, View } from '@nativescript/core';
 
 registerElement('CollectionView', () => CollectionView);

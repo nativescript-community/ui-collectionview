@@ -2,6 +2,7 @@ import {
     Builder,
     CSSType,
     ChangedData,
+    ContentView,
     CoreTypes,
     ItemsSource,
     KeyedTemplate,
@@ -165,6 +166,9 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
         this._itemTemplatesInternal = new Map();
         this._itemTemplatesInternal.set(this._defaultTemplate.key, this._defaultTemplate);
     }
+    notifyForItemAtIndex(eventName: string, view: View, index: number, bindingContext?: any, native?: any) {
+        throw new Error('Method not implemented.');
+    }
 
     public abstract refresh();
     public abstract refreshVisibleItems();
@@ -242,10 +246,19 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     items: any[] | ItemsSource;
 
     @profile
-    public _prepareItem(item: View, index: number) {
+    public _prepareItem(view: View, index: number) {
         const context = this.getItemAtIndex(index);
-        if (item) {
-            item.bindingContext = context;
+        if (view) {
+            // we check old bindingContext to see if properties disappeared.
+            // if so we set them to null for the View to update
+            if (view.bindingContext && view.bindingContext !== context) {
+                Object.keys(view.bindingContext).forEach((k) => {
+                    if (!context.hasOwnProperty(k)) {
+                        context[k] = null;
+                    }
+                });
+                view.bindingContext = context;
+            }
         }
         return context;
     }
