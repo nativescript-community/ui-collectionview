@@ -12,6 +12,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@akylas/nativescript@npm:~8.4.1":
+  version: 8.4.9
+  resolution: "@akylas/nativescript@npm:8.4.9"
+  dependencies:
+    "@nativescript/hook": ~2.0.0
+    acorn: ^8.7.0
+    css-tree: ^1.1.2
+    emoji-regex: ^10.2.1
+    reduce-css-calc: ^2.1.7
+    tslib: ^2.0.0
+  checksum: 8fd350be996e6d9d57908d5c258142a71228fa7d688da5dab3849877467620e9f7a8807ea329bc08c3d6d0453299e67cd219f268857ee915b18d280d3215fefd
+  languageName: node
+  linkType: hard
+
 "@ampproject/remapping@npm:2.2.0, @ampproject/remapping@npm:^2.1.0":
   version: 2.2.0
   resolution: "@ampproject/remapping@npm:2.2.0"
@@ -3891,18 +3905,18 @@ __metadata:
 
 "@nativescript-community/template-snippet@file:demo-snippets::locator=root-workspace-0b6124%40workspace%3A.":
   version: 0.0.1
-  resolution: "@nativescript-community/template-snippet@file:demo-snippets#demo-snippets::hash=f326f0&locator=root-workspace-0b6124%40workspace%3A."
+  resolution: "@nativescript-community/template-snippet@file:demo-snippets#demo-snippets::hash=5d31e6&locator=root-workspace-0b6124%40workspace%3A."
   dependencies:
     "@nativescript-community/ui-collectionview": "link:../packages/collectionview"
     "@nativescript-community/ui-collectionview-swipemenu": "link:../packages/swipemenu"
     "@nativescript-community/ui-collectionview-waterfall": "link:../packages/waterfall"
-  checksum: fe34ee2eb30a400276664a402d7b23aa9039ac8d357f78b064197ea2f250bab6a5ea94f060f8b9d8e6f5ec6778fac279b497ae4c9d7ce590ea7a50a53e2c34e9
+  checksum: 813eee8fce9b01472357fd9d5881f79deca8653568237503847cabcd4dd07facd727e9afd0336c9cc07b8dbcf4e2dac6bee286b8079eb4a35047013f7e5bf41b
   languageName: node
   linkType: hard
 
-"@nativescript-community/ui-collectionview-swipemenu@link:../packages/swipemenu::locator=%40nativescript-community%2Ftemplate-snippet%40file%3Ademo-snippets%23demo-snippets%3A%3Ahash%3Df326f0%26locator%3Droot-workspace-0b6124%2540workspace%253A.":
+"@nativescript-community/ui-collectionview-swipemenu@link:../packages/swipemenu::locator=%40nativescript-community%2Ftemplate-snippet%40file%3Ademo-snippets%23demo-snippets%3A%3Ahash%3D5d31e6%26locator%3Droot-workspace-0b6124%2540workspace%253A.":
   version: 0.0.0-use.local
-  resolution: "@nativescript-community/ui-collectionview-swipemenu@link:../packages/swipemenu::locator=%40nativescript-community%2Ftemplate-snippet%40file%3Ademo-snippets%23demo-snippets%3A%3Ahash%3Df326f0%26locator%3Droot-workspace-0b6124%2540workspace%253A."
+  resolution: "@nativescript-community/ui-collectionview-swipemenu@link:../packages/swipemenu::locator=%40nativescript-community%2Ftemplate-snippet%40file%3Ademo-snippets%23demo-snippets%3A%3Ahash%3D5d31e6%26locator%3Droot-workspace-0b6124%2540workspace%253A."
   languageName: node
   linkType: soft
 
@@ -3922,9 +3936,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@nativescript-community/ui-collectionview-waterfall@link:../packages/waterfall::locator=%40nativescript-community%2Ftemplate-snippet%40file%3Ademo-snippets%23demo-snippets%3A%3Ahash%3Df326f0%26locator%3Droot-workspace-0b6124%2540workspace%253A.":
+"@nativescript-community/ui-collectionview-waterfall@link:../packages/waterfall::locator=%40nativescript-community%2Ftemplate-snippet%40file%3Ademo-snippets%23demo-snippets%3A%3Ahash%3D5d31e6%26locator%3Droot-workspace-0b6124%2540workspace%253A.":
   version: 0.0.0-use.local
-  resolution: "@nativescript-community/ui-collectionview-waterfall@link:../packages/waterfall::locator=%40nativescript-community%2Ftemplate-snippet%40file%3Ademo-snippets%23demo-snippets%3A%3Ahash%3Df326f0%26locator%3Droot-workspace-0b6124%2540workspace%253A."
+  resolution: "@nativescript-community/ui-collectionview-waterfall@link:../packages/waterfall::locator=%40nativescript-community%2Ftemplate-snippet%40file%3Ademo-snippets%23demo-snippets%3A%3Ahash%3D5d31e6%26locator%3Droot-workspace-0b6124%2540workspace%253A."
   languageName: node
   linkType: soft
 
@@ -3948,9 +3962,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@nativescript-community/ui-collectionview@link:../packages/collectionview::locator=%40nativescript-community%2Ftemplate-snippet%40file%3Ademo-snippets%23demo-snippets%3A%3Ahash%3Df326f0%26locator%3Droot-workspace-0b6124%2540workspace%253A.":
+"@nativescript-community/ui-collectionview@link:../packages/collectionview::locator=%40nativescript-community%2Ftemplate-snippet%40file%3Ademo-snippets%23demo-snippets%3A%3Ahash%3D5d31e6%26locator%3Droot-workspace-0b6124%2540workspace%253A.":
   version: 0.0.0-use.local
-  resolution: "@nativescript-community/ui-collectionview@link:../packages/collectionview::locator=%40nativescript-community%2Ftemplate-snippet%40file%3Ademo-snippets%23demo-snippets%3A%3Ahash%3Df326f0%26locator%3Droot-workspace-0b6124%2540workspace%253A."
+  resolution: "@nativescript-community/ui-collectionview@link:../packages/collectionview::locator=%40nativescript-community%2Ftemplate-snippet%40file%3Ademo-snippets%23demo-snippets%3A%3Ahash%3D5d31e6%26locator%3Droot-workspace-0b6124%2540workspace%253A."
   languageName: node
   linkType: soft
 
@@ -4149,6 +4163,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@nativescript/template-blank-vue-ts@workspace:demo-vue"
   dependencies:
+    "@akylas/nativescript": ~8.4.1
     "@nativescript-community/template-snippet": 0.0.1
     "@nativescript/android": ~8.4.0
     "@nativescript/core": ~8.4.1
