@@ -49,12 +49,12 @@ const itemList = ref(new ObservableArray([
 
 function onItemReordered(e) {   
     console.log('onItemReordered', e.index);
-    (e.view as ContentView).content.opacity = 1;
+    (e.view as ContentView).opacity = 1;
 }
 
 function onItemReorderStarting(e) {
-    console.log('onItemReorderStarting', e.index, e.view, (e.view as ContentView).content);
-    (e.view as ContentView).content.opacity = 0.7;
+    console.log('onItemReorderStarting', e.index, e.view, (e.view as ContentView));
+    (e.view as ContentView).opacity = 0.7;
 }
 
 function onTouch(item, event) {

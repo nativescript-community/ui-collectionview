@@ -26,6 +26,7 @@
     </Page>
 </template>
 
+//FIXME: Not work in ios
 <script setup lang="ts">
 import { ObservableArray, View } from '@nativescript/core';
 import { ref } from "nativescript-vue"
