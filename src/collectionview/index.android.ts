@@ -201,15 +201,7 @@ export class CollectionView extends CollectionViewBase {
                 }
                 const isNonSync = holder['defaultItemView'] === true;
                 const view = isNonSync ? (holder.view as ContentView).content : holder.view;
-
-                const args = {
-                    eventName: CollectionViewBase.itemDisposingEvent,
-                    index: holder.getAdapterPosition(),
-                    object: this,
-                    view,
-                    android: holder
-                };
-                this.notify(args);
+                this.notifyForItemAtIndex(CollectionViewBase.itemDisposingEvent, view, holder.getAdapterPosition(), view.bindingContext, holder);
                 if (view && view.isLoaded) {
                     view.callUnloaded();
                 }
@@ -227,14 +219,7 @@ export class CollectionView extends CollectionViewBase {
                 }
                 const isNonSync = holder['defaultItemView'] === true;
                 const view = isNonSync ? (holder.view as ContentView).content : holder.view;
-                const args = {
-                    eventName: CollectionViewBase.itemRecyclingEvent,
-                    index: holder.getAdapterPosition(),
-                    object: this,
-                    view,
-                    android: holder
-                };
-                this.notify(args);
+                this.notifyForItemAtIndex(CollectionViewBase.itemRecyclingEvent, view, holder.getAdapterPosition(), view.bindingContext, holder);
             }
         }));
         nativeView.setRecyclerListener(recyclerListener);
@@ -403,10 +388,7 @@ export class CollectionView extends CollectionViewBase {
                 const lastVisibleItemPos = layoutManager['findLastCompletelyVisibleItemPosition']();
                 const loadMoreItemIndex = this.items.length - this.loadMoreThreshold;
                 if (lastVisibleItemPos === loadMoreItemIndex) {
-                    this.notify({
-                        eventName: CollectionViewBase.loadMoreItemsEvent,
-                        object: this
-                    });
+                    this.notify({ eventName: CollectionViewBase.loadMoreItemsEvent });
                 }
             } else if (layoutManager['findLastCompletelyVisibleItemPositions'] && layoutManager['getSpanCount']) {
                 let positions = Array.create('int', layoutManager['getSpanCount']());
@@ -419,10 +401,7 @@ export class CollectionView extends CollectionViewBase {
                 }
                 const loadMoreItemIndex = this.items.length - this.loadMoreThreshold;
                 if (lastVisibleItemPos >= loadMoreItemIndex) {
-                    this.notify({
-                        eventName: CollectionViewBase.loadMoreItemsEvent,
-                        object: this
-                    });
+                    this.notify({ eventName: CollectionViewBase.loadMoreItemsEvent });
                 }
             }
         }
@@ -891,11 +870,7 @@ export class CollectionView extends CollectionViewBase {
 
         this._updateSpanCount();
         adapter.notifyDataSetChanged();
-        const args = {
-            eventName: CollectionViewBase.dataPopulatedEvent,
-            object: this
-        };
-        this.notify(args);
+        this.notify({ eventName: CollectionViewBase.dataPopulatedEvent });
     }
 
     //@ts-ignore

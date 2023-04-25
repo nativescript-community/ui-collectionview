@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.1.0](https://github.com/nativescript-community/ui-collectionview/compare/v5.0.4...v5.1.0) (2023-04-25)
+
+
+### Features
+
+* new swipemenu plugin ([f7fb6c6](https://github.com/nativescript-community/ui-collectionview/commit/f7fb6c6f754cb3d41a3eb659bb48c1b4086429f2))
+
+
+
+
+
 ## [5.0.3](https://github.com/nativescript-community/ui-collectionview/compare/v5.0.2...v5.0.3) (2023-04-14)
 
 **Note:** Version bump only for package @nativescript-community/ui-collectionview-waterfall

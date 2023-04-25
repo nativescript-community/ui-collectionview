@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.1.0](https://github.com/@nativescript-community/ui-collectionview/compare/v5.0.4...v5.1.0) (2023-04-25)
+
+
+### Bug Fixes
+
+* **ios:** animate cell update like androi ([594ba19](https://github.com/@nativescript-community/ui-collectionview/commit/594ba19903ca15f977f8e497a81de0f5dca25f8b))
+* **ios:** autoReloadItemOnLayout fix allowing cell animation triggering layout changes ([6040054](https://github.com/@nativescript-community/ui-collectionview/commit/6040054d8129cdaaa1979cbe7375e7870dd0f984))
+* **swipemenu:** ensure we install gesturehandler ([5f12147](https://github.com/@nativescript-community/ui-collectionview/commit/5f121476c40ee725fbe89b2db9a8fb8d01df7b6b))
+* **swipmenu:** multiple fixes ([4b048b9](https://github.com/@nativescript-community/ui-collectionview/commit/4b048b93e6cab93b3777d64f621044bf05f5e66f))
+
+
+### Features
+
+* new swipemenu plugin ([f7fb6c6](https://github.com/@nativescript-community/ui-collectionview/commit/f7fb6c6f754cb3d41a3eb659bb48c1b4086429f2))
+
+
+
+
+
 ## [5.0.4](https://github.com/@nativescript-community/ui-collectionview/compare/v5.0.3...v5.0.4) (2023-04-19)
 
 
