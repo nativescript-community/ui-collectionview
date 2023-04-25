@@ -6,5 +6,9 @@
         "nativescript-vue": ["./node_modules/nativescript-vue3"]
        }
     },
-    "include": ["./src/collectionview/vue3", "./packages/collectionview/vue3"]
+    "include": [
+        "./src/collectionview/vue3", 
+        "./packages/collectionview/vue3", 
+        "./demo-snippets/vue3"
+    ]
 }

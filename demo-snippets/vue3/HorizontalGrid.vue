@@ -22,7 +22,7 @@
 
 <script lang="ts" setup>
 import { ObservableArray } from '@nativescript/core';
-import { ref } from "nativescript-vue3"
+import { ref } from "nativescript-vue"
 
 const itemList = ref(new ObservableArray([
     { index: 0, name: 'TURQUOISE', color: '#1abc9c' },
