@@ -23,8 +23,11 @@
 </template>
 
 <script setup lang="ts">
-import { ObservableArray } from '@nativescript/core';
+import { ObservableArray, ContentView } from '@nativescript/core';
 import { ref } from "nativescript-vue"
+
+const useLongPress = ref(false);
+const collectionView = ref();
 const itemList = ref(new ObservableArray([
     { type: 'item', name: 'TURQUOISE', color: '#1abc9c' },
     { type: 'item', name: 'EMERALD', color: '#2ecc71' },
@@ -43,29 +46,26 @@ const itemList = ref(new ObservableArray([
     { type: 'item', name: 'ORANGE', color: '#f39c12' },
     { type: 'item', name: 'PUMPKIN', color: '#d35400' }
 ]));
-const useLongPress = ref(false);
-const collectionView = ref();
 
-function onItemReordered(e) {
+function onItemReordered(e) {   
     console.log('onItemReordered', e.index);
     (e.view as ContentView).content.opacity = 1;
-
 }
+
 function onItemReorderStarting(e) {
     console.log('onItemReorderStarting', e.index, e.view, (e.view as ContentView).content);
     (e.view as ContentView).content.opacity = 0.7;
-
 }
+
 function onTouch(item, event) {
     if (!this.useLongPress && event.action === 'down') {
         const pointer = event.getActivePointers()[0];
-        collectionView.value.$el.nativeView.startDragging(this.itemList.indexOf(item), pointer);
+        collectionView.value.$el.nativeView.startDragging(itemList.value.indexOf(item), pointer);
     }
 }
+
 function switchLongPress() {
     useLongPress.value = !useLongPress.value;
 }
-function logEvent(e) {
-    console.log('logEvent', e.eventName, e.extraData);
-}
+
 </script>

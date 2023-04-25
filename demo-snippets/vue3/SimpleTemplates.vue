@@ -17,8 +17,7 @@
                     </GridLayout>
                 </template>
                 <template #heading="{ item }">
-                    <GridLayout rows="*, auto" :backgroundColor="item.color" verticalAlignment="middle"
-                        padding="25">
+                    <GridLayout rows="*, auto" :backgroundColor="item.color" verticalAlignment="middle" padding="25">
                         <Label :text="item.name" textTransform="uppercase" color="white" fontSize="20"
                             fontWeight="bold"></Label>
                     </GridLayout>
@@ -31,7 +30,6 @@
 <script setup lang="ts">
 import { ObservableArray } from '@nativescript/core';
 import { ref } from "nativescript-vue"
-
 
 const itemList = ref(new ObservableArray([
     { type: 'heading', name: 'Heading #1', color: '#bdc3c7' },
@@ -56,15 +54,15 @@ const itemList = ref(new ObservableArray([
     { type: 'item', name: 'PUMPKIN', color: '#d35400' },
 ]));
 
-function templateSelector(item, _index, _items) {
+function templateSelector({ item, index, items }) {
     return item.type;
 }
 
-function spanSizeSelector(item, _index) {
-    //TODO fix this event: item.item
-    if (item.item.type === "heading") return 2;
+function spanSizeSelector({ item, index }) {
+    if (item.type === "heading") return 2;
     return 1;
 }
+
 function onItemLoadingEvent() {
     console.log(`EVENT TRIGGERED: onItemLoadingEvent`);
 }
@@ -72,11 +70,9 @@ function onItemLoadingEvent() {
 function onItemTap({ index, item }) {
     console.log(`EVENT TRIGGERED: Tapped on ${index} ${item.name}`);
 }
+
 function onLoadMoreItems() {
     console.log('EVENT TRIGGERED: onLoadMoreItems()');
-}
-function logEvent(e) {
-    console.log('logEvent', e.eventName, e.extraData);
 }
 </script>
 

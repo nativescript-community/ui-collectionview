@@ -50,8 +50,6 @@ const itemList = ref(new ObservableArray([
     { index: 19, name: 'ASBESTOS', color: '#7f8c8d' }
 ]));
 
-
-
 function randomHeight(color) {
     if (parseInt(color.substr(1), 16) % 2 === 0) {
         return 200;
@@ -64,14 +62,11 @@ function onItemLoadingEvent() {
 }
 
 function onItemTap({ index, item }) {
-    //FIXME: fix this on component 
     console.log(`EVENT TRIGGERED: Tapped on ${index} ${item.name}`);
 }
+
 function onLoadMoreItems() {
     console.log('EVENT TRIGGERED: onLoadMoreItems()');
-}
-function logEvent(e) {
-    console.log('logEvent', e.eventName, e.extraData);
 }
 </script>
 

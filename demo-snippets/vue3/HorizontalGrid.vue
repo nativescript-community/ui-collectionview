@@ -23,6 +23,7 @@
 <script setup lang="ts">
 import { ObservableArray } from '@nativescript/core';
 import { ref } from "nativescript-vue"
+
 const itemList = ref(new ObservableArray([
     { index: 0, name: 'TURQUOISE', color: '#1abc9c' },
     { index: 1, name: 'EMERALD', color: '#2ecc71' },
@@ -45,14 +46,13 @@ const itemList = ref(new ObservableArray([
     { index: 18, name: 'SILVER', color: '#bdc3c7' },
     { index: 19, name: 'ASBESTOS', color: '#7f8c8d' }
 ]))
+
 function onItemTap({ index, item }) {
     console.log(`EVENT TRIGGERED: Tapped on ${index} ${item.name}`);
 }
+
 function onLoadMoreItems() {
     console.log('EVENT TRIGGERED: onLoadMoreItems()');
-}
-function logEvent(e) {
-    console.log('logEvent', e.eventName, e.extraData);
 }
 </script>
 

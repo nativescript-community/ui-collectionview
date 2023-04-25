@@ -25,7 +25,7 @@ interface ItemCellData {
 
 const LIST_CELL_ID = Symbol("list_cell_id");
 
-function getListItem(item: any, index: number, itemAlias: string, indexAlias: string): ListItem {
+function getItemCtx(item: any, index: number, itemAlias: string, indexAlias: string): ListItem {
     return {
         [itemAlias]: item,
         [indexAlias]: index,
@@ -37,7 +37,6 @@ function getListItem(item: any, index: number, itemAlias: string, indexAlias: st
 
 export const CollectionView = defineComponent({
     props: {
-
         items: {
             type: Object as PropType<Array<any> | ObservableArray<any>>,
             required: true
@@ -53,7 +52,7 @@ export const CollectionView = defineComponent({
         itemTemplateSelector: Function,
     },
     setup(props, ctx) {
-        const itemsCtx = computed(() => (props.items as []).map((item, index) => getListItem(item, index, props.alias, props.itemIdGenerator)));
+        const itemsCtx = computed(() => (props.items as []).map((item, index) => getItemCtx(item, index, props.alias, props.itemIdGenerator)));
 
         const itemTemplates = Object.keys(ctx.slots).map((slotName) => {
             return {
@@ -65,7 +64,7 @@ export const CollectionView = defineComponent({
         });
 
         const getSlotName = (itemCtx: ListItem, index: number, items: ListItem[]) =>
-            props.itemTemplateSelector?.(itemCtx[props.alias], index, items.map(itemCtx => itemCtx[props.alias])) ?? "default";
+            props.itemTemplateSelector?.(itemCtx, index, items) ?? "default";
 
         const collectionView = ref<any & { nativeView: NSCollectionView }>(null);
 
@@ -85,7 +84,7 @@ export const CollectionView = defineComponent({
 
             const id = event.view?.[LIST_CELL_ID] ?? `${cellId++}`;
 
-            const itemCtx: ListItem = getListItem(
+            const itemCtx: ListItem = getItemCtx(
                 props.items instanceof ObservableArray
                     ? props.items.getItem(index)
                     : props.items[index],

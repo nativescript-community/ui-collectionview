@@ -1,7 +1,7 @@
 <template>
     <Page>
         <ActionBar>
-            <NavigationButton text="Back"  @tap="$navigateBack" />
+            <NavigationButton text="Back" @tap="$navigateBack" />
             <Label text="All Sides" />
         </ActionBar>
 
@@ -27,8 +27,10 @@
 </template>
 
 <script setup lang="ts">
-import { ObservableArray } from '@nativescript/core';
+import { ObservableArray, View } from '@nativescript/core';
 import { ref } from "nativescript-vue"
+
+const collectionView = ref();
 const itemList = ref(new ObservableArray([
     { index: 0, name: 'TURQUOISE', color: '#1abc9c' },
     { index: 1, name: 'EMERALD', color: '#2ecc71' },
@@ -51,14 +53,11 @@ const itemList = ref(new ObservableArray([
     { index: 18, name: 'SILVER', color: '#bdc3c7' },
     { index: 19, name: 'ASBESTOS', color: '#7f8c8d' }
 ]));
-const showMenu = ref(false);
-const item = ref(false);
-const collectionView = ref();
 
 function getItemHeight(item) {
-    // console.log('getItemHeight', item)
     return item.showMenu === true ? 200 : 100
 }
+
 async function resizeCell(item, event) {
     try {
         const actualItem = item || this;
@@ -67,17 +66,8 @@ async function resizeCell(item, event) {
             const newHeight = actualItem.showMenu ? 200 : 100;
             return (event.object as View).animate({ height: newHeight, ...options, duration: 300 });
         }
-
-        const updateItem = () => {
-            if (item) {
-                const index = this.items.findIndex((i) => i === item);
-                // console.log('updateItem', index, item);
-                this.items.setItem(index, item);
-            }
-        };
-
+        
         await animate();
-
     } catch (error) {
         console.error(error);
     }
