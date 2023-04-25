@@ -1,10 +1,10 @@
 import { CollectionView as VueCollectionView } from './component';
-import { CollectionView as NSCollectionView } from '..';
+import { CollectionView as NativeCollectionView } from '..';
 import "@vue/runtime-core"
 
 const CollectionViewPlugin = {
     install(app: any) {
-        app.registerElement("NSCollectionView", () => NSCollectionView, {
+        app.registerElement("NativeCollectionView", () => NativeCollectionView, {
             viewFlags: 8,
             overwriteExisting: true
         });
