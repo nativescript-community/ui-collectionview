@@ -2,7 +2,6 @@
     <Page>
         <ActionBar>
             <Label text="Simple Grid" />
-            <ActionItem @tap="refresh"  text="refresh" />
         </ActionBar>
 
         <GridLayout>
