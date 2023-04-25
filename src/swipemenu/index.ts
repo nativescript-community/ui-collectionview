@@ -18,7 +18,7 @@ declare module '@nativescript-community/ui-collectionview' {
 }
 
 let mixinInstalled = false;
-class CollectionViewWithSwipeMenu extends CollectionView {
+export class CollectionViewWithSwipeMenu extends CollectionView {
     public static swipeMenuOpenEvent = 'swipeMenuOpen';
     public static swipeMenuCloseEvent = 'swipeMenuClose';
     onlyOneMenuOpened;
@@ -32,19 +32,37 @@ class CollectionViewWithSwipeMenu extends CollectionView {
             thisItems[index] = item;
         }
     }
+    // getItemSourceAtIndex(index: number) {
+    //     const result = (this.items as ItemsSource).getItem(index);
+    //     if (result) {
+    //         result.startingSide = result.startingSide || null;
+    //     }
+    //     return result;
+    // }
+    // getItemArrayAtIndex(index: number) {
+    //     const result = this.items[index];
+    //     if (result) {
+    //         result.startingSide = result.startingSide || null;
+    //     }
+    //     return result;
+    // }
     async closeCurrentMenu() {
         try {
             const openedIndex = this.openedDrawerIndex;
             this.openedDrawerIndex = -1;
-            let view = this.getViewForItemAtIndex(openedIndex);
-            // console.log('closeCurrentMenu', openedIndex, view, view.bindingContext);
-            if (view instanceof ContentView) {
-                view = view.content;
+            const oldItem = this.items ? this.getItemAtIndex(openedIndex) : null;
+            if (!oldItem) {
+                return;
             }
-            if (view instanceof Drawer) {
-                view.close();
+            const view = this.getViewForItemAtIndex(openedIndex);
+            let drawer = view;
+            // console.log('closeCurrentMenu', openedIndex, view, view.bindingContext);
+            if (drawer instanceof ContentView) {
+                drawer = drawer.content;
+            }
+            if (drawer instanceof Drawer) {
+                drawer.close();
             } else {
-                const oldItem = this.getItemAtIndex(openedIndex);
                 // console.log('closeCurrentMenu', view, openedIndex, oldItem, new Error().stack);
                 oldItem.startingSide = null;
                 // this.notifyForItemAtIndex(CollectionViewBase.itemLoadingEvent, view, openedIndex, oldItem);
@@ -58,8 +76,15 @@ class CollectionViewWithSwipeMenu extends CollectionView {
         } finally {
         }
     }
+
+    getCellView(view: View) {
+        if (view && view.parent && view.parent instanceof ContentView && view.parent.__SvelteComponent__) {
+            view = view.parent;
+        }
+        return view;
+    }
     async onItemMenuStart(event) {
-        const view = event.object;
+        const view = this.getCellView(event.object);
         const bindingContext = view.bindingContext;
         const index = (this.items as any).findIndex((i) => i === bindingContext);
         // console.error('onItemMenuStart', index, bindingContext, view, this.openedDrawerIndex);
@@ -69,7 +94,7 @@ class CollectionViewWithSwipeMenu extends CollectionView {
         this.openedDrawerIndex = index;
     }
     onItemMenuOpened(event) {
-        const view = event.object;
+        const view = this.getCellView(event.object);
         const bindingContext = view.bindingContext;
         const index = (this.items as any).findIndex((i) => i === bindingContext);
         // console.error('onItemMenuOpened', index, bindingContext, view, this.openedDrawerIndex);
@@ -77,12 +102,12 @@ class CollectionViewWithSwipeMenu extends CollectionView {
             this.closeCurrentMenu();
         }
         this.openedDrawerIndex = index;
-        bindingContext.startingSide = view.startingSide = 'left';
+        bindingContext.startingSide = 'left';
+        this.notifyForItemAtIndex(CollectionViewWithSwipeMenu.swipeMenuOpenEvent, view, index, bindingContext);
         this.notifyForItemAtIndex(CollectionViewBase.itemLoadingEvent, view, index, bindingContext);
-        this.notifyForItemAtIndex(CollectionViewWithSwipeMenu.swipeMenuOpenEvent, view, index, bindingContext)
     }
     onItemMenuClosed(event) {
-        const view = event.object;
+        const view = this.getCellView(event.object);
         const bindingContext = view.bindingContext;
         const index = (this.items as any).findIndex((i) => i === bindingContext);
         // console.error('onItemMenuClosed', index, bindingContext, view, this.openedDrawerIndex);
@@ -90,14 +115,14 @@ class CollectionViewWithSwipeMenu extends CollectionView {
             if (index === this.openedDrawerIndex) {
                 this.openedDrawerIndex = -1;
             }
-            bindingContext.startingSide = view.startingSide = null;
+            bindingContext.startingSide = null;
+            this.notifyForItemAtIndex(CollectionViewWithSwipeMenu.swipeMenuCloseEvent, view, index, bindingContext);
             this.notifyForItemAtIndex(CollectionViewBase.itemLoadingEvent, view, index, bindingContext);
-            this.notifyForItemAtIndex(CollectionViewWithSwipeMenu.swipeMenuCloseEvent, view, index, bindingContext)
         }
     }
 }
 export function overrideCollectionView() {
-    applyMixins(CollectionView, [CollectionViewWithSwipeMenu]);
+    applyMixins(CollectionView, [CollectionViewWithSwipeMenu], { override: true });
 }
 
 @CSSType('SwipeMenu')
@@ -109,6 +134,8 @@ export class SwipeMenu extends Drawer {
         this.rightOpenedDrawerAllowDraging = true;
         this.topOpenedDrawerAllowDraging = true;
         this.bottomOpenedDrawerAllowDraging = true;
+        // this.openAnimationDuration = 100;
+        // this.closenAnimationDuration = 100;
         this.iosIgnoreSafeArea = true;
         this.leftDrawerMode = 'under';
         this.rightDrawerMode = 'under';
