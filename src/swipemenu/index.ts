@@ -78,7 +78,7 @@ export class CollectionViewWithSwipeMenu extends CollectionView {
     }
 
     getCellView(view: View) {
-        if (view && view.parent && view.parent instanceof ContentView && view.parent.__SvelteComponent__) {
+        if (view && view.parent instanceof ContentView && view.parent['__SvelteComponent__']) {
             view = view.parent;
         }
         return view;
