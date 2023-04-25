@@ -1,0 +1,35 @@
+<ActionBar>
+    <NavigationButton android.systemIcon="ic_menu_back" (tap)="goBack()"></NavigationButton>
+    <Label text="Simple Grid"></Label>
+</ActionBar>
+
+<GridLayout>
+    <CollectionView 
+        
+        [items]="items"  
+        (itemTap)="onItemTap($event)" 
+        (loadMoreItems)="onLoadMoreItems()"
+        colWidth="50%" 
+        rowHeight="200"
+        automationText="collectionView"
+    >
+        <ng-template let-item="item">
+            <SwipeMenu
+                        leftSwipeDistance="300"
+                        [translationFunction]="drawerTranslationFunction"
+                        [startingSide]="item.startingSide"
+                    >
+                        <Gridlayout rows="*, auto" [backgroundColor]="item.color" class="item" mainContent width="100%">
+                            <Stacklayout row="1">
+                                <Label row="1" [text]="item.name" class="title" />
+                                <Label row="1" [text]="item.color" class="subtitle" />
+                            </Stacklayout>
+                        </Gridlayout>
+                        <Stacklayout leftDrawer orientation="horizontal" width="200">
+                            <Label [text]="item.menuOpened ? 'opened' : 'a'" width="100" height="100%" backgroundColor="red" textAlignment="center" />
+                            <Label text="b" width="100" height="100%" backgroundColor="blue" textAlignment="center" />
+                        </Stacklayout>
+                    </SwipeMenu>
+        </ng-template>
+    </CollectionView>
+</GridLayout>

@@ -1,7 +1,7 @@
-import { Component, Directive, ElementRef, EmbeddedViewRef, EventEmitter, Inject, Input, NgModule, Output, TemplateRef, ViewContainerRef } from '@angular/core';
+import { Component, Directive, ElementRef, EmbeddedViewRef, Inject, NgModule, TemplateRef, ViewContainerRef } from '@angular/core';
+import { SwipeMenu, install as installSwipeMenu } from '@nativescript-community/ui-collectionview-swipemenu';
 import { NgView, ViewClassMeta, registerElement } from '@nativescript/angular';
-import { SwipeMenu } from '@nativescript-community/ui-collectionview-swipemenu';
-
+installSwipeMenu();
 const LEFTDRAWER: string = 'LeftSwipeMenu';
 const RIGHTDRAWER: string = 'RightSwipeMenu';
 const TOPDRAWER: string = 'TopSwipeMenu';
