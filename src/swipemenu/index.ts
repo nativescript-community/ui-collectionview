@@ -19,6 +19,8 @@ declare module '@nativescript-community/ui-collectionview' {
 
 let mixinInstalled = false;
 class CollectionViewWithSwipeMenu extends CollectionView {
+    public static swipeMenuOpenEvent = 'swipeMenuOpen';
+    public static swipeMenuCloseEvent = 'swipeMenuClose';
     onlyOneMenuOpened;
     openedDrawerIndex: number;
     public setItemAtIndex(index: number, item): any {
@@ -46,9 +48,10 @@ class CollectionViewWithSwipeMenu extends CollectionView {
                 // console.log('closeCurrentMenu', view, openedIndex, oldItem, new Error().stack);
                 oldItem.startingSide = null;
                 // this.notifyForItemAtIndex(CollectionViewBase.itemLoadingEvent, view, openedIndex, oldItem);
-                setTimeout(() => {
-                    this.setItemAtIndex(openedIndex, oldItem);
-                }, 0);
+                // setTimeout(() => {
+                this.setItemAtIndex(openedIndex, oldItem);
+                this.notifyForItemAtIndex(CollectionViewWithSwipeMenu.swipeMenuCloseEvent, view, openedIndex, oldItem);
+                // }, 0);
             }
         } catch (error) {
             console.error('closeCurrentMenu', error, error.stack);
@@ -76,6 +79,7 @@ class CollectionViewWithSwipeMenu extends CollectionView {
         this.openedDrawerIndex = index;
         bindingContext.startingSide = view.startingSide = 'left';
         this.notifyForItemAtIndex(CollectionViewBase.itemLoadingEvent, view, index, bindingContext);
+        this.notifyForItemAtIndex(CollectionViewWithSwipeMenu.swipeMenuOpenEvent, view, index, bindingContext)
     }
     onItemMenuClosed(event) {
         const view = event.object;
@@ -88,6 +92,7 @@ class CollectionViewWithSwipeMenu extends CollectionView {
             }
             bindingContext.startingSide = view.startingSide = null;
             this.notifyForItemAtIndex(CollectionViewBase.itemLoadingEvent, view, index, bindingContext);
+            this.notifyForItemAtIndex(CollectionViewWithSwipeMenu.swipeMenuCloseEvent, view, index, bindingContext)
         }
     }
 }
@@ -105,7 +110,6 @@ export class SwipeMenu extends Drawer {
         this.topOpenedDrawerAllowDraging = true;
         this.bottomOpenedDrawerAllowDraging = true;
         this.iosIgnoreSafeArea = true;
-        this.backDropEnabled = false;
         this.leftDrawerMode = 'under';
         this.rightDrawerMode = 'under';
         this.topDrawerMode = 'under';
