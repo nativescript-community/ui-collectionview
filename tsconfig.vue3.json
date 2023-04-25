@@ -9,6 +9,8 @@
     "include": [
         "./src/collectionview/vue3", 
         "./packages/collectionview/vue3", 
+        "./src/swipemenu/vue3", 
+        "./packages/swipemenu/vue3", 
         "./demo-snippets/vue3"
     ]
 }

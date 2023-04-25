@@ -21,11 +21,11 @@
     </Page>
 </template>
 
-//FIXME: Not work in ios
+
 <script setup lang="ts">
+//FIXME: Not work in ios
 import { ObservableArray } from '@nativescript/core';
 import { ref } from "nativescript-vue"
-
 
 const itemList = ref(new ObservableArray([
     { index: 0, name: 'TURQUOISE', color: '#1abc9c' },

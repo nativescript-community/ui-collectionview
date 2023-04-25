@@ -6,32 +6,33 @@
         </ActionBar>
 
         <GridLayout rows="auto,*">
-            <CollectionView ref="collectionView" :items="itemList" row="1" :autoReloadItemOnLayout="true">
+            <CollectionView :items="itemList" row="1" rowHeight="100" ref="collectionView">
                 <template #default="{ item }">
-                    <GridLayout class="item" rows="101,100" @tap="resizeCell(item, $event)" :height="getItemHeight(item)"
-                        :backgroundColor="item.color">
-                        <Stacklayout row="0">
-                            <Label row="1" :text="item.name" class="title" />
-                            <Label row="1" :text="item.color" class="subtitle" />
-                        </Stacklayout>
-                        <Stacklayout row="1" orientation="horizontal" height="100">
-                            <Label :text="'a'" width="100" height="100%" backgroundColor="red" textAlignment="center" />
+                    <SwipeMenu leftSwipeDistance="300" :translationFunction="drawerTranslationFunction"
+                        :startingSide="item.startingSide">
+                        <Gridlayout rows="*, auto" :backgroundColor="item.color" class="item" ~mainContent width="100%">
+                            <Stacklayout row="1">
+                                <Label row="1" :text="item.name" class="title" />
+                                <Label row="1" :text="item.color" class="subtitle" />
+                            </Stacklayout>
+                        </Gridlayout>
+                        <Stacklayout ~leftDrawer orientation="horizontal" width="200">
+                            <Label :text="item.menuOpened ? 'opened' : 'a'" width="100" height="100%" backgroundColor="red"
+                                textAlignment="center" />
                             <Label text="b" width="100" height="100%" backgroundColor="blue" textAlignment="center" />
                         </Stacklayout>
-                    </GridLayout>
+                    </SwipeMenu>
                 </template>
             </CollectionView>
-
         </GridLayout>
     </Page>
 </template>
 
-<script setup lang="ts">
-//FIXME: Not work in ios
-import { ObservableArray, View } from '@nativescript/core';
-import { ref } from "nativescript-vue"
 
-const collectionView = ref();
+<script setup lang="ts">
+import { ObservableArray } from '@nativescript/core';
+import { ref, $navigateBack } from "nativescript-vue"
+
 const itemList = ref(new ObservableArray([
     { index: 0, name: 'TURQUOISE', color: '#1abc9c' },
     { index: 1, name: 'EMERALD', color: '#2ecc71' },
@@ -55,23 +56,15 @@ const itemList = ref(new ObservableArray([
     { index: 19, name: 'ASBESTOS', color: '#7f8c8d' }
 ]));
 
-function getItemHeight(item) {
-    return item.showMenu === true ? 200 : 100
-}
-
-async function resizeCell(item, event) {
-    try {
-        const actualItem = item || this;
-        actualItem.showMenu = !actualItem.showMenu;
-        async function animate(options = {}) {
-            const newHeight = actualItem.showMenu ? 200 : 100;
-            return (event.object as View).animate({ height: newHeight, ...options, duration: 300 });
+function drawerTranslationFunction(side, width, value, delta, progress) {
+    const result = {
+        mainContent: {
+            translateX: side === 'right' ? -delta : delta
         }
-        
-        await animate();
-    } catch (error) {
-        console.error(error);
-    }
+    } as any;
+
+    return result;
 }
 </script>
 
+<style lang="scss" scoped></style>
