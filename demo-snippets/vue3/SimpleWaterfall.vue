@@ -1,15 +1,15 @@
 <template>
     <Page>
         <ActionBar>
-            <Label text="Simple Grid" />
-            <ActionItem @tap="refresh"  text="refresh" />
+            <Label text="Simple Waterfall" />
         </ActionBar>
 
         <GridLayout>
-            <CollectionView :items="itemList" @itemTap="onItemTap" @loadMoreItems="onLoadMoreItems" itemIdGenerator="index"
-                colWidth="50%" rowHeight="200" @loaded="onCollectionViewLoaded">
+            <CollectionView :items="itemList" @itemTap="onItemTap" @loadMoreItems="onLoadMoreItems"
+                @itemLoadingEvent="onItemLoadingEvent" itemIdGenerator="index" colWidth="50%" layoutStyle="waterfall">
                 <template #default="{ item }">
-                    <GridLayout id="scroller" rowSpan="2" rows="*, auto" :backgroundColor="item.color" class="item">
+                    <GridLayout :height="randomHeight(item.color)" rows="*, auto" :backgroundColor="item.color"
+                        class="item">
                         <StackLayout row="1">
                             <Label row="1" :text="item.name" class="title" />
                             <Label row="1" :text="item.color" class="subtitle" />
@@ -21,8 +21,9 @@
     </Page>
 </template>
 
+
 <script setup lang="ts">
-import {  ObservableArray } from '@nativescript/core';
+import { ObservableArray } from '@nativescript/core';
 import { ref } from "nativescript-vue"
 
 
@@ -49,10 +50,21 @@ const itemList = ref(new ObservableArray([
     { index: 19, name: 'ASBESTOS', color: '#7f8c8d' }
 ]));
 
-function onCollectionViewLoaded(e) {
-    console.log('onCollectionViewLoaded');
+
+
+function randomHeight(color) {
+    if (parseInt(color.substr(1), 16) % 2 === 0) {
+        return 200;
+    }
+    return 150;
 }
+
+function onItemLoadingEvent() {
+    console.log(`EVENT TRIGGERED: onItemLoadingEvent`);
+}
+
 function onItemTap({ index, item }) {
+    //FIXME: fix this on component 
     console.log(`EVENT TRIGGERED: Tapped on ${index} ${item.name}`);
 }
 function onLoadMoreItems() {

@@ -20,10 +20,9 @@
     </Page>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import { ObservableArray } from '@nativescript/core';
 import { ref } from "nativescript-vue"
-
 const itemList = ref(new ObservableArray([
     { index: 0, name: 'TURQUOISE', color: '#1abc9c' },
     { index: 1, name: 'EMERALD', color: '#2ecc71' },
@@ -55,21 +54,24 @@ function onLoadMoreItems() {
 function logEvent(e) {
     console.log('logEvent', e.eventName, e.extraData);
 }
-
 </script>
 
-<style>
+<style scoped lang="scss">
+ActionBar {
+    background-color: #42b883;
+}
+
 .item {
     padding: 10;
     color: white;
-}
 
-.title {
-    font-size: 17;
-    font-weight: bold;
-}
+    .title {
+        font-size: 17;
+        font-weight: bold;
+    }
 
-.subtitle {
-    font-size: 14;
+    .subtitle {
+        font-size: 14;
+    }
 }
 </style>
