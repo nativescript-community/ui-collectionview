@@ -8,15 +8,15 @@ const SwipeMenuPlugin = {
             overwriteExisting: true,
             nodeOps: {
                 insert(child, parent) {
-                    if (child.nativeView["~mainContent"] === "") {
+                    if (child.nativeView['~mainContent'] === '') {
                         parent.nativeView.mainContent = child.nativeView;
-                    } else if (child.nativeView["~leftDrawer"] === "") {
+                    } else if (child.nativeView['~leftDrawer'] === '') {
                         parent.nativeView.leftDrawer = child.nativeView;
-                    } else if (child.nativeView["~rightDrawer"] === "") {
+                    } else if (child.nativeView['~rightDrawer'] === '') {
                         parent.nativeView.rightDrawer = child.nativeView;
-                    } else if (child.nativeView["~topDrawer"] === "") {
+                    } else if (child.nativeView['~topDrawer'] === '') {
                         parent.nativeView.topDrawer = child.nativeView;
-                    } else if (child.nativeView["~bottomDrawer"] === "") {
+                    } else if (child.nativeView['~bottomDrawer'] === '') {
                         parent.nativeView.bottomDrawer = child.nativeView;
                     }
                 }

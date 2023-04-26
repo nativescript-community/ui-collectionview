@@ -1,8 +1,4 @@
-import {
-    defineComponent,
-    h,
-    ref
-} from "nativescript-vue";
+import { defineComponent, h, ref } from 'nativescript-vue';
 
 export const SwipeMenuComp = defineComponent({
     setup() {
@@ -12,19 +8,13 @@ export const SwipeMenuComp = defineComponent({
         const isOpened = (side) => swipeMenu.value.nativeView.isOpened(side);
         const toggle = (side) => swipeMenu.value.nativeView.toggle(side);
 
-        return () => {
-            return h(
-                "SwipeMenu",
-                {
-                    ref: swipeMenu,
-                    open,
-                    close,
-                    isOpened,
-                    toggle,
-                  
-                },
-                
-            );
-        };
+        return () =>
+            h('SwipeMenu', {
+                ref: swipeMenu,
+                open,
+                close,
+                isOpened,
+                toggle
+            });
     }
-})
+});
