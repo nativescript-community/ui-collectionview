@@ -10,7 +10,8 @@
                 <template #default="{ item }">
                     <SwipeMenu leftSwipeDistance="300" :translationFunction="drawerTranslationFunction"
                         :startingSide="item.startingSide">
-                        <Gridlayout rows="*, auto" :backgroundColor="item.color" class="item" ~mainContent width="100%">
+                        <Gridlayout rows="*, auto" :backgroundColor="item.color" class="item" ~mainContent
+                            width="100%">
                             <Stacklayout row="1">
                                 <Label row="1" :text="item.name" class="title" />
                                 <Label row="1" :text="item.color" class="subtitle" />
@@ -65,6 +66,7 @@ function drawerTranslationFunction(side, width, value, delta, progress) {
 
     return result;
 }
+
 </script>
 
 <style lang="scss" scoped></style>
