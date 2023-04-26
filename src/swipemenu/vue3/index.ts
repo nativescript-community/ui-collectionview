@@ -3,8 +3,8 @@ import { install } from '..';
 
 const SwipeMenuPlugin = {
     install(app: any) {
-        //TODO: run install()
-       // install();
+        //FIXME
+        install();
         app.registerElement('NativeSwipeMenu', () => require('../index').SwipeMenu, {
             overwriteExisting: true
         });
