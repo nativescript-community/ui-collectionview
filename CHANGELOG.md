@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.1.1](https://github.com/@nativescript-community/ui-collectionview/compare/v5.1.0...v5.1.1) (2023-04-25)
+
+
+### Bug Fixes
+
+* **collectionview:** refactor to allow plugins to have more access ([ac695e5](https://github.com/@nativescript-community/ui-collectionview/commit/ac695e5ad943404c9ea79a95e88b5297296f2e51))
+* **swipemenu:** multiple fixes ([6c131af](https://github.com/@nativescript-community/ui-collectionview/commit/6c131afd5806c839329d5a5c0b18812a75509b8d))
+* **swipemenu:** re enable backdrop by default which prevent interaction and allows click to close ([30cd05a](https://github.com/@nativescript-community/ui-collectionview/commit/30cd05aea83e12e77429c32bb2261c3adf2b28a7))
+
+
+
+
+
 # [5.1.0](https://github.com/@nativescript-community/ui-collectionview/compare/v5.0.4...v5.1.0) (2023-04-25)
 
 

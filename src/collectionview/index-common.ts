@@ -462,11 +462,18 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     // onItemTemplateSelectorPropertyChanged(oldValue, newValue) {
     //     this.onItemTemplateSelectorChanged(oldValue, newValue);
     // }
+
+    getItemSourceAtIndex(index: number) {
+        return (this.items as ItemsSource).getItem(index);
+    }
+    getItemArrayAtIndex(index: number) {
+        return this.items[index];
+    }
     onItemsChanged(oldValue, newValue) {
         const getItem = newValue && (newValue as ItemsSource).getItem;
         this.isItemsSourceIn = typeof getItem === 'function';
         // we override the method to prevent the test on every getItem
-        this.getItemAtIndex = this.isItemsSourceIn ? (index: number) => (this.items as ItemsSource).getItem(index) : (index: number) => this.items[index];
+        this.getItemAtIndex = this.isItemsSourceIn ? this.getItemSourceAtIndex.bind(this) : this.getItemArrayAtIndex.bind(this);
         if (oldValue instanceof Observable) {
             removeWeakEventListener(oldValue, ObservableArray.changeEvent, this.onSourceCollectionChangedInternal, this);
         }
