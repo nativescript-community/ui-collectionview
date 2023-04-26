@@ -491,17 +491,6 @@ export class CollectionView extends CollectionViewBase {
                         }
                         view.reloadItemsAtIndexPaths(indexes);
                     } else {
-                        if (event.addedCount > 0) {
-                            const indexes = NSMutableArray.alloc<NSIndexPath>().init();
-                            for (let index = 0; index < event.addedCount; index++) {
-                                indexes.addObject(NSIndexPath.indexPathForItemInSection(event.index + index, 0));
-                                if (sizes) {
-                                    sizes.insertObjectAtIndex(NSValue.valueWithCGSize(CGSizeZero), event.index);
-                                }
-                                // this._sizes.splice(event.index, 0, null);
-                            }
-                            view.insertItemsAtIndexPaths(indexes);
-                        }
                         if (event.removed && event.removed.length > 0) {
                             const indexes = NSMutableArray.new<NSIndexPath>();
                             for (let index = 0; index < event.removed.length; index++) {
@@ -516,6 +505,20 @@ export class CollectionView extends CollectionViewBase {
                                 CLog(CLogTypes.info, 'deleteItemsAtIndexPaths', indexes.count);
                             }
                             view.deleteItemsAtIndexPaths(indexes);
+                        }
+                        if (event.addedCount > 0) {
+                            const indexes = NSMutableArray.alloc<NSIndexPath>().init();
+                            for (let index = 0; index < event.addedCount; index++) {
+                                indexes.addObject(NSIndexPath.indexPathForItemInSection(event.index + index, 0));
+                                if (sizes) {
+                                    sizes.insertObjectAtIndex(NSValue.valueWithCGSize(CGSizeZero), event.index);
+                                }
+                                // this._sizes.splice(event.index, 0, null);
+                            }
+                            if (Trace.isEnabled()) {
+                                CLog(CLogTypes.info, 'insertItemsAtIndexPaths', indexes.count);
+                            }
+                            view.insertItemsAtIndexPaths(indexes);
                         }
                     }
                     // view.collectionViewLayout.invalidateLayout();
