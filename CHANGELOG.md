@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.1.2](https://github.com/@nativescript-community/ui-collectionview/compare/v5.1.1...v5.1.2) (2023-04-26)
+
+
+### Bug Fixes
+
+* **collectionview:** regresssion fix for waterfall ([b4c40ed](https://github.com/@nativescript-community/ui-collectionview/commit/b4c40eda038556870741df0672ba6f8257c1fd23))
+* **waterfall:** fixed crash after latest changes to collectionview ([2e315cb](https://github.com/@nativescript-community/ui-collectionview/commit/2e315cb89b335a7a4b3ab83ae31974825f2bbefc))
+
+
+
+
+
 ## [5.1.1](https://github.com/@nativescript-community/ui-collectionview/compare/v5.1.0...v5.1.1) (2023-04-25)
 
 
