@@ -9,35 +9,39 @@ declare class IUICollectionViewWaterfallDelegateImpl extends NSObject {
 @NativeClass
 class UICollectionViewWaterfallDelegateImpl extends NSObject implements UICollectionViewDelegate, CollectionViewWaterfallLayoutDelegate {
     _owner: WeakRef<CollectionView & UICollectionViewDelegate & CollectionViewWaterfallLayoutDelegate>;
-
+    static initWithOwner(owner: CollectionView) {
+        const result = UICollectionViewWaterfallDelegateImpl.new() as UICollectionViewWaterfallDelegateImpl;
+        result._owner = new WeakRef(owner as CollectionView & UICollectionViewDelegate & CollectionViewWaterfallLayoutDelegate);
+        return result;
+    }
     collectionViewWillDisplayCellForItemAtIndexPath(collectionView: UICollectionView, cell: UICollectionViewCell, indexPath: NSIndexPath) {
-        const owner = this._owner.get();
+        const owner = this._owner?.get();
         if (owner) {
             owner.collectionViewWillDisplayCellForItemAtIndexPath(collectionView, cell, indexPath);
         }
     }
     collectionViewDidSelectItemAtIndexPath(collectionView: UICollectionView, indexPath: NSIndexPath) {
-        const owner = this._owner.get();
+        const owner = this._owner?.get();
         if (owner) {
             return owner.collectionViewDidSelectItemAtIndexPath(collectionView, indexPath);
         }
         return indexPath;
     }
     collectionViewLayoutSizeForItemAtIndexPath(collectionView: UICollectionView, collectionViewLayout: UICollectionViewLayout, indexPath: NSIndexPath) {
-        const owner = this._owner.get();
+        const owner = this._owner?.get();
         if (owner) {
             return owner.collectionViewLayoutSizeForItemAtIndexPath(collectionView, collectionViewLayout, indexPath);
         }
         return CGSizeZero;
     }
     scrollViewDidScroll(scrollView: UIScrollView): void {
-        const owner = this._owner.get();
+        const owner = this._owner?.get();
         if (owner) {
             owner.scrollViewDidScroll(scrollView);
         }
     }
     scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        const owner = this._owner.get();
+        const owner = this._owner?.get();
         if (owner) {
             owner.scrollViewDidEndDecelerating(scrollView);
         }
@@ -54,7 +58,7 @@ export default function install() {
             layout['minimumInteritemSpacing'] = 0;
             return layout;
         },
-        createDelegate: (collectionview: CollectionView) => UICollectionViewWaterfallDelegateImpl.new()
+        createDelegate: (collectionview: CollectionView) => UICollectionViewWaterfallDelegateImpl.initWithOwner(collectionview)
     });
     CollectionView.registerPlugin('waterfall', {
         onLayout: (collectionview: CollectionView) => {
