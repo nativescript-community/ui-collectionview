@@ -134,8 +134,8 @@ export class SwipeMenu extends Drawer {
         this.rightOpenedDrawerAllowDraging = true;
         this.topOpenedDrawerAllowDraging = true;
         this.bottomOpenedDrawerAllowDraging = true;
-        // this.openAnimationDuration = 100;
-        // this.closenAnimationDuration = 100;
+        this.openAnimationDuration = 100;
+        this.closeAnimationDuration = 100;
         this.iosIgnoreSafeArea = true;
         this.leftDrawerMode = 'under';
         this.rightDrawerMode = 'under';
