@@ -58,7 +58,7 @@ function templateSelector({ item, index, items }) {
     return item.type;
 }
 
-function spanSizeSelector({ item, index }) {
+function spanSizeSelector(item, index ) {
     if (item.type === "heading") return 2;
     return 1;
 }
