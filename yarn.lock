@@ -3829,18 +3829,18 @@ __metadata:
 
 "@nativescript-community/template-snippet@file:demo-snippets::locator=root-workspace-0b6124%40workspace%3A.":
   version: 0.0.1
-  resolution: "@nativescript-community/template-snippet@file:demo-snippets#demo-snippets::hash=460f4f&locator=root-workspace-0b6124%40workspace%3A."
+  resolution: "@nativescript-community/template-snippet@file:demo-snippets#demo-snippets::hash=4f8a84&locator=root-workspace-0b6124%40workspace%3A."
   dependencies:
     "@nativescript-community/ui-collectionview": "link:../packages/collectionview"
     "@nativescript-community/ui-collectionview-swipemenu": "link:../packages/swipemenu"
     "@nativescript-community/ui-collectionview-waterfall": "link:../packages/waterfall"
-  checksum: 0c3e0aa3ebd75742d148d938dee0957d8098d5e1613251a06f3f79c11e8e1733ff9e7730c5adb4a1d306ea02a14ef4878db3952865eab64ab962030a9de704e1
+  checksum: b76948c94d9a92d3eee5265bf3a39e0aa7759b78ae83cc389abfc6423f407d7fedc453b1501cbef42ada322d37ac297993a37104e28cd910ed377014c22a073e
   languageName: node
   linkType: hard
 
-"@nativescript-community/ui-collectionview-swipemenu@link:../packages/swipemenu::locator=%40nativescript-community%2Ftemplate-snippet%40file%3Ademo-snippets%23demo-snippets%3A%3Ahash%3D460f4f%26locator%3Droot-workspace-0b6124%2540workspace%253A.":
+"@nativescript-community/ui-collectionview-swipemenu@link:../packages/swipemenu::locator=%40nativescript-community%2Ftemplate-snippet%40file%3Ademo-snippets%23demo-snippets%3A%3Ahash%3D4f8a84%26locator%3Droot-workspace-0b6124%2540workspace%253A.":
   version: 0.0.0-use.local
-  resolution: "@nativescript-community/ui-collectionview-swipemenu@link:../packages/swipemenu::locator=%40nativescript-community%2Ftemplate-snippet%40file%3Ademo-snippets%23demo-snippets%3A%3Ahash%3D460f4f%26locator%3Droot-workspace-0b6124%2540workspace%253A."
+  resolution: "@nativescript-community/ui-collectionview-swipemenu@link:../packages/swipemenu::locator=%40nativescript-community%2Ftemplate-snippet%40file%3Ademo-snippets%23demo-snippets%3A%3Ahash%3D4f8a84%26locator%3Droot-workspace-0b6124%2540workspace%253A."
   languageName: node
   linkType: soft
 
@@ -3855,14 +3855,14 @@ __metadata:
   resolution: "@nativescript-community/ui-collectionview-swipemenu@workspace:packages/swipemenu"
   dependencies:
     "@nativescript-community/class-mixins": ^1.0.0
-    "@nativescript-community/ui-collectionview": ^5.1.0
-    "@nativescript-community/ui-drawer": ^0.1.12
+    "@nativescript-community/ui-collectionview": ^5.1.1
+    "@nativescript-community/ui-drawer": ^0.1.13
   languageName: unknown
   linkType: soft
 
-"@nativescript-community/ui-collectionview-waterfall@link:../packages/waterfall::locator=%40nativescript-community%2Ftemplate-snippet%40file%3Ademo-snippets%23demo-snippets%3A%3Ahash%3D460f4f%26locator%3Droot-workspace-0b6124%2540workspace%253A.":
+"@nativescript-community/ui-collectionview-waterfall@link:../packages/waterfall::locator=%40nativescript-community%2Ftemplate-snippet%40file%3Ademo-snippets%23demo-snippets%3A%3Ahash%3D4f8a84%26locator%3Droot-workspace-0b6124%2540workspace%253A.":
   version: 0.0.0-use.local
-  resolution: "@nativescript-community/ui-collectionview-waterfall@link:../packages/waterfall::locator=%40nativescript-community%2Ftemplate-snippet%40file%3Ademo-snippets%23demo-snippets%3A%3Ahash%3D460f4f%26locator%3Droot-workspace-0b6124%2540workspace%253A."
+  resolution: "@nativescript-community/ui-collectionview-waterfall@link:../packages/waterfall::locator=%40nativescript-community%2Ftemplate-snippet%40file%3Ademo-snippets%23demo-snippets%3A%3Ahash%3D4f8a84%26locator%3Droot-workspace-0b6124%2540workspace%253A."
   languageName: node
   linkType: soft
 
@@ -3876,19 +3876,19 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@nativescript-community/ui-collectionview-waterfall@workspace:packages/waterfall"
   dependencies:
-    "@nativescript-community/ui-collectionview": ^5.1.0
+    "@nativescript-community/ui-collectionview": ^5.1.1
   languageName: unknown
   linkType: soft
 
-"@nativescript-community/ui-collectionview@^5.1.0, @nativescript-community/ui-collectionview@workspace:packages/collectionview":
+"@nativescript-community/ui-collectionview@^5.1.1, @nativescript-community/ui-collectionview@workspace:packages/collectionview":
   version: 0.0.0-use.local
   resolution: "@nativescript-community/ui-collectionview@workspace:packages/collectionview"
   languageName: unknown
   linkType: soft
 
-"@nativescript-community/ui-collectionview@link:../packages/collectionview::locator=%40nativescript-community%2Ftemplate-snippet%40file%3Ademo-snippets%23demo-snippets%3A%3Ahash%3D460f4f%26locator%3Droot-workspace-0b6124%2540workspace%253A.":
+"@nativescript-community/ui-collectionview@link:../packages/collectionview::locator=%40nativescript-community%2Ftemplate-snippet%40file%3Ademo-snippets%23demo-snippets%3A%3Ahash%3D4f8a84%26locator%3Droot-workspace-0b6124%2540workspace%253A.":
   version: 0.0.0-use.local
-  resolution: "@nativescript-community/ui-collectionview@link:../packages/collectionview::locator=%40nativescript-community%2Ftemplate-snippet%40file%3Ademo-snippets%23demo-snippets%3A%3Ahash%3D460f4f%26locator%3Droot-workspace-0b6124%2540workspace%253A."
+  resolution: "@nativescript-community/ui-collectionview@link:../packages/collectionview::locator=%40nativescript-community%2Ftemplate-snippet%40file%3Ademo-snippets%23demo-snippets%3A%3Ahash%3D4f8a84%26locator%3Droot-workspace-0b6124%2540workspace%253A."
   languageName: node
   linkType: soft
 
@@ -3898,12 +3898,12 @@ __metadata:
   languageName: node
   linkType: soft
 
-"@nativescript-community/ui-drawer@npm:^0.1.12":
-  version: 0.1.12
-  resolution: "@nativescript-community/ui-drawer@npm:0.1.12"
+"@nativescript-community/ui-drawer@npm:^0.1.13":
+  version: 0.1.13
+  resolution: "@nativescript-community/ui-drawer@npm:0.1.13"
   dependencies:
     "@nativescript-community/gesturehandler": ^2.0.8
-  checksum: a8e8e294954adc94b9431f0f529ab9395fe468ef566aeb91c7042ad5d26f09381b629567f379287f9151b4dddd28746f2323cf69efc09694f54c0a1e2d728bb7
+  checksum: 2b6f6241e4db3ba9373fd69592663850a69f1210257e9abd9a79802036112e0bbe9ff99bdd8879d6917122dcb0bd0dcacebee029429e3f162f714ae909fe49ec
   languageName: node
   linkType: hard
 
@@ -4074,7 +4074,7 @@ __metadata:
     "@nativescript/types": ~8.4.0
     "@nativescript/webpack": 5.0.12
     "@types/node": ~18.11.15
-    nativescript-vue: 3.0.0-beta.6
+    nativescript-vue: 3.0.0-beta.5
     typescript: ~4.8.4
     vue: ^3.2.45
   languageName: unknown
@@ -5626,7 +5626,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/runtime-dom@npm:3.2.47":
+"@vue/runtime-dom@npm:3.2.47, @vue/runtime-dom@npm:^3.2.41":
   version: 3.2.47
   resolution: "@vue/runtime-dom@npm:3.2.47"
   dependencies:
@@ -10140,7 +10140,7 @@ __metadata:
 
 "fsevents@patch:fsevents@^2.3.2#~builtin<compat/fsevents>, fsevents@patch:fsevents@~2.3.2#~builtin<compat/fsevents>":
   version: 2.3.2
-  resolution: "fsevents@patch:fsevents@npm%3A2.3.2#~builtin<compat/fsevents>::version=2.3.2&hash=df0bf1"
+  resolution: "fsevents@patch:fsevents@npm%3A2.3.2#~builtin<compat/fsevents>::version=2.3.2&hash=18f3a7"
   dependencies:
     node-gyp: latest
   conditions: os=darwin
@@ -13859,7 +13859,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nativescript-vue3@npm:nativescript-vue@3.0.0-beta.6, nativescript-vue@npm:3.0.0-beta.6":
+"nativescript-vue3@npm:nativescript-vue@3.0.0-beta.6":
   version: 3.0.0-beta.6
   resolution: "nativescript-vue@npm:3.0.0-beta.6"
   dependencies:
@@ -13868,6 +13868,19 @@ __metadata:
     set-value: ^4.1.0
     vue-loader: ^17.0.0
   checksum: c05e790446b38154c6f21424b72d1e667e922b4dc8fcae63ef0c42bbaf3e40f81312e777a438fbc63b805cc5e8ec4a587208c69175385446268799f2988165db
+  languageName: node
+  linkType: hard
+
+"nativescript-vue@npm:3.0.0-beta.5":
+  version: 3.0.0-beta.5
+  resolution: "nativescript-vue@npm:3.0.0-beta.5"
+  dependencies:
+    "@vue/compiler-dom": ^3.2.41
+    "@vue/compiler-sfc": ^3.2.41
+    "@vue/runtime-dom": ^3.2.41
+    set-value: ^4.1.0
+    vue-loader: ^17.0.0
+  checksum: 6c4d24bc346b97e8c6aafc27278d6d48303620b2e4335601398915282c038a5d0f2bf948efdce4f0c7f581d40701d6f26e18ebf372bf5ef66cd6f0c85be1e3a7
   languageName: node
   linkType: hard
 
@@ -16181,7 +16194,7 @@ __metadata:
 
 "resolve@patch:resolve@^1.1.6#~builtin<compat/resolve>, resolve@patch:resolve@^1.1.7#~builtin<compat/resolve>, resolve@patch:resolve@^1.10.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.14.2#~builtin<compat/resolve>, resolve@patch:resolve@^1.20.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.22.1#~builtin<compat/resolve>, resolve@patch:resolve@^1.9.0#~builtin<compat/resolve>":
   version: 1.22.1
-  resolution: "resolve@patch:resolve@npm%3A1.22.1#~builtin<compat/resolve>::version=1.22.1&hash=c3c19d"
+  resolution: "resolve@patch:resolve@npm%3A1.22.1#~builtin<compat/resolve>::version=1.22.1&hash=07638b"
   dependencies:
     is-core-module: ^2.9.0
     path-parse: ^1.0.7
@@ -16194,7 +16207,7 @@ __metadata:
 
 "resolve@patch:resolve@^2.0.0-next.4#~builtin<compat/resolve>":
   version: 2.0.0-next.4
-  resolution: "resolve@patch:resolve@npm%3A2.0.0-next.4#~builtin<compat/resolve>::version=2.0.0-next.4&hash=c3c19d"
+  resolution: "resolve@patch:resolve@npm%3A2.0.0-next.4#~builtin<compat/resolve>::version=2.0.0-next.4&hash=07638b"
   dependencies:
     is-core-module: ^2.9.0
     path-parse: ^1.0.7
@@ -16323,7 +16336,7 @@ __metadata:
     "@nativescript-community/class-mixins": ^1.0.0
     "@nativescript-community/plugin-seed-tools": "file:tools"
     "@nativescript-community/template-snippet": "file:demo-snippets"
-    "@nativescript-community/ui-drawer": ^0.1.12
+    "@nativescript-community/ui-drawer": ^0.1.13
   languageName: unknown
   linkType: soft
 
@@ -18259,17 +18272,17 @@ __metadata:
 
 "typescript@patch:typescript@^3 || ^4#~builtin<compat/typescript>":
   version: 4.9.4
-  resolution: "typescript@patch:typescript@npm%3A4.9.4#~builtin<compat/typescript>::version=4.9.4&hash=ad5954"
+  resolution: "typescript@patch:typescript@npm%3A4.9.4#~builtin<compat/typescript>::version=4.9.4&hash=a1c5e5"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 1caaea6cb7f813e64345190fddc4e6c924d0b698ab81189b503763c4a18f7f5501c69362979d36e19c042d89d936443e768a78b0675690b35eb663d19e0eae71
+  checksum: 37f6e2c3c5e2aa5934b85b0fddbf32eeac8b1bacf3a5b51d01946936d03f5377fe86255d4e5a4ae628fd0cd553386355ad362c57f13b4635064400f3e8e05b9d
   languageName: node
   linkType: hard
 
 "typescript@patch:typescript@^3.5.3#~builtin<compat/typescript>":
   version: 3.9.10
-  resolution: "typescript@patch:typescript@npm%3A3.9.10#~builtin<compat/typescript>::version=3.9.10&hash=3bd3d3"
+  resolution: "typescript@patch:typescript@npm%3A3.9.10#~builtin<compat/typescript>::version=3.9.10&hash=a1c5e5"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
@@ -18279,7 +18292,7 @@ __metadata:
 
 "typescript@patch:typescript@^4.6.4 || ^5.0.0#~builtin<compat/typescript>":
   version: 5.0.3
-  resolution: "typescript@patch:typescript@npm%3A5.0.3#~builtin<compat/typescript>::version=5.0.3&hash=ad5954"
+  resolution: "typescript@patch:typescript@npm%3A5.0.3#~builtin<compat/typescript>::version=5.0.3&hash=a1c5e5"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
@@ -18289,7 +18302,7 @@ __metadata:
 
 "typescript@patch:typescript@~4.2.3#~builtin<compat/typescript>":
   version: 4.2.4
-  resolution: "typescript@patch:typescript@npm%3A4.2.4#~builtin<compat/typescript>::version=4.2.4&hash=334f98"
+  resolution: "typescript@patch:typescript@npm%3A4.2.4#~builtin<compat/typescript>::version=4.2.4&hash=a1c5e5"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
@@ -18299,11 +18312,11 @@ __metadata:
 
 "typescript@patch:typescript@~4.8.4#~builtin<compat/typescript>":
   version: 4.8.4
-  resolution: "typescript@patch:typescript@npm%3A4.8.4#~builtin<compat/typescript>::version=4.8.4&hash=0102e9"
+  resolution: "typescript@patch:typescript@npm%3A4.8.4#~builtin<compat/typescript>::version=4.8.4&hash=a1c5e5"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 301459fc3eb3b1a38fe91bf96d98eb55da88a9cb17b4ef80b4d105d620f4d547ba776cc27b44cc2ef58b66eda23fe0a74142feb5e79a6fb99f54fc018a696afa
+  checksum: 563a0ef47abae6df27a9a3ab38f75fc681f633ccf1a3502b1108e252e187787893de689220f4544aaf95a371a4eb3141e4a337deb9895de5ac3c1ca76430e5f0
   languageName: node
   linkType: hard
 
@@ -18673,12 +18686,12 @@ __metadata:
   linkType: hard
 
 "vue-loader@npm:^17.0.0":
-  version: 17.0.1
-  resolution: "vue-loader@npm:17.0.1"
+  version: 17.1.0
+  resolution: "vue-loader@npm:17.1.0"
   dependencies:
     chalk: ^4.1.0
     hash-sum: ^2.0.0
-    loader-utils: ^2.0.0
+    watchpack: ^2.4.0
   peerDependencies:
     webpack: ^4.1.0 || ^5.0.0-0
   peerDependenciesMeta:
@@ -18686,7 +18699,7 @@ __metadata:
       optional: true
     vue:
       optional: true
-  checksum: 42cc8c8ff032dcac774f6f098723d4bc8000579ff4ecf9e0e72a4193e60234e6582ad4b6c43d0a9c76f59e510cf6d676070de67f2cd26588210cb51219845c27
+  checksum: 71a99f1e24c6ce28692f599bb6077b3fbdd4fc2e4df5e90d30b2a165337cfebb281f9f4453b613b1bdc6cacd691c6a69b0d75903ea6263235643cc8d6fc8a077
   languageName: node
   linkType: hard
 
