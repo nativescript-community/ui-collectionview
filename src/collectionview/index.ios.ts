@@ -125,6 +125,15 @@ export class CollectionView extends CollectionViewBase {
 
         this._measureCellMap = new Map<string, { cell: CollectionViewCell; view: View }>();
 
+        // waterfall requires the delegate to be set as soon as possible
+        // but default delegates need _effectiveRowHeight and _effectiveColWidth
+        // so we need to wait
+        const layoutStyle = CollectionViewBase.layoutStyles[this.layoutStyle];
+        if (layoutStyle && layoutStyle.createDelegate) {
+            this._delegate = layoutStyle.createDelegate(this);
+            this.nativeViewProtected.delegate = this._delegate;
+        }
+
         this._setNativeClipToBounds();
     }
 
