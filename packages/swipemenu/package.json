@@ -41,6 +41,6 @@
     "dependencies": {
         "@nativescript-community/class-mixins": "^1.0.0",
         "@nativescript-community/ui-collectionview": "^5.1.1",
-        "@nativescript-community/ui-drawer": "^0.1.12"
+        "@nativescript-community/ui-drawer": "^0.1.13"
     }
 }

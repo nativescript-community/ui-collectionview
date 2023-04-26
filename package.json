@@ -31,6 +31,9 @@
         "demo.vue.android": "cd ./demo-vue && ns run android --no-hmr --env.watchNodeModules",
         "demo.vue.clean": "cd ./demo-vue && ns clean",
         "demo.vue.ios": "cd ./demo-vue && ns run ios --no-hmr --env.watchNodeModules",
+        "demo.vue3.android": "cd ./demo-vue3 && ns run android --no-hmr --env.watchNodeModules",
+        "demo.vue3.clean": "cd ./demo-vu3e && ns clean",
+        "demo.vue3.ios": "cd ./demo-vue3 && ns run ios --no-hmr --env.watchNodeModules",
         "postinstall": "npm run setup",
         "prepare": "npm run setup",
         "publish": "npm run clean ; npm run build.all ; npm run readme ; npm run doc ; npm run commit_readme_doc_changes ; lerna publish",
@@ -56,7 +59,7 @@
         "@nativescript-community/class-mixins": "^1.0.0",
         "@nativescript-community/plugin-seed-tools": "file:tools",
         "@nativescript-community/template-snippet": "file:demo-snippets",
-        "@nativescript-community/ui-drawer": "^0.1.12"
+        "@nativescript-community/ui-drawer": "^0.1.13"
     },
     "ntl": {
         "descriptions": {
@@ -86,6 +89,7 @@
         "demo-vue",
         "demo-ng",
         "demo-svelte",
+        "demo-vue3",
         "demo-react",
         "demo-snippets"
     ]

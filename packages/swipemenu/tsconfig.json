@@ -5,5 +5,11 @@
         "outDir": "./",
     },
     "include": ["../../src/swipemenu/**/*.ts", "../../references.d.ts", "../../tools/references.d.ts", "../../src/references.d.ts"],
-    "exclude": ["../../src/swipemenu/angular/**"]
+    "exclude": ["../../src/swipemenu/angular/**"],
+    "references": [
+        {
+            //Need for tsc
+            "path": "../../tsconfig.vue3.json"
+        }
+    ]
 }
