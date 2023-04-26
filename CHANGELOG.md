@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.1.3](https://github.com/@nativescript-community/ui-collectionview/compare/v5.1.2...v5.1.3) (2023-04-26)
+
+
+### Bug Fixes
+
+* **ios:** ObservableArray splice fix ([97b6b72](https://github.com/@nativescript-community/ui-collectionview/commit/97b6b7240ac3175e7f12d3e2a482b4afc7e9297e))
+
+
+
+
+
 ## [5.1.2](https://github.com/@nativescript-community/ui-collectionview/compare/v5.1.1...v5.1.2) (2023-04-26)
 
 
