@@ -32,7 +32,7 @@
         "demo.vue.clean": "cd ./demo-vue && ns clean",
         "demo.vue.ios": "cd ./demo-vue && ns run ios --no-hmr --env.watchNodeModules",
         "demo.vue3.android": "cd ./demo-vue3 && ns run android --no-hmr --env.watchNodeModules",
-        "demo.vue3.clean": "cd ./demo-vue && ns clean",
+        "demo.vue3.clean": "cd ./demo-vu3e && ns clean",
         "demo.vue3.ios": "cd ./demo-vue3 && ns run ios --no-hmr --env.watchNodeModules",
         "postinstall": "npm run setup",
         "prepare": "npm run setup",
