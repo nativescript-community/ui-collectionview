@@ -57,12 +57,14 @@
 * [Usage in Angular](#usage-in-angular)
 	* [Simple Example](#simple-example-1)
 	* [Templates Example](#templates-example-1)
-* [Usage in Vue](#usage-in-vue)
+* [Usage in Vue 3](#usage-in-vue-3)
 	* [Simple Example](#simple-example-2)
-* [Usage in Svelte](#usage-in-svelte)
+* [Usage in Vue 2](#usage-in-vue-2)
 	* [Simple Example](#simple-example-3)
-* [Usage in React](#usage-in-react)
+* [Usage in Svelte](#usage-in-svelte)
 	* [Simple Example](#simple-example-4)
+* [Usage in React](#usage-in-react)
+	* [Simple Example](#simple-example-5)
 * [Demos](#demos)
 * [Demos and Development](#demos-and-development)
 	* [Repo Setup](#repo-setup)
@@ -283,12 +285,62 @@ If you want to use multiple item templates, you can do that very similarly to ho
 For a more complete example, look in the `demo-ng` directory.
 
 
-[](#usage-in-vue)
+[](#usage-in-vue-3)
 
 
-[](#usage-in-vue)
+[](#usage-in-vue-3)
 
-## Usage in Vue
+## Usage in Vue 3
+
+Register the plugin in your `app.ts`.
+
+```ts
+import CollectionView from '@nativescript-community/ui-collectionview/vue3';
+
+const app = createApp(YourComponent);
+app.use(CollectionView);
+app.start();
+```
+
+### Simple Example
+In your component, add the following to make a simple array of objects.
+
+```html
+<script setup lang="ts">
+import { ObservableArray } from '@nativescript/core';
+import { ref } from "nativescript-vue";
+
+const itemList = ref(new ObservableArray([
+    { name: 'TURQUOISE', color: '#1abc9c' },
+    { name: 'EMERALD', color: '#2ecc71' },
+    { name: 'PETER RIVER', color: '#3498db' },
+    { name: 'AMETHYST', color: '#9b59b6' },
+    { name: 'WET ASPHALT', color: '#34495e' }
+]));
+</script>
+```
+
+Then add the following XML to your component.
+
+```xml
+<CollectionView :items="itemList" colWidth="50%" rowHeight="100">
+     <template #default="{ item }">
+        <StackLayout :backgroundColor="item.color" >
+            <Label :text="item.name"/>
+        </StackLayout>
+    </template>
+</CollectionView>
+```
+
+For a more complete example, look in the `demo-vue3` and [demo-snippets/vue3](https://github.com/nativescript-community/ui-collectionview/tree/master/demo-snippets/vue3) directory.
+
+
+[](#usage-in-vue-2)
+
+
+[](#usage-in-vue-2)
+
+## Usage in Vue 2
 
 Register the plugin in your `app.ts`.
 
