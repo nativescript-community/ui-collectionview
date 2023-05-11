@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.1.5](https://github.com/@nativescript-community/ui-collectionview/compare/v5.1.4...v5.1.5) (2023-05-11)
+
+
+### Bug Fixes
+
+* **ios:** prevent possible wrong layout (because of safe area) on some cells ([f1b1f51](https://github.com/@nativescript-community/ui-collectionview/commit/f1b1f51218ca11a98af24484cc22bde2fc0a5e12))
+
+
+
+
+
 ## [5.1.4](https://github.com/@nativescript-community/ui-collectionview/compare/v5.1.3...v5.1.4) (2023-04-28)
 
 
