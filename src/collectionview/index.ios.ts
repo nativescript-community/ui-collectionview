@@ -664,6 +664,7 @@ export class CollectionView extends CollectionViewBase {
         let cellSize: [number, number];
         try {
             this._preparingCell = true;
+            const firstRender = !cell.view;
             let view = cell.view;
             const index = indexPath.row;
             if (!view) {
@@ -676,6 +677,9 @@ export class CollectionView extends CollectionViewBase {
             }
             const args = this.notifyForItemAtIndex(CollectionViewBase.itemLoadingEvent, view, indexPath.row, bindingContext, cell);
             view = args.view;
+            if (firstRender) {
+                view['iosIgnoreSafeArea'] = true;
+            }
             view.bindingContext = bindingContext;
 
             if (view instanceof ProxyViewContainer) {
@@ -811,7 +815,6 @@ export class CollectionView extends CollectionViewBase {
     }
     layoutCell(index: number, cell: CollectionViewCell, cellView: View): any {
         // const cellSize = this.getCellSize(index);
-        cellView['iosIgnoreSafeArea'] = true;
         const size = cell.bounds.size;
         View.layoutChild(this, cellView, 0, 0, Utils.layout.toDevicePixels(size.width), Utils.layout.toDevicePixels(size.height));
         if (Trace.isEnabled()) {
@@ -879,10 +882,10 @@ export class CollectionView extends CollectionViewBase {
         const templateType = this._getItemTemplateType(indexPath);
         let cell = collectionView.dequeueReusableCellWithReuseIdentifierForIndexPath(templateType, indexPath) as CollectionViewCell;
 
-        const firstRender = !cell.view;
         if (!cell) {
             cell = CollectionViewCell.new() as CollectionViewCell;
         }
+        const firstRender = !cell.view;
         if (Trace.isEnabled()) {
             CLog(CLogTypes.log, 'collectionViewCellForItemAtIndexPath', indexPath.row, templateType, !!cell.view, cell);
         }
