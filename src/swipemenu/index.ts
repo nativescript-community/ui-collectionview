@@ -102,7 +102,7 @@ export class CollectionViewWithSwipeMenu extends CollectionView {
             this.closeCurrentMenu();
         }
         this.openedDrawerIndex = index;
-        bindingContext.startingSide = 'left';
+        bindingContext.startingSide = event.side;
         this.notifyForItemAtIndex(CollectionViewWithSwipeMenu.swipeMenuOpenEvent, view, index, bindingContext);
         this.notifyForItemAtIndex(CollectionViewBase.itemLoadingEvent, view, index, bindingContext);
     }
