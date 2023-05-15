@@ -9,7 +9,7 @@
             <CollectionView :items="items" row="1" rowHeight="100" ref="collectionView">
                 <v-template>
                     <SwipeMenu
-                        leftSwipeDistance="300"
+                        rightSwipeDistance="300"
                         :translationFunction="drawerTranslationFunction"
                         :startingSide="item.startingSide"
                     >
@@ -19,7 +19,7 @@
                                 <Label row="1" :text="item.color" class="subtitle" />
                             </Stacklayout>
                         </Gridlayout>
-                        <Stacklayout ~leftDrawer orientation="horizontal" width="200">
+                        <Stacklayout ~rightDrawer orientation="horizontal" width="200">
                             <Label :text="item.menuOpened ? 'opened' : 'a'" width="100" height="100%" backgroundColor="red" textAlignment="center" />
                             <Label text="b" width="100" height="100%" backgroundColor="blue" textAlignment="center" />
                         </Stacklayout>
