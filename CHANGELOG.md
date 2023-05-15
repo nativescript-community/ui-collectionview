@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.1.6](https://github.com/@nativescript-community/ui-collectionview/compare/v5.1.5...v5.1.6) (2023-05-15)
+
+
+### Bug Fixes
+
+* **swipemenu:** error when using non left menu ([0b5fad2](https://github.com/@nativescript-community/ui-collectionview/commit/0b5fad2beeecd673610810f671159925391e9dd5))
+
+
+
+
+
 ## [5.1.5](https://github.com/@nativescript-community/ui-collectionview/compare/v5.1.4...v5.1.5) (2023-05-11)
 
 
