@@ -15,7 +15,7 @@ export class CollectionView extends CollectionViewBase {
     public scrollToHorizontalOffset(value: number, animation?: boolean);
     public getViewForItemAtIndex(index: number): View;
     // on iOS a view is dragged from its center by default
-    // if ou use a drag "handle" just pass the touch event main pointer
+    // if you use a drag "handle" just pass the touch event main pointer
     // to delta the dragging to be good
     startDragging(index: number, pointer?: Pointer);
 }
