@@ -11,6 +11,8 @@ export class CollectionView extends CollectionViewBase {
     public refreshVisibleItems();
     public isItemAtIndexVisible(index: number): boolean;
     public scrollToIndex(index: number, animated: boolean);
+    public scrollToVerticalOffset(value: number, animation?: boolean);
+	public scrollToHorizontalOffset(value: number, animation?: boolean);
     public getViewForItemAtIndex(index: number): View;
     // on iOS a view is dragged from its center by default
     // if you use a drag "handle" just pass the touch event main pointer

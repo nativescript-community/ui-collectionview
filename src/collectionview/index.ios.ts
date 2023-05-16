@@ -634,6 +634,20 @@ export class CollectionView extends CollectionViewBase {
         );
     }
 
+    public scrollToVerticalOffset(offSetValue, animated) {
+        if (this.nativeViewProtected && this.orientation === 'vertical' && this.isScrollEnabled) {
+            const bounds = this.nativeViewProtected.bounds.size;
+            this.nativeViewProtected.scrollRectToVisibleAnimated(CGRectMake(0, offSetValue, bounds.width, bounds.height), animated);
+        }
+    }
+
+    public scrollToHorizontalOffset(offSetValue, animated) {
+        if (this.nativeViewProtected && this.orientation === 'horizontal' && this.isScrollEnabled) {
+            const bounds = this.nativeViewProtected.bounds.size;
+            this.nativeViewProtected.scrollRectToVisibleAnimated(CGRectMake(offSetValue, 0, bounds.width, bounds.height), animated);
+        }
+    }
+
     public requestLayout(): void {
         // When preparing cell don't call super - no need to invalidate our measure when cell desiredSize is changed.
         if (!this._preparingCell) {

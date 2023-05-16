@@ -906,6 +906,18 @@ export class CollectionView extends CollectionViewBase {
         }
     }
 
+    public scrollToVerticalOffset(dyValue) {
+        if (this.nativeViewProtected && this.orientation === 'vertical' && this.isScrollEnabled) {
+            this.nativeViewProtected.scrollBy(0, dyValue);
+        }
+    }
+
+    public scrollToHorizontalOffset(dxValue) {
+        if (this.nativeViewProtected && this.orientation === 'horizontal' && this.isScrollEnabled) {
+            this.nativeViewProtected.scrollBy(dxValue, 0);
+        }
+    }
+
     private _setPadding(newPadding: { top?: number; right?: number; bottom?: number; left?: number }) {
         const nativeView = this.nativeViewProtected;
         const padding = {
