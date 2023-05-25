@@ -721,8 +721,8 @@ export class CollectionView extends CollectionViewBase {
                             nativeView.performBatchUpdatesCompletion(() => {
                                 this.measureCell(cell, view, index);
                                 this.notifyForItemAtIndex(CollectionViewBase.itemLoadingEvent, view, indexPath.row, view.bindingContext, cell);
+                                nativeView.collectionViewLayout.invalidateLayout();
                             }, null);
-                            nativeView.collectionViewLayout.invalidateLayout();
                         }
                     };
                 }
