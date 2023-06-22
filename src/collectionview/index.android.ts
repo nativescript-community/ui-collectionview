@@ -906,15 +906,12 @@ export class CollectionView extends CollectionViewBase {
         }
     }
 
-    public scrollToVerticalOffset(dyValue) {
-        if (this.nativeViewProtected && this.orientation === 'vertical' && this.isScrollEnabled) {
-            this.nativeViewProtected.scrollBy(0, dyValue);
-        }
-    }
-
-    public scrollToHorizontalOffset(dxValue) {
+    scrollToOffset(offSetValue) {
         if (this.nativeViewProtected && this.orientation === 'horizontal' && this.isScrollEnabled) {
-            this.nativeViewProtected.scrollBy(dxValue, 0);
+            this.nativeViewProtected.scrollBy(offSetValue, 0);
+        }
+        if (this.nativeViewProtected && this.orientation === 'vertical' && this.isScrollEnabled) {
+            this.nativeViewProtected.scrollBy(0, offSetValue);
         }
     }
 
