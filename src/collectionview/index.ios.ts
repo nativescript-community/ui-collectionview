@@ -634,17 +634,14 @@ export class CollectionView extends CollectionViewBase {
         );
     }
 
-    public scrollToVerticalOffset(offSetValue, animated) {
+    scrollToOffset(value, animated) {
         if (this.nativeViewProtected && this.orientation === 'vertical' && this.isScrollEnabled) {
             const bounds = this.nativeViewProtected.bounds.size;
-            this.nativeViewProtected.scrollRectToVisibleAnimated(CGRectMake(0, offSetValue, bounds.width, bounds.height), animated);
+            this.nativeViewProtected.scrollRectToVisibleAnimated(CGRectMake(0, value, bounds.width, bounds.height), animated);
         }
-    }
-
-    public scrollToHorizontalOffset(offSetValue, animated) {
         if (this.nativeViewProtected && this.orientation === 'horizontal' && this.isScrollEnabled) {
             const bounds = this.nativeViewProtected.bounds.size;
-            this.nativeViewProtected.scrollRectToVisibleAnimated(CGRectMake(offSetValue, 0, bounds.width, bounds.height), animated);
+            this.nativeViewProtected.scrollRectToVisibleAnimated(CGRectMake(value, 0, bounds.width, bounds.height), animated);
         }
     }
 
