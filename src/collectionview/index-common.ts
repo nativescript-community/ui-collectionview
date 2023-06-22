@@ -174,8 +174,7 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     public abstract refreshVisibleItems();
     public abstract isItemAtIndexVisible(index: number);
     public abstract scrollToIndex(index: number, animated: boolean);
-    public abstract scrollToVerticalOffset(value: number, animated?: boolean): any;
-    public abstract scrollToHorizontalOffset(value: number, animated?: boolean): any;
+    public abstract scrollToOffset(value: number, animated?: boolean): any;
 
     protected updateInnerSize() {
         const width = this.getMeasuredWidth();
