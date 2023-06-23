@@ -635,13 +635,19 @@ export class CollectionView extends CollectionViewBase {
     }
 
     scrollToOffset(value, animated) {
-        if (this.nativeViewProtected && this.orientation === 'vertical' && this.isScrollEnabled) {
-            const bounds = this.nativeViewProtected.bounds.size;
-            this.nativeViewProtected.scrollRectToVisibleAnimated(CGRectMake(0, value, bounds.width, bounds.height), animated);
-        }
-        if (this.nativeViewProtected && this.orientation === 'horizontal' && this.isScrollEnabled) {
-            const bounds = this.nativeViewProtected.bounds.size;
-            this.nativeViewProtected.scrollRectToVisibleAnimated(CGRectMake(value, 0, bounds.width, bounds.height), animated);
+        if (this.nativeViewProtected && this.isScrollEnabled) {
+            const { width, height } = this.nativeViewProtected.bounds.size;
+            let rect;
+            
+            if (this.orientation === 'vertical') {
+                rect = CGRectMake(0, value, width, height);
+            } else if (this.orientation === 'horizontal') {
+                rect = CGRectMake(value, 0, width, height);
+            }
+
+            if (rect) {
+                this.nativeViewProtected.scrollRectToVisibleAnimated(rect, animated);
+            }
         }
     }
 
