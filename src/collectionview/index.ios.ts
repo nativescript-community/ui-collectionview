@@ -634,6 +634,23 @@ export class CollectionView extends CollectionViewBase {
         );
     }
 
+    scrollToOffset(value, animated) {
+        if (this.nativeViewProtected && this.isScrollEnabled) {
+            const { width, height } = this.nativeViewProtected.bounds.size;
+            let rect;
+            
+            if (this.orientation === 'vertical') {
+                rect = CGRectMake(0, value, width, height);
+            } else if (this.orientation === 'horizontal') {
+                rect = CGRectMake(value, 0, width, height);
+            }
+
+            if (rect) {
+                this.nativeViewProtected.scrollRectToVisibleAnimated(rect, animated);
+            }
+        }
+    }
+
     public requestLayout(): void {
         // When preparing cell don't call super - no need to invalidate our measure when cell desiredSize is changed.
         if (!this._preparingCell) {
