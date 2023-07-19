@@ -121,10 +121,6 @@ export const CollectionView = defineComponent({
                 return vnode;
             });
 
-        function scrollToIndex(index: number, animate = false) {
-            (collectionView.value.nativeView as NSCollectionView).scrollToIndex(index, animate);
-        }
-
         return () =>
             h(
                 'NativeCollectionView',
@@ -132,8 +128,7 @@ export const CollectionView = defineComponent({
                     ref: collectionView,
                     items: props.items,
                     itemTemplates,
-                    onItemLoading,
-                    scrollToIndex
+                    onItemLoading
                 },
                 cellVNODES()
             );
