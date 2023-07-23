@@ -3,8 +3,8 @@
     "version": "0.0.1",
     "private": true,
     "dependencies": {
-        "@nativescript-community/ui-collectionview": "link:../packages/collectionview",
-        "@nativescript-community/ui-collectionview-swipemenu": "link:../packages/swipemenu",
-        "@nativescript-community/ui-collectionview-waterfall": "link:../packages/waterfall"
+        "@nativescript-community/ui-collectionview": "*",
+        "@nativescript-community/ui-collectionview-swipemenu": "*",
+        "@nativescript-community/ui-collectionview-waterfall": "*"
     }
 }
