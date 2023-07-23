@@ -896,22 +896,25 @@ export class CollectionView extends CollectionViewBase {
         return view.computeVerticalScrollOffset() / Utils.layout.getDisplayDensity();
     }
     public scrollToIndex(index: number, animated: boolean = true) {
-        if (!this.nativeViewProtected) {
+        const view = this.nativeViewProtected;
+        if (!view) {
             return;
         }
         if (animated) {
-            this.nativeViewProtected.smoothScrollToPosition(index);
+            view.smoothScrollToPosition(index);
         } else {
-            this.nativeViewProtected.scrollToPosition(index);
+            view.scrollToPosition(index);
         }
     }
 
     scrollToOffset(offSetValue) {
-        if (this.nativeViewProtected && this.orientation === 'horizontal' && this.isScrollEnabled) {
-            this.nativeViewProtected.scrollBy(offSetValue, 0);
-        }
-        if (this.nativeViewProtected && this.orientation === 'vertical' && this.isScrollEnabled) {
-            this.nativeViewProtected.scrollBy(0, offSetValue);
+        const view = this.nativeViewProtected;
+        if (view && this.isScrollEnabled) {
+            if (this.orientation === 'horizontal') {
+                view.scrollBy(offSetValue, 0);
+            } else {
+                view.scrollBy(0, offSetValue);
+            }
         }
     }
 
