@@ -1036,11 +1036,13 @@ export class CollectionView extends CollectionViewBase {
     disposeViewHolderViews() {
         this.enumerateViewHolders((v) => {
             const view = v.view;
-            if (view && view.isLoaded) {
-                view.callUnloaded();
+            if (view) {
+                if (view.isLoaded) {
+                    view.callUnloaded();
+                }
+                view._isAddedToNativeVisualTree = false;
+                view._tearDownUI();
             }
-            view._isAddedToNativeVisualTree = false;
-            view._tearDownUI();
             v.view = null;
             v.clickListener = null;
         });
