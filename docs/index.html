@@ -543,6 +543,17 @@ One easy solution is t modify <code>~/.gitconfig</code> and add</p>
 <ul>
 <li><a href="#installation">Installation</a></li>
 <li><a href="#configuration">Configuration</a></li>
+<li><a href="#api">API</a></li>
+<li><a href="#collectionview-extensions">CollectionView extensions</a><ul>
+<li><a href="#events">Events</a></li>
+<li><a href="#propert">Propert</a></li>
+<li><a href="#methods">Methods</a></li>
+</ul>
+</li>
+<li><a href="#usage">Usage</a><ul>
+<li><a href="#simple-example">Simple Example</a></li>
+</ul>
+</li>
 <li><a href="#demos-and-development">Demos and Development</a><ul>
 <li><a href="#repo-setup">Repo Setup</a></li>
 <li><a href="#build">Build</a></li>
@@ -576,7 +587,78 @@ One easy solution is t modify <code>~/.gitconfig</code> and add</p>
 <p>To install the plugin run:</p>
 <pre><code class="language-typescript"><span class="hl-11">import</span><span class="hl-1"> </span><span class="hl-3">install</span><span class="hl-1"> </span><span class="hl-11">from</span><span class="hl-1"> </span><span class="hl-5">&#39;@nativescript-community/ui-collectionview-swipemenu&#39;</span><span class="hl-1">;</span><br/><span class="hl-12">install</span><span class="hl-1">();</span>
 </code></pre>
-<p>then simply use the <code>layoutStyle=&quot;waterfall&quot;</code> as a collectionview property</p>
+<p><a href="#api"></a></p>
+<p><a href="#api"></a></p>
+
+<a href="#api-1" id="api-1" style="color: inherit; text-decoration: none;">
+  <h2>API</h2>
+</a>
+<p><a href="#collectionview-extensions"></a></p>
+<p><a href="#collectionview-extensions"></a></p>
+
+<a href="#collectionview-extensions" id="collectionview-extensions" style="color: inherit; text-decoration: none;">
+  <h2>CollectionView extensions</h2>
+</a>
+
+<a href="#events-1" id="events-1" style="color: inherit; text-decoration: none;">
+  <h3>Events</h3>
+</a>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>swipeMenuOpen</td>
+<td>Triggered when a menu is opened in the CollectionView.</td>
+</tr>
+<tr>
+<td>swipeMenuClose</td>
+<td>Triggered when a menu is closed in the CollectionView.</td>
+</tr>
+</tbody></table>
+
+<a href="#propert" id="propert" style="color: inherit; text-decoration: none;">
+  <h3>Propert</h3>
+</a>
+
+<a href="#methods-1" id="methods-1" style="color: inherit; text-decoration: none;">
+  <h3>Methods</h3>
+</a>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Return</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>closeCurrentMenu()</td>
+<td><code>void</code></td>
+<td>Close any opened menu in the CollectionView.</td>
+</tr>
+</tbody></table>
+<p><a href="#usage"></a></p>
+<p><a href="#usage"></a></p>
+
+<a href="#usage-1" id="usage-1" style="color: inherit; text-decoration: none;">
+  <h2>Usage</h2>
+</a>
+<p>First very important note. For this plugin to work correctly, collectionview items must be an object!
+The plugin will add <code>startingSide</code> property to your items as needed to keep knowledge of which menu is opened and notify the template <code>SwipeMenu</code>. Might change in the future</p>
+<p>You need to add <code>xmlns:gvs=&quot;@nativescript-community/ui-collectionview-swipemenu&quot;</code> to your page tag, and then simply use <code>&lt;gvs:SwipeMenu/&gt;</code> in order to add the widget to your page. Use <code>&lt;gv:Gridview.itemTemplate/&gt;</code> to specify the template for each cell:</p>
+
+<a href="#simple-example-6" id="simple-example-6" style="color: inherit; text-decoration: none;">
+  <h3>Simple Example</h3>
+</a>
+<p>Create a simple array of objects in your JS/TS file.</p>
+<pre><code class="language-typescript"><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-2">items</span><span class="hl-1"> = [</span><br/><span class="hl-1">    { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">0</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;TURQUOISE&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#1abc9c&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">    { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">1</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;EMERALD&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#2ecc71&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">    { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">2</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;PETER RIVER&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#3498db&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">    { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">3</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;AMETHYST&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#9b59b6&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">    { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">4</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;WET ASPHALT&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#34495e&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">    { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">5</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;GREEN SEA&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#16a085&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">    { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">6</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;NEPHRITIS&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#27ae60&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">    { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">7</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;BELIZE HOLE&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#2980b9&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">    { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">8</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;WISTERIA&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#8e44ad&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">    { </span><span class="hl-3">index:</span><span class="hl-1"> </span><span class="hl-4">9</span><span class="hl-1">, </span><span class="hl-3">name:</span><span class="hl-1"> </span><span class="hl-5">&#39;MIDNIGHT BLUE&#39;</span><span class="hl-1">, </span><span class="hl-3">color:</span><span class="hl-1"> </span><span class="hl-5">&#39;#2c3e50&#39;</span><span class="hl-1"> }</span><br/><span class="hl-1">];</span>
+</code></pre>
+<pre><code class="language-xml"><span class="hl-6">&lt;!-- test-page.xml --&gt;</span><br/><span class="hl-7">&lt;</span><span class="hl-8">Page</span><span class="hl-1"> </span><span class="hl-9">xmlns</span><span class="hl-1">=</span><span class="hl-10">&quot;http://schemas.nativescript.org/tns.xsd&quot;</span><span class="hl-1"> </span><span class="hl-9">xmlns:gv</span><span class="hl-1">=</span><span class="hl-10">&quot;@nativescript-community/ui-collectionview&quot;</span><span class="hl-1"> </span><span class="hl-9">xmlns:gvs</span><span class="hl-1">=</span><span class="hl-10">&quot;@nativescript-community/ui-collectionview-swipemenu&quot;</span><span class="hl-1"> </span><span class="hl-7">&gt;</span><br/><span class="hl-1">    </span><span class="hl-7">&lt;</span><span class="hl-8">GridLayout</span><span class="hl-7">&gt;</span><br/><span class="hl-1">        </span><span class="hl-7">&lt;</span><span class="hl-8">gv:CollectionView</span><span class="hl-1"> </span><span class="hl-9">items</span><span class="hl-1">=</span><span class="hl-10">&quot;items&quot;</span><span class="hl-1"> </span><span class="hl-9">rowHeight</span><span class="hl-1">=</span><span class="hl-10">&quot;100&quot;</span><span class="hl-7">&gt;</span><br/><span class="hl-1">            </span><span class="hl-7">&lt;</span><span class="hl-8">gv:CollectionView.itemTemplate</span><span class="hl-7">&gt;</span><br/><span class="hl-1">                </span><span class="hl-7">&lt;</span><span class="hl-8">gvs:SwipeMenu</span><span class="hl-1"> </span><span class="hl-9">startingSide</span><span class="hl-1">=</span><span class="hl-10">&quot;startingSide&quot;</span><span class="hl-7">&gt;</span><br/><span class="hl-1">                    </span><span class="hl-7">&lt;</span><span class="hl-8">Label</span><span class="hl-1"> </span><span class="hl-9">text</span><span class="hl-1">=</span><span class="hl-10">&quot;value&quot;</span><span class="hl-1"> </span><span class="hl-9">verticalAlignment</span><span class="hl-1">=</span><span class="hl-10">&quot;center&quot;</span><span class="hl-7">/&gt;</span><br/><span class="hl-1">                </span><span class="hl-7">&lt;/</span><span class="hl-8">gvs:SwipeMenu</span><span class="hl-7">&gt;</span><br/><span class="hl-1">            </span><span class="hl-7">&lt;/</span><span class="hl-8">gv:CollectionView.itemTemplate</span><span class="hl-7">&gt;</span><br/><span class="hl-1">        </span><span class="hl-7">&lt;/</span><span class="hl-8">gv:CollectionView</span><span class="hl-7">&gt;</span><br/><span class="hl-1">    </span><span class="hl-7">&lt;/</span><span class="hl-8">GridLayout</span><span class="hl-7">&gt;</span><br/><span class="hl-7">&lt;/</span><span class="hl-8">Page</span><span class="hl-7">&gt;</span>
+</code></pre>
 <p><a href="#demos-and-development"></a></p>
 <p><a href="#demos-and-development"></a></p>
 
