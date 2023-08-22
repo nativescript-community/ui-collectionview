@@ -138,6 +138,8 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     protected _dataUpdatesSuspended = false;
     public scrollBarIndicatorVisible: boolean;
 
+    public sharedPool: string;
+
     public layoutStyle: string = 'grid';
     public plugins: string[] = [];
     public static plugins: { [k: string]: Plugin } = {};
@@ -743,3 +745,8 @@ export const autoReloadItemOnLayoutProperty = new Property<CollectionViewBase, b
     valueConverter: booleanConverter
 });
 autoReloadItemOnLayoutProperty.register(CollectionViewBase);
+
+export const sharedPoolProperty = new Property<CollectionViewBase, string>({
+    name: 'sharedPool'
+});
+sharedPoolProperty.register(CollectionViewBase);
