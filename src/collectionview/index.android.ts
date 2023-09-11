@@ -106,6 +106,19 @@ class LongPressGestureListenerImpl extends android.view.GestureDetector.SimpleOn
     }
 }
 
+@NativeClass
+class SmoothScroller extends androidx.recyclerview.widget.LinearSmoothScroller {
+    constructor() {
+        super(Utils.android.getApplicationContext());
+        return global.__native(this);
+    }
+
+    public getVerticalSnapPreference() {
+        return androidx.recyclerview.widget.LinearSmoothScroller.SNAP_TO_START;
+    }
+}
+
+let smoothScroller: androidx.recyclerview.widget.LinearSmoothScroller;
 let LayoutParams: typeof android.view.ViewGroup.LayoutParams;
 
 const extraLayoutSpaceProperty = new Property<CollectionViewBase, number>({
@@ -256,6 +269,8 @@ export class CollectionView extends CollectionViewBase {
         animator.setSupportsChangeAnimations(false);
 
         nativeView.setItemAnimator(animator);
+
+        smoothScroller = new SmoothScroller();
         this.refresh();
     }
     public disposeNativeView() {
@@ -901,7 +916,8 @@ export class CollectionView extends CollectionViewBase {
             return;
         }
         if (animated) {
-            view.smoothScrollToPosition(index);
+            smoothScroller.setTargetPosition(index);
+            view.getLayoutManager().startSmoothScroll(smoothScroller);
         } else {
             view.scrollToPosition(index);
         }
