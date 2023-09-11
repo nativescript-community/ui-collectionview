@@ -11,6 +11,7 @@ import SimpleTemplates from './SimpleTemplates.vue';
 import Reorder from './Reorder.vue';
 import SwipeMenu from './SwipeMenu.vue';
 import ResizeCell from './ResizeCell.vue';
+import SimpleGridsScrollToIndex from './SimpleGridsScrollToIndex.vue';
 
 export function installPlugin(app: any) {
     app.use(CollectionView);
@@ -23,6 +24,7 @@ export const demos = [
     { name: 'Horizontal Grid', path: 'horizontal-grid', component: HorizontalGrid },
     { name: 'Simple Waterfall', path: 'simple-waterfall', component: SimpleWaterfall },
     { name: 'Simple Templates', path: 'simple-templates', component: SimpleTemplates },
+    { name: 'Scroll to Index', path: 'scroll-to-index', component: SimpleGridsScrollToIndex },
     { name: 'Reorder', path: 'reorder', component: Reorder },
     { name: 'SwipeMenu', path: 'swipe-menu', component: SwipeMenu },
     { name: 'ResizeCell', path: 'resize-cell', component: ResizeCell }
