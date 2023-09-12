@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.2.0](https://github.com/@nativescript-community/ui-collectionview/compare/v5.1.9...v5.2.0) (2023-09-12)
+
+### Bug Fixes
+
+* **Android:** animated scrollToIndex ([a1c8624](https://github.com/@nativescript-community/ui-collectionview/commit/a1c8624f0d93c784132450ed3ede383194c0c503))
+
+### Features
+
+* add ScrollToIndex demo in Vue3 ([28fcb5f](https://github.com/@nativescript-community/ui-collectionview/commit/28fcb5f73c7ce94ad7b48a78fd37309cd71abb62))
+* **android:** smooth scrolling to position now allows to choose snap to top or bottom ([b742d08](https://github.com/@nativescript-community/ui-collectionview/commit/b742d08044a4bd92dce0f982f3f9971b1988a7c3))
+
 ## [5.1.9](https://github.com/@nativescript-community/ui-collectionview/compare/v5.1.8...v5.1.9) (2023-08-13)
 
 ### Bug Fixes

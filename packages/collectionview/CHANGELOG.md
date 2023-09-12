@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.2.0](https://github.com/nativescript-community/ui-collectionview/compare/v5.1.9...v5.2.0) (2023-09-12)
+
+### Features
+
+* **android:** smooth scrolling to position now allows to choose snap to top or bottom ([b742d08](https://github.com/nativescript-community/ui-collectionview/commit/b742d08044a4bd92dce0f982f3f9971b1988a7c3))
+
 ## [5.1.9](https://github.com/nativescript-community/ui-collectionview/compare/v5.1.8...v5.1.9) (2023-08-13)
 
 ### Bug Fixes
