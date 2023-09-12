@@ -50,7 +50,7 @@ class SimpleCallback extends androidx.recyclerview.widget.ItemTouchHelper.Simple
             this.startPosition = startPosition;
         }
         this.endPosition = endPosition;
-        const owner = this.owner && this.owner.get();
+        const owner = this.owner?.get();
         if (owner) {
             owner._reorderItemInSource(startPosition, endPosition);
             return true;
@@ -67,7 +67,7 @@ class SimpleCallback extends androidx.recyclerview.widget.ItemTouchHelper.Simple
         }
         if (!viewHolder) {
             // this is where we identify the end of the drag and call the end event
-            const owner = this.owner && this.owner.get();
+            const owner = this.owner?.get();
 
             if (this.endPosition === -1) {
                 this.endPosition = this.startPosition;
@@ -99,26 +99,13 @@ class LongPressGestureListenerImpl extends android.view.GestureDetector.SimpleOn
         return global.__native(this);
     }
     public onLongPress(motionEvent: android.view.MotionEvent): void {
-        const owner = this._owner && this._owner.get();
+        const owner = this._owner?.get();
         if (owner) {
             owner.onReorderLongPress(motionEvent);
         }
     }
 }
 
-@NativeClass
-class SmoothScroller extends androidx.recyclerview.widget.LinearSmoothScroller {
-    constructor() {
-        super(Utils.android.getApplicationContext());
-        return global.__native(this);
-    }
-
-    public getVerticalSnapPreference() {
-        return androidx.recyclerview.widget.LinearSmoothScroller.SNAP_TO_START;
-    }
-}
-
-let smoothScroller: androidx.recyclerview.widget.LinearSmoothScroller;
 let LayoutParams: typeof android.view.ViewGroup.LayoutParams;
 
 const extraLayoutSpaceProperty = new Property<CollectionViewBase, number>({
@@ -133,6 +120,12 @@ const nestedScrollingEnabledProperty = new Property<CollectionViewBase, boolean>
     defaultValue: true,
     valueConverter: booleanConverter
 });
+
+export enum SnapPosition {
+    START = 0,
+    END = 1
+}
+
 export class CollectionView extends CollectionViewBase {
     public static DEFAULT_TEMPLATE_VIEW_TYPE = 0;
     public static CUSTOM_TEMPLATE_ITEM_TYPE = 1;
@@ -270,7 +263,6 @@ export class CollectionView extends CollectionViewBase {
 
         nativeView.setItemAnimator(animator);
 
-        smoothScroller = new SmoothScroller();
         this.refresh();
     }
     public disposeNativeView() {
@@ -910,14 +902,13 @@ export class CollectionView extends CollectionViewBase {
         }
         return view.computeVerticalScrollOffset() / Utils.layout.getDisplayDensity();
     }
-    public scrollToIndex(index: number, animated: boolean = true) {
+    public scrollToIndex(index: number, animated: boolean = true, snap: SnapPosition = SnapPosition.START) {
         const view = this.nativeViewProtected;
         if (!view) {
             return;
         }
         if (animated) {
-            smoothScroller.setTargetPosition(index);
-            view.getLayoutManager().startSmoothScroll(smoothScroller);
+            view.smoothScrollToPosition(index, snap);
         } else {
             view.scrollToPosition(index);
         }

@@ -4,13 +4,17 @@ import { CollectionViewBase } from './index-common';
 export * from './index-common';
 
 export type Orientation = 'horizontal' | 'vertical';
+export enum SnapPosition {
+    START = 0,
+    END = 1
+}
 
 export class CollectionView extends CollectionViewBase {
     public scrollOffset: number;
     public refresh();
     public refreshVisibleItems();
     public isItemAtIndexVisible(index: number): boolean;
-    public scrollToIndex(index: number, animated: boolean);
+    public scrollToIndex(index: number, animated: boolean, snap?: SnapPosition = SnapPosition.START);
     public scrollToOffset(value: number, animation?: boolean);
     public getViewForItemAtIndex(index: number): View;
     // on iOS a view is dragged from its center by default

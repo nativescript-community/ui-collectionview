@@ -38,6 +38,7 @@ declare namespace com {
                 static createRecyclerView(context): RecyclerView;
                 static inflate(context): RecyclerView;
                 sizeChangedListener?: SizeChangedListener;
+                smoothScrollToPosition(position: number, snapPosition?: number);
             }
             export class SizeChangedListener {
                 constructor(impl?: { onSizeChanged(w: number, h: number, oldw: number, oldh: number); onMeasure() });
@@ -68,6 +69,8 @@ declare namespace com {
                     getSpanSize(param0: number): number;
                 }
             }
+
+            export class SmoothScroller extends androidx.recyclerview.widget.LinearSmoothScroller {}
         }
     }
 }

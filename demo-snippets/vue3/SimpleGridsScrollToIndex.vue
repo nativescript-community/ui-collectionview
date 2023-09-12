@@ -26,6 +26,7 @@
 import {  ObservableArray } from '@nativescript/core';
 import { ref } from "nativescript-vue"
 import type { CollectionView } from 'src/collectionview';
+import { SnapPosition } from '@nativescript-community/ui-collectionview';
 
 const itemList = ref(new ObservableArray([
     { index: 0, name: 'TURQUOISE', color: '#1abc9c' },
@@ -63,7 +64,7 @@ function onItemTap({ index, item }) {
 }
 
 function goToIndex() {
-    collectionView.scrollToIndex(nextIndex.value, true);
+    collectionView.scrollToIndex(nextIndex.value, true, SnapPosition.END);
     nextIndex.value = getNextIndex();
 }
 

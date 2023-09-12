@@ -4,15 +4,18 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.util.Log;
+import androidx.recyclerview.widget.LinearSmoothScroller;
 
 public class RecyclerView extends androidx.recyclerview.widget.RecyclerView {
     static final String TAG = "RecyclerView";
     public SizeChangedListener sizeChangedListener = null;
+    protected com.nativescript.collectionview.SmoothScroller smoothScroller;
     public RecyclerView(Context context) {
         this(context, null);
     }
     public RecyclerView(Context context, android.util.AttributeSet attrs) {
         super(context, attrs);
+        smoothScroller = new com.nativescript.collectionview.SmoothScroller(context);
         setHorizontalScrollBarEnabled(true);
         setVerticalScrollBarEnabled(true);
         setHasFixedSize(true);
@@ -42,5 +45,15 @@ public class RecyclerView extends androidx.recyclerview.widget.RecyclerView {
         if (sizeChangedListener != null) {
             sizeChangedListener.onMeasure();
         }
+    }
+
+    @Override
+    public void smoothScrollToPosition(int position) {
+        this.smoothScrollToPosition(position, LinearSmoothScroller.SNAP_TO_START);
+    }
+    public void smoothScrollToPosition(int position, int snapPosition) {
+        smoothScroller.snapPreference = snapPosition;
+        smoothScroller.setTargetPosition(position);
+        getLayoutManager().startSmoothScroll(smoothScroller);
     }
 }

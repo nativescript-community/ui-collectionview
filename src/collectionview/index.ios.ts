@@ -57,6 +57,11 @@ export const contentInsetAdjustmentBehaviorProperty = new Property<CollectionVie
     defaultValue: ContentInsetAdjustmentBehavior.Automatic
 });
 
+export enum SnapPosition {
+    START = -1, // = androidx.recyclerview.widget.LinearSmoothScroller.SNAP_TO_START,
+    END = 1 // = androidx.recyclerview.widget.LinearSmoothScroller.SNAP_TO_END
+}
+
 export class CollectionView extends CollectionViewBase {
     private _layout: UICollectionViewLayout;
     private _dataSource: CollectionViewDataSource;
@@ -626,12 +631,14 @@ export class CollectionView extends CollectionViewBase {
     get verticalOffsetY() {
         return this.nativeViewProtected?.contentOffset.y || 0;
     }
-    public scrollToIndex(index: number, animated: boolean = true) {
-        this.nativeViewProtected.scrollToItemAtIndexPathAtScrollPositionAnimated(
-            NSIndexPath.indexPathForItemInSection(index, 0),
-            this.orientation === 'vertical' ? UICollectionViewScrollPosition.Top : UICollectionViewScrollPosition.Left,
-            animated
-        );
+    public scrollToIndex(index: number, animated: boolean = true, snap: SnapPosition = SnapPosition.START) {
+        let scrollPosition = UICollectionViewScrollPosition.Top;
+        if (this.orientation === 'vertical') {
+            scrollPosition = snap === SnapPosition.START ? UICollectionViewScrollPosition.Top : UICollectionViewScrollPosition.Bottom;
+        } else {
+            scrollPosition = snap === SnapPosition.START ? UICollectionViewScrollPosition.Left : UICollectionViewScrollPosition.Right;
+        }
+        this.nativeViewProtected.scrollToItemAtIndexPathAtScrollPositionAnimated(NSIndexPath.indexPathForItemInSection(index, 0), scrollPosition, animated);
     }
 
     scrollToOffset(value, animated) {
