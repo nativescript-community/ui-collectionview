@@ -4,6 +4,7 @@ import {
     ChangedData,
     ContentView,
     CoreTypes,
+    Length,
     Property,
     ProxyViewContainer,
     Trace,
@@ -17,7 +18,7 @@ import {
     paddingTopProperty,
     profile
 } from '@nativescript/core';
-import { CollectionViewItemEventData, Orientation, reorderLongPressEnabledProperty, reorderingEnabledProperty, reverseLayoutProperty, scrollBarIndicatorVisibleProperty } from '.';
+import { CollectionViewItemEventData, Orientation, itemOverlapProperty, reorderLongPressEnabledProperty, reorderingEnabledProperty, reverseLayoutProperty, scrollBarIndicatorVisibleProperty } from '.';
 import { CLog, CLogTypes, CollectionViewBase, ListViewViewTypes, isScrollEnabledProperty, orientationProperty } from './index-common';
 
 export * from './index-common';
@@ -176,7 +177,7 @@ export class CollectionView extends CollectionViewBase {
         if (!CollectionViewRecyclerView) {
             CollectionViewRecyclerView = com.nativescript.collectionview.RecyclerView as any;
         }
-        const recyclerView = (CollectionViewRecyclerView as any).createRecyclerView(this._context);
+        const recyclerView = (CollectionViewRecyclerView as any).createRecyclerView(this._context) as com.nativescript.collectionview.RecyclerView;
         // const expMgr = new RecyclerViewExpandableItemManager(null);
         // adapter.setDisplayHeadersAtStartUp(true).setStickyHeaders(true); //Make headers sticky
         // Endless scroll with 1 item threshold
@@ -255,18 +256,18 @@ export class CollectionView extends CollectionViewBase {
         });
         this.spanSize = this._getSpanSize;
 
-        const animator = new com.h6ah4i.android.widget.advrecyclerview.animator.RefactoredDefaultItemAnimator();
-
+        const animator = new jp.wasabeef.recyclerview.animators.FadeInAnimator();
+        animator.setInterpolator(new android.view.animation.OvershootInterpolator());
+        animator.setMoveDuration(200);
         // Change animations are enabled by default since support-v7-recyclerview v22.
         // Need to disable them when using animation indicator.
-        animator.setSupportsChangeAnimations(false);
+        // animator.setSupportsChangeAnimations(false);
 
         nativeView.setItemAnimator(animator);
 
         this.refresh();
     }
     public disposeNativeView() {
-        // clear the cache
         // this.eachChildView((view) => {
         //     view.parent._removeView(view);
         //     return true;
@@ -523,6 +524,17 @@ export class CollectionView extends CollectionViewBase {
     }
     [paddingLeftProperty.setNative](value: CoreTypes.LengthType) {
         this._setPadding({ left: this.effectivePaddingLeft });
+    }
+    decorator: com.nativescript.collectionview.OverlapDecoration;
+    [itemOverlapProperty.setNative](value: CoreTypes.LengthType[]) {
+        if (!this.decorator) {
+            this.decorator = new com.nativescript.collectionview.OverlapDecoration();
+            this.nativeViewProtected.addItemDecoration(this.decorator);
+        }
+        this.decorator.top = Length.toDevicePixels(value[0], 0);
+        this.decorator.right = Length.toDevicePixels(value[1], 0);
+        this.decorator.bottom = Length.toDevicePixels(value[2], 0);
+        this.decorator.left = Length.toDevicePixels(value[3], 0);
     }
 
     public [orientationProperty.getDefault](): Orientation {

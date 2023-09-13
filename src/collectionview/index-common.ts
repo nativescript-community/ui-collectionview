@@ -7,6 +7,7 @@ import {
     ItemsSource,
     KeyedTemplate,
     Label,
+    Length,
     Observable,
     ObservableArray,
     PercentLength,
@@ -743,3 +744,60 @@ export const autoReloadItemOnLayoutProperty = new Property<CollectionViewBase, b
     valueConverter: booleanConverter
 });
 autoReloadItemOnLayoutProperty.register(CollectionViewBase);
+
+function parseThickness(value: string): any {
+    if (typeof value === 'string') {
+        const arr = value.split(/[ ,]+/);
+
+        let top: string;
+        let right: string;
+        let bottom: string;
+        let left: string;
+
+        if (arr.length === 1) {
+            top = arr[0];
+            right = arr[0];
+            bottom = arr[0];
+            left = arr[0];
+        } else if (arr.length === 2) {
+            top = arr[0];
+            bottom = arr[0];
+            right = arr[1];
+            left = arr[1];
+        } else if (arr.length === 3) {
+            top = arr[0];
+            right = arr[1];
+            left = arr[1];
+            bottom = arr[2];
+        } else if (arr.length === 4) {
+            top = arr[0];
+            right = arr[1];
+            bottom = arr[2];
+            left = arr[3];
+        } else {
+            throw new Error('Expected 1, 2, 3 or 4 parameters. Actual: ' + value);
+        }
+
+        return {
+            top,
+            right,
+            bottom,
+            left
+        };
+    } else {
+        return value;
+    }
+}
+export const itemOverlapProperty = new Property<CollectionViewBase, CoreTypes.LengthType[]>({
+    name: 'itemOverlap',
+    valueConverter: (value) => {
+        if (typeof value === 'string' && value !== 'auto') {
+            const thickness = parseThickness(value);
+
+            return [Length.parse(thickness.top), Length.parse(thickness.right), Length.parse(thickness.bottom), Length.parse(thickness.left)];
+        } else {
+            return [value, value, value, value];
+        }
+    }
+});
+itemOverlapProperty.register(CollectionViewBase);

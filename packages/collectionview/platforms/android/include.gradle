@@ -1,7 +1,8 @@
 dependencies {
 	def androidXRecyclerViewVersion =  project.hasProperty("androidXRecyclerViewVersion") ? project.androidXRecyclerViewVersion : "1.3.0"
     implementation "androidx.recyclerview:recyclerview:$androidXRecyclerViewVersion"
-    implementation ('com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:1.0.0@aar'){
-        transitive=true
-    }
+    // implementation ('com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:1.0.0@aar'){
+    //     transitive=true
+    // }
+    implementation 'jp.wasabeef:recyclerview-animators:4.0.2'
 }
