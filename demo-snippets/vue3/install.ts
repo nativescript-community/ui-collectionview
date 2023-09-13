@@ -12,6 +12,7 @@ import Reorder from './Reorder.vue';
 import SwipeMenu from './SwipeMenu.vue';
 import ResizeCell from './ResizeCell.vue';
 import SimpleGridsScrollToIndex from './SimpleGridsScrollToIndex.vue';
+import CardHome from './CardHome.vue';
 
 export function installPlugin(app: any) {
     app.use(CollectionView);
@@ -20,6 +21,7 @@ export function installPlugin(app: any) {
 }
 
 export const demos = [
+    { name: 'Card', path: 'card', component: CardHome },
     { name: 'Simple Grid', path: 'simple-grid', component: SimpleGrid },
     { name: 'Horizontal Grid', path: 'horizontal-grid', component: HorizontalGrid },
     { name: 'Simple Waterfall', path: 'simple-waterfall', component: SimpleWaterfall },

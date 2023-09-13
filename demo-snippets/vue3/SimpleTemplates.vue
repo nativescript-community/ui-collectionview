@@ -17,10 +17,8 @@
                     </GridLayout>
                 </template>
                 <template #heading="{ item }">
-                    <GridLayout rows="*, auto" :backgroundColor="item.color" verticalAlignment="middle" padding="25">
-                        <Label :text="item.name" textTransform="uppercase" color="white" fontSize="20"
-                            fontWeight="bold"></Label>
-                    </GridLayout>
+                        <Label :text="item.name" :backgroundColor="item.color" textTransform="uppercase" color="white" fontSize="20"
+                            fontWeight="bold"  padding="25"></Label>
                 </template>
             </CollectionView>
         </GridLayout>
