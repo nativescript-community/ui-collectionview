@@ -41,8 +41,8 @@ declare namespace com {
                 smoothScrollToPosition(position: number, snapPosition?: number);
             }
             export class SizeChangedListener {
-                constructor(impl?: { onSizeChanged(w: number, h: number, oldw: number, oldh: number); onMeasure() });
-                onSizeChanged(w: number, h: number, oldw: number, oldh: number);
+                constructor(impl?: { onLayout(changed:boolean, l: number, t: number, r: number, b: number); onMeasure() });
+                onLayout(changed:boolean, l: number, t: number, r: number, b: number);
                 onMeasure();
             }
             export class OnScrollListener extends androidx.recyclerview.widget.RecyclerView.OnScrollListener {
