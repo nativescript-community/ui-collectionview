@@ -128,6 +128,7 @@ export enum SnapPosition {
 }
 
 export class CollectionView extends CollectionViewBase {
+    public static layoutCompletedEvent = 'layoutCompleted';
     public static DEFAULT_TEMPLATE_VIEW_TYPE = 0;
     public static CUSTOM_TEMPLATE_ITEM_TYPE = 1;
     public nativeViewProtected: CollectionViewRecyclerView & {
@@ -260,6 +261,13 @@ export class CollectionView extends CollectionViewBase {
             layoutManager = CollectionViewBase.layoutStyles[this.layoutStyle].createLayout(this);
         } else {
             layoutManager = new com.nativescript.collectionview.PreCachingGridLayoutManager(this._context, 1);
+            if (this.hasListeners(CollectionView.layoutCompletedEvent)) {
+                (layoutManager as com.nativescript.collectionview.GridLayoutManager).layoutCompletedListener = new com.nativescript.collectionview.GridLayoutManager.LayoutCompletedListener({
+                    onLayoutCompleted:()=>{
+                        this.notify({eventName:CollectionView.layoutCompletedEvent})
+                    }
+                })
+            }
             // layoutManager = new PreCachingGridLayoutManager(this._context, 1);
             // (layoutManager as any).owner = new WeakRef(this);
         }

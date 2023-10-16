@@ -10,6 +10,14 @@ declare namespace com {
             }
             export class GridLayoutManager extends androidx.recyclerview.widget.GridLayoutManager {
                 isScrollEnabled: boolean;
+                layoutCompletedListener: LayoutCompletedListener;
+            }
+            export namespace GridLayoutManager {
+
+                export class LayoutCompletedListener {
+                    onLayoutCompleted();
+                    constructor(implementation?: { onLayoutCompleted() });
+                } 
             }
             export class PreCachingGridLayoutManager extends GridLayoutManager {
                 setExtraLayoutSpace(space: number);
