@@ -1126,21 +1126,21 @@ export class CollectionView extends CollectionViewBase {
 
         const holder = new CollectionViewCellHolder(view.nativeView);
 
-        // const collectionView = this;
-        // const clickListener = new android.view.View.OnClickListener({
-        //     onClick: () => {
-        //         const position = holder.getAdapterPosition();
-        //         collectionView.notify<CollectionViewItemEventData>({
-        //             eventName: CollectionViewBase.itemTapEvent,
-        //             object: collectionView,
-        //             index: position,
-        //             item: collectionView.getItem(position),
-        //             view: holder.view
-        //         });
-        //     }
-        // });
-        // view.nativeView.setOnClickListener(clickListener);
-        // holder.clickListener = clickListener;
+        const collectionView = this;
+        const clickListener = new android.view.View.OnClickListener({
+            onClick: () => {
+                const position = holder.getAdapterPosition();
+                collectionView.notify<CollectionViewItemEventData>({
+                    eventName: CollectionViewBase.itemTapEvent,
+                    object: collectionView,
+                    index: position,
+                    item: collectionView.getItem(position),
+                    view: holder.view
+                });
+            }
+        });
+        view.nativeView.setOnClickListener(clickListener);
+        holder.clickListener = clickListener;
         holder.view = view;
         const layoutParams = this._getViewLayoutParams();
         view.nativeView.setLayoutParams(layoutParams);
