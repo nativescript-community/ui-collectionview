@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.3.0](https://github.com/nativescript-community/ui-collectionview/compare/v5.2.0...v5.3.0) (2023-10-18)
+
+### Bug Fixes
+
+* a bunch of fixes to make collectionview faster ([cc550d7](https://github.com/nativescript-community/ui-collectionview/commit/cc550d74626dfe58ff6c593cfc89b3c189771ded))
+* **android:** removed animation lib for now ([b0343f8](https://github.com/nativescript-community/ui-collectionview/commit/b0343f85fdd2ca5d415bdc7fffd3467ecff0f12c))
+
+### Features
+
+* **android:** layoutCompleted event ([3a239a3](https://github.com/nativescript-community/ui-collectionview/commit/3a239a3473de25f8d287ea9e7f71d3a2a7449dac))
+
 # [5.2.0](https://github.com/nativescript-community/ui-collectionview/compare/v5.1.9...v5.2.0) (2023-09-12)
 
 ### Features
