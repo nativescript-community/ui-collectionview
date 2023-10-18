@@ -5,15 +5,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.util.Log;
 import androidx.recyclerview.widget.LinearSmoothScroller;
-import jp.wasabeef.recyclerview.animators.FadeInAnimator;
-import jp.wasabeef.recyclerview.animators.BaseItemAnimator;
+// import jp.wasabeef.recyclerview.animators.FadeInAnimator;
+// import jp.wasabeef.recyclerview.animators.BaseItemAnimator;
 import android.view.animation.OvershootInterpolator;
 
 public class RecyclerView extends androidx.recyclerview.widget.RecyclerView {
     static final String TAG = "RecyclerView";
     public SizeChangedListener sizeChangedListener = null;
     protected com.nativescript.collectionview.SmoothScroller smoothScroller;
-    public FadeInAnimator animator;
+    // public FadeInAnimator animator;
     public RecyclerView(Context context) {
         this(context, null);
     }
@@ -27,10 +27,10 @@ public class RecyclerView extends androidx.recyclerview.widget.RecyclerView {
         setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
 
 
-        animator = new FadeInAnimator();
+        // animator = new FadeInAnimator();
         // animator.setInterpolator(new OvershootInterpolator());
-        animator.setMoveDuration(200);
-        setItemAnimator(animator);
+        // animator.setMoveDuration(200);
+        // setItemAnimator(animator);
       // Change animations are enabled by default since support-v7-recyclerview v22.
         // Need to disable them when using animation indicator.
         // animator.setSupportsChangeAnimations(false);
