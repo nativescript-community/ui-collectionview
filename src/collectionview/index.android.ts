@@ -154,8 +154,8 @@ export class CollectionView extends CollectionViewBase {
     scrolling = false;
     needsScrollStartEvent = false;
 
-    private static _hlayoutParams: android.view.ViewGroup.LayoutParams;
-    private static _vlayoutParams: android.view.ViewGroup.LayoutParams;
+    private _hlayoutParams: android.view.ViewGroup.LayoutParams;
+    private _vlayoutParams: android.view.ViewGroup.LayoutParams;
     private _lastLayoutKey: string;
 
     private _listViewAdapter: com.nativescript.collectionview.Adapter;
@@ -280,7 +280,6 @@ export class CollectionView extends CollectionViewBase {
             onMeasure: () => this.updateInnerSize()
         });
         this.spanSize = this._getSpanSize;
-
         this.refresh();
     }
     @profile
@@ -473,17 +472,17 @@ export class CollectionView extends CollectionViewBase {
     }
     _getViewLayoutParams() {
         if (this.isHorizontal()) {
-            if (!CollectionView._hlayoutParams) {
+            if (!this._hlayoutParams) {
                 LayoutParams = LayoutParams || android.view.ViewGroup.LayoutParams;
-                CollectionView._hlayoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
+                this._hlayoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
             }
-            return CollectionView._hlayoutParams;
+            return this._hlayoutParams;
         } else {
-            if (!CollectionView._vlayoutParams) {
+            if (!this._vlayoutParams) {
                 LayoutParams = LayoutParams || android.view.ViewGroup.LayoutParams;
-                CollectionView._vlayoutParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+                this._vlayoutParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
             }
-            return CollectionView._vlayoutParams;
+            return this._vlayoutParams;
         }
     }
 
@@ -897,10 +896,12 @@ export class CollectionView extends CollectionViewBase {
         if (!view) {
             return;
         }
-        if (!this.isLoaded || this._innerWidth === 0 || this._innerHeight === 0) {
-            this._isDataDirty = true;
-            return;
-        }
+        // seems like we refresh sooner
+        // not sure why it was needed before and not now.
+        // if (!this.isLoaded || this._innerWidth === 0 || this._innerHeight === 0) {
+        //     this._isDataDirty = true;
+        //     return;
+        // }
         this._isDataDirty = false;
         this._lastLayoutKey = this._innerWidth + '_' + this._innerHeight;
         let adapter = this._listViewAdapter;
