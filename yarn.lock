@@ -3503,7 +3503,7 @@ __metadata:
 
 "@nativescript-community/plugin-seed-tools@file:tools::locator=root-workspace-0b6124%40workspace%3A.":
   version: 1.0.0
-  resolution: "@nativescript-community/plugin-seed-tools@file:tools#tools::hash=94b8c6&locator=root-workspace-0b6124%40workspace%3A."
+  resolution: "@nativescript-community/plugin-seed-tools@file:tools#tools::hash=57c5e8&locator=root-workspace-0b6124%40workspace%3A."
   dependencies:
     "@angular/animations": ~16.2.8
     "@angular/common": ~16.2.8
@@ -3559,7 +3559,7 @@ __metadata:
     rimraf: ~3.0.2
     rxjs: ~7.8.1
     svelte: 3.58.0
-    svelte-native: ~1.0.6
+    svelte-native: ~1.0.9
     svelte-preprocess: ~5.0.4
     ts-patch: 2.1.0
     tslib: 2.6.2
@@ -3568,7 +3568,7 @@ __metadata:
     vue: ~2.6.14
     yargs: ^17.7.2
     zone.js: ~0.14.0
-  checksum: 29b31de4cc557c7aa3b373c99df0cb6f1e8bd13c0c182af265f685669da14cfade648b3e8b71a566ad093a516bb21d3f948209cf30a5d7c06669618f2598149a
+  checksum: fbbb30f07728243bfefbf476a7808ee87d7542171e39343c79c4b879483df33a771eee38708f7f6475f34cb0bd71cd03684a2215710e076db45f24a49f8f715a
   languageName: node
   linkType: hard
 
@@ -18722,13 +18722,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"svelte-native@npm:~1.0.6":
-  version: 1.0.6
-  resolution: "svelte-native@npm:1.0.6"
+"svelte-native@npm:~1.0.9":
+  version: 1.0.9
+  resolution: "svelte-native@npm:1.0.9"
   peerDependencies:
-    "@nativescript/core": ~8.1.3
-    svelte: ~3.44.0
-  checksum: acff3a77723addc0ebaaad654789697649b85ccdd58d2a68821c66d19694110a4abb76af4551c73adaffbb04db68f649950ebf01708b49361aaf7471e2012329
+    "@nativescript/core": ~8.5.1
+    svelte: ~3.58.0
+  checksum: 95deedfee1b8097b15436f64c5a66cafb415096391307a48504846a86641ab0e9acf03d9c00a686114894fb0fd533a96c5633534f58bc53fe00354b1448c945b
   languageName: node
   linkType: hard
 
