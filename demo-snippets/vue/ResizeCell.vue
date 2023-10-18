@@ -18,6 +18,8 @@
             </GridLayout> -->
             <CollectionView :items="items" ref="collectionView" row="1" :autoReloadItemOnLayout="true">
                 <v-template>
+
+                    <!-- TODO: it needs to be a custom Vue component for the component height to update it s value for height upon finished animation -->
                     <GridLayout class="item" rows="101,100" @tap="resizeCell(item, $event)" :height="getItemHeight(item)" :backgroundColor="item.color">
                         <Stacklayout row="0">
                             <Label row="1" :text="item.name" class="title" />
