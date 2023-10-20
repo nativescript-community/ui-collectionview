@@ -48,7 +48,7 @@
         "watch": "npm run tsc -- -w",
         "doc": "node tools/builddoc.mjs",
         "pnpm.setup": "npm run setup && pnpm --filter @nativescript/template-* install",
-        "commit_readme_doc_changes": "git add docs/** *.md && git commit -m \"readme/doc\""
+        "commit_readme_doc_changes": "git add docs/** *.md ; git commit -m \"readme/doc\""
     },
     "commitlint": {
         "extends": [
