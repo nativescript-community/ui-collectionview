@@ -74,8 +74,9 @@ export const CollectionView = defineComponent({
         function onItemLoading(event: any & ItemEventData) {
             const index = event.index;
             const id = event.view?.[LIST_CELL_ID] ?? `${cellId++}`;
+            const item = defineComponent(event.bindingContext, vm);
 
-            const itemCtx = getItemCtx(event.bindingContext, index, props.alias, props.itemIdGenerator);
+            const itemCtx = getItemCtx(item, index, props.alias, props.itemIdGenerator);
             // const itemCtx: ListItem = getItemCtx(props.items instanceof ObservableArray ? props.items.getItem(index) : props.items[index], index, props.alias, props.itemIdGenerator);
 
             // update the cell data with the current row
