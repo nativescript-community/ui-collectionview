@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.3.2](https://github.com/nativescript-community/ui-collectionview/compare/v5.3.1...v5.3.2) (2023-10-20)
+
+### Bug Fixes
+
+* **android:** disable update animation ([ed97594](https://github.com/nativescript-community/ui-collectionview/commit/ed97594ed6238bcb0da26a9102b024780d454cde))
+
 ## [5.3.1](https://github.com/nativescript-community/ui-collectionview/compare/v5.3.0...v5.3.1) (2023-10-18)
 
 **Note:** Version bump only for package @nativescript-community/ui-collectionview
