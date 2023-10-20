@@ -7,7 +7,8 @@ import android.util.Log;
 import androidx.recyclerview.widget.LinearSmoothScroller;
 // import jp.wasabeef.recyclerview.animators.FadeInAnimator;
 // import jp.wasabeef.recyclerview.animators.BaseItemAnimator;
-import android.view.animation.OvershootInterpolator;
+// import android.view.animation.OvershootInterpolator;
+import androidx.recyclerview.widget.SimpleItemAnimator;
 
 public class RecyclerView extends androidx.recyclerview.widget.RecyclerView {
     static final String TAG = "RecyclerView";
@@ -34,6 +35,7 @@ public class RecyclerView extends androidx.recyclerview.widget.RecyclerView {
       // Change animations are enabled by default since support-v7-recyclerview v22.
         // Need to disable them when using animation indicator.
         // animator.setSupportsChangeAnimations(false);
+        ((SimpleItemAnimator) getItemAnimator()).setSupportsChangeAnimations(false);
     }
 
     static public RecyclerView createRecyclerView(Context context) {
