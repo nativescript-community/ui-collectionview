@@ -280,6 +280,17 @@ export class CollectionView extends CollectionViewBase {
             onMeasure: () => this.updateInnerSize()
         });
         this.spanSize = this._getSpanSize;
+
+        // const animator = new jp.wasabeef.recyclerview.animators.FadeInAnimator();
+        // // animator.setInterpolator(new android.view.animation.OvershootInterpolator());
+        // animator.setMoveDuration(200);
+        // Change animations are enabled by default since support-v7-recyclerview v22.
+        // Need to disable them when using animation indicator.
+        // animator.setSupportsChangeAnimations(false);
+
+        // nativeView.setItemAnimator(animator);
+        // (nativeView.getItemAnimator() ).setSupportsChangeAnimations(false);
+
         this.refresh();
     }
     @profile
@@ -614,6 +625,9 @@ export class CollectionView extends CollectionViewBase {
     private enumerateViewHolders<T = any>(cb: (v: CollectionViewCellHolder) => T) {
         let result: T, v: CollectionViewCellHolder;
         for (let it = this._viewHolders.values(), cellItemView: CollectionViewCellHolder = null; (cellItemView = it.next().value); ) {
+            if (cellItemView['position'] === undefined  ) {
+                continue;
+            }
             result = cb(cellItemView);
             if (result) {
                 return result;
@@ -1220,7 +1234,8 @@ export class CollectionView extends CollectionViewBase {
     }
 
     onViewRecycled(holder) {
-        holder['position'] = null;
+        delete this.bindedViewHolders[holder['position']];
+        holder['position'] = undefined;
     }
 }
 interface CollectionViewCellHolder extends com.nativescript.collectionview.CollectionViewCellHolder {
