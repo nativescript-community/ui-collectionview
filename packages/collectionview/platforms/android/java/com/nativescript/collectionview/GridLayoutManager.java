@@ -6,8 +6,14 @@ import android.view.View;
 import java.util.HashMap;
 
 public class GridLayoutManager extends androidx.recyclerview.widget.GridLayoutManager {
+    
     private HashMap<Integer, Integer> childSizesMap = new HashMap();
     public boolean isScrollEnabled = true;
+    public LayoutCompletedListener layoutCompletedListener;
+
+    public interface LayoutCompletedListener {
+        public void onLayoutCompleted();
+    }
 
     public GridLayoutManager(Context context, int spanCount) {
         super(context, spanCount);
@@ -19,6 +25,9 @@ public class GridLayoutManager extends androidx.recyclerview.widget.GridLayoutMa
         for (int i = 0; i < getChildCount(); i++) {
             View child = getChildAt(i);
             childSizesMap.put(getPosition(child), child.getHeight());
+        }
+        if (layoutCompletedListener != null) {
+            layoutCompletedListener.onLayoutCompleted();
         }
     }
 

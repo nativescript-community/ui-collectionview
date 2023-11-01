@@ -10,6 +10,14 @@ declare namespace com {
             }
             export class GridLayoutManager extends androidx.recyclerview.widget.GridLayoutManager {
                 isScrollEnabled: boolean;
+                layoutCompletedListener: LayoutCompletedListener;
+            }
+            export namespace GridLayoutManager {
+
+                export class LayoutCompletedListener {
+                    onLayoutCompleted();
+                    constructor(implementation?: { onLayoutCompleted() });
+                } 
             }
             export class PreCachingGridLayoutManager extends GridLayoutManager {
                 setExtraLayoutSpace(space: number);
@@ -41,8 +49,8 @@ declare namespace com {
                 smoothScrollToPosition(position: number, snapPosition?: number);
             }
             export class SizeChangedListener {
-                constructor(impl?: { onSizeChanged(w: number, h: number, oldw: number, oldh: number); onMeasure() });
-                onSizeChanged(w: number, h: number, oldw: number, oldh: number);
+                constructor(impl?: { onLayout(changed:boolean, l: number, t: number, r: number, b: number); onMeasure() });
+                onLayout(changed:boolean, l: number, t: number, r: number, b: number);
                 onMeasure();
             }
             export class OnScrollListener extends androidx.recyclerview.widget.RecyclerView.OnScrollListener {

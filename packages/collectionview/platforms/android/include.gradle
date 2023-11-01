@@ -4,5 +4,5 @@ dependencies {
     // implementation ('com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:1.0.0@aar'){
     //     transitive=true
     // }
-    implementation 'jp.wasabeef:recyclerview-animators:4.0.2'
+    // implementation 'jp.wasabeef:recyclerview-animators:4.0.2'
 }

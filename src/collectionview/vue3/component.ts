@@ -1,6 +1,6 @@
 import { CollectionView as NSCollectionView } from '..';
 import { ItemEventData, Observable, ObservableArray } from '@nativescript/core';
-import { PropType, VNode, computed, defineComponent, getCurrentInstance, h, ref, toRaw, warn, watch } from 'nativescript-vue';
+import { ELEMENT_REF, NSVElement, NSVRoot, PropType, VNode, computed, defineComponent, getCurrentInstance, h, ref, render, toRaw, warn, watch } from 'nativescript-vue';
 
 interface ListItem {
     [key: string]: any;
@@ -15,6 +15,7 @@ interface ItemCellData {
 }
 
 const LIST_CELL_ID = Symbol('list_cell_id');
+const LIST_CELL_CONTAINER = Symbol('list_cell_container');
 
 function getItemCtx(item: any, index: number, itemAlias: string, indexAlias: string): ListItem {
     return {
@@ -73,31 +74,41 @@ export const CollectionView = defineComponent({
         function onItemLoading(event: any & ItemEventData) {
             const index = event.index;
             const id = event.view?.[LIST_CELL_ID] ?? `${cellId++}`;
+            const item = defineComponent(event.bindingContext, vm);
 
-            const itemCtx = getItemCtx(event.bindingContext, index, props.alias, props.itemIdGenerator);
+            const itemCtx = getItemCtx(item, index, props.alias, props.itemIdGenerator);
             // const itemCtx: ListItem = getItemCtx(props.items instanceof ObservableArray ? props.items.getItem(index) : props.items[index], index, props.alias, props.itemIdGenerator);
 
             // update the cell data with the current row
+            const slotName = getSlotName(itemCtx, index, event.object.items);
             cells.value[id] = {
                 itemCtx,
-                slotName: getSlotName(itemCtx, index, event.object.items)
+                slotName
             };
 
             // trigger an update!
-            vm?.update();
+            // vm?.update();
 
             // find the vnode rendering this cell
-            const vnode = (vm?.subTree.children as VNode[]).find((vnode) => vnode.key === id);
-            const cellEl = toRaw(vnode?.el?.nativeView);
-            cellEl[LIST_CELL_ID] = id;
+            const container = event.view?.[LIST_CELL_CONTAINER] ?? new NSVRoot();
+            const vnode = ctx.slots[slotName]?.(itemCtx)[0];
 
             if (event.view) {
                 event.view._batchUpdate(() => {
-                    event.view = cellEl;
+                    // todo: handle the case where the slot is not found
+                    render(vnode!, container);
                 });
             } else {
-                event.view = cellEl;
+                // todo: handle the case where the slot is not found
+                render(vnode!, container);
             }
+            
+
+            const cellEl = toRaw(vnode?.el?.nativeView);
+            cellEl[LIST_CELL_ID] = id;
+            cellEl[LIST_CELL_CONTAINER] = container;
+            event.view = cellEl;
+
         }
 
         // render all realized templates as children
@@ -129,8 +140,6 @@ export const CollectionView = defineComponent({
                     items: props.items,
                     itemTemplates,
                     onItemLoading
-                },
-                cellVNODES()
-            );
+                });
     }
 });

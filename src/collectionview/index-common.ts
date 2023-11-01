@@ -178,8 +178,13 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     public abstract scrollToOffset(value: number, animated?: boolean): any;
 
     protected updateInnerSize() {
+        const lastInnerWidth = this._innerWidth;
+        const lastInnerHeight = this._innerHeight;
         const width = this.getMeasuredWidth();
         const height = this.getMeasuredHeight();
+        if (width === 0 || height === 0) {
+            return false;
+        }
         this._innerWidth = width - this.effectivePaddingLeft - this.effectivePaddingRight;
         if (this.colWidth) {
             let newValue = toDevicePixels(this.colWidth, autoEffectiveColWidth, this._innerWidth); // We cannot use 0 for auto as it throws for android.
@@ -201,6 +206,7 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
                 this._effectiveRowHeight = newValue;
             }
         }
+        return lastInnerWidth !== this._innerWidth || lastInnerHeight !== this._innerHeight;
     }
     // public onLayout(left: number, top: number, right: number, bottom: number) {
     //     super.onLayout(left, top, right, bottom);
@@ -389,6 +395,7 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     private _itemTemplateSelectorBindable;
     _itemTemplateSelector: Function;
     onItemTemplateSelectorChanged(oldValue, newValue) {
+        const start = Date.now()
         if (typeof newValue === 'string') {
             if (!this._itemTemplateSelectorBindable) {
                 this._itemTemplateSelectorBindable = new ProxyViewContainer();
@@ -410,7 +417,10 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     private _itemIdGeneratorBindable;
     // public _itemIdGenerator: (item: any, index: number, items: any) => number = (_item: any, index: number) => index;
     public _itemIdGenerator: (item: any, index: number, items: any) => number = null;
+
+    @profile
     onItemIdGeneratorChanged(oldValue, newValue) {
+        const start = Date.now()
         if (typeof newValue === 'string') {
             if (!this._itemIdGeneratorBindable) {
                 this._itemIdGeneratorBindable = new ProxyViewContainer();
@@ -445,7 +455,10 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
             this.onTemplateRemoved(key);
         }
     }
+
+    @profile
     onItemTemplatesChanged(oldValue, newValue) {
+        const start = Date.now()
         this._itemTemplatesInternal = new Map();
         if (newValue) {
             newValue.forEach((t) => {
@@ -471,7 +484,9 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     getItemArrayAtIndex(index: number) {
         return this.items[index];
     }
+    @profile
     onItemsChanged(oldValue, newValue) {
+        const start = Date.now()
         const getItem = newValue && (newValue as ItemsSource).getItem;
         this.isItemsSourceIn = typeof getItem === 'function';
         // we override the method to prevent the test on every getItem
@@ -485,18 +500,9 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
         }
         this.refresh();
     }
-
-    onItemTemplatesPropertyChanged(oldValue, newValue) {
-        this.onItemTemplatesChanged(oldValue, newValue);
-    }
-    onItemTemplatePropertyChanged(oldValue, newValue) {
-        this.onItemTemplateChanged(oldValue, newValue);
-    }
-    onItemsChangedInternal = (oldValue, newValue) => {
-        this.onItemsChanged(oldValue, newValue);
-    };
     spanSize: (item, index: number) => number;
-    onSpanSizeChangedInternal = (oldValue, newValue) => {
+    onSpanSizeChanged = (oldValue, newValue) => {
+        const start = Date.now()
         this.spanSize = newValue;
         this.refresh();
     };
@@ -507,9 +513,11 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
             this.refresh();
         }
     }
+    @profile
     onSourceCollectionChanged(event: ChangedData<any>) {
         this.refresh();
     }
+    @profile
     onSourceCollectionChangedInternal(event: ChangedData<any>) {
         if (this._dataUpdatesSuspended === false) {
             this.onSourceCollectionChanged(event);
@@ -602,8 +610,10 @@ export const rowHeightProperty = new Property<CollectionViewBase, CoreTypes.Perc
     equalityComparer: PercentLength.equals,
     valueConverter: PercentLength.parse,
     valueChanged: (target, oldValue, newValue) => {
-        target._effectiveRowHeight = PercentLength.toDevicePixels(newValue, autoEffectiveRowHeight, target._innerHeight);
-        target._onRowHeightPropertyChanged(oldValue, newValue);
+        if (target._innerHeight !== 0) {
+            target._effectiveRowHeight = PercentLength.toDevicePixels(newValue, autoEffectiveRowHeight, target._innerHeight);
+            target._onRowHeightPropertyChanged(oldValue, newValue);
+        }
     }
 });
 rowHeightProperty.register(CollectionViewBase);
@@ -617,8 +627,8 @@ export const colWidthProperty = new Property<CollectionViewBase, CoreTypes.Perce
     valueChanged: (target, oldValue, newValue) => {
         if (target._innerWidth !== 0) {
             target._effectiveColWidth = PercentLength.toDevicePixels(newValue, autoEffectiveColWidth, target._innerWidth);
+            target._onColWidthPropertyChanged(oldValue, newValue);
         }
-        target._onColWidthPropertyChanged(oldValue, newValue);
     }
 });
 colWidthProperty.register(CollectionViewBase);
@@ -638,7 +648,7 @@ orientationProperty.register(CollectionViewBase);
 export const itemTemplateProperty = new Property<CollectionViewBase, string | Template>({
     name: 'itemTemplate',
     valueChanged(target, oldValue, newValue) {
-        target.onItemTemplatePropertyChanged(oldValue, newValue);
+        target.onItemTemplateChanged(oldValue, newValue);
     }
 });
 itemTemplateProperty.register(CollectionViewBase);
@@ -653,7 +663,7 @@ export const itemTemplatesProperty = new Property<CollectionViewBase, KeyedTempl
         return value;
     },
     valueChanged(target, oldValue, newValue) {
-        target.onItemTemplatesPropertyChanged(oldValue, newValue);
+        target.onItemTemplatesChanged(oldValue, newValue);
     }
 });
 itemTemplatesProperty.register(CollectionViewBase);
@@ -679,7 +689,7 @@ export const itemsProperty = new Property<CollectionViewBase, Function>({
     name: 'items',
     defaultValue: undefined,
     valueChanged(target, oldValue, newValue) {
-        target.onItemsChangedInternal(oldValue, newValue);
+        target.onItemsChanged(oldValue, newValue);
     }
 });
 itemsProperty.register(CollectionViewBase);
@@ -688,7 +698,7 @@ export const spanSizeProperty = new Property<CollectionViewBase, Function>({
     name: 'spanSize',
     defaultValue: undefined,
     valueChanged(target, oldValue, newValue) {
-        target.onSpanSizeChangedInternal(oldValue, newValue);
+        target.onSpanSizeChanged(oldValue, newValue);
     }
 });
 spanSizeProperty.register(CollectionViewBase);

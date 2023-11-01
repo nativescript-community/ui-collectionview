@@ -128,6 +128,7 @@ export enum SnapPosition {
 }
 
 export class CollectionView extends CollectionViewBase {
+    public static layoutCompletedEvent = 'layoutCompleted';
     public static DEFAULT_TEMPLATE_VIEW_TYPE = 0;
     public static CUSTOM_TEMPLATE_ITEM_TYPE = 1;
     public nativeViewProtected: CollectionViewRecyclerView & {
@@ -171,6 +172,27 @@ export class CollectionView extends CollectionViewBase {
     recycledViewPool: com.nativescript.collectionview.RecycledViewPool;
     recycledViewPoolDisposeListener: com.nativescript.collectionview.RecycledViewPool.ViewPoolListener;
 
+
+    mInPropertiesSet = false;
+    mShouldUpdateInnerSize = false;
+    mShouldUpdateSpanCount = false;
+    mShouldRefresh = false;
+    public onResumeNativeUpdates(): void {
+        // {N} suspends properties update on `_suspendNativeUpdates`. So we only need to do this in onResumeNativeUpdates
+        this.mInPropertiesSet = true;
+        super.onResumeNativeUpdates();
+        this.mInPropertiesSet = false;
+        if (this.mShouldUpdateInnerSize) {
+            this.updateInnerSize();
+        }
+        if (this.mShouldUpdateSpanCount) {
+            this.updateSpanCount();
+        }
+        if (this.mShouldRefresh) {
+            this.refresh();
+        }
+    }
+
     @profile
     public createNativeView() {
         // storing the class in a property for reuse in the future cause a materializing which is pretty slow!
@@ -194,79 +216,84 @@ export class CollectionView extends CollectionViewBase {
 
     @profile
     public initNativeView() {
-        this.setOnLayoutChangeListener();
         super.initNativeView();
         const nativeView = this.nativeViewProtected;
-        this.recycledViewPool = new com.nativescript.collectionview.RecycledViewPool();
-        this.recycledViewPoolDisposeListener = new com.nativescript.collectionview.RecycledViewPool.ViewPoolListener({
-            onViewHolderDisposed: (holder: CollectionViewCellHolder) => {
-                if (Trace.isEnabled()) {
-                    CLog(CLogTypes.log, 'onViewHolderDisposed', holder);
+        if (!this.recycledViewPool) {
+            this.recycledViewPool = new com.nativescript.collectionview.RecycledViewPool();
+            this.recycledViewPoolDisposeListener = new com.nativescript.collectionview.RecycledViewPool.ViewPoolListener({
+                onViewHolderDisposed: (holder: CollectionViewCellHolder) => {
+                    if (Trace.isEnabled()) {
+                        CLog(CLogTypes.log, 'onViewHolderDisposed', holder);
+                    }
+                    if (this._viewHolders) {
+                        this._viewHolders.delete(holder);
+                    }
+                    const isNonSync = holder['defaultItemView'] === true;
+                    const view = isNonSync ? (holder.view as ContentView).content : holder.view;
+                    this.notifyForItemAtIndex(CollectionViewBase.itemDisposingEvent, view, holder.getAdapterPosition(), view.bindingContext, holder);
+                    if (view && view.isLoaded) {
+                        view.callUnloaded();
+                    }
+                    view._isAddedToNativeVisualTree = false;
+                    //@ts-ignore
+                    view.parent = null;
+                    view._tearDownUI();
                 }
-                if (this._viewHolders) {
-                    this._viewHolders.delete(holder);
+            });
+            (this.recycledViewPool as any).mListener = this.recycledViewPoolDisposeListener;
+        }
+        if (Trace.isEnabled() || this.hasListeners(CollectionViewBase.itemRecyclingEvent)) {
+            const recyclerListener = (this.recyclerListener = new androidx.recyclerview.widget.RecyclerView.RecyclerListener({
+                onViewRecycled: (holder: CollectionViewCellHolder) => {
+                    if (Trace.isEnabled()) {
+                        CLog(CLogTypes.log, 'onViewRecycled', this, nativeView, holder);
+                    }
+                    const isNonSync = holder['defaultItemView'] === true;
+                    const view = isNonSync ? (holder.view as ContentView).content : holder.view;
+                    this.notifyForItemAtIndex(CollectionViewBase.itemRecyclingEvent, view, holder.getAdapterPosition(), view.bindingContext, holder);
                 }
-                const isNonSync = holder['defaultItemView'] === true;
-                const view = isNonSync ? (holder.view as ContentView).content : holder.view;
-                this.notifyForItemAtIndex(CollectionViewBase.itemDisposingEvent, view, holder.getAdapterPosition(), view.bindingContext, holder);
-                if (view && view.isLoaded) {
-                    view.callUnloaded();
-                }
-                view._isAddedToNativeVisualTree = false;
-                //@ts-ignore
-                view.parent = null;
-                view._tearDownUI();
-            }
-        });
-        (this.recycledViewPool as any).mListener = this.recycledViewPoolDisposeListener;
-        const recyclerListener = (this.recyclerListener = new androidx.recyclerview.widget.RecyclerView.RecyclerListener({
-            onViewRecycled: (holder: CollectionViewCellHolder) => {
-                if (Trace.isEnabled()) {
-                    CLog(CLogTypes.log, 'onViewRecycled', holder);
-                }
-                const isNonSync = holder['defaultItemView'] === true;
-                const view = isNonSync ? (holder.view as ContentView).content : holder.view;
-                this.notifyForItemAtIndex(CollectionViewBase.itemRecyclingEvent, view, holder.getAdapterPosition(), view.bindingContext, holder);
-            }
-        }));
-        nativeView.setRecyclerListener(recyclerListener);
+            }));
+            nativeView.setRecyclerListener(recyclerListener);
+        }
         nativeView.setRecycledViewPool(this.recycledViewPool);
-        // nativeView.owner = new WeakRef(this);
-        // nativeView.sizeChangedListener = new com.nativescript.collectionview.SizeChangedListener({
-        //     onSizeChanged: (w, h, oldW, oldH) => this.onSizeChanged(w, h),
-        // });
-
-        // const orientation = this._getLayoutManagarOrientation();
-
-        // initGridLayoutManager();
         let layoutManager: androidx.recyclerview.widget.RecyclerView.LayoutManager;
         if (CollectionViewBase.layoutStyles[this.layoutStyle]) {
             layoutManager = CollectionViewBase.layoutStyles[this.layoutStyle].createLayout(this);
         } else {
             layoutManager = new com.nativescript.collectionview.PreCachingGridLayoutManager(this._context, 1);
+            if (this.hasListeners(CollectionView.layoutCompletedEvent)) {
+                (layoutManager as com.nativescript.collectionview.GridLayoutManager).layoutCompletedListener = new com.nativescript.collectionview.GridLayoutManager.LayoutCompletedListener({
+                    onLayoutCompleted:()=>{
+                        this.notify({eventName:CollectionView.layoutCompletedEvent})
+                    }
+                })
+            }
             // layoutManager = new PreCachingGridLayoutManager(this._context, 1);
             // (layoutManager as any).owner = new WeakRef(this);
         }
         // this.spanSize
         nativeView.setLayoutManager(layoutManager);
         nativeView.layoutManager = layoutManager;
+
         nativeView.sizeChangedListener = new com.nativescript.collectionview.SizeChangedListener({
-            onSizeChanged() {},
+            onLayout:(changed, left, top, right, bottom) => changed && this.onLayout(left, top, right, bottom),
             onMeasure: () => this.updateInnerSize()
         });
         this.spanSize = this._getSpanSize;
 
-        const animator = new jp.wasabeef.recyclerview.animators.FadeInAnimator();
-        animator.setInterpolator(new android.view.animation.OvershootInterpolator());
-        animator.setMoveDuration(200);
+        // const animator = new jp.wasabeef.recyclerview.animators.FadeInAnimator();
+        // // animator.setInterpolator(new android.view.animation.OvershootInterpolator());
+        // animator.setMoveDuration(200);
         // Change animations are enabled by default since support-v7-recyclerview v22.
         // Need to disable them when using animation indicator.
         // animator.setSupportsChangeAnimations(false);
 
-        nativeView.setItemAnimator(animator);
+        // nativeView.setItemAnimator(animator);
+        // (nativeView.getItemAnimator() ).setSupportsChangeAnimations(false);
 
         this.refresh();
     }
+    @profile
     public disposeNativeView() {
         // this.eachChildView((view) => {
         //     view.parent._removeView(view);
@@ -290,17 +317,16 @@ export class CollectionView extends CollectionViewBase {
         this._itemTouchHelper = null;
         this._simpleItemTouchCallback = null;
         this.disposeViewHolderViews();
-        this._hlayoutParams = null;
-        this._vlayoutParams = null;
         this.clearTemplateTypes();
 
         super.disposeNativeView();
     }
 
+    @profile
     onLoaded() {
         super.onLoaded();
         this.attachScrollListener();
-        this.refresh();
+        // this.refresh();
     }
 
     _getSpanSize: (item, index) => number;
@@ -335,6 +361,7 @@ export class CollectionView extends CollectionViewBase {
         return this._getSpanSize;
     }
 
+    @profile
     private attachScrollListener() {
         if (this._scrollOrLoadMoreChangeCount > 0 && this.isLoaded) {
             const nativeView = this.nativeViewProtected;
@@ -473,6 +500,7 @@ export class CollectionView extends CollectionViewBase {
     defaultPoolSize = 10;
     desiredPoolSize: Map<string, number> = new Map();
 
+    @profile
     private setNativePoolSize(key: string, nativeIndex: number) {
         if (this.desiredPoolSize.has(key)) {
             this.nativeViewProtected.getRecycledViewPool().setMaxRecycledViews(nativeIndex, this.desiredPoolSize.get(key));
@@ -482,6 +510,7 @@ export class CollectionView extends CollectionViewBase {
             }
         }
     }
+    @profile
     private setPoolSizes() {
         if (!this.nativeViewProtected || !this.templateTypeNumberString) {
             return;
@@ -596,6 +625,9 @@ export class CollectionView extends CollectionViewBase {
     private enumerateViewHolders<T = any>(cb: (v: CollectionViewCellHolder) => T) {
         let result: T, v: CollectionViewCellHolder;
         for (let it = this._viewHolders.values(), cellItemView: CollectionViewCellHolder = null; (cellItemView = it.next().value); ) {
+            if (cellItemView['position'] === undefined  ) {
+                continue;
+            }
             result = cb(cellItemView);
             if (result) {
                 return result;
@@ -643,6 +675,7 @@ export class CollectionView extends CollectionViewBase {
 
     _longPressGesture: androidx.core.view.GestureDetectorCompat;
     _itemTouchListerner: androidx.recyclerview.widget.RecyclerView.OnItemTouchListener;
+    @profile
     public [reorderLongPressEnabledProperty.setNative](value: boolean) {
         if (value) {
             if (!this._longPressGesture) {
@@ -665,6 +698,7 @@ export class CollectionView extends CollectionViewBase {
             }
         }
     }
+    @profile
     public [reorderingEnabledProperty.setNative](value: boolean) {
         if (value) {
             if (!this._simpleItemTouchCallback) {
@@ -677,48 +711,37 @@ export class CollectionView extends CollectionViewBase {
         }
     }
 
+    @profile
     onItemViewLoaderChanged() {
         if (this.itemViewLoader) {
             this.refresh();
         }
     }
+    @profile
     onItemTemplateSelectorChanged(oldValue, newValue) {
         super.onItemTemplateSelectorChanged(oldValue, newValue);
         this.clearTemplateTypes();
         this.refresh();
     }
 
+    @profile
     onItemTemplateChanged(oldValue, newValue) {
         super.onItemTemplateChanged(oldValue, newValue); // TODO: update current template with the new one
         this.refresh();
     }
+    @profile
     onItemTemplatesChanged(oldValue, newValue) {
         super.onItemTemplatesChanged(oldValue, newValue); // TODO: update current template with the new one
         this.refresh();
     }
 
-    private setOnLayoutChangeListener() {
-        if (this.nativeViewProtected) {
-            const owner = this;
-            this.layoutChangeListenerIsSet = true;
-            this.layoutChangeListener =
-                this.layoutChangeListener ||
-                new android.view.View.OnLayoutChangeListener({
-                    onLayoutChange(v: android.view.View, left: number, top: number, right: number, bottom: number, oldLeft: number, oldTop: number, oldRight: number, oldBottom: number): void {
-                        if (left !== oldLeft || top !== oldTop || right !== oldRight || bottom !== oldBottom) {
-                            owner.onLayout(left, top, right, bottom);
-                            if (owner.hasListeners(View.layoutChangedEvent)) {
-                                owner._raiseLayoutChangedEvent();
-                            }
-                        }
-                    }
-                });
-
-            this.nativeViewProtected.addOnLayoutChangeListener(this.layoutChangeListener);
+    @profile
+    updateSpanCount() {
+        if (this.mInPropertiesSet) {
+            this.mShouldUpdateSpanCount = true;
+            return;
         }
-    }
-
-    _updateSpanCount() {
+        this.mShouldUpdateSpanCount = false;
         const layoutManager = this.layoutManager;
         if (layoutManager && layoutManager['setSpanCount']) {
             const newValue = (this.currentSpanCount = this.computeSpanCount());
@@ -729,21 +752,33 @@ export class CollectionView extends CollectionViewBase {
         }
     }
 
+    @profile
     updateInnerSize() {
-        super.updateInnerSize();
-        this._updateSpanCount();
+        if (this.mInPropertiesSet) {
+            this.mShouldUpdateInnerSize = true;
+            return false;
+        }
+        this.mShouldUpdateInnerSize = false;
+        const result = super.updateInnerSize();
+        if (result) {
+            this.updateSpanCount();
+        }
+        return result;
     }
+    @profile
     _onColWidthPropertyChanged(oldValue: CoreTypes.PercentLengthType, newValue: CoreTypes.PercentLengthType) {
-        this._updateSpanCount();
+        this.updateSpanCount();
         super._onColWidthPropertyChanged(oldValue, newValue);
     }
+    @profile
     _onRowHeightPropertyChanged(oldValue: CoreTypes.PercentLengthType, newValue: CoreTypes.PercentLengthType) {
-        this._updateSpanCount();
+        this.updateSpanCount();
         super._onRowHeightPropertyChanged(oldValue, newValue);
     }
+    @profile
     public onLayout(left: number, top: number, right: number, bottom: number) {
         this._layedOut = true;
-        super.onLayout(left, top, right, bottom);
+        // super.onLayout(left, top, right, bottom);
         const p = CollectionViewBase.plugins[this.layoutStyle];
         if (p && p.onLayout) {
             p.onLayout(this, left, top, right, bottom);
@@ -845,9 +880,7 @@ export class CollectionView extends CollectionViewBase {
         if (!view) {
             return;
         }
-        const ids = Array.from(this._viewHolders)
-            .map((s) => s['position'])
-            .filter((s) => s !== null)
+        const ids = Array.from( this.bindedViewHolders)
             .sort((a, b) => a - b);
         this._listViewAdapter.notifyItemRangeChanged(ids[0], ids[ids.length - 1] - ids[0] + 1);
     }
@@ -868,26 +901,34 @@ export class CollectionView extends CollectionViewBase {
     _layedOut = false;
     @profile
     public refresh() {
-        if (!this.nativeViewProtected) {
+        if (this.mInPropertiesSet) {
+            this.mShouldRefresh = true;
             return;
         }
+        this.mShouldRefresh = false;
         const view = this.nativeViewProtected;
-        if (!this.isLoaded) {
-            this._isDataDirty = true;
+        if (!view) {
             return;
         }
+        // seems like we refresh sooner
+        // not sure why it was needed before and not now.
+        // if (!this.isLoaded || this._innerWidth === 0 || this._innerHeight === 0) {
+        //     this._isDataDirty = true;
+        //     return;
+        // }
         this._isDataDirty = false;
         this._lastLayoutKey = this._innerWidth + '_' + this._innerHeight;
         let adapter = this._listViewAdapter;
         if (!adapter) {
-            adapter = this._listViewAdapter = this.createComposedAdapter(this.nativeViewProtected);
+            adapter = this._listViewAdapter = this.createComposedAdapter(view);
             adapter.setHasStableIds(!!this._itemIdGenerator);
             view.setAdapter(adapter);
         } else if (!view.getAdapter()) {
             view.setAdapter(adapter);
         }
 
-        this._updateSpanCount();
+        this.updateSpanCount();
+
         adapter.notifyDataSetChanged();
         this.notify({ eventName: CollectionViewBase.dataPopulatedEvent });
     }
@@ -937,6 +978,7 @@ export class CollectionView extends CollectionViewBase {
         }
     }
 
+    @profile
     private _setPadding(newPadding: { top?: number; right?: number; bottom?: number; left?: number }) {
         const nativeView = this.nativeViewProtected;
         const padding = {
@@ -952,6 +994,7 @@ export class CollectionView extends CollectionViewBase {
         this.updateInnerSize();
     }
 
+    @profile
     private createComposedAdapter(recyclerView: CollectionViewRecyclerView) {
         const adapter = new com.nativescript.collectionview.Adapter();
         adapter.adapterInterface = new com.nativescript.collectionview.AdapterInterface({
@@ -993,12 +1036,14 @@ export class CollectionView extends CollectionViewBase {
         }
     }
 
+    @profile
     public clearTemplateTypes() {
         this._currentNativeItemType = 0;
         this.templateTypeNumberString.clear();
         this.templateStringTypeNumber.clear();
     }
 
+    @profile
     public getItemViewType(position: number) {
         let selectorType: string = 'default';
         if (this._itemTemplateSelector) {
@@ -1019,6 +1064,7 @@ export class CollectionView extends CollectionViewBase {
         // }
         // return resultType;
     }
+    @profile
     public templateKeyToNativeItem(key: string): number {
         if (!this.templateTypeNumberString) {
             this.templateTypeNumberString = new Map<string, number>();
@@ -1041,17 +1087,18 @@ export class CollectionView extends CollectionViewBase {
         }
         return this.templateTypeNumberString.get(key);
     }
-    public nativeItemToTemplateKey(item: number): string {
-        let result: string;
-        this.templateTypeNumberString?.forEach((value, key, map) => {
-            if (value === item) {
-                result = key;
-            }
-        }, this);
+    // public nativeItemToTemplateKey(item: number): string {
+    //     let result: string;
+    //     this.templateTypeNumberString?.forEach((value, key, map) => {
+    //         if (value === item) {
+    //             result = key;
+    //         }
+    //     }, this);
 
-        return result;
-    }
+    //     return result;
+    // }
 
+    @profile
     disposeViewHolderViews() {
         this.enumerateViewHolders((v) => {
             const view = v.view;
@@ -1074,6 +1121,7 @@ export class CollectionView extends CollectionViewBase {
 
     @profile
     public onCreateViewHolder(parent: android.view.ViewGroup, viewType: number) {
+        const start = Date.now()
         let view: View = this.getViewForViewType(ListViewViewTypes.ItemView, this.getKeyByValue(viewType));
         const isNonSync = view === undefined;
         // dont create unecessary StackLayout if template.createView returns. Will happend when not using Vue or angular
@@ -1117,27 +1165,34 @@ export class CollectionView extends CollectionViewBase {
         this._viewHolders.add(holder);
 
         if (Trace.isEnabled()) {
-            CLog(CLogTypes.log, 'onCreateViewHolder', viewType, this.getKeyByValue(viewType));
+            CLog(CLogTypes.log, 'onCreateViewHolder', this, this.nativeView, viewType, this.getKeyByValue(viewType), holder, Date.now() - start, 'ms');
         }
         return holder;
     }
 
+    @profile
     notifyForItemAtIndex(eventName: string, view: View, index: number, bindingContext?, native?: any) {
         const args = { eventName, object: this, index, view, ios: native, bindingContext };
         this.notify(args);
         return args as any;
     }
 
+    bindedViewHolders: Set<number> = new Set()
     @profile
     public onBindViewHolder(holder: CollectionViewCellHolder, position: number) {
+        const start = Date.now();
         if (Trace.isEnabled()) {
-            CLog(CLogTypes.log, 'onBindViewHolder', position);
+            CLog(CLogTypes.log, 'onBindViewHolder', this, this.nativeView, position, holder, holder.view);
         }
         let view = holder.view;
         const isNonSync = holder['defaultItemView'] === true;
         view = isNonSync ? (view as ContentView).content : view;
         const bindingContext = this._prepareItem(view, position);
+        if (holder['position'] !==undefined) {
+            this.bindedViewHolders.delete(holder['position'])
+        }
         holder['position'] = position;
+        this.bindedViewHolders.add(holder['position'])
 
         const args = this.notifyForItemAtIndex(CollectionViewBase.itemLoadingEvent, view, position, bindingContext, holder);
 
@@ -1174,15 +1229,15 @@ export class CollectionView extends CollectionViewBase {
         //     });
         // }
         if (Trace.isEnabled()) {
-            CLog(CLogTypes.log, 'onBindViewHolder done ', position);
+            CLog(CLogTypes.log, 'onBindViewHolder done ', position, Date.now() - start, 'ms');
         }
     }
 
     onViewRecycled(holder) {
-        holder['position'] = null;
+        delete this.bindedViewHolders[holder['position']];
+        holder['position'] = undefined;
     }
 }
-
 interface CollectionViewCellHolder extends com.nativescript.collectionview.CollectionViewCellHolder {
     // tslint:disable-next-line:no-misused-new
     new (androidView: android.view.View): CollectionViewCellHolder;

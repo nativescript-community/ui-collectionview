@@ -24,6 +24,9 @@
         "com.h6ah4i.android.widget.advrecyclerview.animator:BaseItemAnimator", 
         "com.h6ah4i.android.widget.advrecyclerview.animator:GeneralItemAnimator", 
         "com.h6ah4i.android.widget.advrecyclerview.animator:RefactoredDefaultItemAnimator",
+        "jp.wasabeef.recyclerview.animators:FadeInAnimator",
+        "jp.wasabeef.recyclerview.animators:BaseItemAnimator",
+        "android.view.animation:OvershootInterpolator",
         "com.nativescript.collectionview*:*"
     ]
 }
