@@ -94,12 +94,12 @@ function toggleItemHeight(item) {
                 <Label ref="refTextHeader" text="Wallet" class="text-3xl font-bold text-black" horizontalAlignment="center"></Label>
                 <Label ref="refShowBtn" text="close" style="font-size: 24;" height="45" width="45" rotate="90" class="m-icon-round bg-[#0666eb] rounded-full text-white text-center opacity-0 mr-2" horizontalAlignment="right" @tap="toggleStatus"></Label>
             </GridLayout>
-            <CollectionView row="1" height="100%" :items="items" itemIdGenerator="index" :itemOverlap="`-${HEIGH_CARD - 60} 0 0 0`">
+            <CollectionView row="1" height="100%" :items="items" itemIdGenerator="index">
                 <template #default="{ item }">
-                    <GridLayout :height="item.expanded ? 2*HEIGH_CARD - 60 : HEIGH_CARD">
-                        <Card :height="HEIGH_CARD" :data="item" :sharedTransitionTag="`card_${item.id}`" @tap="toggleItemHeight(item)" verticalAlignment="top">
+                    <AbsoluteLayout :height="item.expanded ? HEIGH_CARD: 60">
+                        <Card :height="HEIGH_CARD" :data="item" :sharedTransitionTag="`card_${item.id}`" @tap="toggleItemHeight(item)" verticalAlignment="top" width="100%">
                         </Card>
-                    </GridLayout>
+                    </AbsoluteLayout>
                 </template>
             </CollectionView>
             <!-- <FlexboxLayout height="100%" marginTop="2" flexDirection="column">
