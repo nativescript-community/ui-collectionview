@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.3.3](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.2...v5.3.3) (2023-11-02)
+
+### Bug Fixes
+
+* **ios:** allow overlap ([e1b3fb1](https://github.com/@nativescript-community/ui-collectionview/commit/e1b3fb1de5733964024afccdc315f5d5c8918bcb))
+* **ios:** correctly measure when no rowHeight in horizontal or no colWidth in vertical ([20c86db](https://github.com/@nativescript-community/ui-collectionview/commit/20c86db5d2db94af91d49844d58d6f489fea50ef))
+
 ## [5.3.2](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.1...v5.3.2) (2023-10-20)
 
 ### Bug Fixes
