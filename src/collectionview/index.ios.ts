@@ -815,18 +815,14 @@ export class CollectionView extends CollectionViewBase {
                 }
             }
 
-            const widthMeasureSpec = width
-                ? Utils.layout.makeMeasureSpec(width, Utils.layout.EXACTLY)
-                : horizontal
-                ? infinity
-                : Utils.layout.makeMeasureSpec(this._innerWidth, Utils.layout.UNSPECIFIED);
+            const widthMeasureSpec = width ? Utils.layout.makeMeasureSpec(width, Utils.layout.EXACTLY) : horizontal ? infinity : Utils.layout.makeMeasureSpec(this._innerWidth, Utils.layout.EXACTLY);
             const heightMeasureSpec = height
                 ? Utils.layout.makeMeasureSpec(height, Utils.layout.EXACTLY)
                 : horizontal
-                ? Utils.layout.makeMeasureSpec(this._innerHeight, Utils.layout.UNSPECIFIED)
+                ? Utils.layout.makeMeasureSpec(this._innerHeight, Utils.layout.EXACTLY)
                 : infinity;
             if (Trace.isEnabled()) {
-                CLog(CLogTypes.log, 'measureCell', position, width, height, widthMeasureSpec, heightMeasureSpec);
+                CLog(CLogTypes.log, 'measureCell', position, width, height, this._innerWidth, this._innerHeight, widthMeasureSpec, heightMeasureSpec);
             }
             const measuredSize = View.measureChild(this, cellView, widthMeasureSpec, heightMeasureSpec);
             const result: [number, number] = [measuredSize.measuredWidth, measuredSize.measuredHeight];
