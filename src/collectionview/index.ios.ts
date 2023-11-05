@@ -905,9 +905,9 @@ export class CollectionView extends CollectionViewBase {
             cell = CollectionViewCell.new() as CollectionViewCell;
         }
         // should we force clipsToBounds? not doing so allows more complex layouts like overlapping
-        // cell.clipsToBounds = true;
+        cell.clipsToBounds = true;
         // we set zPosition to allow overlap. Should we make it an option?
-        cell.layer.zPosition = indexPath.row;
+        // cell.layer.zPosition = indexPath.row;
         const firstRender = !cell.view;
         if (Trace.isEnabled()) {
             CLog(CLogTypes.log, 'collectionViewCellForItemAtIndexPath', indexPath.row, templateType, !!cell.view, cell);
