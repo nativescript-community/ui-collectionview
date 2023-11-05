@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.3.4](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.3...v5.3.4) (2023-11-05)
+
+### Bug Fixes
+
+* **ios:** revert breaking change with reordering ([9174def](https://github.com/@nativescript-community/ui-collectionview/commit/9174def98bf45ddd104fc97b1a649a4e454160e5))
+
 ## [5.3.3](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.2...v5.3.3) (2023-11-02)
 
 ### Bug Fixes
