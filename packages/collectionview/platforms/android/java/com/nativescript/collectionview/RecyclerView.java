@@ -58,7 +58,7 @@ public class RecyclerView extends androidx.recyclerview.widget.RecyclerView {
                 int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         if (sizeChangedListener != null) {
-            sizeChangedListener.onMeasure();
+            sizeChangedListener.onMeasure(widthMeasureSpec, heightMeasureSpec);
         }
     }
     @Override

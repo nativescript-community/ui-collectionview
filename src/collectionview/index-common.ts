@@ -68,6 +68,7 @@ export namespace knownMultiTemplates {
 
 export interface Plugin {
     onLayout?: Function;
+    onMeasure?: Function;
 }
 
 function toDevicePixels(length: CoreTypes.PercentLengthType, auto: number = Number.NaN, parentAvailableWidth: number = Number.NaN): number {

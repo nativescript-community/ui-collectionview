@@ -277,7 +277,7 @@ export class CollectionView extends CollectionViewBase {
 
         nativeView.sizeChangedListener = new com.nativescript.collectionview.SizeChangedListener({
             onLayout:(changed, left, top, right, bottom) => changed && this.onLayout(left, top, right, bottom),
-            onMeasure: () => this.updateInnerSize()
+            onMeasure: (widthMeasureSpec, heightMeasureSpec) => this.onMeasure(widthMeasureSpec, heightMeasureSpec)
         });
         this.spanSize = this._getSpanSize;
 
@@ -289,9 +289,9 @@ export class CollectionView extends CollectionViewBase {
         // animator.setSupportsChangeAnimations(false);
 
         // nativeView.setItemAnimator(animator);
-        // (nativeView.getItemAnimator() ).setSupportsChangeAnimations(false);
 
-        this.refresh();
+        // enforce the first refresh for the collectionview to be ready as soon as possible
+        this.refresh(true);
     }
     @profile
     public disposeNativeView() {
@@ -739,7 +739,7 @@ export class CollectionView extends CollectionViewBase {
     updateSpanCount(requestLayout = true) {
         if (this.mInPropertiesSet) {
             this.mShouldUpdateSpanCount = true;
-            return;
+            return false;
         }
         this.mShouldUpdateSpanCount = false;
         const layoutManager = this.layoutManager;
@@ -767,6 +767,13 @@ export class CollectionView extends CollectionViewBase {
         if (result) {
             this.updateSpanCount();
         }
+        // there is no need to call refresh if it was triggered before with same size.
+        // this refresh is just to handle size change
+        const layoutKey = this._innerWidth + '_' + this._innerHeight;
+        if (this._isDataDirty || (this._lastLayoutKey && this._lastLayoutKey !== layoutKey)) {
+            // setTimeout(() => this.refresh(false), 0);
+        }
+        this._lastLayoutKey = layoutKey;
         return result;
     }
     @profile
@@ -791,13 +798,33 @@ export class CollectionView extends CollectionViewBase {
             const p = CollectionViewBase.plugins[k];
             p.onLayout && p.onLayout(this, left, top, right, bottom);
         });
-        // there is no need to call refresh if it was triggered before with same size.
-        // this refresh is just to handle size change
-        const layoutKey = this._innerWidth + '_' + this._innerHeight;
-        if (this._isDataDirty || (this._lastLayoutKey && this._lastLayoutKey !== layoutKey)) {
-            setTimeout(() => this.refresh(false), 0);
+        
+    }
+    @profile
+    public onMeasure(widthMeasureSpec: number, heightMeasureSpec: number) {
+        const lastLayoutKey = this._lastLayoutKey
+        this.updateInnerSize();
+
+        if (lastLayoutKey !== this._lastLayoutKey) {
+            //we need to refresh visible cells so that they measure to the new size
+            // for some reason it gets animated even with setSupportsChangeAnimations(false)
+            // so we clear until it is done
+            const nativeView = this.nativeViewProtected;
+            const animator = nativeView.getItemAnimator()
+            nativeView.setItemAnimator(null);
+            this.refreshVisibleItems()
+            setTimeout(() => {
+                nativeView.setItemAnimator(animator);
+            }, 0);
         }
-        this._lastLayoutKey = layoutKey;
+        const p = CollectionViewBase.plugins[this.layoutStyle];
+        if (p && p.onMeasure) {
+            p.onMeasure(this, widthMeasureSpec,heightMeasureSpec);
+        }
+        this.plugins.forEach((k) => {
+            const p = CollectionViewBase.plugins[k];
+            p.onMeasure && p.onMeasure(this, widthMeasureSpec,heightMeasureSpec);
+        });
     }
     public onSourceCollectionChanged(event: ChangedData<any>) {
         if (!this._listViewAdapter || this._dataUpdatesSuspended) {
@@ -904,7 +931,7 @@ export class CollectionView extends CollectionViewBase {
 
     _layedOut = false;
     @profile
-    public refresh(updateSpanCountRequestsLayout = true) {
+    public refresh(forceRefresh = false, updateSpanCountRequestsLayout = false) {
         if (this.mInPropertiesSet) {
             this.mShouldRefresh = true;
             return;
@@ -916,10 +943,10 @@ export class CollectionView extends CollectionViewBase {
         }
         // seems like we refresh sooner
         // not sure why it was needed before and not now.
-        // if (!this.isLoaded || this._innerWidth === 0 || this._innerHeight === 0) {
-        //     this._isDataDirty = true;
-        //     return;
-        // }
+        if (!forceRefresh && (!this.isLoaded || !this.nativeView)) {
+            this._isDataDirty = true;
+            return;
+        }
         this._isDataDirty = false;
         this._lastLayoutKey = this._innerWidth + '_' + this._innerHeight;
         let adapter = this._listViewAdapter;

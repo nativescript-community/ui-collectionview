@@ -19,7 +19,6 @@ export function installPlugin(app: any) {
     app.use(SwipeMenuPlugin);
     install();
 }
-
 export const demos = [
     { name: 'Card', path: 'card', component: CardHome },
     { name: 'Simple Grid', path: 'simple-grid', component: SimpleGrid },
