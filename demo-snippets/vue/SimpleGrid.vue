@@ -3,11 +3,12 @@
         <ActionBar>
             <Label text="Simple Grid" />
             <ActionItem @tap="refresh" ios.systemIcon="16" ios.position="right" text="refresh" />
+            <ActionItem @tap="test" ios.systemIcon="12" ios.position="right" text="test" />
         </ActionBar>
 
         <GridLayout>
             <CollectionView
-                
+                    :width="collectionViewWidth"
                 :items="itemList"
                 @itemTap="onItemTap"
                 @loadMoreItems="onLoadMoreItems"
@@ -82,7 +83,8 @@ export default {
             { index: 19, name: 'ASBESTOS', color: '#7f8c8d' }
         ]);
         return {
-            itemList: items
+            itemList: items,
+            collectionViewWidth:"100%"
         };
     },
     methods: {
@@ -304,6 +306,9 @@ export default {
         },
         onItemTap({ index, item }) {
             console.log(`EVENT TRIGGERED: Tapped on ${index} ${item.name}`);
+        },
+        test(){
+            this.collectionViewWidth = this.collectionViewWidth == "100%" ? "50%" : "100%"
         },
         refresh() {
             this.itemList = ([

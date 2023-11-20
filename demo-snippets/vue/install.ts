@@ -1,8 +1,10 @@
 import Vue from 'nativescript-vue';
+import {Trace} from '@nativescript/core';
 
 import CollectionView from '@nativescript-community/ui-collectionview/vue';
 import SwipeMenuPlugin from '@nativescript-community/ui-collectionview-swipemenu/vue';
 import install from '@nativescript-community/ui-collectionview-waterfall';
+import { CollectionViewTraceCategory } from '@nativescript-community/ui-collectionview';
 
 import SimpleGrid from './SimpleGrid.vue';
 import HorizontalGrid from './HorizontalGrid.vue';
@@ -17,6 +19,9 @@ export function installPlugin() {
     Vue.use(SwipeMenuPlugin);
     install();
 }
+
+Trace.addCategories(CollectionViewTraceCategory)
+Trace.enable()
 
 export const demos = [
     { name: 'Simple Grid', path: 'simple-grid', component: SimpleGrid },
