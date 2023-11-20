@@ -736,7 +736,7 @@ export class CollectionView extends CollectionViewBase {
     }
 
     @profile
-    updateSpanCount() {
+    updateSpanCount(requestLayout = true) {
         if (this.mInPropertiesSet) {
             this.mShouldUpdateSpanCount = true;
             return;
@@ -747,9 +747,13 @@ export class CollectionView extends CollectionViewBase {
             const newValue = (this.currentSpanCount = this.computeSpanCount());
             if (newValue !== layoutManager['getSpanCount']()) {
                 layoutManager['setSpanCount'](newValue);
-                layoutManager.requestLayout();
+                if (requestLayout) {
+                    layoutManager.requestLayout();
+                }
+                return true;
             }
         }
+        return false;
     }
 
     @profile
@@ -791,7 +795,7 @@ export class CollectionView extends CollectionViewBase {
         // this refresh is just to handle size change
         const layoutKey = this._innerWidth + '_' + this._innerHeight;
         if (this._isDataDirty || (this._lastLayoutKey && this._lastLayoutKey !== layoutKey)) {
-            setTimeout(() => this.refresh(), 0);
+            setTimeout(() => this.refresh(false), 0);
         }
         this._lastLayoutKey = layoutKey;
     }
@@ -900,7 +904,7 @@ export class CollectionView extends CollectionViewBase {
 
     _layedOut = false;
     @profile
-    public refresh() {
+    public refresh(updateSpanCountRequestsLayout = true) {
         if (this.mInPropertiesSet) {
             this.mShouldRefresh = true;
             return;
@@ -926,9 +930,7 @@ export class CollectionView extends CollectionViewBase {
         } else if (!view.getAdapter()) {
             view.setAdapter(adapter);
         }
-
-        this.updateSpanCount();
-
+        this.updateSpanCount(updateSpanCountRequestsLayout);
         adapter.notifyDataSetChanged();
         this.notify({ eventName: CollectionViewBase.dataPopulatedEvent });
     }
