@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.3.7](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.6...v5.3.7) (2023-11-24)
+
+### Features
+
+* `eachChildAsync` method ([f67e604](https://github.com/@nativescript-community/ui-collectionview/commit/f67e604466cdbede83bbf1ea52fe3bd85efa0d2d))
+
 ## [5.3.6](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.5...v5.3.6) (2023-11-22)
 
 ### Bug Fixes
