@@ -635,6 +635,19 @@ export class CollectionView extends CollectionViewBase {
         }
         return result;
     }
+    private async enumerateViewHoldersAsync<T = any>(cb: (v: CollectionViewCellHolder) => Promise<T>) {
+        let result: T, v: CollectionViewCellHolder;
+        for (let it = this._viewHolders.values(), cellItemView: CollectionViewCellHolder = null; (cellItemView = it.next().value); ) {
+            if (cellItemView['position'] === undefined  ) {
+                continue;
+            }
+            result = await cb(cellItemView);
+            if (result) {
+                return result;
+            }
+        }
+        return result;
+    }
     public startDragging(index: number) {
         if (this.reorderEnabled && this._itemTouchHelper) {
             // let viewHolder: CollectionViewCellHolder;
@@ -901,6 +914,22 @@ export class CollectionView extends CollectionViewBase {
                     // in some cases (like item is unloaded from another place (like angular) view.parent becomes undefined)
                     if (view.parent) {
                         callback(view.parent);
+                    }
+                }
+            }
+        });
+    }
+
+    async eachChildAsync(callback) {
+        return this.enumerateViewHoldersAsync(async (v) => {
+            const view = v.view;
+            if (view) {
+                if (view.parent instanceof CollectionView) {
+                    await callback(view);
+                } else {
+                    // in some cases (like item is unloaded from another place (like angular) view.parent becomes undefined)
+                    if (view.parent) {
+                        await callback(view.parent);
                     }
                 }
             }

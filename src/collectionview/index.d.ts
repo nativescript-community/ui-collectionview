@@ -21,6 +21,7 @@ export class CollectionView extends CollectionViewBase {
     // if you use a drag "handle" just pass the touch event main pointer
     // to delta the dragging to be good
     startDragging(index: number, pointer?: Pointer);
+    async eachChildAsync(callback);
 }
 
 export interface CollectionViewItemEventData extends EventData {

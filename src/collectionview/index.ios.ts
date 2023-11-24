@@ -179,6 +179,23 @@ export class CollectionView extends CollectionViewBase {
             }
         });
     }
+
+    async eachChildAsync(callback) {
+        // used for css updates (like theme change)
+        const children = Object.values(this._map);
+        for (let index = 0; index < children.length; index++) {
+            const view = children[index];
+            if (view.parent instanceof CollectionView) {
+                await callback(view);
+            }
+            else {
+                // in some cases (like item is unloaded from another place (like angular) view.parent becomes undefined)
+                if (view.parent) {
+                    await callback(view.parent);
+                }
+            }
+        }
+    }
     public getViewForItemAtIndex(index: number): View {
         let result: View;
         if (this.nativeViewProtected) {
