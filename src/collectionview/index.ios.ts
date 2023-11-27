@@ -380,6 +380,10 @@ export class CollectionView extends CollectionViewBase {
     public onLayout(left: number, top: number, right: number, bottom: number) {
         super.onLayout(left, top, right, bottom);
 
+        const layoutView = this.nativeViewProtected?.collectionViewLayout;
+        if (!layoutView) {
+            return;
+        }
         const p = CollectionViewBase.plugins[this.layoutStyle];
         if (p && p.onLayout) {
             p.onLayout(this, left, top, right, bottom);
@@ -389,10 +393,6 @@ export class CollectionView extends CollectionViewBase {
             p.onLayout && p.onLayout(this, left, top, right, bottom);
         });
 
-        const layoutView = this.nativeViewProtected.collectionViewLayout;
-        if (!layoutView) {
-            return;
-        }
         if (!this._delegate) {
             const layoutStyle = CollectionViewBase.layoutStyles[this.layoutStyle];
             if (layoutStyle && layoutStyle.createDelegate) {
