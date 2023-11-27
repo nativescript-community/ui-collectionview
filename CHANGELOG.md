@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.3.8](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.7...v5.3.8) (2023-11-27)
+
+### Bug Fixes
+
+* **ios:** prevent edge case error in onLayout (native view disposed) ([c927520](https://github.com/@nativescript-community/ui-collectionview/commit/c927520fc3bca7fcd89e0621617ef3999365964f))
+
 ## [5.3.7](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.6...v5.3.7) (2023-11-24)
 
 ### Features
