@@ -172,7 +172,6 @@ export class CollectionView extends CollectionViewBase {
     recycledViewPool: com.nativescript.collectionview.RecycledViewPool;
     recycledViewPoolDisposeListener: com.nativescript.collectionview.RecycledViewPool.ViewPoolListener;
 
-
     mInPropertiesSet = false;
     mShouldUpdateInnerSize = false;
     mShouldUpdateSpanCount = false;
@@ -263,10 +262,10 @@ export class CollectionView extends CollectionViewBase {
             layoutManager = new com.nativescript.collectionview.PreCachingGridLayoutManager(this._context, 1);
             if (this.hasListeners(CollectionView.layoutCompletedEvent)) {
                 (layoutManager as com.nativescript.collectionview.GridLayoutManager).layoutCompletedListener = new com.nativescript.collectionview.GridLayoutManager.LayoutCompletedListener({
-                    onLayoutCompleted:()=>{
-                        this.notify({eventName:CollectionView.layoutCompletedEvent})
+                    onLayoutCompleted: () => {
+                        this.notify({ eventName: CollectionView.layoutCompletedEvent });
                     }
-                })
+                });
             }
             // layoutManager = new PreCachingGridLayoutManager(this._context, 1);
             // (layoutManager as any).owner = new WeakRef(this);
@@ -276,7 +275,7 @@ export class CollectionView extends CollectionViewBase {
         nativeView.layoutManager = layoutManager;
 
         nativeView.sizeChangedListener = new com.nativescript.collectionview.SizeChangedListener({
-            onLayout:(changed, left, top, right, bottom) => changed && this.onLayout(left, top, right, bottom),
+            onLayout: (changed, left, top, right, bottom) => changed && this.onLayout(left, top, right, bottom),
             onMeasure: (widthMeasureSpec, heightMeasureSpec) => this.onMeasure(widthMeasureSpec, heightMeasureSpec)
         });
         this.spanSize = this._getSpanSize;
@@ -625,7 +624,7 @@ export class CollectionView extends CollectionViewBase {
     private enumerateViewHolders<T = any>(cb: (v: CollectionViewCellHolder) => T) {
         let result: T, v: CollectionViewCellHolder;
         for (let it = this._viewHolders.values(), cellItemView: CollectionViewCellHolder = null; (cellItemView = it.next().value); ) {
-            if (cellItemView['position'] === undefined  ) {
+            if (cellItemView['position'] === undefined) {
                 continue;
             }
             result = cb(cellItemView);
@@ -638,7 +637,7 @@ export class CollectionView extends CollectionViewBase {
     private async enumerateViewHoldersAsync<T = any>(cb: (v: CollectionViewCellHolder) => Promise<T>) {
         let result: T, v: CollectionViewCellHolder;
         for (let it = this._viewHolders.values(), cellItemView: CollectionViewCellHolder = null; (cellItemView = it.next().value); ) {
-            if (cellItemView['position'] === undefined  ) {
+            if (cellItemView['position'] === undefined) {
                 continue;
             }
             result = await cb(cellItemView);
@@ -811,11 +810,10 @@ export class CollectionView extends CollectionViewBase {
             const p = CollectionViewBase.plugins[k];
             p.onLayout && p.onLayout(this, left, top, right, bottom);
         });
-        
     }
     @profile
     public onMeasure(widthMeasureSpec: number, heightMeasureSpec: number) {
-        const lastLayoutKey = this._lastLayoutKey
+        const lastLayoutKey = this._lastLayoutKey;
         this.updateInnerSize();
 
         if (lastLayoutKey !== this._lastLayoutKey) {
@@ -823,20 +821,20 @@ export class CollectionView extends CollectionViewBase {
             // for some reason it gets animated even with setSupportsChangeAnimations(false)
             // so we clear until it is done
             const nativeView = this.nativeViewProtected;
-            const animator = nativeView.getItemAnimator()
+            const animator = nativeView.getItemAnimator();
             nativeView.setItemAnimator(null);
-            this.refreshVisibleItems()
+            this.refreshVisibleItems();
             setTimeout(() => {
                 nativeView.setItemAnimator(animator);
             }, 0);
         }
         const p = CollectionViewBase.plugins[this.layoutStyle];
         if (p && p.onMeasure) {
-            p.onMeasure(this, widthMeasureSpec,heightMeasureSpec);
+            p.onMeasure(this, widthMeasureSpec, heightMeasureSpec);
         }
         this.plugins.forEach((k) => {
             const p = CollectionViewBase.plugins[k];
-            p.onMeasure && p.onMeasure(this, widthMeasureSpec,heightMeasureSpec);
+            p.onMeasure && p.onMeasure(this, widthMeasureSpec, heightMeasureSpec);
         });
     }
     public onSourceCollectionChanged(event: ChangedData<any>) {
@@ -940,8 +938,7 @@ export class CollectionView extends CollectionViewBase {
         if (!view) {
             return;
         }
-        const ids = Array.from( this.bindedViewHolders)
-            .sort((a, b) => a - b);
+        const ids = Array.from(this.bindedViewHolders).sort((a, b) => a - b);
         this._listViewAdapter.notifyItemRangeChanged(ids[0], ids[ids.length - 1] - ids[0] + 1);
     }
     public isItemAtIndexVisible(index: number): boolean {
@@ -1179,7 +1176,7 @@ export class CollectionView extends CollectionViewBase {
 
     @profile
     public onCreateViewHolder(parent: android.view.ViewGroup, viewType: number) {
-        const start = Date.now()
+        const start = Date.now();
         let view: View = this.getViewForViewType(ListViewViewTypes.ItemView, this.getKeyByValue(viewType));
         const isNonSync = view === undefined;
         // dont create unecessary StackLayout if template.createView returns. Will happend when not using Vue or angular
@@ -1235,7 +1232,7 @@ export class CollectionView extends CollectionViewBase {
         return args as any;
     }
 
-    bindedViewHolders: Set<number> = new Set()
+    bindedViewHolders: Set<number> = new Set();
     @profile
     public onBindViewHolder(holder: CollectionViewCellHolder, position: number) {
         const start = Date.now();
@@ -1246,11 +1243,11 @@ export class CollectionView extends CollectionViewBase {
         const isNonSync = holder['defaultItemView'] === true;
         view = isNonSync ? (view as ContentView).content : view;
         const bindingContext = this._prepareItem(view, position);
-        if (holder['position'] !==undefined) {
-            this.bindedViewHolders.delete(holder['position'])
+        if (holder['position'] !== undefined) {
+            this.bindedViewHolders.delete(holder['position']);
         }
         holder['position'] = position;
-        this.bindedViewHolders.add(holder['position'])
+        this.bindedViewHolders.add(holder['position']);
 
         const args = this.notifyForItemAtIndex(CollectionViewBase.itemLoadingEvent, view, position, bindingContext, holder);
 
