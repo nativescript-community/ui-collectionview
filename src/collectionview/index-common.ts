@@ -173,6 +173,7 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     }
 
     public abstract refresh();
+    public abstract eachChildAsync(callback);
     public abstract refreshVisibleItems();
     public abstract isItemAtIndexVisible(index: number);
     public abstract scrollToIndex(index: number, animated: boolean);
@@ -396,7 +397,6 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     private _itemTemplateSelectorBindable;
     _itemTemplateSelector: Function;
     onItemTemplateSelectorChanged(oldValue, newValue) {
-        const start = Date.now()
         if (typeof newValue === 'string') {
             if (!this._itemTemplateSelectorBindable) {
                 this._itemTemplateSelectorBindable = new ProxyViewContainer();
@@ -421,7 +421,6 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
 
     @profile
     onItemIdGeneratorChanged(oldValue, newValue) {
-        const start = Date.now()
         if (typeof newValue === 'string') {
             if (!this._itemIdGeneratorBindable) {
                 this._itemIdGeneratorBindable = new ProxyViewContainer();
@@ -459,7 +458,6 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
 
     @profile
     onItemTemplatesChanged(oldValue, newValue) {
-        const start = Date.now()
         this._itemTemplatesInternal = new Map();
         if (newValue) {
             newValue.forEach((t) => {
@@ -487,7 +485,6 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     }
     @profile
     onItemsChanged(oldValue, newValue) {
-        const start = Date.now()
         const getItem = newValue && (newValue as ItemsSource).getItem;
         this.isItemsSourceIn = typeof getItem === 'function';
         // we override the method to prevent the test on every getItem
@@ -503,7 +500,6 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     }
     spanSize: (item, index: number) => number;
     onSpanSizeChanged = (oldValue, newValue) => {
-        const start = Date.now()
         this.spanSize = newValue;
         this.refresh();
     };

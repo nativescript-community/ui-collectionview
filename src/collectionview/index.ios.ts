@@ -187,8 +187,7 @@ export class CollectionView extends CollectionViewBase {
             const view = children[index];
             if (view.parent instanceof CollectionView) {
                 await callback(view);
-            }
-            else {
+            } else {
                 // in some cases (like item is unloaded from another place (like angular) view.parent becomes undefined)
                 if (view.parent) {
                     await callback(view.parent);
@@ -380,6 +379,10 @@ export class CollectionView extends CollectionViewBase {
     public onLayout(left: number, top: number, right: number, bottom: number) {
         super.onLayout(left, top, right, bottom);
 
+        const layoutView = this.nativeViewProtected?.collectionViewLayout;
+        if (!layoutView) {
+            return;
+        }
         const p = CollectionViewBase.plugins[this.layoutStyle];
         if (p && p.onLayout) {
             p.onLayout(this, left, top, right, bottom);
@@ -389,10 +392,6 @@ export class CollectionView extends CollectionViewBase {
             p.onLayout && p.onLayout(this, left, top, right, bottom);
         });
 
-        const layoutView = this.nativeViewProtected.collectionViewLayout;
-        if (!layoutView) {
-            return;
-        }
         if (!this._delegate) {
             const layoutStyle = CollectionViewBase.layoutStyles[this.layoutStyle];
             if (layoutStyle && layoutStyle.createDelegate) {
@@ -837,8 +836,8 @@ export class CollectionView extends CollectionViewBase {
             const heightMeasureSpec = height
                 ? Utils.layout.makeMeasureSpec(height, Utils.layout.EXACTLY)
                 : horizontal
-                ? Utils.layout.makeMeasureSpec(this._innerHeight, Utils.layout.EXACTLY)
-                : infinity;
+                  ? Utils.layout.makeMeasureSpec(this._innerHeight, Utils.layout.EXACTLY)
+                  : infinity;
             if (Trace.isEnabled()) {
                 CLog(CLogTypes.log, 'measureCell', position, width, height, this._innerWidth, this._innerHeight, widthMeasureSpec, heightMeasureSpec);
             }
