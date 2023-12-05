@@ -189,7 +189,7 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
         this._innerWidth = width - this.effectivePaddingLeft - this.effectivePaddingRight;
         if (this.colWidth) {
             let newValue = toDevicePixels(this.colWidth, autoEffectiveColWidth, this._innerWidth); // We cannot use 0 for auto as it throws for android.
-            if (global.isAndroid) {
+            if (__ANDROID__) {
                 newValue = Math.floor(newValue);
             }
             if (newValue !== this._effectiveColWidth) {
@@ -200,7 +200,7 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
         this._innerHeight = height - this.effectivePaddingTop - this.effectivePaddingBottom;
         if (this.rowHeight) {
             let newValue = toDevicePixels(this.rowHeight, autoEffectiveRowHeight, this._innerHeight);
-            if (global.isAndroid) {
+            if (__ANDROID__) {
                 newValue = Math.floor(newValue);
             }
             if (newValue !== this._effectiveRowHeight) {
