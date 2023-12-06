@@ -555,14 +555,21 @@ export class CollectionView extends CollectionViewBase {
     }
     decorator: com.nativescript.collectionview.OverlapDecoration;
     [itemOverlapProperty.setNative](value: CoreTypes.LengthType[]) {
-        if (!this.decorator) {
-            this.decorator = new com.nativescript.collectionview.OverlapDecoration();
-            this.nativeViewProtected.addItemDecoration(this.decorator);
+        if (!value) {
+            if (this.decorator) {
+                this.nativeViewProtected.removeItemDecoration(this.decorator);
+                this.decorator = null;
+            }
+        } else {
+            if (!this.decorator) {
+                this.decorator = new com.nativescript.collectionview.OverlapDecoration();
+                this.nativeViewProtected.addItemDecoration(this.decorator);
+            }
+            this.decorator.top = Length.toDevicePixels(value[0], 0);
+            this.decorator.right = Length.toDevicePixels(value[1], 0);
+            this.decorator.bottom = Length.toDevicePixels(value[2], 0);
+            this.decorator.left = Length.toDevicePixels(value[3], 0);
         }
-        this.decorator.top = Length.toDevicePixels(value[0], 0);
-        this.decorator.right = Length.toDevicePixels(value[1], 0);
-        this.decorator.bottom = Length.toDevicePixels(value[2], 0);
-        this.decorator.left = Length.toDevicePixels(value[3], 0);
     }
 
     public [orientationProperty.getDefault](): Orientation {

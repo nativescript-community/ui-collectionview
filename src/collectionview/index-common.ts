@@ -122,6 +122,8 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     public colWidth: CoreTypes.PercentLengthType;
     public verticalSpacing: CoreTypes.LengthType;
     public horizontalSpacing: CoreTypes.LengthType;
+
+    public itemOverlap: CoreTypes.LengthType[];
     public _innerWidth: number = 0;
     public _innerHeight: number = 0;
     public _effectiveRowHeight: number;
