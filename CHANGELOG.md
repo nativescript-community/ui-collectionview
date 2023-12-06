@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.3.10](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.9...v5.3.10) (2023-12-06)
+
+### Bug Fixes
+
+* **collectionview:** `itemOverlap` fixes ([a473aa9](https://github.com/@nativescript-community/ui-collectionview/commit/a473aa96e5fcc5529081bfc1048141f672a223a2))
+* **collectionview:** bring back `displayItem` event ([0c73f3c](https://github.com/@nativescript-community/ui-collectionview/commit/0c73f3c85c0435641b931330b718dc19b4a259ed))
+* **collectionview:** native api usage fix ([d0e544b](https://github.com/@nativescript-community/ui-collectionview/commit/d0e544bf2f651213f1a3c6a30cabe0cc48a0c2ca))
+* **swipemenu:** `swipeMenuId` on the collectionView to allow the swipeMenu to not be the root child of the template ([ab4addb](https://github.com/@nativescript-community/ui-collectionview/commit/ab4addb0bbac8be0de0b0cd53aa209e8d4085e12))
+
 ## [5.3.9](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.8...v5.3.9) (2023-11-30)
 
 **Note:** Version bump only for package ui-collectionview
