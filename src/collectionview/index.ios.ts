@@ -20,7 +20,15 @@ import {
     profile
 } from '@nativescript/core';
 import { Pointer } from '@nativescript/core/ui/gestures';
-import { CollectionViewItemEventData, Orientation, reorderLongPressEnabledProperty, reorderingEnabledProperty, reverseLayoutProperty, scrollBarIndicatorVisibleProperty } from '.';
+import {
+    CollectionViewItemDisplayEventData,
+    CollectionViewItemEventData,
+    Orientation,
+    reorderLongPressEnabledProperty,
+    reorderingEnabledProperty,
+    reverseLayoutProperty,
+    scrollBarIndicatorVisibleProperty
+} from '.';
 import { CLog, CLogTypes, CollectionViewBase, ListViewViewTypes, isBounceEnabledProperty, isScrollEnabledProperty, itemTemplatesProperty, orientationProperty } from './index-common';
 
 export * from './index-common';
@@ -955,13 +963,13 @@ export class CollectionView extends CollectionViewBase {
                 });
             }
         }
-        // if (this.hasListeners(CollectionViewBase.displayItemEvent) ) {
-        //     this.notify<CollectionViewItemDisplayEventData>({
-        //         eventName: CollectionViewBase.displayItemEvent,
-        //         index:indexPath.row,
-        //         object: this,
-        //     });
-        // }
+        if (this.hasListeners(CollectionViewBase.displayItemEvent)) {
+            this.notify<CollectionViewItemDisplayEventData>({
+                eventName: CollectionViewBase.displayItemEvent,
+                index: indexPath.row,
+                object: this
+            });
+        }
 
         if (cell.preservesSuperviewLayoutMargins) {
             cell.preservesSuperviewLayoutMargins = false;

@@ -18,7 +18,16 @@ import {
     paddingTopProperty,
     profile
 } from '@nativescript/core';
-import { CollectionViewItemEventData, Orientation, itemOverlapProperty, reorderLongPressEnabledProperty, reorderingEnabledProperty, reverseLayoutProperty, scrollBarIndicatorVisibleProperty } from '.';
+import {
+    CollectionViewItemDisplayEventData,
+    CollectionViewItemEventData,
+    Orientation,
+    itemOverlapProperty,
+    reorderLongPressEnabledProperty,
+    reorderingEnabledProperty,
+    reverseLayoutProperty,
+    scrollBarIndicatorVisibleProperty
+} from '.';
 import { CLog, CLogTypes, CollectionViewBase, ListViewViewTypes, isScrollEnabledProperty, orientationProperty } from './index-common';
 
 export * from './index-common';
@@ -1283,13 +1292,13 @@ export class CollectionView extends CollectionViewBase {
             view.height = Utils.layout.toDeviceIndependentPixels(height);
         }
 
-        // if (this.hasListeners(CollectionViewBase.displayItemEvent) ) {
-        //     this.notify<CollectionViewItemDisplayEventData>({
-        //         eventName: CollectionViewBase.displayItemEvent,
-        //         index:position,
-        //         object: this,
-        //     });
-        // }
+        if (this.hasListeners(CollectionViewBase.displayItemEvent)) {
+            this.notify<CollectionViewItemDisplayEventData>({
+                eventName: CollectionViewBase.displayItemEvent,
+                index: position,
+                object: this
+            });
+        }
         if (Trace.isEnabled()) {
             CLog(CLogTypes.log, 'onBindViewHolder done ', position, Date.now() - start, 'ms');
         }
