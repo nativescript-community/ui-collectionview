@@ -886,6 +886,7 @@ export class CollectionView extends CollectionViewBase {
 
     private _removeContainer(cell: CollectionViewCell): void {
         const view = cell.view;
+        this.notifyForItemAtIndex(CollectionViewBase.itemDisposingEvent, view, cell.currentIndex, view.bindingContext, cell);
         // This is to clear the StackLayout that is used to wrap ProxyViewContainer instances.
         if (!(view.parent instanceof CollectionView)) {
             this._removeView(view.parent);

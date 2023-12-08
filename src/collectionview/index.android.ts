@@ -1174,6 +1174,7 @@ export class CollectionView extends CollectionViewBase {
         this.enumerateViewHolders((v) => {
             const view = v.view;
             if (view) {
+                this.notifyForItemAtIndex(CollectionViewBase.itemDisposingEvent, view, v.getAdapterPosition(), view.bindingContext, v);
                 if (view.isLoaded) {
                     view.callUnloaded();
                 }

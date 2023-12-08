@@ -96,50 +96,46 @@ export const CollectionView = defineComponent({
             if (event.view) {
                 event.view._batchUpdate(() => {
                     // todo: handle the case where the slot is not found
-                    render(vnode!, container);
+                    render(vnode, container);
                 });
             } else {
                 // todo: handle the case where the slot is not found
-                render(vnode!, container);
+                render(vnode, container);
             }
-            
 
             const cellEl = toRaw(vnode?.el?.nativeView);
             cellEl[LIST_CELL_ID] = id;
             cellEl[LIST_CELL_CONTAINER] = container;
             event.view = cellEl;
-
         }
 
         // render all realized templates as children
-        const cellVNODES = () =>
-            Object.entries(cells.value).map(([id, entry]) => {
-                const vnodes: VNode[] = ctx.slots[entry.slotName]?.(entry.itemCtx) ?? [
-                    // default template is just a label
-                    h('Label', {
-                        text: entry.itemCtx[props.alias]
-                    })
-                ];
+        // const cellVNODES = () =>
+        //     Object.entries(cells.value).map(([id, entry]) => {
+        //         const vnodes: VNode[] = ctx.slots[entry.slotName]?.(entry.itemCtx) ?? [
+        //             // default template is just a label
+        //             h('Label', {
+        //                 text: entry.itemCtx[props.alias]
+        //             })
+        //         ];
 
-                if (vnodes.length > 1) {
-                    warn(`ListView template must contain a single root element. Found: ${vnodes.length}. Only the first one will be used.`);
-                }
+        //         if (vnodes.length > 1) {
+        //             warn(`ListView template must contain a single root element. Found: ${vnodes.length}. Only the first one will be used.`);
+        //         }
 
-                const vnode: VNode = vnodes[0];
-                // set the key to the list cell id, so we can find this cell later...
-                vnode.key = id;
+        //         const vnode: VNode = vnodes[0];
+        //         // set the key to the list cell id, so we can find this cell later...
+        //         vnode.key = id;
 
-                return vnode;
-            });
+        //         return vnode;
+        //     });
 
         return () =>
-            h(
-                'NativeCollectionView',
-                {
-                    ref: collectionView,
-                    items: props.items,
-                    itemTemplates,
-                    onItemLoading
-                });
+            h('NativeCollectionView', {
+                ref: collectionView,
+                items: props.items,
+                itemTemplates,
+                onItemLoading
+            });
     }
 });
