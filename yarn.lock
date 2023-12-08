@@ -3458,7 +3458,7 @@ __metadata:
 
 "@nativescript-community/plugin-seed-tools@file:tools::locator=root-workspace-0b6124%40workspace%3A.":
   version: 1.0.0
-  resolution: "@nativescript-community/plugin-seed-tools@file:tools#tools::hash=d2504b&locator=root-workspace-0b6124%40workspace%3A."
+  resolution: "@nativescript-community/plugin-seed-tools@file:tools#tools::hash=42483b&locator=root-workspace-0b6124%40workspace%3A."
   dependencies:
     "@angular/animations": "npm:~16.2.8"
     "@angular/common": "npm:~16.2.8"
@@ -3522,7 +3522,7 @@ __metadata:
     vue: "npm:~2.6.14"
     yargs: "npm:^17.7.2"
     zone.js: "npm:~0.14.0"
-  checksum: a3ac822e0f0d04a3c3becf8f962ec8d1f3eb29df991fd5aad1da2ffbfcbbe150f9bb62ae99f6b226fe8e912e30f3c28174f38d951f68b363aa0518c0883a0984
+  checksum: 3cb32948f66a100769618b8738767771fbf2fcb6e61b5092fb4125d4cb5b5a630c93786c7713e598271ca7c6a8bc79e04c8aaf099e056d2ed9fd5ebf1fb25acd
   languageName: node
   linkType: hard
 
@@ -3552,7 +3552,7 @@ __metadata:
   resolution: "@nativescript-community/ui-collectionview-swipemenu@workspace:packages/swipemenu"
   dependencies:
     "@nativescript-community/class-mixins": "npm:^1.0.0"
-    "@nativescript-community/ui-collectionview": "npm:^5.3.8"
+    "@nativescript-community/ui-collectionview": "npm:^5.3.10"
     "@nativescript-community/ui-drawer": "npm:^0.1.13"
   languageName: unknown
   linkType: soft
@@ -3561,11 +3561,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@nativescript-community/ui-collectionview-waterfall@workspace:packages/waterfall"
   dependencies:
-    "@nativescript-community/ui-collectionview": "npm:^5.3.8"
+    "@nativescript-community/ui-collectionview": "npm:^5.3.10"
   languageName: unknown
   linkType: soft
 
-"@nativescript-community/ui-collectionview@npm:*, @nativescript-community/ui-collectionview@npm:^5.3.8, @nativescript-community/ui-collectionview@workspace:packages/collectionview":
+"@nativescript-community/ui-collectionview@npm:*, @nativescript-community/ui-collectionview@npm:^5.3.10, @nativescript-community/ui-collectionview@workspace:packages/collectionview":
   version: 0.0.0-use.local
   resolution: "@nativescript-community/ui-collectionview@workspace:packages/collectionview"
   languageName: unknown
