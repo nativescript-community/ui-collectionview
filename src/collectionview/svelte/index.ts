@@ -38,12 +38,10 @@ class SvelteKeyedTemplate {
         // it will trigger uncessary {N} component updates because the parent view is already attached
 
         (nativeEl as any).__SvelteComponentBuilder__ = (parentView, props) => {
-            profile('createView.__SvelteComponentBuilder__', () => {
-                (nativeEl as any).__SvelteComponent__ = new this.component({
-                    target: parentView,
-                    props
-                });
-            })();
+            (nativeEl as any).__SvelteComponent__ = new this.component({
+                target: parentView,
+                props
+            });
         };
         return nativeEl;
     }
