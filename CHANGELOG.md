@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.3.12](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.11...v5.3.12) (2024-01-14)
+
+### Bug Fixes
+
+* prevent requestLayout in Akylas fork while updating cell in svelte ([4a1239b](https://github.com/@nativescript-community/ui-collectionview/commit/4a1239b5160f2b60e802c099a1fca301e9ff5014))
+
 ## [5.3.11](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.10...v5.3.11) (2023-12-08)
 
 ### Bug Fixes
