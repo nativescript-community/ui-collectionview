@@ -141,10 +141,15 @@ export default class CollectionViewViewElement extends NativeViewElementNode<Col
             // ensure we dont do unnecessary tasks if index did not change
             // console.log('updateListItem', args.index,  _view.__CollectionViewCurrentIndex__);
             _view.__CollectionViewCurrentIndex__ = args.index;
+            // _suspendNativeUpdates with special parameters for Akylas fork to preven requestLayout
+            //@ts-ignore
+            _view._suspendNativeUpdates(0, true, true);
             _view._batchUpdate(() => {
                 componentInstance.$set(props);
                 flush(); // we need to flush to make sure update is applied right away
             });
+            //@ts-ignore
+            _view._resumeNativeUpdates(0, true, true, true);
         }
     }
 
