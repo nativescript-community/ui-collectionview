@@ -20,6 +20,7 @@
         "androidx.recyclerview.widget:RecyclerView.RecyclerListener", 
         "androidx.recyclerview.widget:RecyclerView.RecycledViewPool", 
         "androidx.recyclerview.widget:RecyclerView.ViewHolder", 
+        "androidx.recyclerview.widget:RecyclerView.ItemDecoration", 
         "androidx.recyclerview.widget:SimpleItemAnimator", 
         "com.h6ah4i.android.widget.advrecyclerview.animator:BaseItemAnimator", 
         "com.h6ah4i.android.widget.advrecyclerview.animator:GeneralItemAnimator", 

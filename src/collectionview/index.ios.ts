@@ -20,7 +20,15 @@ import {
     profile
 } from '@nativescript/core';
 import { Pointer } from '@nativescript/core/ui/gestures';
-import { CollectionViewItemEventData, Orientation, reorderLongPressEnabledProperty, reorderingEnabledProperty, reverseLayoutProperty, scrollBarIndicatorVisibleProperty } from '.';
+import {
+    CollectionViewItemDisplayEventData,
+    CollectionViewItemEventData,
+    Orientation,
+    reorderLongPressEnabledProperty,
+    reorderingEnabledProperty,
+    reverseLayoutProperty,
+    scrollBarIndicatorVisibleProperty
+} from '.';
 import { CLog, CLogTypes, CollectionViewBase, ListViewViewTypes, isBounceEnabledProperty, isScrollEnabledProperty, itemTemplatesProperty, orientationProperty } from './index-common';
 
 export * from './index-common';
@@ -891,6 +899,7 @@ export class CollectionView extends CollectionViewBase {
 
     private _removeContainer(cell: CollectionViewCell): void {
         const view = cell.view;
+        this.notifyForItemAtIndex(CollectionViewBase.itemDisposingEvent, view, cell.currentIndex, view.bindingContext, cell);
         // This is to clear the StackLayout that is used to wrap ProxyViewContainer instances.
         if (!(view.parent instanceof CollectionView)) {
             this._removeView(view.parent);
@@ -934,10 +943,14 @@ export class CollectionView extends CollectionViewBase {
         if (!cell) {
             cell = CollectionViewCell.new() as CollectionViewCell;
         }
-        // should we force clipsToBounds? not doing so allows more complex layouts like overlapping
-        cell.clipsToBounds = true;
-        // we set zPosition to allow overlap. Should we make it an option?
-        // cell.layer.zPosition = indexPath.row;
+        if (this.itemOverlap) {
+            // should we force clipsToBounds? not doing so allows more complex layouts like overlapping
+            cell.clipsToBounds = false;
+            // we set zPosition to allow overlap. Should we make it an option?
+            cell.layer.zPosition = indexPath.row;
+        } else {
+            cell.clipsToBounds = true;
+        }
         const firstRender = !cell.view;
         if (Trace.isEnabled()) {
             CLog(CLogTypes.log, 'collectionViewCellForItemAtIndexPath', indexPath.row, templateType, !!cell.view, cell);
@@ -964,13 +977,13 @@ export class CollectionView extends CollectionViewBase {
                 });
             }
         }
-        // if (this.hasListeners(CollectionViewBase.displayItemEvent) ) {
-        //     this.notify<CollectionViewItemDisplayEventData>({
-        //         eventName: CollectionViewBase.displayItemEvent,
-        //         index:indexPath.row,
-        //         object: this,
-        //     });
-        // }
+        if (this.hasListeners(CollectionViewBase.displayItemEvent)) {
+            this.notify<CollectionViewItemDisplayEventData>({
+                eventName: CollectionViewBase.displayItemEvent,
+                index: indexPath.row,
+                object: this
+            });
+        }
 
         if (cell.preservesSuperviewLayoutMargins) {
             cell.preservesSuperviewLayoutMargins = false;

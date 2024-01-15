@@ -18,7 +18,16 @@ import {
     paddingTopProperty,
     profile
 } from '@nativescript/core';
-import { CollectionViewItemEventData, Orientation, itemOverlapProperty, reorderLongPressEnabledProperty, reorderingEnabledProperty, reverseLayoutProperty, scrollBarIndicatorVisibleProperty } from '.';
+import {
+    CollectionViewItemDisplayEventData,
+    CollectionViewItemEventData,
+    Orientation,
+    itemOverlapProperty,
+    reorderLongPressEnabledProperty,
+    reorderingEnabledProperty,
+    reverseLayoutProperty,
+    scrollBarIndicatorVisibleProperty
+} from '.';
 import { CLog, CLogTypes, CollectionViewBase, ListViewViewTypes, isScrollEnabledProperty, orientationProperty } from './index-common';
 
 export * from './index-common';
@@ -555,14 +564,21 @@ export class CollectionView extends CollectionViewBase {
     }
     decorator: com.nativescript.collectionview.OverlapDecoration;
     [itemOverlapProperty.setNative](value: CoreTypes.LengthType[]) {
-        if (!this.decorator) {
-            this.decorator = new com.nativescript.collectionview.OverlapDecoration();
-            this.nativeViewProtected.addItemDecoration(this.decorator);
+        if (!value) {
+            if (this.decorator) {
+                this.nativeViewProtected.removeItemDecoration(this.decorator);
+                this.decorator = null;
+            }
+        } else {
+            if (!this.decorator) {
+                this.decorator = new com.nativescript.collectionview.OverlapDecoration();
+                this.nativeViewProtected.addItemDecoration(this.decorator);
+            }
+            this.decorator.top = Length.toDevicePixels(value[0], 0);
+            this.decorator.right = Length.toDevicePixels(value[1], 0);
+            this.decorator.bottom = Length.toDevicePixels(value[2], 0);
+            this.decorator.left = Length.toDevicePixels(value[3], 0);
         }
-        this.decorator.top = Length.toDevicePixels(value[0], 0);
-        this.decorator.right = Length.toDevicePixels(value[1], 0);
-        this.decorator.bottom = Length.toDevicePixels(value[2], 0);
-        this.decorator.left = Length.toDevicePixels(value[3], 0);
     }
 
     public [orientationProperty.getDefault](): Orientation {
@@ -1158,6 +1174,7 @@ export class CollectionView extends CollectionViewBase {
         this.enumerateViewHolders((v) => {
             const view = v.view;
             if (view) {
+                this.notifyForItemAtIndex(CollectionViewBase.itemDisposingEvent, view, v.getAdapterPosition(), view.bindingContext, v);
                 if (view.isLoaded) {
                     view.callUnloaded();
                 }
@@ -1276,13 +1293,13 @@ export class CollectionView extends CollectionViewBase {
             view.height = Utils.layout.toDeviceIndependentPixels(height);
         }
 
-        // if (this.hasListeners(CollectionViewBase.displayItemEvent) ) {
-        //     this.notify<CollectionViewItemDisplayEventData>({
-        //         eventName: CollectionViewBase.displayItemEvent,
-        //         index:position,
-        //         object: this,
-        //     });
-        // }
+        if (this.hasListeners(CollectionViewBase.displayItemEvent)) {
+            this.notify<CollectionViewItemDisplayEventData>({
+                eventName: CollectionViewBase.displayItemEvent,
+                index: position,
+                object: this
+            });
+        }
         if (Trace.isEnabled()) {
             CLog(CLogTypes.log, 'onBindViewHolder done ', position, Date.now() - start, 'ms');
         }

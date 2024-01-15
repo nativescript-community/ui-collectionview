@@ -23,6 +23,7 @@ export class CollectionViewWithSwipeMenu extends CollectionView {
     public static swipeMenuCloseEvent = 'swipeMenuClose';
     onlyOneMenuOpened;
     openedDrawerIndex: number;
+    swipeMenuId: string;
     public setItemAtIndex(index: number, item): any {
         // will be overriden in onItemsChangedInternal
         const thisItems = this.items as ItemsSource;
@@ -55,10 +56,15 @@ export class CollectionViewWithSwipeMenu extends CollectionView {
                 return;
             }
             const view = this.getViewForItemAtIndex(openedIndex);
-            let drawer = view;
-            // console.log('closeCurrentMenu', openedIndex, view, view.bindingContext);
-            if (drawer instanceof ContentView) {
-                drawer = drawer.content;
+            let drawer;
+            if (this.swipeMenuId && view) {
+                drawer = view.getViewById(this.swipeMenuId);
+            } else {
+                drawer = view;
+                // console.log('closeCurrentMenu', openedIndex, view, view.bindingContext);
+                if (drawer instanceof ContentView) {
+                    drawer = drawer.content;
+                }
             }
             if (drawer instanceof Drawer) {
                 drawer.close();

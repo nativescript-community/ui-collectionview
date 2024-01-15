@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.3.12](https://github.com/nativescript-community/ui-collectionview/compare/v5.3.11...v5.3.12) (2024-01-14)
+
+**Note:** Version bump only for package @nativescript-community/ui-collectionview
+
+## [5.3.11](https://github.com/nativescript-community/ui-collectionview/compare/v5.3.10...v5.3.11) (2023-12-08)
+
+**Note:** Version bump only for package @nativescript-community/ui-collectionview
+
+## [5.3.10](https://github.com/nativescript-community/ui-collectionview/compare/v5.3.9...v5.3.10) (2023-12-06)
+
+### Bug Fixes
+
+* **collectionview:** native api usage fix ([d0e544b](https://github.com/nativescript-community/ui-collectionview/commit/d0e544bf2f651213f1a3c6a30cabe0cc48a0c2ca))
+
 ## [5.3.9](https://github.com/nativescript-community/ui-collectionview/compare/v5.3.8...v5.3.9) (2023-11-30)
 
 **Note:** Version bump only for package @nativescript-community/ui-collectionview
