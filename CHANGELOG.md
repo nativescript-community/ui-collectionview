@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.3.13](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.12...v5.3.13) (2024-01-15)
+
+### Bug Fixes
+
+* **ui-collectionview:** iOS fix when changing rowHeight/colWidth dynamically ([d643e6a](https://github.com/@nativescript-community/ui-collectionview/commit/d643e6a16cc33b5c7077102bba5ec456ddaa397e))
+
 ## [5.3.12](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.11...v5.3.12) (2024-01-14)
 
 ### Bug Fixes
