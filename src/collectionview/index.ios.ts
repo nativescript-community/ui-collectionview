@@ -409,15 +409,7 @@ export class CollectionView extends CollectionViewBase {
             // this._delegate._owner = new WeakRef(this);
             this.nativeViewProtected.delegate = this._delegate;
         }
-        if (layoutView instanceof UICollectionViewFlowLayout) {
-            if (this._effectiveRowHeight && this._effectiveColWidth) {
-                layoutView.itemSize = CGSizeMake(Utils.layout.toDeviceIndependentPixels(this._effectiveColWidth), Utils.layout.toDeviceIndependentPixels(this._effectiveRowHeight));
-            } else {
-                layoutView.estimatedItemSize = CGSizeMake(Utils.layout.toDeviceIndependentPixels(this._effectiveColWidth), Utils.layout.toDeviceIndependentPixels(this._effectiveRowHeight));
-            }
-        }
-
-        layoutView.invalidateLayout();
+        this.updateRowColSize();
 
         // there is no need to call refresh if it was triggered before with same size.
         // this refresh is just to handle size change
@@ -425,6 +417,27 @@ export class CollectionView extends CollectionViewBase {
         if (this._lastLayoutKey !== layoutKey) {
             this.refresh();
         }
+    }
+
+    updateRowColSize() {
+        const layoutView = this.nativeViewProtected?.collectionViewLayout;
+        if (layoutView instanceof UICollectionViewFlowLayout) {
+            if (this._effectiveRowHeight && this._effectiveColWidth) {
+                layoutView.itemSize = CGSizeMake(Utils.layout.toDeviceIndependentPixels(this._effectiveColWidth), Utils.layout.toDeviceIndependentPixels(this._effectiveRowHeight));
+            } else {
+                layoutView.estimatedItemSize = CGSizeMake(Utils.layout.toDeviceIndependentPixels(this._effectiveColWidth), Utils.layout.toDeviceIndependentPixels(this._effectiveRowHeight));
+            }
+        }
+        layoutView.invalidateLayout();
+    }
+
+    _onRowHeightPropertyChanged(oldValue, newValue) {
+        this.updateRowColSize();
+        this.refresh();
+    }
+    _onColWidthPropertyChanged(oldValue, newValue) {
+        this.updateRowColSize();
+        this.refresh();
     }
 
     public isHorizontal() {
