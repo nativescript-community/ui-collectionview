@@ -435,8 +435,8 @@ export class CollectionView extends CollectionViewBase {
             } else {
                 layoutView.estimatedItemSize = CGSizeMake(Utils.layout.toDeviceIndependentPixels(this._effectiveColWidth), Utils.layout.toDeviceIndependentPixels(this._effectiveRowHeight));
             }
+            layoutView.invalidateLayout();
         }
-        layoutView.invalidateLayout();
     }
 
     _onRowHeightPropertyChanged(oldValue, newValue) {
