@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.3.15](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.14...v5.3.15) (2024-01-17)
+
+### Bug Fixes
+
+* **swipemenu:** ios broken after latest gesturehandler release ([cb11edc](https://github.com/@nativescript-community/ui-collectionview/commit/cb11edced38e897b784876d8ba16c31c171979bd))
+
 ## [5.3.14](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.13...v5.3.14) (2024-01-16)
 
 ### Bug Fixes
