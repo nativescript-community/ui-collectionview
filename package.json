@@ -59,7 +59,7 @@
         "@nativescript-community/class-mixins": "^1.0.0",
         "@nativescript-community/plugin-seed-tools": "file:tools",
         "@nativescript-community/template-snippet": "file:demo-snippets",
-        "@nativescript-community/ui-drawer": "^0.1.13"
+        "@nativescript-community/ui-drawer": "^0.1.27"
     },
     "ntl": {
         "descriptions": {
