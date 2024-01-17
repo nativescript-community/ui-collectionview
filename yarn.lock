@@ -3458,7 +3458,7 @@ __metadata:
 
 "@nativescript-community/plugin-seed-tools@file:tools::locator=root-workspace-0b6124%40workspace%3A.":
   version: 1.0.0
-  resolution: "@nativescript-community/plugin-seed-tools@file:tools#tools::hash=b029bb&locator=root-workspace-0b6124%40workspace%3A."
+  resolution: "@nativescript-community/plugin-seed-tools@file:tools#tools::hash=42483b&locator=root-workspace-0b6124%40workspace%3A."
   dependencies:
     "@angular/animations": "npm:~16.2.8"
     "@angular/common": "npm:~16.2.8"
@@ -3522,18 +3522,18 @@ __metadata:
     vue: "npm:~2.6.14"
     yargs: "npm:^17.7.2"
     zone.js: "npm:~0.14.0"
-  checksum: d207cb5782af906093508b6aae368ded2a5b392187134c978fecdf6c853f9a964f9ed834dfeea4279db76e7f579ee37f5fbdccbdf1d7079e2e79bb45f7fe3c02
+  checksum: 3cb32948f66a100769618b8738767771fbf2fcb6e61b5092fb4125d4cb5b5a630c93786c7713e598271ca7c6a8bc79e04c8aaf099e056d2ed9fd5ebf1fb25acd
   languageName: node
   linkType: hard
 
 "@nativescript-community/template-snippet@file:demo-snippets::locator=root-workspace-0b6124%40workspace%3A.":
   version: 0.0.1
-  resolution: "@nativescript-community/template-snippet@file:demo-snippets#demo-snippets::hash=2c835b&locator=root-workspace-0b6124%40workspace%3A."
+  resolution: "@nativescript-community/template-snippet@file:demo-snippets#demo-snippets::hash=ba5e44&locator=root-workspace-0b6124%40workspace%3A."
   dependencies:
     "@nativescript-community/ui-collectionview": "npm:*"
     "@nativescript-community/ui-collectionview-swipemenu": "npm:*"
     "@nativescript-community/ui-collectionview-waterfall": "npm:*"
-  checksum: 6a534e8403a92fd530581224c1d835d7a1ab28f38e42eb542a28e81f2796bd32273c9c2eb1d81e33a7467ae927683421ad13dedb2b410289ce7e76230402b255
+  checksum: df5c81658248018a04f4e86e7567ebf979cf453ebce8d541ada0f812cb01d619bdf4c04a383c262e3d47b06dbbc13c648ec2e2572bb2a3de847b59c20bc31a70
   languageName: node
   linkType: hard
 
@@ -3552,7 +3552,7 @@ __metadata:
   resolution: "@nativescript-community/ui-collectionview-swipemenu@workspace:packages/swipemenu"
   dependencies:
     "@nativescript-community/class-mixins": "npm:^1.0.0"
-    "@nativescript-community/ui-collectionview": "npm:^5.3.11"
+    "@nativescript-community/ui-collectionview": "npm:^5.3.14"
     "@nativescript-community/ui-drawer": "npm:^0.1.13"
   languageName: unknown
   linkType: soft
@@ -3561,11 +3561,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@nativescript-community/ui-collectionview-waterfall@workspace:packages/waterfall"
   dependencies:
-    "@nativescript-community/ui-collectionview": "npm:^5.3.11"
+    "@nativescript-community/ui-collectionview": "npm:^5.3.14"
   languageName: unknown
   linkType: soft
 
-"@nativescript-community/ui-collectionview@npm:*, @nativescript-community/ui-collectionview@npm:^5.3.11, @nativescript-community/ui-collectionview@workspace:packages/collectionview":
+"@nativescript-community/ui-collectionview@npm:*, @nativescript-community/ui-collectionview@npm:^5.3.14, @nativescript-community/ui-collectionview@workspace:packages/collectionview":
   version: 0.0.0-use.local
   resolution: "@nativescript-community/ui-collectionview@workspace:packages/collectionview"
   languageName: unknown
@@ -3577,6 +3577,15 @@ __metadata:
   dependencies:
     "@nativescript-community/gesturehandler": "npm:^2.0.8"
   checksum: 9e524c4f66dbe7362eb265961922cc73554612c9232ab4ad676e9bfc5431ab3949b86c782fe60aae1dbde5757d5215238949430acd539cc04219d0f5109e2122
+  languageName: node
+  linkType: hard
+
+"@nativescript-community/ui-drawer@npm:^0.1.27":
+  version: 0.1.27
+  resolution: "@nativescript-community/ui-drawer@npm:0.1.27"
+  dependencies:
+    "@nativescript-community/gesturehandler": "npm:^2.0.8"
+  checksum: b0cda739a877037f463401dc4e17b023c900f067517e5cee4b122d4e46432f2c00be626842d29413e6a337bd3bb6f973edcec55a260bd5a37436233d206555d9
   languageName: node
   linkType: hard
 
@@ -17261,7 +17270,7 @@ __metadata:
     "@nativescript-community/class-mixins": "npm:^1.0.0"
     "@nativescript-community/plugin-seed-tools": "file:tools"
     "@nativescript-community/template-snippet": "file:demo-snippets"
-    "@nativescript-community/ui-drawer": "npm:^0.1.13"
+    "@nativescript-community/ui-drawer": "npm:^0.1.27"
   languageName: unknown
   linkType: soft
 
@@ -19480,11 +19489,11 @@ __metadata:
 
 "typescript@patch:typescript@npm%3A5.3.1-rc#optional!builtin<compat/typescript>":
   version: 5.3.1-rc
-  resolution: "typescript@patch:typescript@npm%3A5.3.1-rc#optional!builtin<compat/typescript>::version=5.3.1-rc&hash=29ae49"
+  resolution: "typescript@patch:typescript@npm%3A5.3.1-rc#optional!builtin<compat/typescript>::version=5.3.1-rc&hash=e012d7"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 19a9788c785f7dcd2cb1872af5ee28d26212e2c8b1dc46e8051eb671a3ba5a1e733831ccde13ba3ecdad8c3cf1c2dab0722643846e029a0dc7a482df87ac93c5
+  checksum: 7f15bd5095e38645991fc6ec6d34fa8c13c1ab245653e8cb0a9f8139a70d758c1a086d00538a2f4ec127834dd838428816e1ab954dccf6c62c884bd69a638e92
   languageName: node
   linkType: hard
 
