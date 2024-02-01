@@ -86,11 +86,6 @@
     },
     "workspaces": [
         "packages/*",
-        "demo-vue",
-        "demo-vue3",
-        "demo-ng",
-        "demo-svelte",
-        "demo-react",
-        "demo-snippets"
+        "demo*"
     ]
 }
