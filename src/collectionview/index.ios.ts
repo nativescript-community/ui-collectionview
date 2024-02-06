@@ -174,6 +174,13 @@ export class CollectionView extends CollectionViewBase {
     get _childrenCount(): number {
         return this._map.size;
     }
+    onLoaded() {
+        super.onLoaded()
+        // we need refreshVisibleItems
+        // if some items were updated while unloaded they wont re layout
+        // after this (because we are not a Layout view)
+        this.refreshVisibleItems()
+    }
     eachChild(callback: (child: ViewBase) => boolean) {
         // used for css updates (like theme change)
         this._map.forEach((view) => {
