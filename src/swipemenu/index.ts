@@ -50,6 +50,9 @@ export class CollectionViewWithSwipeMenu extends CollectionView {
     async closeCurrentMenu() {
         try {
             const openedIndex = this.openedDrawerIndex;
+            if (openedIndex === -1) {
+                return;
+            }
             this.openedDrawerIndex = -1;
             const oldItem = this.items ? this.getItemAtIndex(openedIndex) : null;
             if (!oldItem) {
