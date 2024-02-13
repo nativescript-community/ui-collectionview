@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.3.20](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.19...v5.3.20) (2024-02-13)
+
+### Bug Fixes
+
+* **swipemenu:** prevent errors in `closeCurrentMenu` ([2615de2](https://github.com/@nativescript-community/ui-collectionview/commit/2615de29a96c5d803a10e7f0655a4e7de62c36ca))
+
 ## [5.3.19](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.18...v5.3.19) (2024-02-13)
 
 ### Bug Fixes
