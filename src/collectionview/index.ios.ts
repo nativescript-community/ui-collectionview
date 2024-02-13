@@ -472,6 +472,16 @@ export class CollectionView extends CollectionViewBase {
         // this.clearCellSize();
 
         const sizes: NSMutableArray<NSValue> = this._delegate instanceof UICollectionViewDelegateImpl ? this._delegate.cachedSizes : null;
+        const performBatchUpdatesCompletion = (c) =>
+        {   
+            // if we are not "presented" (viewController hidden) then performBatchUpdatesCompletion would crash
+            const viewIsLoaded =  !!this.page?.viewController ? !!this.page.viewController.view.window : true;
+            if (viewIsLoaded) {
+                view.performBatchUpdatesCompletion(c, null);
+            } else {
+                c();
+            }
+        }
 
         switch (event.action) {
             case ChangeType.Delete: {
@@ -487,9 +497,9 @@ export class CollectionView extends CollectionViewBase {
                 if (Trace.isEnabled()) {
                     CLog(CLogTypes.info, 'deleteItemsAtIndexPaths', indexes.count);
                 }
-                view.performBatchUpdatesCompletion(() => {
+                performBatchUpdatesCompletion(() => {
                     view.deleteItemsAtIndexPaths(indexes);
-                }, null);
+                });
                 return;
             }
             case ChangeType.Update: {
@@ -503,9 +513,9 @@ export class CollectionView extends CollectionViewBase {
                     CLog(CLogTypes.info, 'reloadItemsAtIndexPaths', event.index, indexes.count);
                 }
 
-                view.performBatchUpdatesCompletion(() => {
+                performBatchUpdatesCompletion(() => {
                     view.reloadItemsAtIndexPaths(indexes);
-                }, null);
+                });
                 return;
             }
             case ChangeType.Add: {
@@ -520,13 +530,13 @@ export class CollectionView extends CollectionViewBase {
                 if (Trace.isEnabled()) {
                     CLog(CLogTypes.info, 'insertItemsAtIndexPaths', indexes.count);
                 }
-                view.performBatchUpdatesCompletion(() => {
+                performBatchUpdatesCompletion(() => {
                     view.insertItemsAtIndexPaths(indexes);
-                }, null);
+                });
                 return;
             }
             case ChangeType.Splice: {
-                view.performBatchUpdatesCompletion(() => {
+                performBatchUpdatesCompletion(() => {
                     const added = event.addedCount;
                     const removed = (event.removed && event.removed.length) || 0;
                     if (added > 0 && added === removed) {
@@ -571,7 +581,7 @@ export class CollectionView extends CollectionViewBase {
                         }
                     }
                     // view.collectionViewLayout.invalidateLayout();
-                }, null);
+                });
                 return;
             }
         }
