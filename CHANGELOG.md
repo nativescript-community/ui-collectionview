@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.3.21](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.20...v5.3.21) (2024-02-21)
+
+### Bug Fixes
+
+* `scrollSize` for `scroll` events ([fb62ab5](https://github.com/@nativescript-community/ui-collectionview/commit/fb62ab586b496e9b94a7f511d1a7c44af1f987b5))
+
 ## [5.3.20](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.19...v5.3.20) (2024-02-13)
 
 ### Bug Fixes
