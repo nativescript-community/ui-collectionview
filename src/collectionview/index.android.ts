@@ -404,6 +404,7 @@ export class CollectionView extends CollectionViewBase {
             object: this,
             eventName,
             scrollOffset: offset / Utils.layout.getDisplayDensity(),
+            scrollSize: (range - extent),
             scrollOffsetPercentage: offset / (range - extent),
             dx,
             dy

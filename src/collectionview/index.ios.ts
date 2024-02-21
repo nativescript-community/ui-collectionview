@@ -1038,6 +1038,7 @@ export class CollectionView extends CollectionViewBase {
             object: this,
             eventName,
             scrollOffset: offset,
+            scrollSize: size,
             scrollOffsetPercentage: offset / size,
             dx,
             dy: dy + safeAreaInsetsTop
