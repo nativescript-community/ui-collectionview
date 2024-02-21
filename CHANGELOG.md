@@ -3,6 +3,50 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.3.20](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.19...v5.3.20) (2024-02-13)
+
+### Bug Fixes
+
+* **swipemenu:** prevent errors in `closeCurrentMenu` ([2615de2](https://github.com/@nativescript-community/ui-collectionview/commit/2615de29a96c5d803a10e7f0655a4e7de62c36ca))
+
+## [5.3.19](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.18...v5.3.19) (2024-02-13)
+
+### Bug Fixes
+
+* **ios:** prevent crash on ObservableArray change while the CollectionView is not “visible” ([188d8e1](https://github.com/@nativescript-community/ui-collectionview/commit/188d8e1d31fdeaf85a1db97e01c58307e1d0de90))
+
+## [5.3.18](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.17...v5.3.18) (2024-02-06)
+
+**Note:** Version bump only for package ui-collectionview
+
+## [5.3.17](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.16...v5.3.17) (2024-02-06)
+
+**Note:** Version bump only for package ui-collectionview
+
+## [5.3.16](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.15...v5.3.16) (2024-02-06)
+
+### Bug Fixes
+
+* **ios:** ensure we refresh visible items ([8b39db9](https://github.com/@nativescript-community/ui-collectionview/commit/8b39db9ed9e91752302a36068ccdcf9471189bb5))
+
+## [5.3.15](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.14...v5.3.15) (2024-01-17)
+
+### Bug Fixes
+
+* **swipemenu:** ios broken after latest gesturehandler release ([cb11edc](https://github.com/@nativescript-community/ui-collectionview/commit/cb11edced38e897b784876d8ba16c31c171979bd))
+
+## [5.3.14](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.13...v5.3.14) (2024-01-16)
+
+### Bug Fixes
+
+* **collectionview:** ios regression after last version ([481ea3c](https://github.com/@nativescript-community/ui-collectionview/commit/481ea3cbdcf49ae34d8ee8bc83bc63270d0ea93d))
+
+## [5.3.13](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.12...v5.3.13) (2024-01-15)
+
+### Bug Fixes
+
+* **ui-collectionview:** iOS fix when changing rowHeight/colWidth dynamically ([d643e6a](https://github.com/@nativescript-community/ui-collectionview/commit/d643e6a16cc33b5c7077102bba5ec456ddaa397e))
+
 ## [5.3.12](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.11...v5.3.12) (2024-01-14)
 
 ### Bug Fixes

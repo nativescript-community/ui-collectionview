@@ -174,6 +174,13 @@ export class CollectionView extends CollectionViewBase {
     get _childrenCount(): number {
         return this._map.size;
     }
+    onLoaded() {
+        super.onLoaded()
+        // we need refreshVisibleItems
+        // if some items were updated while unloaded they wont re layout
+        // after this (because we are not a Layout view)
+        this.refreshVisibleItems()
+    }
     eachChild(callback: (child: ViewBase) => boolean) {
         // used for css updates (like theme change)
         this._map.forEach((view) => {
@@ -417,15 +424,7 @@ export class CollectionView extends CollectionViewBase {
             // this._delegate._owner = new WeakRef(this);
             this.nativeViewProtected.delegate = this._delegate;
         }
-        if (layoutView instanceof UICollectionViewFlowLayout) {
-            if (this._effectiveRowHeight && this._effectiveColWidth) {
-                layoutView.itemSize = CGSizeMake(Utils.layout.toDeviceIndependentPixels(this._effectiveColWidth), Utils.layout.toDeviceIndependentPixels(this._effectiveRowHeight));
-            } else {
-                layoutView.estimatedItemSize = CGSizeMake(Utils.layout.toDeviceIndependentPixels(this._effectiveColWidth), Utils.layout.toDeviceIndependentPixels(this._effectiveRowHeight));
-            }
-        }
-
-        layoutView.invalidateLayout();
+        this.updateRowColSize();
 
         // there is no need to call refresh if it was triggered before with same size.
         // this refresh is just to handle size change
@@ -433,6 +432,27 @@ export class CollectionView extends CollectionViewBase {
         if (this._lastLayoutKey !== layoutKey) {
             this.refresh();
         }
+    }
+
+    updateRowColSize() {
+        const layoutView = this.nativeViewProtected?.collectionViewLayout;
+        if (layoutView instanceof UICollectionViewFlowLayout) {
+            if (this._effectiveRowHeight && this._effectiveColWidth) {
+                layoutView.itemSize = CGSizeMake(Utils.layout.toDeviceIndependentPixels(this._effectiveColWidth), Utils.layout.toDeviceIndependentPixels(this._effectiveRowHeight));
+            } else {
+                layoutView.estimatedItemSize = CGSizeMake(Utils.layout.toDeviceIndependentPixels(this._effectiveColWidth), Utils.layout.toDeviceIndependentPixels(this._effectiveRowHeight));
+            }
+            layoutView.invalidateLayout();
+        }
+    }
+
+    _onRowHeightPropertyChanged(oldValue, newValue) {
+        this.updateRowColSize();
+        this.refresh();
+    }
+    _onColWidthPropertyChanged(oldValue, newValue) {
+        this.updateRowColSize();
+        this.refresh();
     }
 
     public isHorizontal() {
@@ -452,6 +472,16 @@ export class CollectionView extends CollectionViewBase {
         // this.clearCellSize();
 
         const sizes: NSMutableArray<NSValue> = this._delegate instanceof UICollectionViewDelegateImpl ? this._delegate.cachedSizes : null;
+        const performBatchUpdatesCompletion = (c) =>
+        {   
+            // if we are not "presented" (viewController hidden) then performBatchUpdatesCompletion would crash
+            const viewIsLoaded =  !!this.page?.viewController ? !!this.page.viewController.view.window : true;
+            if (viewIsLoaded) {
+                view.performBatchUpdatesCompletion(c, null);
+            } else {
+                c();
+            }
+        }
 
         switch (event.action) {
             case ChangeType.Delete: {
@@ -467,9 +497,9 @@ export class CollectionView extends CollectionViewBase {
                 if (Trace.isEnabled()) {
                     CLog(CLogTypes.info, 'deleteItemsAtIndexPaths', indexes.count);
                 }
-                view.performBatchUpdatesCompletion(() => {
+                performBatchUpdatesCompletion(() => {
                     view.deleteItemsAtIndexPaths(indexes);
-                }, null);
+                });
                 return;
             }
             case ChangeType.Update: {
@@ -483,9 +513,9 @@ export class CollectionView extends CollectionViewBase {
                     CLog(CLogTypes.info, 'reloadItemsAtIndexPaths', event.index, indexes.count);
                 }
 
-                view.performBatchUpdatesCompletion(() => {
+                performBatchUpdatesCompletion(() => {
                     view.reloadItemsAtIndexPaths(indexes);
-                }, null);
+                });
                 return;
             }
             case ChangeType.Add: {
@@ -500,13 +530,13 @@ export class CollectionView extends CollectionViewBase {
                 if (Trace.isEnabled()) {
                     CLog(CLogTypes.info, 'insertItemsAtIndexPaths', indexes.count);
                 }
-                view.performBatchUpdatesCompletion(() => {
+                performBatchUpdatesCompletion(() => {
                     view.insertItemsAtIndexPaths(indexes);
-                }, null);
+                });
                 return;
             }
             case ChangeType.Splice: {
-                view.performBatchUpdatesCompletion(() => {
+                performBatchUpdatesCompletion(() => {
                     const added = event.addedCount;
                     const removed = (event.removed && event.removed.length) || 0;
                     if (added > 0 && added === removed) {
@@ -551,7 +581,7 @@ export class CollectionView extends CollectionViewBase {
                         }
                     }
                     // view.collectionViewLayout.invalidateLayout();
-                }, null);
+                });
                 return;
             }
         }

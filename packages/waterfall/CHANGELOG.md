@@ -3,6 +3,38 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.3.20](https://github.com/nativescript-community/ui-collectionview/compare/v5.3.19...v5.3.20) (2024-02-13)
+
+**Note:** Version bump only for package @nativescript-community/ui-collectionview-waterfall
+
+## [5.3.19](https://github.com/nativescript-community/ui-collectionview/compare/v5.3.18...v5.3.19) (2024-02-13)
+
+**Note:** Version bump only for package @nativescript-community/ui-collectionview-waterfall
+
+## [5.3.18](https://github.com/nativescript-community/ui-collectionview/compare/v5.3.17...v5.3.18) (2024-02-06)
+
+**Note:** Version bump only for package @nativescript-community/ui-collectionview-waterfall
+
+## [5.3.17](https://github.com/nativescript-community/ui-collectionview/compare/v5.3.16...v5.3.17) (2024-02-06)
+
+**Note:** Version bump only for package @nativescript-community/ui-collectionview-waterfall
+
+## [5.3.16](https://github.com/nativescript-community/ui-collectionview/compare/v5.3.15...v5.3.16) (2024-02-06)
+
+**Note:** Version bump only for package @nativescript-community/ui-collectionview-waterfall
+
+## [5.3.15](https://github.com/nativescript-community/ui-collectionview/compare/v5.3.14...v5.3.15) (2024-01-17)
+
+**Note:** Version bump only for package @nativescript-community/ui-collectionview-waterfall
+
+## [5.3.14](https://github.com/nativescript-community/ui-collectionview/compare/v5.3.13...v5.3.14) (2024-01-16)
+
+**Note:** Version bump only for package @nativescript-community/ui-collectionview-waterfall
+
+## [5.3.13](https://github.com/nativescript-community/ui-collectionview/compare/v5.3.12...v5.3.13) (2024-01-15)
+
+**Note:** Version bump only for package @nativescript-community/ui-collectionview-waterfall
+
 ## [5.3.12](https://github.com/nativescript-community/ui-collectionview/compare/v5.3.11...v5.3.12) (2024-01-14)
 
 **Note:** Version bump only for package @nativescript-community/ui-collectionview-waterfall

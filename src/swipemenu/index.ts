@@ -50,6 +50,9 @@ export class CollectionViewWithSwipeMenu extends CollectionView {
     async closeCurrentMenu() {
         try {
             const openedIndex = this.openedDrawerIndex;
+            if (openedIndex === -1) {
+                return;
+            }
             this.openedDrawerIndex = -1;
             const oldItem = this.items ? this.getItemAtIndex(openedIndex) : null;
             if (!oldItem) {
@@ -131,10 +134,13 @@ export function overrideCollectionView() {
     applyMixins(CollectionView, [CollectionViewWithSwipeMenu], { override: true });
 }
 
+export let PAN_GESTURE_TAG = 180000;
+
 @CSSType('SwipeMenu')
 export class SwipeMenu extends Drawer {
     constructor() {
         super();
+        this.gestureTag = PAN_GESTURE_TAG++;
         this.gestureHandlerOptions = { activeOffsetXStart: -10, activeOffsetXEnd: 10, failOffsetYStart: -10, failOffsetYEnd: 10, minDist: 15 };
         this.leftOpenedDrawerAllowDraging = true;
         this.rightOpenedDrawerAllowDraging = true;
