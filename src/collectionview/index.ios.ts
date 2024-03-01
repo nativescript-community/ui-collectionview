@@ -796,10 +796,10 @@ export class CollectionView extends CollectionViewBase {
                             }
 
                             nativeView.performBatchUpdatesCompletion(() => {
-                                this.measureCell(cell, view, index);
+                                // this.measureCell(cell, view, index);
                                 this.notifyForItemAtIndex(CollectionViewBase.itemLoadingEvent, view, indexPath.row, view.bindingContext, cell);
-                                cell.contentView.subviews.objectAtIndex(0)?.layoutSubviews();
-                                nativeView.collectionViewLayout.invalidateLayout();
+                                // cell.contentView.subviews.objectAtIndex(0)?.layoutSubviews();
+                                // nativeView.collectionViewLayout.invalidateLayout();
                             }, null);
                         }
                     };
