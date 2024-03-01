@@ -73,7 +73,7 @@
         <actionItem on:tap={refresh} ios.systemIcon="16" ios.position="right" text="refresh" android.position="popup" />
     </actionBar>
     <gridLayout rows="auto,*">
-        <collectionView {items} row="1" rowHeight="100" automationText="collectionView">
+        <collectionView {items} row="1" rowHeight="100" automationText="collectionView" autoReloadItemOnLayout={true}>
             <Template let:item>
                 <swipemenu id={item.name} leftSwipeDistance="300" translationFunction={drawerTranslationFunction} startingSide={item.startingSide}>
                     <gridlayout rows="*, auto" backgroundColor={item.color} class="item" prop:mainContent width="100%">
