@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.3.23](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.22...v5.3.23) (2024-03-01)
+
+### Bug Fixes
+
+* **collectionview,ios:** fix `autoReloadItemOnLayout` which could trigger a lot of unneeded layouts ([a393173](https://github.com/@nativescript-community/ui-collectionview/commit/a393173825c59455ae149c886092d92673f2ee10))
+
 ## [5.3.22](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.21...v5.3.22) (2024-02-21)
 
 ### Bug Fixes

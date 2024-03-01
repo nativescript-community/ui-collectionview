@@ -1,6 +1,6 @@
 {
     "name": "@nativescript-community/ui-collectionview-swipemenu",
-    "version": "5.3.22",
+    "version": "5.3.23",
     "description": "A NativeScript CollectionView SwipeMenu Plugin.",
     "main": "./index",
     "sideEffects": false,
@@ -40,7 +40,7 @@
     "homepage": "https://github.com/nativescript-community/ui-collectionview#readme",
     "dependencies": {
         "@nativescript-community/class-mixins": "^1.0.0",
-        "@nativescript-community/ui-collectionview": "^5.3.22",
+        "@nativescript-community/ui-collectionview": "^5.3.23",
         "@nativescript-community/ui-drawer": "^0.1.13"
     }
 }
