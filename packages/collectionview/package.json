@@ -1,6 +1,6 @@
 {
     "name": "@nativescript-community/ui-collectionview",
-    "version": "5.3.20",
+    "version": "5.3.22",
     "description": "Allows you to easily add a collection view (grid list view) to your projects. Supports vertical and horizontal modes, templating, and more.",
     "main": "./index",
     "sideEffects": false,
@@ -8,7 +8,7 @@
     "scripts": {
         "build": "npm run tsc && npm run readme",
         "build.all": "npm run build && npm run build.angular",
-        "build.angular": "ng-packagr -p ../../src/collectionview/angular/ng-package.json -c ../../src/collectionview/angular/tsconfig.json",
+        "build.angular": "ng-packagr -p ../../src/collectionview/angular/ng-package.json -c ../../src/collectionview/angular/tsconfig.json && rm angular/.npmignore",
         "readme": "readme generate -c ../../tools/readme/blueprint.json",
         "tsc": "cpy '**/*.d.ts' '../../packages/collectionview' --parents --cwd=../../src/collectionview && tsc -skipLibCheck -d",
         "clean": "rimraf ./*.d.ts ./*.js ./*.js.map"

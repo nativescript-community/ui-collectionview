@@ -1,6 +1,6 @@
 {
     "name": "@nativescript-community/ui-collectionview-swipemenu",
-    "version": "5.3.20",
+    "version": "5.3.22",
     "description": "A NativeScript CollectionView SwipeMenu Plugin.",
     "main": "./index",
     "sideEffects": false,
@@ -12,7 +12,7 @@
     "scripts": {
         "build": "npm run tsc && npm run readme",
         "build.all": "npm run build && npm run build.angular",
-        "build.angular": "ng-packagr -p ../../src/swipemenu/angular/ng-package.json -c ../../src/swipemenu/angular/tsconfig.json",
+        "build.angular": "ng-packagr -p ../../src/swipemenu/angular/ng-package.json -c ../../src/swipemenu/angular/tsconfig.json && rm angular/.npmignore",
         "readme": "readme generate -c ../../tools/readme/blueprint.json",
         "tsc": "cpy '**/*.d.ts' '../../packages/swipemenu' --parents --cwd=../../src/swipemenu && tsc -skipLibCheck -d",
         "clean": "rimraf ./*.d.ts ./*.js ./*.js.map"
@@ -40,7 +40,7 @@
     "homepage": "https://github.com/nativescript-community/ui-collectionview#readme",
     "dependencies": {
         "@nativescript-community/class-mixins": "^1.0.0",
-        "@nativescript-community/ui-collectionview": "^5.3.20",
+        "@nativescript-community/ui-collectionview": "^5.3.22",
         "@nativescript-community/ui-drawer": "^0.1.13"
     }
 }
