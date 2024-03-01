@@ -1,18 +1,33 @@
-<script lang="ts">
+<script context="module" lang="ts">
     import { View } from '@nativescript/core';
+    let ID = 0;
+</script>
+<script lang="ts">
     export let item;
-    let height = 100;
-    $: height = item.showMenu === true ? 200 : 100;
+    export let height;
+    const myId = ID++;
+
+    function updateheight(item) {
+        height = item.showMenu === true ? 200 : 100;
+        console.log('height', myId, height)
+    }
 
     async function resizeCell(event) {
         try {
             const newValue = item.showMenu === true ? false : true;
-            item.showMenu = newValue;
+            console.log('resizeCell', myId, item.showMenu, newValue)
             async function animate(options = {}) {
                 const newHeight = newValue ? 200 : 100;
                 return (event.object as View).animate({ height: newHeight, ...options, duration: 300 });
             }
+            if (__ANDROID__) {
             await animate();
+            item.showMenu = newValue;
+
+            } else {
+            item.showMenu = newValue;
+
+            }
             // we update it after so that the svelte component also updates its value
         } catch (error) {
             console.error(error);
