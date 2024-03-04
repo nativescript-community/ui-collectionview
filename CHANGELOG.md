@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.3.25](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.24...v5.3.25) (2024-03-04)
+
+### Bug Fixes
+
+* reorder allow to disable reording to certain positions (using `itemReorderCheck` event) ([729e725](https://github.com/@nativescript-community/ui-collectionview/commit/729e725820d09a7bb5e95e005d6f09a71181c4cd))
+
 ## [5.3.24](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.23...v5.3.24) (2024-03-01)
 
 ### Bug Fixes
