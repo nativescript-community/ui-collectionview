@@ -25,6 +25,29 @@
         { index: 18, name: 'SILVER', color: '#bdc3c7' },
         { index: 19, name: 'ASBESTOS', color: '#7f8c8d' }
     ]);
+
+    async function resizeCell(item, event) {
+        try {
+            const actualItem = item;
+                actualItem.showMenu = !actualItem.showMenu;
+                console.log('resizeCell', actualItem.showMenu)
+                async function animate(options = {}) {
+                    const newHeight = actualItem.showMenu ? 200 : 100;
+                    return (event.object as View).animate({ height: newHeight, ...options, duration: 300 });
+                }
+
+                const updateItem = () => {
+                    if (item) {
+                        const index = this.items.findIndex((i) => i === item);
+                        // console.log('updateItem', index, item);
+                        this.items.setItem(index, item);
+                    }
+                };
+                await animate();
+        } catch (error) {
+            console.error(error);
+        }
+    }
 </script>
 
 <page>
@@ -36,7 +59,16 @@
                 the reason is that for this to work in collectionview
                 upon resize animation the Svelte component needs to update its "height" property
                 otherwise Collectionview bind will report wrong height on cell reuse -->
-                <ResizeView {item}/>
+                <gridlayout id="resizeHolder" rows="101,100" on:tap={e=>resizeCell(item,e)} height={item.showMenu === true ? 200 : 100} verticalAlignment="top">
+                    <stacklayout row="0" class="item" backgroundColor={item.color}>
+                        <label row="1" text={item.name} class="title" />
+                        <label row="1" text={item.color} class="subtitle" />
+                    </stacklayout>
+                    <stacklayout row="1" orientation="horizontal" height="100">
+                        <label text="a" width="100" height="100%" backgroundColor="red" textAlignment="center" />
+                        <label text="b" width="100" height="100%" backgroundColor="blue" textAlignment="center" />
+                    </stacklayout>
+                </gridlayout>
             </Template>
         </collectionView>
     </gridLayout>
