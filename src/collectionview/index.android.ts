@@ -56,11 +56,14 @@ class SimpleCallback extends androidx.recyclerview.widget.ItemTouchHelper.Simple
     ): boolean {
         const startPosition = viewHolder.getAdapterPosition();
         const endPosition = target.getAdapterPosition();
+        const owner = this.owner?.get();
+        if (owner && !owner._canReorderToPosition(startPosition, endPosition, owner.getItemAtIndex(endPosition))) {
+            return false;
+        }
         if (this.startPosition === -1) {
             this.startPosition = startPosition;
         }
         this.endPosition = endPosition;
-        const owner = this.owner?.get();
         if (owner) {
             owner._reorderItemInSource(startPosition, endPosition);
             return true;

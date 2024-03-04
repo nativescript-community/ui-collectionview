@@ -175,11 +175,11 @@ export class CollectionView extends CollectionViewBase {
         return this._map.size;
     }
     onLoaded() {
-        super.onLoaded()
+        super.onLoaded();
         // we need refreshVisibleItems
         // if some items were updated while unloaded they wont re layout
         // after this (because we are not a Layout view)
-        this.refreshVisibleItems()
+        this.refreshVisibleItems();
     }
     eachChild(callback: (child: ViewBase) => boolean) {
         // used for css updates (like theme change)
@@ -472,16 +472,15 @@ export class CollectionView extends CollectionViewBase {
         // this.clearCellSize();
 
         const sizes: NSMutableArray<NSValue> = this._delegate instanceof UICollectionViewDelegateImpl ? this._delegate.cachedSizes : null;
-        const performBatchUpdatesCompletion = (c) =>
-        {   
+        const performBatchUpdatesCompletion = (c) => {
             // if we are not "presented" (viewController hidden) then performBatchUpdatesCompletion would crash
-            const viewIsLoaded =  !!this.page?.viewController ? !!this.page.viewController.view.window : true;
+            const viewIsLoaded = !!this.page?.viewController ? !!this.page.viewController.view.window : true;
             if (viewIsLoaded) {
                 view.performBatchUpdatesCompletion(c, null);
             } else {
                 c();
             }
-        }
+        };
 
         switch (event.action) {
             case ChangeType.Delete: {
@@ -1272,6 +1271,13 @@ class UICollectionViewDelegateImpl extends UICollectionViewCacheDelegateFlowLayo
         if (owner) {
             owner.scrollViewDidEndScrollingAnimation(scrollView);
         }
+    }
+    collectionViewTargetIndexPathForMoveFromItemAtIndexPathToProposedIndexPath(collectionView: UICollectionView, currentIndexPath: NSIndexPath, proposedIndexPath: NSIndexPath): NSIndexPath {
+        const owner = this._owner?.get();
+        if (owner && !owner._canReorderToPosition(currentIndexPath.row, proposedIndexPath.row, owner.getItemAtIndex(proposedIndexPath.row))) {
+            return currentIndexPath;
+        }
+        return proposedIndexPath;
     }
 }
 

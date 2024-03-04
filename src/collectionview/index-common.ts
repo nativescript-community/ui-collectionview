@@ -105,6 +105,7 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     public static itemTapEvent = 'itemTap';
     public static displayItemEvent = 'displayItem';
     public static itemReorderedEvent = 'itemReordered';
+    public static itemReorderCheckEvent = 'itemReorderCheck';
     public static itemReorderStartingEvent = 'itemReorderStarting';
     public static itemReorderStartedEvent = 'itemReorderStarted';
     public static loadMoreItemsEvent = 'loadMoreItems';
@@ -558,6 +559,19 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
         } as CollectionViewItemEventData;
         this.notify(args);
         this.draggingView = null;
+    }
+    _canReorderToPosition(oldPosition, newPosition, item) {
+        const args = {
+            returnValue: true,
+            eventName: CollectionViewBase.itemReorderCheckEvent,
+            object: this,
+            index: oldPosition,
+            item,
+            data: { targetIndex: newPosition },
+            view: this.draggingView
+        } as CollectionViewItemEventData & { returnValue: boolean };
+        this.notify(args);
+        return args.returnValue;
     }
     _reorderItemInSource(oldPosition: number, newPosition: number, callEvents = true) {
         this.suspendUpdates();
