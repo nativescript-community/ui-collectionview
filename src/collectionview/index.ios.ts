@@ -90,6 +90,8 @@ export class CollectionView extends CollectionViewBase {
     draggingStartDelta: [number, number];
 
     nativeViewProtected: UICollectionView;
+    // dragDelegate: UICollectionViewDragDelegateImpl;
+    // dropDelegate: UICollectionViewDropDelegateImpl;
 
     constructor() {
         super();
@@ -102,7 +104,8 @@ export class CollectionView extends CollectionViewBase {
         if (CollectionViewBase.layoutStyles[this.layoutStyle]) {
             layout = this._layout = CollectionViewBase.layoutStyles[this.layoutStyle].createLayout(this);
         } else {
-            layout = this._layout = UICollectionViewFlowLayout.alloc().init();
+            // layout = this._layout = UICollectionViewFlowLayoutImpl.initWithOwner(this);
+            layout = this._layout = UICollectionViewFlowLayout.new();
         }
         if (layout instanceof UICollectionViewFlowLayout) {
             layout.minimumLineSpacing = 0;
@@ -130,9 +133,12 @@ export class CollectionView extends CollectionViewBase {
     public initNativeView() {
         super.initNativeView();
 
-        const nativeView = this.nativeView;
+        const nativeView = this.nativeViewProtected;
         this._dataSource = CollectionViewDataSource.initWithOwner(this);
         nativeView.dataSource = this._dataSource;
+
+        // this.dragDelegate = nativeView.dragDelegate = UICollectionViewDragDelegateImpl.initWithOwner(this);
+        // this.dropDelegate = nativeView.dropDelegate = UICollectionViewDropDelegateImpl.initWithOwner(this);
 
         // delegate will be set in first onLayout because we need computed _effectiveColWidth and _effectiveRowHeight
 
@@ -154,8 +160,10 @@ export class CollectionView extends CollectionViewBase {
         if (Trace.isEnabled()) {
             CLog(CLogTypes.log, 'disposeNativeView');
         }
-        const nativeView = this.nativeView;
+        const nativeView = this.nativeViewProtected;
         nativeView.delegate = null;
+        // nativeView.dragDelegate = null;
+        // nativeView.dropDelegate = null;
         this._delegate = null;
         nativeView.dataSource = null;
         this._dataSource = null;
@@ -459,6 +467,14 @@ export class CollectionView extends CollectionViewBase {
         return this.orientation === 'horizontal';
     }
 
+    public clearCachedSize(...indexes:number[]) {
+        const sizes: NSMutableArray<NSValue> = this._delegate instanceof UICollectionViewDelegateImpl ? this._delegate.cachedSizes : null;
+        if (sizes) {
+            indexes.forEach(index=>sizes.replaceObjectAtIndexWithObject(index, NSValue.valueWithCGSize(CGSizeZero)))
+
+        }
+    }
+
     public onSourceCollectionChanged(event: ChangedData<any>) {
         const view = this.nativeViewProtected;
         if (!view || this._dataUpdatesSuspended || !this._lastLayoutKey) {
@@ -472,7 +488,7 @@ export class CollectionView extends CollectionViewBase {
         // this.clearCellSize();
 
         const sizes: NSMutableArray<NSValue> = this._delegate instanceof UICollectionViewDelegateImpl ? this._delegate.cachedSizes : null;
-        const performBatchUpdatesCompletion = (c) => {
+        const performBatchUpdatesCompletion = (c) => {   
             // if we are not "presented" (viewController hidden) then performBatchUpdatesCompletion would crash
             const viewIsLoaded = !!this.page?.viewController ? !!this.page.viewController.view.window : true;
             if (viewIsLoaded) {
@@ -1147,6 +1163,24 @@ class CollectionViewCell extends UICollectionViewCell {
 }
 
 @NativeClass
+class UICollectionViewFlowLayoutImpl extends UICollectionViewFlowLayout {
+    _owner: WeakRef<CollectionView>;
+
+    static initWithOwner(owner: CollectionView) {
+        const layout = UICollectionViewFlowLayoutImpl.new() as UICollectionViewFlowLayoutImpl;
+        layout._owner = new WeakRef(owner);
+        return layout;
+    }
+    invalidationContextForInteractivelyMovingItemsWithTargetPositionPreviousIndexPathsPreviousPosition(targetIndexPaths: NSArray<NSIndexPath> , targetPosition: CGPoint, previousIndexPaths: NSArray<NSIndexPath>, previousPosition: CGPoint): UICollectionViewLayoutInvalidationContext {
+        const owner = this._owner?.get()
+        if (owner && targetIndexPaths.count) {
+            owner.clearCachedSize(targetIndexPaths.objectAtIndex(0).row, previousIndexPaths.objectAtIndex(0).row)
+            // owner.clearCachedSize(previousIndexPaths.objectAtIndex(0).row)
+        }
+        return super.invalidationContextForInteractivelyMovingItemsWithTargetPositionPreviousIndexPathsPreviousPosition(targetIndexPaths, targetPosition, previousIndexPaths, previousPosition);
+    }
+}
+@NativeClass
 class CollectionViewDataSource extends NSObject implements UICollectionViewDataSource {
     _owner: WeakRef<CollectionView>;
     public static ObjCProtocols = [UICollectionViewDataSource];
@@ -1184,7 +1218,7 @@ class CollectionViewDataSource extends NSObject implements UICollectionViewDataS
         if (owner) {
             owner.reorderStartingRow = sourceIndexPath.row;
             owner.reorderEndingRow = destinationIndexPath.row;
-            owner._reorderItemInSource(sourceIndexPath.row, destinationIndexPath.row, false);
+            // owner._reorderItemInSource(sourceIndexPath.row, destinationIndexPath.row, false);
         }
     }
     collectionViewTargetIndexPathForMoveFromItemAtIndexPathToProposedIndexPath?(collectionView: UICollectionView, originalIndexPath: NSIndexPath, proposedIndexPath: NSIndexPath): NSIndexPath {
@@ -1206,6 +1240,118 @@ class CollectionViewDataSource extends NSObject implements UICollectionViewDataS
         return false;
     }
 }
+// @NativeClass
+// class UICollectionViewDragDelegateImpl extends NSObject implements UICollectionViewDragDelegate {
+//     public static ObjCProtocols = [UICollectionViewDragDelegate];
+
+//     _owner: WeakRef<CollectionView>;
+//     static initWithOwner(owner: CollectionView) {
+//         const delegate = UICollectionViewDragDelegateImpl.new() as UICollectionViewDragDelegateImpl;
+//         delegate._owner = new WeakRef(owner);
+//         return delegate;
+//     }
+//     // collectionViewDragPreviewParametersForItemAtIndexPath?(collectionView: UICollectionView, indexPath: NSIndexPath): UIDragPreviewParameters {
+//     //     throw new Error('Method not implemented.');
+//     // }
+//     // collectionViewDragSessionAllowsMoveOperation?(collectionView: UICollectionView, session: UIDragSession): boolean {
+//     //     console.log('collectionViewDragSessionAllowsMoveOperation', session, session.items.objectAtIndex(0))
+//     //     return true;
+//     // }
+//     // collectionViewDragSessionDidEnd?(collectionView: UICollectionView, session: UIDragSession): void {
+//     //     throw new Error('Method not implemented.');
+//     // }
+//     // collectionViewDragSessionIsRestrictedToDraggingApplication?(collectionView: UICollectionView, session: UIDragSession): boolean {
+//     //     throw new Error('Method not implemented.');
+//     // }
+//     // collectionViewDragSessionWillBegin?(collectionView: UICollectionView, session: UIDragSession): void {
+//     //     throw new Error('Method not implemented.');
+//     // }
+//     // collectionViewItemsForAddingToDragSessionAtIndexPathPoint?(collectionView: UICollectionView, session: UIDragSession, indexPath: NSIndexPath, point: CGPoint): NSArray<UIDragItem> {
+//     //     throw new Error('Method not implemented.');
+//     // }
+//     collectionViewItemsForBeginningDragSessionAtIndexPath(collectionView: UICollectionView, session: UIDragSession, indexPath: NSIndexPath): NSArray<UIDragItem> {
+//         let owner = this._owner?.get();
+//         if (owner) {
+//             const result = owner.shouldMoveItemAtIndex(indexPath.row);
+//             console.log('collectionViewItemsForBeginningDragSessionAtIndexPath', indexPath.row, result)
+//             if (result) {
+//                 let item  = owner.getItemAtIndex(indexPath.row)
+//                 let itemProvider = NSItemProvider.alloc().initWithObject(NSString.stringWithString(indexPath.row + ''))
+//                 let dragItem = UIDragItem.alloc().initWithItemProvider(itemProvider)
+//                 dragItem.localObject = item;
+//                 return NSArray.arrayWithObject(dragItem);
+//             }
+//         }
+//             }
+// }
+
+// @NativeClass
+// class UICollectionViewDropDelegateImpl extends NSObject implements UICollectionViewDropDelegate {
+    
+//     public static ObjCProtocols = [UICollectionViewDropDelegate];
+
+//     _owner: WeakRef<CollectionView>;
+//     static initWithOwner(owner: CollectionView) {
+//         const delegate = UICollectionViewDropDelegateImpl.new() as UICollectionViewDropDelegateImpl;
+//         delegate._owner = new WeakRef(owner);
+//         return delegate;
+//     }
+
+//     // collectionViewCanHandleDropSession?(collectionView: UICollectionView, session: UIDropSession): boolean {
+//     //     throw new Error('Method not implemented.');
+//     // }
+//     // collectionViewDropPreviewParametersForItemAtIndexPath?(collectionView: UICollectionView, indexPath: NSIndexPath): UIDragPreviewParameters {
+//     //     throw new Error('Method not implemented.');
+//     // }
+//     // collectionViewDropSessionDidEnd?(collectionView: UICollectionView, session: UIDropSession): void {
+//     //     throw new Error('Method not implemented.');
+//     // }
+//     // collectionViewDropSessionDidEnter?(collectionView: UICollectionView, session: UIDropSession): void {
+//     //     throw new Error('Method not implemented.');
+//     // }
+//     // collectionViewDropSessionDidExit?(collectionView: UICollectionView, session: UIDropSession): void {
+//     //     throw new Error('Method not implemented.');
+//     // }
+//     collectionViewDropSessionDidUpdateWithDestinationIndexPath?(collectionView: UICollectionView, session: UIDropSession, destinationIndexPath: NSIndexPath): UICollectionViewDropProposal {
+//         let owner = this._owner?.get();
+//         if (!owner || !destinationIndexPath) {
+//             return UICollectionViewDropProposal.alloc().initWithDropOperation(UIDropOperation.Forbidden);
+//         }
+//         const startPosition = (session.items.objectAtIndex(0).localObject as NSNumber).intValue;
+//         const endPosition = destinationIndexPath.row;
+//         if (owner) {
+//             if (!collectionView.hasActiveDrag || !owner._canReorderToPosition(startPosition, endPosition, endPosition)) {
+//                 return UICollectionViewDropProposal.alloc().initWithDropOperation(UIDropOperation.Forbidden);
+//             }
+//         }
+//         owner._reorderItemInSource(startPosition, endPosition);
+//         return UICollectionViewDropProposal.alloc().initWithDropOperationIntent(UIDropOperation.Move, UICollectionViewDropIntent.InsertAtDestinationIndexPath);
+//     }
+//     collectionViewPerformDropWithCoordinator(collectionView: UICollectionView, coordinator: UICollectionViewDropCoordinator): void {
+//        let owner = this._owner?.get();
+//        if (owner) {
+//         const item  =coordinator.items.objectAtIndex(0);
+//         if (item) {
+
+//             const destinationIndexPath  = coordinator?.destinationIndexPath ?? {row:(collectionView.numberOfItemsInSection(0) -1), section:0} as NSIndexPath;
+//             console.log('dropItem', item, item.performSelector('sourceIndexPath'));
+//             const sourceIndexPath = item.performSelector('sourceIndexPath');
+//             console.log('collectionViewPerformDropWithCoordinator', destinationIndexPath, sourceIndexPath);
+//         // UIView.performWithoutAnimation(() => {
+//             collectionView.performBatchUpdatesCompletion(() => {
+//                 owner._reorderItemInSource(sourceIndexPath.row, destinationIndexPath.row, false);
+//                 owner._callItemReorderedEvent(sourceIndexPath.row, destinationIndexPath, owner.getItemAtIndex(sourceIndexPath.row));
+//                 collectionView.deleteItemsAtIndexPaths(NSArray.arrayWithObject(sourceIndexPath));
+//                 collectionView.insertItemsAtIndexPaths(NSArray.arrayWithObject(destinationIndexPath));
+//             }, null);
+//         // });
+//         coordinator.dropItemToItemAtIndexPath(item.performSelector('dragItem'), destinationIndexPath);
+
+//         }
+
+//        }
+//     }
+// }
 @NativeClass
 class UICollectionViewDelegateImpl extends UICollectionViewCacheDelegateFlowLayout implements UICollectionViewDelegate {
     _owner: WeakRef<CollectionView>;
@@ -1273,11 +1419,17 @@ class UICollectionViewDelegateImpl extends UICollectionViewCacheDelegateFlowLayo
             owner.scrollViewDidEndScrollingAnimation(scrollView);
         }
     }
-    collectionViewTargetIndexPathForMoveFromItemAtIndexPathToProposedIndexPath(collectionView: UICollectionView, currentIndexPath: NSIndexPath, proposedIndexPath: NSIndexPath): NSIndexPath {
+collectionViewTargetIndexPathForMoveFromItemAtIndexPathToProposedIndexPath(collectionView: UICollectionView, currentIndexPath: NSIndexPath, proposedIndexPath: NSIndexPath): NSIndexPath {
+    if (currentIndexPath === proposedIndexPath) {
+        return proposedIndexPath;
+    }
         const owner = this._owner?.get();
         if (owner && !owner._canReorderToPosition(currentIndexPath.row, proposedIndexPath.row, owner.getItemAtIndex(proposedIndexPath.row))) {
             return currentIndexPath;
         }
+        owner._reorderItemInSource(currentIndexPath.row, proposedIndexPath.row, false);
+        owner.clearCachedSize(currentIndexPath.row, proposedIndexPath.row);
+        
         return proposedIndexPath;
     }
 }
