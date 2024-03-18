@@ -701,13 +701,20 @@ export class CollectionView extends CollectionViewBase {
         return this.nativeViewProtected?.contentOffset.y || 0;
     }
     public scrollToIndex(index: number, animated: boolean = true, snap: SnapPosition = SnapPosition.START) {
-        let scrollPosition = UICollectionViewScrollPosition.Top;
-        if (this.orientation === 'vertical') {
-            scrollPosition = snap === SnapPosition.START ? UICollectionViewScrollPosition.Top : UICollectionViewScrollPosition.Bottom;
-        } else {
-            scrollPosition = snap === SnapPosition.START ? UICollectionViewScrollPosition.Left : UICollectionViewScrollPosition.Right;
+        const nativeView = this.nativeViewProtected;
+        if (!nativeView) {
+            return;
         }
-        this.nativeViewProtected.scrollToItemAtIndexPathAtScrollPositionAnimated(NSIndexPath.indexPathForItemInSection(index, 0), scrollPosition, animated);
+        const nbItems = nativeView.numberOfItemsInSection(0);
+        if(nbItems > 0 && index < nbItems) {
+            let scrollPosition = UICollectionViewScrollPosition.Top;
+            if (this.orientation === 'vertical') {
+                scrollPosition = snap === SnapPosition.START ? UICollectionViewScrollPosition.Top : UICollectionViewScrollPosition.Bottom;
+            } else {
+                scrollPosition = snap === SnapPosition.START ? UICollectionViewScrollPosition.Left : UICollectionViewScrollPosition.Right;
+            }
+            nativeView.scrollToItemAtIndexPathAtScrollPositionAnimated(NSIndexPath.indexPathForItemInSection(index, 0), scrollPosition, animated);
+        }
     }
 
     scrollToOffset(value, animated) {
