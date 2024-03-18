@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.3.27](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.26...v5.3.27) (2024-03-18)
+
+### Bug Fixes
+
+* **ios:** prevent crash on scrollToIndex ([27d82a7](https://github.com/@nativescript-community/ui-collectionview/commit/27d82a7e3bccf08609ba509c084f018e574f30a0))
+
 ## [5.3.26](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.25...v5.3.26) (2024-03-06)
 
 ### Bug Fixes
