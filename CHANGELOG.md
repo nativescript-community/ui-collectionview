@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.3.28](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.27...v5.3.28) (2024-03-22)
+
+### Bug Fixes
+
+* **ios:** `eachChildAsync` not working ([96e8e4b](https://github.com/@nativescript-community/ui-collectionview/commit/96e8e4bf70f24db70e277d6b22bf588eb442cde4))
+
 ## [5.3.27](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.26...v5.3.27) (2024-03-18)
 
 ### Bug Fixes
