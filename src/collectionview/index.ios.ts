@@ -1426,10 +1426,10 @@ class UICollectionViewDelegateImpl extends UICollectionViewCacheDelegateFlowLayo
             owner.scrollViewDidEndScrollingAnimation(scrollView);
         }
     }
-collectionViewTargetIndexPathForMoveFromItemAtIndexPathToProposedIndexPath(collectionView: UICollectionView, currentIndexPath: NSIndexPath, proposedIndexPath: NSIndexPath): NSIndexPath {
-    if (currentIndexPath === proposedIndexPath) {
-        return proposedIndexPath;
-    }
+    collectionViewTargetIndexPathForMoveFromItemAtIndexPathToProposedIndexPath(collectionView: UICollectionView, currentIndexPath: NSIndexPath, proposedIndexPath: NSIndexPath): NSIndexPath {  
+        if (currentIndexPath === proposedIndexPath) {
+            return proposedIndexPath;
+        }
         const owner = this._owner?.get();
         if (owner && !owner._canReorderToPosition(currentIndexPath.row, proposedIndexPath.row, owner.getItemAtIndex(proposedIndexPath.row))) {
             return currentIndexPath;
@@ -1500,6 +1500,19 @@ class UICollectionViewDelegateFixedSizeImpl extends NSObject implements UICollec
         if (owner) {
             owner.scrollViewDidEndScrollingAnimation(scrollView);
         }
+    }
+    collectionViewTargetIndexPathForMoveFromItemAtIndexPathToProposedIndexPath(collectionView: UICollectionView, currentIndexPath: NSIndexPath, proposedIndexPath: NSIndexPath): NSIndexPath {  
+        if (currentIndexPath === proposedIndexPath) {
+            return proposedIndexPath;
+        }
+        const owner = this._owner?.get();
+        if (owner && !owner._canReorderToPosition(currentIndexPath.row, proposedIndexPath.row, owner.getItemAtIndex(proposedIndexPath.row))) {
+            return currentIndexPath;
+        }
+        owner._reorderItemInSource(currentIndexPath.row, proposedIndexPath.row, false);
+        owner.clearCachedSize(currentIndexPath.row, proposedIndexPath.row);
+        
+        return proposedIndexPath;
     }
 }
 
