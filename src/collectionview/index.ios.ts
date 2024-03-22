@@ -205,7 +205,7 @@ export class CollectionView extends CollectionViewBase {
 
     async eachChildAsync(callback) {
         // used for css updates (like theme change)
-        const children = Object.values(this._map);
+        const children = [...this._map.values()];
         for (let index = 0; index < children.length; index++) {
             const view = children[index];
             if (view.parent instanceof CollectionView) {
