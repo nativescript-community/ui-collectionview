@@ -14,7 +14,7 @@ export class CollectionView extends CollectionViewBase {
     public refresh();
     public refreshVisibleItems();
     public isItemAtIndexVisible(index: number): boolean;
-    public scrollToIndex(index: number, animated: boolean, snap?: SnapPosition = SnapPosition.START);
+    public scrollToIndex(index: number, animated?: boolean, snap?: SnapPosition = SnapPosition.START);
     public scrollToOffset(value: number, animation?: boolean);
     public getViewForItemAtIndex(index: number): View;
     // on iOS a view is dragged from its center by default
@@ -22,21 +22,25 @@ export class CollectionView extends CollectionViewBase {
     // to delta the dragging to be good
     startDragging(index: number, pointer?: Pointer);
     async eachChildAsync(callback);
+
+	on(event: CollectionViewBase.itemLoadingEvent, callback: (args: CollectionViewItemEventData) => void, thisArg?: any);
+	on(event: CollectionViewBase.displayItemEvent, callback: (args: CollectionViewItemDisplayEventData) => void, thisArg?: any);
+
 }
 
 export interface CollectionViewItemEventData extends EventData {
     eventName: string;
-    object: CollectionView;
-    index: number;
-    view: View;
-    item: any;
+    object: any;
+    index?: number;
+    view?: View;
+    item?: any;
     bindingContext?: any;
 }
 
 export interface CollectionViewItemDisplayEventData extends EventData {
     eventName: string;
-    object: CollectionView;
-    index: number;
+    object: any;
+    index?: number;
 }
 
 /**
