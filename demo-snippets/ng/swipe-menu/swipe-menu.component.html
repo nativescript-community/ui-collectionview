@@ -21,13 +21,13 @@
                     >
                         <Gridlayout rows="*, auto" [backgroundColor]="item.color" class="item" mainContent width="100%">
                             <Stacklayout row="1">
-                                <Label row="1" [text]="item.name" class="title" />
-                                <Label row="1" [text]="item.color" class="subtitle" />
+                                <Label row="1" [text]="item.name" class="title" > </Label>
+                                <Label row="1" [text]="item.color" class="subtitle" > </Label>
                             </Stacklayout>
                         </Gridlayout>
                         <Stacklayout leftDrawer orientation="horizontal" width="200">
-                            <Label [text]="item.menuOpened ? 'opened' : 'a'" width="100" height="100%" backgroundColor="red" textAlignment="center" />
-                            <Label text="b" width="100" height="100%" backgroundColor="blue" textAlignment="center" />
+                            <Label [text]="item.menuOpened ? 'opened' : 'a'" width="100" height="100%" backgroundColor="red" textAlignment="center" > </Label>
+                            <Label text="b" width="100" height="100%" backgroundColor="blue" textAlignment="center" > </Label>
                         </Stacklayout>
                     </SwipeMenu>
         </ng-template>
