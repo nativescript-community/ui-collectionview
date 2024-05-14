@@ -213,49 +213,10 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
         }
         return lastInnerWidth !== this._innerWidth || lastInnerHeight !== this._innerHeight;
     }
-    // public onLayout(left: number, top: number, right: number, bottom: number) {
-    //     super.onLayout(left, top, right, bottom);
-    //     // on ios and during device rotation the getMeasuredWidth and getMeasuredHeight are wrong
-    //     // so we use left, top , right, bottom
-    //     this.updateInnerSize();
-    // }
     public onMeasure(widthMeasureSpec: number, heightMeasureSpec: number) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        // on ios and during device rotation the getMeasuredWidth and getMeasuredHeight are wrong
-        // so we use left, top , right, bottom
         this.updateInnerSize();
     }
-    // _onSizeChanged() {
-    //     super._onSizeChanged();
-    //     this.onSizeChanged(this.getMeasuredWidth(), this.getMeasuredHeight());
-    // }
-    // @profile
-    // public onSizeChanged(measuredWidth: number, measuredHeight: number) {
-    //     let changed = false;
-    //     this._innerWidth = measuredWidth - this.effectivePaddingLeft - this.effectivePaddingRight;
-    //     if (this.colWidth) {
-    //         const newValue = PercentLength.toDevicePixels(this.colWidth, autoEffectiveColWidth, this._innerWidth); // We cannot use 0 for auto as it throws for android.
-    //         if (newValue !== this._effectiveColWidth) {
-    //             this._effectiveColWidth = newValue;
-    //             changed = true;
-    //         }
-    //     }
-
-    //     this._innerHeight = measuredHeight - this.effectivePaddingTop - this.effectivePaddingBottom;
-    //     if (this.rowHeight) {
-    //         const newValue = PercentLength.toDevicePixels(this.rowHeight, autoEffectiveRowHeight, this._innerHeight);
-    //         if (newValue !== this._effectiveRowHeight) {
-    //             this._effectiveRowHeight = newValue;
-    //             changed = true;
-    //         }
-    //     }
-    //     if (changed) {
-    //         this.refresh();
-    //     }
-    // }
-    // public onLayout(left: number, top: number, right: number, bottom: number) {
-    //   super.onLayout(left, top, right, bottom);
-    // }
     items: any[] | ItemsSource;
 
     @profile
