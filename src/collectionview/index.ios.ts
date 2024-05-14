@@ -467,11 +467,10 @@ export class CollectionView extends CollectionViewBase {
         return this.orientation === 'horizontal';
     }
 
-    public clearCachedSize(...indexes:number[]) {
+    public clearCachedSize(...indexes: number[]) {
         const sizes: NSMutableArray<NSValue> = this._delegate instanceof UICollectionViewDelegateImpl ? this._delegate.cachedSizes : null;
         if (sizes) {
-            indexes.forEach(index=>sizes.replaceObjectAtIndexWithObject(index, NSValue.valueWithCGSize(CGSizeZero)))
-
+            indexes.forEach((index) => sizes.replaceObjectAtIndexWithObject(index, NSValue.valueWithCGSize(CGSizeZero)));
         }
     }
 
@@ -488,7 +487,7 @@ export class CollectionView extends CollectionViewBase {
         // this.clearCellSize();
 
         const sizes: NSMutableArray<NSValue> = this._delegate instanceof UICollectionViewDelegateImpl ? this._delegate.cachedSizes : null;
-        const performBatchUpdatesCompletion = (c) => {   
+        const performBatchUpdatesCompletion = (c) => {
             // if we are not "presented" (viewController hidden) then performBatchUpdatesCompletion would crash
             const viewIsLoaded = !!this.page?.viewController ? !!this.page.viewController.view.window : true;
             if (viewIsLoaded) {
@@ -706,7 +705,7 @@ export class CollectionView extends CollectionViewBase {
             return;
         }
         const nbItems = nativeView.numberOfItemsInSection(0);
-        if(nbItems > 0 && index < nbItems) {
+        if (nbItems > 0 && index < nbItems) {
             let scrollPosition = UICollectionViewScrollPosition.Top;
             if (this.orientation === 'vertical') {
                 scrollPosition = snap === SnapPosition.START ? UICollectionViewScrollPosition.Top : UICollectionViewScrollPosition.Bottom;
@@ -1178,10 +1177,15 @@ class UICollectionViewFlowLayoutImpl extends UICollectionViewFlowLayout {
         layout._owner = new WeakRef(owner);
         return layout;
     }
-    invalidationContextForInteractivelyMovingItemsWithTargetPositionPreviousIndexPathsPreviousPosition(targetIndexPaths: NSArray<NSIndexPath> , targetPosition: CGPoint, previousIndexPaths: NSArray<NSIndexPath>, previousPosition: CGPoint): UICollectionViewLayoutInvalidationContext {
-        const owner = this._owner?.get()
+    invalidationContextForInteractivelyMovingItemsWithTargetPositionPreviousIndexPathsPreviousPosition(
+        targetIndexPaths: NSArray<NSIndexPath>,
+        targetPosition: CGPoint,
+        previousIndexPaths: NSArray<NSIndexPath>,
+        previousPosition: CGPoint
+    ): UICollectionViewLayoutInvalidationContext {
+        const owner = this._owner?.get();
         if (owner && targetIndexPaths.count) {
-            owner.clearCachedSize(targetIndexPaths.objectAtIndex(0).row, previousIndexPaths.objectAtIndex(0).row)
+            owner.clearCachedSize(targetIndexPaths.objectAtIndex(0).row, previousIndexPaths.objectAtIndex(0).row);
             // owner.clearCachedSize(previousIndexPaths.objectAtIndex(0).row)
         }
         return super.invalidationContextForInteractivelyMovingItemsWithTargetPositionPreviousIndexPathsPreviousPosition(targetIndexPaths, targetPosition, previousIndexPaths, previousPosition);
@@ -1294,7 +1298,7 @@ class CollectionViewDataSource extends NSObject implements UICollectionViewDataS
 
 // @NativeClass
 // class UICollectionViewDropDelegateImpl extends NSObject implements UICollectionViewDropDelegate {
-    
+
 //     public static ObjCProtocols = [UICollectionViewDropDelegate];
 
 //     _owner: WeakRef<CollectionView>;
@@ -1426,7 +1430,7 @@ class UICollectionViewDelegateImpl extends UICollectionViewCacheDelegateFlowLayo
             owner.scrollViewDidEndScrollingAnimation(scrollView);
         }
     }
-    collectionViewTargetIndexPathForMoveFromItemAtIndexPathToProposedIndexPath(collectionView: UICollectionView, currentIndexPath: NSIndexPath, proposedIndexPath: NSIndexPath): NSIndexPath {  
+    collectionViewTargetIndexPathForMoveFromItemAtIndexPathToProposedIndexPath(collectionView: UICollectionView, currentIndexPath: NSIndexPath, proposedIndexPath: NSIndexPath): NSIndexPath {
         if (currentIndexPath === proposedIndexPath) {
             return proposedIndexPath;
         }
@@ -1436,7 +1440,7 @@ class UICollectionViewDelegateImpl extends UICollectionViewCacheDelegateFlowLayo
         }
         owner._reorderItemInSource(currentIndexPath.row, proposedIndexPath.row, false);
         owner.clearCachedSize(currentIndexPath.row, proposedIndexPath.row);
-        
+
         return proposedIndexPath;
     }
 }
@@ -1501,7 +1505,7 @@ class UICollectionViewDelegateFixedSizeImpl extends NSObject implements UICollec
             owner.scrollViewDidEndScrollingAnimation(scrollView);
         }
     }
-    collectionViewTargetIndexPathForMoveFromItemAtIndexPathToProposedIndexPath(collectionView: UICollectionView, currentIndexPath: NSIndexPath, proposedIndexPath: NSIndexPath): NSIndexPath {  
+    collectionViewTargetIndexPathForMoveFromItemAtIndexPathToProposedIndexPath(collectionView: UICollectionView, currentIndexPath: NSIndexPath, proposedIndexPath: NSIndexPath): NSIndexPath {
         if (currentIndexPath === proposedIndexPath) {
             return proposedIndexPath;
         }
@@ -1511,7 +1515,7 @@ class UICollectionViewDelegateFixedSizeImpl extends NSObject implements UICollec
         }
         owner._reorderItemInSource(currentIndexPath.row, proposedIndexPath.row, false);
         owner.clearCachedSize(currentIndexPath.row, proposedIndexPath.row);
-        
+
         return proposedIndexPath;
     }
 }
