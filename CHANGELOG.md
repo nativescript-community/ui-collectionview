@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.3.32](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.31...v5.3.32) (2024-05-15)
+
+### Bug Fixes
+
+* **ios:** correctly redraw Canvas on cell reuse ([2bc32da](https://github.com/@nativescript-community/ui-collectionview/commit/2bc32daa3e974c01e27435f2f16a51b7eb125200))
+
 ## [5.3.31](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.30...v5.3.31) (2024-04-29)
 
 **Note:** Version bump only for package ui-collectionview
