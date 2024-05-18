@@ -1,35 +1,27 @@
 <ActionBar>
     <NavigationButton android.systemIcon="ic_menu_back" (tap)="goBack()"></NavigationButton>
-    <Label text="Simple Grid"></Label>
+    <Label text="Swipe Menu"></Label>
 </ActionBar>
 
-<GridLayout>
-    <CollectionView 
-        
-        [items]="items"  
-        (itemTap)="onItemTap($event)" 
-        (loadMoreItems)="onLoadMoreItems()"
-        colWidth="50%" 
-        rowHeight="200"
-        automationText="collectionView"
-    >
+<GridLayout rows="auto,*">
+    <CollectionView [items]="items" (itemTap)="onItemTap($event)" row="1" rowHeight="100" autoReloadItemOnLayout="true">
         <ng-template let-item="item">
-            <SwipeMenu
-                        leftSwipeDistance="300"
-                        [translationFunction]="drawerTranslationFunction"
-                        [startingSide]="item.startingSide"
-                    >
-                        <Gridlayout rows="*, auto" [backgroundColor]="item.color" class="item" mainContent width="100%">
-                            <Stacklayout row="1">
-                                <Label row="1" [text]="item.name" class="title" > </Label>
-                                <Label row="1" [text]="item.color" class="subtitle" > </Label>
-                            </Stacklayout>
-                        </Gridlayout>
-                        <Stacklayout leftDrawer orientation="horizontal" width="200">
-                            <Label [text]="item.menuOpened ? 'opened' : 'a'" width="100" height="100%" backgroundColor="red" textAlignment="center" > </Label>
-                            <Label text="b" width="100" height="100%" backgroundColor="blue" textAlignment="center" > </Label>
-                        </Stacklayout>
-                    </SwipeMenu>
+            <SwipeMenu [leftSwipeDistance]="swipeMenuThreshold" [rightSwipeDistance]="swipeMenuThreshold" [translationFunction]="drawerTranslationFunction" [startingSide]="item.startingSide">
+                <Gridlayout rows="*, auto" [backgroundColor]="item.color" class="item" mainContent width="100%">
+                    <Stacklayout row="1">
+                        <Label row="1" [text]="item.name" class="title"></Label>
+                        <Label row="1" [text]="item.color" class="subtitle"></Label>
+                    </Stacklayout>
+                </Gridlayout>
+                <Stacklayout leftSwipeMenu orientation="horizontal" width="200">
+                    <Label (tap)="menuItemTap($event)" [text]="item.startingSide ? 'opened' : 'a'" width="100" height="100%" backgroundColor="red" textAlignment="center"></Label>
+                    <Label (tap)="menuItemTap($event)" text="b" width="100" height="100%" backgroundColor="blue" textAlignment="center"></Label>
+                </Stacklayout>
+                <Stacklayout rightSwipeMenu orientation="horizontal" width="200">
+                    <Label (tap)="menuItemTap($event)" [text]="item.startingSide ? 'opened' : 'a'" width="100" height="100%" backgroundColor="red" textAlignment="center"></Label>
+                    <Label (tap)="menuItemTap($event)" text="b" width="100" height="100%" backgroundColor="blue" textAlignment="center"></Label>
+                </Stacklayout>
+            </SwipeMenu>
         </ng-template>
     </CollectionView>
 </GridLayout>

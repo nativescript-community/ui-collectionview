@@ -1206,10 +1206,10 @@ export class CollectionView extends CollectionViewBase {
             parentView.id = 'collectionViewHolder';
             view = parentView;
         }
-        view._setupAsRootView(this._context);
-        view._isAddedToNativeVisualTree = true;
         //@ts-ignore
         view.parent = this;
+        view._setupAsRootView(this._context);
+        view._isAddedToNativeVisualTree = true;
         view.callLoaded();
         if (!CollectionViewCellHolder) {
             CollectionViewCellHolder = com.nativescript.collectionview.CollectionViewCellHolder as any;
