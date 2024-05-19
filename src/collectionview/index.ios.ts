@@ -790,7 +790,9 @@ export class CollectionView extends CollectionViewBase {
                 cell.owner = new WeakRef(view);
             } else if (cell.view !== view) {
                 this._removeContainer(cell);
-                cell.view.nativeViewProtected.removeFromSuperview();
+                if (cell.view.nativeViewProtected) {
+                    cell.view.nativeViewProtected.removeFromSuperview();
+                }
                 cell.owner = new WeakRef(view);
             }
             cell.currentIndex = indexPath.row;
