@@ -4,6 +4,7 @@
     "description": "Allows you to easily add a collection view (grid list view) to your projects. Supports vertical and horizontal modes, templating, and more.",
     "main": "./index",
     "sideEffects": false,
+    "funding": "https://github.com/sponsors/farfromrefug",
     "typings": "./index.d.ts",
     "scripts": {
         "build": "npm run tsc && npm run readme",

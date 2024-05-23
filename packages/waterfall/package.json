@@ -3,6 +3,7 @@
     "version": "5.3.33",
     "description": "A NativeScript CollectionView waterfall Plugin.",
     "main": "./index",
+    "funding": "https://github.com/sponsors/farfromrefug",
     "sideEffects": false,
     "typings": "./index.d.ts",
     "repository": {
