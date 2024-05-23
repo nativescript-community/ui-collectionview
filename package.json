@@ -92,5 +92,8 @@
         "demo-svelte",
         "demo-react",
         "demo-snippets"
-    ]
+    ],
+    "resolutions": {
+        "globby": "14.0.0"
+    }
 }
