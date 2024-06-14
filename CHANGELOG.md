@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.3.35](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.34...v5.3.35) (2024-06-14)
+
+### Bug Fixes
+
+* **collectionview:** ios prevent endless performLayout ([530588b](https://github.com/@nativescript-community/ui-collectionview/commit/530588b41c69b40aa55d4c70860f10c0907de6d1))
+
 ## [5.3.34](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.33...v5.3.34) (2024-05-24)
 
 ### Bug Fixes
