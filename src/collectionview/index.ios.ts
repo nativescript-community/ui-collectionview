@@ -808,7 +808,8 @@ export class CollectionView extends CollectionViewBase {
                     // for a cell to update correctly on cell layout change we need
                     // to do it ourself instead of "propagating it"
                     view['performLayout'] = () => {
-                        if (!this._preparingCell) {
+                        if (!this._preparingCell && !view['inPerformLayout']) {
+                            view['inPerformLayout'] = true;
                             const index = cell.currentIndex;
                             const nativeView = this.nativeViewProtected;
                             const sizes: NSMutableArray<NSValue> = this._delegate instanceof UICollectionViewDelegateImpl ? this._delegate.cachedSizes : null;
@@ -823,6 +824,7 @@ export class CollectionView extends CollectionViewBase {
                                 cell.contentView.subviews.objectAtIndex(0)?.layoutSubviews();
                                 // nativeView.collectionViewLayout.invalidateLayout();
                             }, null);
+                            view['inPerformLayout'] = false;
                         }
                     };
                 }
