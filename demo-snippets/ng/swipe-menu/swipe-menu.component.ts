@@ -1,14 +1,16 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterExtensions } from '@nativescript/angular';
+import { ObservableArray, Screen } from '@nativescript/core';
 
 @Component({
     selector: 'ns-collectionview-swipe-menu',
-    templateUrl: './swipe-menu.component.html'
+    templateUrl: './swipe-menu.component.html',
+    styleUrls: ['../styles.scss']
 })
-export class SwipeMenuComponent implements OnInit {
+export class SwipeMenuComponent {
     constructor(private router: RouterExtensions) {}
 
-    items = [
+    items = new ObservableArray([
         { index: 0, name: 'TURQUOISE', color: '#1abc9c' },
         { index: 1, name: 'EMERALD', color: '#2ecc71' },
         { index: 2, name: 'PETER RIVER', color: '#3498db' },
@@ -29,28 +31,37 @@ export class SwipeMenuComponent implements OnInit {
         { index: 17, name: 'POMEGRANATE', color: '#c0392b' },
         { index: 18, name: 'SILVER', color: '#bdc3c7' },
         { index: 19, name: 'ASBESTOS', color: '#7f8c8d' }
-    ];
+    ]);
 
-    ngOnInit(): void {}
-
-    goBack(): void {
-        this.router.back();
-    }
-
-    onItemTap({ index, item }) {
-        console.log(`EVENT TRIGGERED: Tapped on ${index} ${item.name}`);
-    }
-
-    onLoadMoreItems() {
-        console.log('EVENT TRIGGERED: onLoadMoreItems()');
-    }
     drawerTranslationFunction(side, width, value, delta, progress) {
         const result = {
             mainContent: {
-                translateX: side === 'right' ? -delta : delta
+                translateX: side === 'right' ? -delta : delta,
+                opacity: progress < 1 ? 1 : 0.8
+            },
+            backDrop: {
+                opacity: progress * 0.00001
             }
         } as any;
-
+        console.log(`drawerTranslation invoked\n side: ${side}, width: ${width}, value: ${value}, delta: ${delta}, progress: ${progress}`);
         return result;
+    }
+
+    swipeMenuThreshold = Screen.mainScreen.widthPixels;
+    menuItemTap(e) {
+        console.log(`EVENT TRIGGERED: Tapped on ${e.object.text}`);
+    }
+    onItemTap({ index, item, view }) {
+        console.log(`EVENT TRIGGERED: Tapped on ${index} ${item.name}`);
+
+        // startingSide means that a swipemenu is open, so close it
+        if (item.startingSide) {
+            console.log('Menu open, closing ...');
+            view.close();
+        }
+    }
+
+    goBack(): void {
+        this.router.back();
     }
 }

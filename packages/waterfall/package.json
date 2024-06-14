@@ -1,8 +1,9 @@
 {
     "name": "@nativescript-community/ui-collectionview-waterfall",
-    "version": "5.3.32",
+    "version": "5.3.34",
     "description": "A NativeScript CollectionView waterfall Plugin.",
     "main": "./index",
+    "funding": "https://github.com/sponsors/farfromrefug",
     "sideEffects": false,
     "typings": "./index.d.ts",
     "repository": {
@@ -38,6 +39,6 @@
     },
     "homepage": "https://github.com/nativescript-community/ui-collectionview#readme",
     "dependencies": {
-        "@nativescript-community/ui-collectionview": "^5.3.32"
+        "@nativescript-community/ui-collectionview": "^5.3.34"
     }
 }

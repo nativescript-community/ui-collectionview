@@ -317,11 +317,7 @@ export class CollectionView extends CollectionViewBase {
         nativeView.setRecycledViewPool(null);
         this.recycledViewPoolDisposeListener = null;
         this.recycledViewPool = null;
-        if (nativeView.scrollListener) {
-            this.nativeView.removeOnScrollListener(nativeView.scrollListener);
-            nativeView.scrollListener = null;
-            this._nScrollListener = null;
-        }
+        this.detachScrollListenerIfNecessary(true);
         nativeView.sizeChangedListener = null;
         nativeView.layoutManager = null;
         this._listViewAdapter = null;
@@ -333,12 +329,14 @@ export class CollectionView extends CollectionViewBase {
         super.disposeNativeView();
     }
 
-    @profile
     onLoaded() {
         super.onLoaded();
-        this.attachScrollListener();
-        // this.refresh();
+        this.attachScrollListenerIfNecessary();
     }
+    // onUnloaded() {
+    //     super.onUnloaded();
+    //     this.detachScrollListenerIfNecessary();
+    // }
 
     _getSpanSize: (item, index) => number;
     public getViewForItemAtIndex(index: number): View {
@@ -372,30 +370,26 @@ export class CollectionView extends CollectionViewBase {
         return this._getSpanSize;
     }
 
-    @profile
-    private attachScrollListener() {
-        if (this._scrollOrLoadMoreChangeCount > 0 && this.isLoaded) {
-            const nativeView = this.nativeViewProtected;
-            if (!nativeView.scrollListener) {
-                this._nScrollListener = new com.nativescript.collectionview.OnScrollListener.Listener({
-                    onScrollStateChanged: this.onScrollStateChanged.bind(this),
-                    onScrolled: this.onScrolled.bind(this)
-                });
-                const scrollListener = new com.nativescript.collectionview.OnScrollListener(this._nScrollListener);
-                nativeView.addOnScrollListener(scrollListener);
-                nativeView.scrollListener = scrollListener;
-            }
+    private attachScrollListenerIfNecessary() {
+        const nativeView = this.nativeViewProtected;
+        if (this._scrollOrLoadMoreChangeCount > 0 && nativeView && !nativeView.scrollListener) {
+            this._nScrollListener = new com.nativescript.collectionview.OnScrollListener.Listener({
+                onScrollStateChanged: this.onScrollStateChanged.bind(this),
+                onScrolled: this.onScrolled.bind(this)
+            });
+            const scrollListener = new com.nativescript.collectionview.OnScrollListener(this._nScrollListener);
+            nativeView.addOnScrollListener(scrollListener);
+            nativeView.scrollListener = scrollListener;
         }
     }
-
-    private detachScrollListener() {
-        if (this._scrollOrLoadMoreChangeCount === 0 && this.isLoaded) {
-            const nativeView = this.nativeViewProtected;
+    private detachScrollListenerIfNecessary(force = false) {
+        const nativeView = this.nativeViewProtected;
+        if (force || (this._scrollOrLoadMoreChangeCount === 0 && nativeView)) {
             if (nativeView.scrollListener) {
                 this.nativeView.removeOnScrollListener(nativeView.scrollListener);
                 nativeView.scrollListener = null;
-                this._nScrollListener = null;
             }
+            this._nScrollListener = null;
         }
     }
     private computeScrollEventData(view: androidx.recyclerview.widget.RecyclerView, eventName: string, dx?: number, dy?: number) {
@@ -473,7 +467,7 @@ export class CollectionView extends CollectionViewBase {
         super.addEventListener(arg, callback, thisArg);
         if (arg === CollectionViewBase.scrollEvent || arg === CollectionViewBase.scrollStartEvent || arg === CollectionViewBase.scrollEndEvent || arg === CollectionViewBase.loadMoreItemsEvent) {
             this._scrollOrLoadMoreChangeCount++;
-            this.attachScrollListener();
+            this.attachScrollListenerIfNecessary();
         }
     }
 
@@ -482,7 +476,7 @@ export class CollectionView extends CollectionViewBase {
 
         if (arg === CollectionViewBase.scrollEvent || arg === CollectionViewBase.scrollStartEvent || arg === CollectionViewBase.scrollEndEvent || arg === CollectionViewBase.loadMoreItemsEvent) {
             this._scrollOrLoadMoreChangeCount--;
-            this.detachScrollListener();
+            this.detachScrollListenerIfNecessary();
         }
     }
 
@@ -1206,10 +1200,10 @@ export class CollectionView extends CollectionViewBase {
             parentView.id = 'collectionViewHolder';
             view = parentView;
         }
-        view._setupAsRootView(this._context);
-        view._isAddedToNativeVisualTree = true;
         //@ts-ignore
         view.parent = this;
+        view._setupAsRootView(this._context);
+        view._isAddedToNativeVisualTree = true;
         view.callLoaded();
         if (!CollectionViewCellHolder) {
             CollectionViewCellHolder = com.nativescript.collectionview.CollectionViewCellHolder as any;

@@ -46,7 +46,7 @@
         "tsc": "cpy '**/*.d.ts' '../plugin' --parents --cwd=src && tsc -skipLibCheck -d",
         "update": "node ./tools/update.js",
         "watch": "npm run tsc -- -w",
-        "doc": "node tools/builddoc.mjs",
+        "doc": "node tools/builddoc.js",
         "pnpm.setup": "npm run setup && pnpm --filter @nativescript/template-* install",
         "commit_readme_doc_changes": "git add docs/** *.md ; git commit -m \"readme/doc\" ; echo \"commit readme doc done\""
     },
