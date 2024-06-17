@@ -3469,7 +3469,7 @@ __metadata:
 
 "@nativescript-community/plugin-seed-tools@file:tools::locator=root-workspace-0b6124%40workspace%3A.":
   version: 1.0.0
-  resolution: "@nativescript-community/plugin-seed-tools@file:tools#tools::hash=dc8a0e&locator=root-workspace-0b6124%40workspace%3A."
+  resolution: "@nativescript-community/plugin-seed-tools@file:tools#tools::hash=88e713&locator=root-workspace-0b6124%40workspace%3A."
   dependencies:
     "@angular/animations": "npm:~17.3.8"
     "@angular/common": "npm:~17.3.8"
@@ -3533,18 +3533,18 @@ __metadata:
     vue: "npm:^2.7.16"
     yargs: "npm:^17.7.2"
     zone.js: "npm:~0.14.5"
-  checksum: 044f64e03f04edd79f685207c40ae1aecea169f40c919427c0716c8be4f4b8802f7348196ad1545b33e76b74bd78259046323d016de143559171ffa30b19e48b
+  checksum: 9d6655b7aa1c9007cc137581dd4042a8030444b9af1376500293b9f76fa9c3f2de3ac9516a6ddf71a3b049970a13e41fea30f183513516e29626168cee9a2bc1
   languageName: node
   linkType: hard
 
 "@nativescript-community/template-snippet@file:demo-snippets::locator=root-workspace-0b6124%40workspace%3A.":
   version: 0.0.1
-  resolution: "@nativescript-community/template-snippet@file:demo-snippets#demo-snippets::hash=c18969&locator=root-workspace-0b6124%40workspace%3A."
+  resolution: "@nativescript-community/template-snippet@file:demo-snippets#demo-snippets::hash=d13ce1&locator=root-workspace-0b6124%40workspace%3A."
   dependencies:
     "@nativescript-community/ui-collectionview": "npm:*"
     "@nativescript-community/ui-collectionview-swipemenu": "npm:*"
     "@nativescript-community/ui-collectionview-waterfall": "npm:*"
-  checksum: ac6b84d32fb1e44626a09b838475d877c9ee544761e357b321da16e1340eafde6a30b834006ebeac5e7f7898871b84105f911dbf3b42bd105e36a367083aa0c3
+  checksum: 23d192868db97775af2be632ec06a6bed9e9fa54568e26d1419050185358cccb0f6e3f27a9922e9157f69dc126469c8ab3eafd67ccca2ca97e0ad6fb2f1bfb6f
   languageName: node
   linkType: hard
 
@@ -3563,7 +3563,7 @@ __metadata:
   resolution: "@nativescript-community/ui-collectionview-swipemenu@workspace:packages/swipemenu"
   dependencies:
     "@nativescript-community/class-mixins": "npm:^1.0.0"
-    "@nativescript-community/ui-collectionview": "npm:^5.3.32"
+    "@nativescript-community/ui-collectionview": "npm:^5.3.34"
     "@nativescript-community/ui-drawer": "npm:^0.1.27"
   languageName: unknown
   linkType: soft
@@ -3572,11 +3572,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@nativescript-community/ui-collectionview-waterfall@workspace:packages/waterfall"
   dependencies:
-    "@nativescript-community/ui-collectionview": "npm:^5.3.32"
+    "@nativescript-community/ui-collectionview": "npm:^5.3.34"
   languageName: unknown
   linkType: soft
 
-"@nativescript-community/ui-collectionview@npm:*, @nativescript-community/ui-collectionview@npm:^5.3.32, @nativescript-community/ui-collectionview@workspace:packages/collectionview":
+"@nativescript-community/ui-collectionview@npm:*, @nativescript-community/ui-collectionview@npm:^5.3.34, @nativescript-community/ui-collectionview@workspace:packages/collectionview":
   version: 0.0.0-use.local
   resolution: "@nativescript-community/ui-collectionview@workspace:packages/collectionview"
   languageName: unknown
