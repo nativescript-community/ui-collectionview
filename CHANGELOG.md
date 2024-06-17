@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.3.37](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.36...v5.3.37) (2024-06-17)
+
+### Bug Fixes
+
+* **collectionview:** ios fix for getViewForItemAtIndex when not loaded ([9f27041](https://github.com/@nativescript-community/ui-collectionview/commit/9f2704143bb8d05a371dc5cf3480ae06f026f486))
+
 ## [5.3.36](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.35...v5.3.36) (2024-06-17)
 
 ### Bug Fixes
