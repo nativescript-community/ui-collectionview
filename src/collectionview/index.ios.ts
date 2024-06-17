@@ -222,8 +222,18 @@ export class CollectionView extends CollectionViewBase {
     public getViewForItemAtIndex(index: number): View {
         let result: View;
         if (this.nativeViewProtected) {
+            // when the collectionview is not loaded anymore, cellForItemAtIndexPath wont return
+            // then we use our cached map to get the view
             const cell = this.nativeViewProtected.cellForItemAtIndexPath(NSIndexPath.indexPathForRowInSection(index, 0)) as CollectionViewCell;
-            return cell?.view;
+            if (cell) {
+                return cell?.view;
+            } else {
+                for (const [cell, view] of this._map) {
+                    if (cell.currentIndex === index) {
+                        return view;
+                    }
+                }
+            }
         }
 
         return result;
