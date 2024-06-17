@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.3.36](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.35...v5.3.36) (2024-06-17)
+
+### Bug Fixes
+
+* **ios:** working `itemOverlap` ([f5d9aa7](https://github.com/@nativescript-community/ui-collectionview/commit/f5d9aa79d2a6f5f7e5f9823a85e22e0f85d6aaa4))
+
 ## [5.3.35](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.34...v5.3.35) (2024-06-14)
 
 ### Bug Fixes
