@@ -105,8 +105,8 @@ export class CollectionView extends CollectionViewBase {
         if (CollectionViewBase.layoutStyles[this.layoutStyle]) {
             layout = this._layout = CollectionViewBase.layoutStyles[this.layoutStyle].createLayout(this);
         } else {
-            // layout = this._layout = UICollectionViewFlowLayoutImpl.initWithOwner(this);
-            layout = this._layout = UICollectionViewFlowLayout.new();
+            layout = this._layout = UICollectionViewFlowLayoutImpl.initWithOwner(this);
+            // layout = this._layout = UICollectionViewFlowLayout.new();
         }
         if (layout instanceof UICollectionViewFlowLayout) {
             layout.minimumLineSpacing = 0;
