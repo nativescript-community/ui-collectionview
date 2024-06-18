@@ -666,7 +666,13 @@ export class CollectionView extends CollectionViewBase {
 
         return indexes.some((visIndex) => visIndex.row === itemIndex);
     }
-
+    public findFirstVisibleItemIndex() {
+        const view = this.nativeViewProtected;
+        if (!view) {
+            return -1;
+        }
+        return view.indexPathsForVisibleItems?.objectAtIndex(0)?.row ?? -1;
+    }
     @profile
     public refresh() {
         if (!this.isLoaded || !this.nativeView) {

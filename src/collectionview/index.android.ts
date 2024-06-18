@@ -968,6 +968,17 @@ export class CollectionView extends CollectionViewBase {
         }
         return false;
     }
+    public findFirstVisibleItemIndex() {
+        const view = this.nativeViewProtected;
+        if (!view) {
+            return -1;
+        }
+        const layoutManager = this.layoutManager as androidx.recyclerview.widget.LinearLayoutManager;
+        if (layoutManager['findFirstVisibleItemPosition']) {
+            return layoutManager.findFirstVisibleItemPosition();
+        }
+        return -1;
+    }
 
     _layedOut = false;
     @profile

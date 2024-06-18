@@ -179,6 +179,7 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     public abstract eachChildAsync(callback);
     public abstract refreshVisibleItems();
     public abstract isItemAtIndexVisible(index: number);
+    public abstract findFirstVisibleItemIndex(): number;
     public abstract scrollToIndex(index: number, animated: boolean);
     public abstract scrollToOffset(value: number, animated?: boolean): any;
 
