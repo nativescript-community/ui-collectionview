@@ -14,6 +14,7 @@ export class CollectionView extends CollectionViewBase {
     public refresh();
     public refreshVisibleItems();
     public isItemAtIndexVisible(index: number): boolean;
+    public findFirstVisibleItemIndex(): number;
     public scrollToIndex(index: number, animated?: boolean, snap?: SnapPosition = SnapPosition.START);
     public scrollToOffset(value: number, animation?: boolean);
     public getViewForItemAtIndex(index: number): View;
@@ -23,9 +24,8 @@ export class CollectionView extends CollectionViewBase {
     startDragging(index: number, pointer?: Pointer);
     async eachChildAsync(callback);
 
-	on(event: CollectionViewBase.itemLoadingEvent, callback: (args: CollectionViewItemEventData) => void, thisArg?: any);
-	on(event: CollectionViewBase.displayItemEvent, callback: (args: CollectionViewItemDisplayEventData) => void, thisArg?: any);
-
+    on(event: CollectionViewBase.itemLoadingEvent, callback: (args: CollectionViewItemEventData) => void, thisArg?: any);
+    on(event: CollectionViewBase.displayItemEvent, callback: (args: CollectionViewItemDisplayEventData) => void, thisArg?: any);
 }
 
 export interface CollectionViewItemEventData extends EventData {
