@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.3.39](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.38...v5.3.39) (2024-06-18)
+
+### Features
+
+* new `findFirstVisibleItemIndex` method ([76db3c8](https://github.com/@nativescript-community/ui-collectionview/commit/76db3c81e8522f9dcfcc3724c1789144450e1544))
+
 ## [5.3.38](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.37...v5.3.38) (2024-06-17)
 
 ### Bug Fixes
