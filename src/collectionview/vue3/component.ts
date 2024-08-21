@@ -53,7 +53,7 @@ export const CollectionView = defineComponent({
             }
         }));
 
-        const getSlotName = (itemCtx: ListItem, index: number, items: ListItem[]) => props.itemTemplateSelector?.(itemCtx, index, items) ?? 'default';
+        const getSlotName = (item: any, index: number, items: ListItem[]) => props.itemTemplateSelector?.(item, index, items) ?? 'default';
 
         const collectionView = ref<any & { nativeView: NSCollectionView }>(null);
 
@@ -80,7 +80,7 @@ export const CollectionView = defineComponent({
             // const itemCtx: ListItem = getItemCtx(props.items instanceof ObservableArray ? props.items.getItem(index) : props.items[index], index, props.alias, props.itemIdGenerator);
 
             // update the cell data with the current row
-            const slotName = getSlotName(itemCtx, index, event.object.items);
+            const slotName = getSlotName(item, index, event.object.items);
             cells.value[id] = {
                 itemCtx,
                 slotName
@@ -135,7 +135,8 @@ export const CollectionView = defineComponent({
                 ref: collectionView,
                 items: props.items,
                 itemTemplates,
-                onItemLoading
+                onItemLoading,
+                itemTemplateSelector: (item, index, items) => getSlotName(item, index, items)
             });
     }
 });
