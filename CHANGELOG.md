@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.3.40](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.39...v5.3.40) (2024-08-22)
+
+### Bug Fixes
+
+* **vue3:**  itemTemplateSelector don't select correct template in recycling ([410ef74](https://github.com/@nativescript-community/ui-collectionview/commit/410ef74a942dbec299984b7d5d2e4c97456aacdf))
+
 ## [5.3.39](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.38...v5.3.39) (2024-06-18)
 
 ### Features
