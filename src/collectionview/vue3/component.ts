@@ -1,6 +1,7 @@
+
 import { CollectionView as NSCollectionView } from '..';
 import { ItemEventData, Observable, ObservableArray } from '@nativescript/core';
-import { ELEMENT_REF, NSVElement, NSVRoot, PropType, VNode, computed, defineComponent, getCurrentInstance, h, ref, render, toRaw, warn, watch } from 'nativescript-vue';
+import { NSVRoot, PropType, VNode, defineComponent, getCurrentInstance, AppContext, h, ref, render, toRaw, watch } from 'nativescript-vue';
 
 interface ListItem {
     [key: string]: any;
@@ -25,6 +26,15 @@ function getItemCtx(item: any, index: number, itemAlias: string, indexAlias: str
         even: index % 2 === 0,
         odd: index % 2 !== 0
     };
+}
+
+function propagateAppContext(vnode: VNode, appContext?: AppContext) {
+    if (!vnode || !appContext) return;
+
+    vnode.appContext = appContext;
+    if (Array.isArray(vnode.children)) {
+        vnode.children.forEach((child) => propagateAppContext(child as VNode, appContext));
+    }
 }
 
 export const CollectionView = defineComponent({
@@ -74,7 +84,7 @@ export const CollectionView = defineComponent({
         function onItemLoading(event: any & ItemEventData) {
             const index = event.index;
             const id = event.view?.[LIST_CELL_ID] ?? `${cellId++}`;
-            const item = defineComponent(event.bindingContext, vm);
+            const item = defineComponent(event.bindingContext);
 
             const itemCtx = getItemCtx(item, index, props.alias, props.itemIdGenerator);
             // const itemCtx: ListItem = getItemCtx(props.items instanceof ObservableArray ? props.items.getItem(index) : props.items[index], index, props.alias, props.itemIdGenerator);
@@ -91,7 +101,8 @@ export const CollectionView = defineComponent({
 
             // find the vnode rendering this cell
             const container = event.view?.[LIST_CELL_CONTAINER] ?? new NSVRoot();
-            const vnode = ctx.slots[slotName]?.(itemCtx)[0];
+            const vnode = ctx.slots[slotName]?.(itemCtx)[0] as VNode;
+            propagateAppContext(vnode, vm?.appContext);
 
             if (event.view) {
                 event.view._batchUpdate(() => {
@@ -109,34 +120,13 @@ export const CollectionView = defineComponent({
             event.view = cellEl;
         }
 
-        // render all realized templates as children
-        // const cellVNODES = () =>
-        //     Object.entries(cells.value).map(([id, entry]) => {
-        //         const vnodes: VNode[] = ctx.slots[entry.slotName]?.(entry.itemCtx) ?? [
-        //             // default template is just a label
-        //             h('Label', {
-        //                 text: entry.itemCtx[props.alias]
-        //             })
-        //         ];
-
-        //         if (vnodes.length > 1) {
-        //             warn(`ListView template must contain a single root element. Found: ${vnodes.length}. Only the first one will be used.`);
-        //         }
-
-        //         const vnode: VNode = vnodes[0];
-        //         // set the key to the list cell id, so we can find this cell later...
-        //         vnode.key = id;
-
-        //         return vnode;
-        //     });
-
         return () =>
             h('NativeCollectionView', {
                 ref: collectionView,
                 items: props.items,
                 itemTemplates,
                 onItemLoading,
-                itemTemplateSelector: (item, index, items) => getSlotName(item, index, items)
+                itemTemplateSelector: (item: any, index: number, items: ListItem[]) => getSlotName(item, index, items)
             });
     }
 });
