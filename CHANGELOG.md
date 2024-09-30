@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.3.41](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.40...v5.3.41) (2024-09-30)
+
+### Bug Fixes
+
+* vue3 childs not passed appContext ([5011662](https://github.com/@nativescript-community/ui-collectionview/commit/5011662b35f9b28f98fd52d532d39f2f226ec275))
+
 ## [5.3.40](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.39...v5.3.40) (2024-08-22)
 
 ### Bug Fixes
