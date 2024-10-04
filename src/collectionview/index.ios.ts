@@ -504,7 +504,7 @@ export class CollectionView extends CollectionViewBase {
             if (viewIsLoaded) {
                 view.performBatchUpdatesCompletion(c, null);
             } else {
-                c();
+                this.refresh();
             }
         };
 
