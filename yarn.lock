@@ -3540,12 +3540,13 @@ __metadata:
 
 "@nativescript-community/template-snippet@file:demo-snippets::locator=root-workspace-0b6124%40workspace%3A.":
   version: 0.0.1
-  resolution: "@nativescript-community/template-snippet@file:demo-snippets#demo-snippets::hash=d13ce1&locator=root-workspace-0b6124%40workspace%3A."
+  resolution: "@nativescript-community/template-snippet@file:demo-snippets#demo-snippets::hash=e84b68&locator=root-workspace-0b6124%40workspace%3A."
   dependencies:
     "@nativescript-community/ui-collectionview": "npm:*"
     "@nativescript-community/ui-collectionview-swipemenu": "npm:*"
     "@nativescript-community/ui-collectionview-waterfall": "npm:*"
-  checksum: 23d192868db97775af2be632ec06a6bed9e9fa54568e26d1419050185358cccb0f6e3f27a9922e9157f69dc126469c8ab3eafd67ccca2ca97e0ad6fb2f1bfb6f
+    "@nativescript-community/ui-pulltorefresh": "npm:*"
+  checksum: 30d7362b6a77522995091e38577ad8516bf0fe1ddbf28e62b0fd2d803f7d03fff8730b56fdf38bfda90097b5610485498b5e98bc568cdf61e344b2dc8a18e768
   languageName: node
   linkType: hard
 
@@ -3556,6 +3557,7 @@ __metadata:
     "@nativescript-community/ui-collectionview": "npm:*"
     "@nativescript-community/ui-collectionview-swipemenu": "npm:*"
     "@nativescript-community/ui-collectionview-waterfall": "npm:*"
+    "@nativescript-community/ui-pulltorefresh": "npm:*"
   languageName: unknown
   linkType: soft
 
@@ -3564,7 +3566,7 @@ __metadata:
   resolution: "@nativescript-community/ui-collectionview-swipemenu@workspace:packages/swipemenu"
   dependencies:
     "@nativescript-community/class-mixins": "npm:^1.0.0"
-    "@nativescript-community/ui-collectionview": "npm:^5.3.40"
+    "@nativescript-community/ui-collectionview": "npm:^5.3.41"
     "@nativescript-community/ui-drawer": "npm:^0.1.27"
   languageName: unknown
   linkType: soft
@@ -3573,11 +3575,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@nativescript-community/ui-collectionview-waterfall@workspace:packages/waterfall"
   dependencies:
-    "@nativescript-community/ui-collectionview": "npm:^5.3.40"
+    "@nativescript-community/ui-collectionview": "npm:^5.3.41"
   languageName: unknown
   linkType: soft
 
-"@nativescript-community/ui-collectionview@npm:*, @nativescript-community/ui-collectionview@npm:^5.3.40, @nativescript-community/ui-collectionview@workspace:packages/collectionview":
+"@nativescript-community/ui-collectionview@npm:*, @nativescript-community/ui-collectionview@npm:^5.3.41, @nativescript-community/ui-collectionview@workspace:packages/collectionview":
   version: 0.0.0-use.local
   resolution: "@nativescript-community/ui-collectionview@workspace:packages/collectionview"
   languageName: unknown
@@ -3589,6 +3591,13 @@ __metadata:
   dependencies:
     "@nativescript-community/gesturehandler": "npm:^2.0.8"
   checksum: b0cda739a877037f463401dc4e17b023c900f067517e5cee4b122d4e46432f2c00be626842d29413e6a337bd3bb6f973edcec55a260bd5a37436233d206555d9
+  languageName: node
+  linkType: hard
+
+"@nativescript-community/ui-pulltorefresh@npm:*":
+  version: 2.5.3
+  resolution: "@nativescript-community/ui-pulltorefresh@npm:2.5.3"
+  checksum: 3e565ab2458ee080011b371de404f654ee2a669b2bddfae2649600196758abff5ceacaf8593032ab00d1c1b01e13d2be032f37a43f907d73debd8ce785b954f6
   languageName: node
   linkType: hard
 
@@ -19395,11 +19404,11 @@ __metadata:
 
 "typescript@patch:typescript@npm%3A5.3.3#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A~5.3.3#optional!builtin<compat/typescript>":
   version: 5.3.3
-  resolution: "typescript@patch:typescript@npm%3A5.3.3#optional!builtin<compat/typescript>::version=5.3.3&hash=e012d7"
+  resolution: "typescript@patch:typescript@npm%3A5.3.3#optional!builtin<compat/typescript>::version=5.3.3&hash=29ae49"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: c93786fcc9a70718ba1e3819bab56064ead5817004d1b8186f8ca66165f3a2d0100fee91fa64c840dcd45f994ca5d615d8e1f566d39a7470fc1e014dbb4cf15d
+  checksum: 57bf073a0b88f9bf76e5a24be3df864a8f9d0e70f8316969f4992ae26e30cb8d078708922da2ade1f2c8d1faee13b28bcb69876ebb1e37910e31c54aa9126aa2
   languageName: node
   linkType: hard
 
@@ -19425,7 +19434,7 @@ __metadata:
 
 "typescript@patch:typescript@npm%3A~5.4.5#optional!builtin<compat/typescript>":
   version: 5.4.5
-  resolution: "typescript@patch:typescript@npm%3A5.4.5#optional!builtin<compat/typescript>::version=5.4.5&hash=e012d7"
+  resolution: "typescript@patch:typescript@npm%3A5.4.5#optional!builtin<compat/typescript>::version=5.4.5&hash=29ae49"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver

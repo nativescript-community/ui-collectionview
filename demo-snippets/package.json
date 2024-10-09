@@ -5,6 +5,7 @@
     "dependencies": {
         "@nativescript-community/ui-collectionview": "*",
         "@nativescript-community/ui-collectionview-swipemenu": "*",
-        "@nativescript-community/ui-collectionview-waterfall": "*"
+        "@nativescript-community/ui-collectionview-waterfall": "*",
+        "@nativescript-community/ui-pulltorefresh": "*"
     }
 }
