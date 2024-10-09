@@ -671,7 +671,10 @@ export class CollectionView extends CollectionViewBase {
         if (!view) {
             return -1;
         }
-        return view.indexPathsForVisibleItems?.objectAtIndex(0)?.row ?? -1;
+        const indexes = Array.from<NSIndexPath>(view.indexPathsForVisibleItems)
+            .map((e) => e.row)
+            .sort();
+        return indexes[0] ?? -1;
     }
     @profile
     public refresh() {
