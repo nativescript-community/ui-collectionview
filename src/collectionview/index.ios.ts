@@ -504,7 +504,7 @@ export class CollectionView extends CollectionViewBase {
             if (viewIsLoaded) {
                 view.performBatchUpdatesCompletion(c, null);
             } else {
-                c();
+                this.refresh();
             }
         };
 
@@ -530,7 +530,7 @@ export class CollectionView extends CollectionViewBase {
             case ChangeType.Update: {
                 const indexes = NSMutableArray.new<NSIndexPath>();
                 indexes.addObject(NSIndexPath.indexPathForRowInSection(event.index, 0));
-                if (sizes) {
+                if (sizes && event.index < sizes.count - 1) {
                     sizes.replaceObjectAtIndexWithObject(event.index, NSValue.valueWithCGSize(CGSizeZero));
                 }
                 // this._sizes[event.index] = null;
