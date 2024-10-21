@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.3.45](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.44...v5.3.45) (2024-10-21)
+
+### Bug Fixes
+
+* **collectionview:** ios fix for canvas not redrawing ([12b0b55](https://github.com/@nativescript-community/ui-collectionview/commit/12b0b55e9c177bd4ab92ad58076f3985de0c8c9d))
+
 ## [5.3.44](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.43...v5.3.44) (2024-10-21)
 
 ### Features
