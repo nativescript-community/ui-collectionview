@@ -71,6 +71,7 @@ install();
 ```
 
 then simply use the `layoutStyle="align"` as a collectionview property
+You can then use `layoutHorizontalAlignment`(left, right, justified) and `verticalHorizontalAlignment` (top, bottom, center)
 
 
 [](#demos-and-development)
