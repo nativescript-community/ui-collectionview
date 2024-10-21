@@ -14,6 +14,7 @@ import {
     Utils,
     View,
     ViewBase,
+    booleanConverter,
     paddingBottomProperty,
     paddingLeftProperty,
     paddingRightProperty,
@@ -66,6 +67,12 @@ export const contentInsetAdjustmentBehaviorProperty = new Property<CollectionVie
     defaultValue: ContentInsetAdjustmentBehavior.Automatic
 });
 
+export const estimatedItemSizeProperty = new Property<CollectionView, boolean>({
+    name: 'estimatedItemSize',
+    defaultValue: true,
+    valueConverter: booleanConverter
+});
+
 export enum SnapPosition {
     START = -1, // = androidx.recyclerview.widget.LinearSmoothScroller.SNAP_TO_START,
     END = 1 // = androidx.recyclerview.widget.LinearSmoothScroller.SNAP_TO_END
@@ -88,6 +95,7 @@ export class CollectionView extends CollectionViewBase {
 
     manualDragging = false;
     scrollEnabledBeforeDragging = true;
+    estimatedItemSize = true;
     draggingStartDelta: [number, number];
 
     nativeViewProtected: UICollectionView;
@@ -458,7 +466,7 @@ export class CollectionView extends CollectionViewBase {
         if (layoutView instanceof UICollectionViewFlowLayout) {
             if (this._effectiveRowHeight && this._effectiveColWidth) {
                 layoutView.itemSize = CGSizeMake(Utils.layout.toDeviceIndependentPixels(this._effectiveColWidth), Utils.layout.toDeviceIndependentPixels(this._effectiveRowHeight));
-            } else {
+            } else if (this.estimatedItemSize) {
                 layoutView.estimatedItemSize = CGSizeMake(Utils.layout.toDeviceIndependentPixels(this._effectiveColWidth), Utils.layout.toDeviceIndependentPixels(this._effectiveRowHeight));
             }
             layoutView.invalidateLayout();
@@ -1160,6 +1168,7 @@ export class CollectionView extends CollectionViewBase {
     }
 }
 contentInsetAdjustmentBehaviorProperty.register(CollectionView);
+estimatedItemSizeProperty.register(CollectionView);
 
 interface ViewItemIndex {}
 
@@ -1208,7 +1217,6 @@ class UICollectionViewFlowLayoutImpl extends UICollectionViewFlowLayout {
         const owner = this._owner?.get();
         if (owner && targetIndexPaths.count) {
             owner.clearCachedSize(targetIndexPaths.objectAtIndex(0).row, previousIndexPaths.objectAtIndex(0).row);
-            // owner.clearCachedSize(previousIndexPaths.objectAtIndex(0).row)
         }
         return super.invalidationContextForInteractivelyMovingItemsWithTargetPositionPreviousIndexPathsPreviousPosition(targetIndexPaths, targetPosition, previousIndexPaths, previousPosition);
     }
