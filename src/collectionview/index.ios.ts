@@ -1030,10 +1030,9 @@ export class CollectionView extends CollectionViewBase {
         const cellView: View = cell.view;
         if (!firstRender && cellView['isLayoutRequired']) {
             this.layoutCell(indexPath.row, cell, cellView);
-        } else {
-            // if the cell view is a canvas we need to ensure redraw is called
-            ((cellView as ContentView).content || cellView).nativeViewProtected.setNeedsDisplay();
         }
+        // if the cell view is a canvas we need to ensure redraw is called
+        ((cellView as ContentView).content || cellView).nativeViewProtected.setNeedsDisplay();
         return cell;
     }
     collectionViewWillDisplayCellForItemAtIndexPath(collectionView: UICollectionView, cell: UICollectionViewCell, indexPath: NSIndexPath) {
