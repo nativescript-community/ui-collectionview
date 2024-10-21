@@ -3,7 +3,8 @@ import {Trace} from '@nativescript/core';
 
 import CollectionView from '@nativescript-community/ui-collectionview/vue';
 import SwipeMenuPlugin from '@nativescript-community/ui-collectionview-swipemenu/vue';
-import install from '@nativescript-community/ui-collectionview-waterfall';
+import installWaterfall from '@nativescript-community/ui-collectionview-waterfall';
+import installAlignedLayout from '@nativescript-community/ui-collectionview-alignedflowlayout';
 import { CollectionViewTraceCategory } from '@nativescript-community/ui-collectionview';
 
 import SimpleGrid from './SimpleGrid.vue';
@@ -13,11 +14,13 @@ import SimpleTemplates from './SimpleTemplates.vue';
 import Reorder from './Reorder.vue';
 import SwipeMenu from './SwipeMenu.vue';
 import ResizeCell from './ResizeCell.vue';
+import AlignedGrid from './AlignedGrid.vue';
 
 export function installPlugin() {
     Vue.use(CollectionView);
     Vue.use(SwipeMenuPlugin);
-    install();
+    installWaterfall();
+    installAlignedLayout();
 }
 
 Trace.addCategories(CollectionViewTraceCategory)
@@ -30,5 +33,6 @@ export const demos = [
     { name: 'Simple Templates', path: 'simple-templates', component: SimpleTemplates },
     { name: 'Reorder', path: 'reorder', component: Reorder },
     { name: 'SwipeMenu', path: 'swipe-menu', component: SwipeMenu },
-    { name: 'ResizeCell', path: 'resize-cell', component: ResizeCell }
+    { name: 'ResizeCell', path: 'resize-cell', component: ResizeCell },
+    { name: 'AlignedGrid', path: 'AlignedGrid', component: AlignedGrid }
 ];

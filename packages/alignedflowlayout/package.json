@@ -1,0 +1,44 @@
+{
+    "name": "@nativescript-community/ui-collectionview-alignedflowlayout",
+    "version": "5.3.43",
+    "description": "A NativeScript CollectionView For Custom aligned Layout Plugin.",
+    "main": "./index",
+    "funding": "https://github.com/sponsors/farfromrefug",
+    "sideEffects": false,
+    "typings": "./index.d.ts",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/nativescript-community/ui-collectionview.git"
+    },
+    "scripts": {
+        "build": "npm run tsc && npm run readme",
+        "build.all": "npm run build",
+        "readme": "readme generate -c ../../tools/readme/blueprint.json",
+        "tsc": "cpy '**/*.d.ts' '../../packages/alignedflowlayout' --parents --cwd=../../src/alignedflowlayout && tsc -skipLibCheck -d",
+        "clean": "rimraf ./*.d.ts ./*.js ./*.js.map"
+    },
+    "nativescript": {
+        "platforms": {
+            "android": "6.1.0",
+            "ios": "6.1.0"
+        }
+    },
+    "keywords": [
+        "NativeScript",
+        "JavaScript",
+        "Android",
+        "iOS"
+    ],
+    "author": {
+        "name": "Martin Guillon",
+        "email": "martin@akylas.fr"
+    },
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/nativescript-community/ui-collectionview/issues"
+    },
+    "homepage": "https://github.com/nativescript-community/ui-collectionview#readme",
+    "dependencies": {
+        "@nativescript-community/ui-collectionview": "^5.3.43"
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "extends": "../../tsconfig.json",
+    "compilerOptions": {
+        "rootDir": "../../src/alignedflowlayout",
+        "outDir": "./",
+    },
+    "include": ["../../src/alignedflowlayout/**/*.ts", "../../references.d.ts", "../../tools/references.d.ts", "../../src/references.d.ts"],
+    "exclude": ["../../src/alignedflowlayout/angular/**"]
+}
