@@ -3540,13 +3540,14 @@ __metadata:
 
 "@nativescript-community/template-snippet@file:demo-snippets::locator=root-workspace-0b6124%40workspace%3A.":
   version: 0.0.1
-  resolution: "@nativescript-community/template-snippet@file:demo-snippets#demo-snippets::hash=6dee25&locator=root-workspace-0b6124%40workspace%3A."
+  resolution: "@nativescript-community/template-snippet@file:demo-snippets#demo-snippets::hash=9725ce&locator=root-workspace-0b6124%40workspace%3A."
   dependencies:
     "@nativescript-community/ui-collectionview": "npm:*"
     "@nativescript-community/ui-collectionview-alignedflowlayout": "npm:*"
     "@nativescript-community/ui-collectionview-swipemenu": "npm:*"
     "@nativescript-community/ui-collectionview-waterfall": "npm:*"
-  checksum: afbba20d4c1526ad6b01d88bdf0caf3f94ba5606904ad7769dfdddec5d1b25858e0fcddf7b931cb76aa8fd275601279cacda812b45699c5cada04667c1ca4528
+    "@nativescript-community/ui-pulltorefresh": "npm:*"
+  checksum: b323122f34a6bdad65f3b51de36ed6c67fd16f39eb2cfa9ed473a84270416befa21e7042e6d2fcf19726663ffec1b2617762c6e55171d510d58313113a0df987
   languageName: node
   linkType: hard
 
@@ -3558,6 +3559,7 @@ __metadata:
     "@nativescript-community/ui-collectionview-alignedflowlayout": "npm:*"
     "@nativescript-community/ui-collectionview-swipemenu": "npm:*"
     "@nativescript-community/ui-collectionview-waterfall": "npm:*"
+    "@nativescript-community/ui-pulltorefresh": "npm:*"
   languageName: unknown
   linkType: soft
 
@@ -3599,6 +3601,13 @@ __metadata:
   dependencies:
     "@nativescript-community/gesturehandler": "npm:^2.0.8"
   checksum: b0cda739a877037f463401dc4e17b023c900f067517e5cee4b122d4e46432f2c00be626842d29413e6a337bd3bb6f973edcec55a260bd5a37436233d206555d9
+  languageName: node
+  linkType: hard
+
+"@nativescript-community/ui-pulltorefresh@npm:*":
+  version: 2.5.3
+  resolution: "@nativescript-community/ui-pulltorefresh@npm:2.5.3"
+  checksum: 3e565ab2458ee080011b371de404f654ee2a669b2bddfae2649600196758abff5ceacaf8593032ab00d1c1b01e13d2be032f37a43f907d73debd8ce785b954f6
   languageName: node
   linkType: hard
 
