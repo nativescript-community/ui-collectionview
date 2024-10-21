@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.3.44](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.43...v5.3.44) (2024-10-21)
+
+### Features
+
+* **ios:** new`estimatedItemSize` property to disable `estimatedItemSize` on the UICollectionView. This can fix wrong layout of items when NOT using `rowHeight` and using `spanSize` ([35e5839](https://github.com/@nativescript-community/ui-collectionview/commit/35e5839e02cba9f57c2d1132824ddbe1c78ed519))
+
+### Bug Fixes
+
+* **ios:** `findFirstVisibleItemIndex` fix ([16ecba1](https://github.com/@nativescript-community/ui-collectionview/commit/16ecba18cabbc0b9e6919db26d4e363cace3ef90))
+
 ## [5.3.43](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.42...v5.3.43) (2024-10-07)
 
 ### Bug Fixes
