@@ -985,7 +985,7 @@ export class CollectionView extends CollectionViewBase {
             return -1;
         }
         const layoutManager = this.layoutManager as androidx.recyclerview.widget.LinearLayoutManager;
-        if (layoutManager['findFirstVisibleItemPosition']) {
+        if (layoutManager['findLastVisibleItemPosition']) {
             return layoutManager.findLastVisibleItemPosition();
         }
         return -1;
