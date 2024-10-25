@@ -979,6 +979,17 @@ export class CollectionView extends CollectionViewBase {
         }
         return -1;
     }
+    public findLastVisibleItemIndex() {
+        const view = this.nativeViewProtected;
+        if (!view) {
+            return -1;
+        }
+        const layoutManager = this.layoutManager as androidx.recyclerview.widget.LinearLayoutManager;
+        if (layoutManager['findLastVisibleItemPosition']) {
+            return layoutManager.findLastVisibleItemPosition();
+        }
+        return -1;
+    }
 
     _layedOut = false;
     @profile
