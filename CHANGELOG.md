@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.3.46](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.45...v5.3.46) (2024-10-25)
+
+### Features
+
+* add findLastVisibleItemIndex to android and ios and fix sort NSIndexPath in findFirstVisibleItemIndex for ios ([ce71bfa](https://github.com/@nativescript-community/ui-collectionview/commit/ce71bfa18158ebf05c196a315f03cdcf4841b9c3))
+
+### Bug Fixes
+
+* check prop ([eb536db](https://github.com/@nativescript-community/ui-collectionview/commit/eb536db09e7978a7aa8b647c340276b0b1e6e3fe))
+
 ## [5.3.45](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.44...v5.3.45) (2024-10-21)
 
 ### Bug Fixes
