@@ -15,6 +15,7 @@ export class CollectionView extends CollectionViewBase {
     public refreshVisibleItems();
     public isItemAtIndexVisible(index: number): boolean;
     public findFirstVisibleItemIndex(): number;
+    public findLastVisibleItemIndex(): number;
     public scrollToIndex(index: number, animated?: boolean, snap?: SnapPosition = SnapPosition.START);
     public scrollToOffset(value: number, animation?: boolean);
     public getViewForItemAtIndex(index: number): View;

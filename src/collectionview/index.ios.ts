@@ -679,11 +679,23 @@ export class CollectionView extends CollectionViewBase {
         if (!view) {
             return -1;
         }
-        const indexes = Array.from<NSIndexPath>(view.indexPathsForVisibleItems)
-            .map((e) => e.row)
-            .sort();
-        return indexes[0] ?? -1;
+
+        return this.getRowIndexPath(view)[0] ?? -1;
     }
+    public findLastVisibleItemIndex() {
+        const view = this.nativeViewProtected;
+        if (!view) {
+            return -1;
+        }
+        return this.getRowIndexPath(view).at(-1) ?? -1;
+    }
+
+    private getRowIndexPath(view: UICollectionView){
+        return Array.from<NSIndexPath>(view.indexPathsForVisibleItems)
+            .map((e) => e.row)
+            .sort((a, b) => a - b);
+    }
+
     @profile
     public refresh() {
         if (!this.isLoaded || !this.nativeView) {
