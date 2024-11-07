@@ -690,7 +690,7 @@ export class CollectionView extends CollectionViewBase {
         return this.getRowIndexPath(view).at(-1) ?? -1;
     }
 
-    private getRowIndexPath(view: UICollectionView){
+    private getRowIndexPath(view: UICollectionView) {
         return Array.from<NSIndexPath>(view.indexPathsForVisibleItems)
             .map((e) => e.row)
             .sort((a, b) => a - b);
@@ -1238,14 +1238,13 @@ class UICollectionViewFlowLayoutImpl extends UICollectionViewFlowLayout {
         const attributesArray = super.layoutAttributesForElementsInRect(rect);
         const owner = this._owner?.get();
         if (owner?.itemOverlap) {
-            const itemOverlap = owner.itemOverlap;
             for (let index = 0; index < attributesArray.count; index++) {
                 const attributes = attributesArray.objectAtIndex(index);
                 if (attributes.representedElementCategory === UICollectionElementCategory.Cell) {
-                    const xPosition =
-                        attributes.center.x + Utils.layout.toDeviceIndependentPixels(Length.toDevicePixels(itemOverlap[1], 0) + Length.toDevicePixels(itemOverlap[2], 0)) * attributes.indexPath.row;
-                    const yPosition =
-                        attributes.center.y + Utils.layout.toDeviceIndependentPixels(Length.toDevicePixels(itemOverlap[0], 0) + Length.toDevicePixels(itemOverlap[2], 0)) * attributes.indexPath.row;
+                    const row = attributes.indexPath.row;
+                    const itemOverlap = owner.itemOverlap(owner.getItemAtIndex(row), row);
+                    const xPosition = attributes.center.x + Utils.layout.toDeviceIndependentPixels(Length.toDevicePixels(itemOverlap[1], 0) + Length.toDevicePixels(itemOverlap[2], 0)) * row;
+                    const yPosition = attributes.center.y + Utils.layout.toDeviceIndependentPixels(Length.toDevicePixels(itemOverlap[0], 0) + Length.toDevicePixels(itemOverlap[2], 0)) * row;
                     attributes.center = CGPointMake(xPosition, yPosition);
                 }
             }

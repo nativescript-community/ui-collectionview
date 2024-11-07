@@ -29,6 +29,7 @@ import {
     scrollBarIndicatorVisibleProperty
 } from '.';
 import { CLog, CLogTypes, CollectionViewBase, ListViewViewTypes, isScrollEnabledProperty, orientationProperty } from './index-common';
+import { TypedArray, createArrayBuffer } from '@nativescript-community/arraybuffers';
 
 export * from './index-common';
 
@@ -337,11 +338,11 @@ export class CollectionView extends CollectionViewBase {
     //     super.onUnloaded();
     //     this.detachScrollListenerIfNecessary();
     // }
-
-    _getSpanSize: (item, index) => number;
     public getViewForItemAtIndex(index: number): View {
         return this.enumerateViewHolders<View>((v) => (v.getAdapterPosition() === index ? v.view : undefined));
     }
+
+    _getSpanSize: (item, index) => number;
     //@ts-ignore
     set spanSize(inter: (item, index) => number) {
         if (!(typeof inter === 'function')) {
@@ -368,6 +369,42 @@ export class CollectionView extends CollectionViewBase {
     }
     get spanSize() {
         return this._getSpanSize;
+    }
+
+    decorator: com.nativescript.collectionview.OverlapDecoration;
+    decoratorBuffer: TypedArray;
+    decoratorListener: com.nativescript.collectionview.OverlapDecoration.OverlapDecorationListener;
+
+    nativeGetItemOverlap(position: number) {
+        const item = this.getItemAtIndex(position);
+        const result = this.itemOverlap(item, position);
+
+        this.decoratorBuffer[0] = Length.toDevicePixels(result[0], 0);
+        this.decoratorBuffer[1] = Length.toDevicePixels(result[1], 0);
+        this.decoratorBuffer[2] = Length.toDevicePixels(result[2], 0);
+        this.decoratorBuffer[3] = Length.toDevicePixels(result[3], 0);
+        return this.decoratorBuffer;
+    }
+
+    [itemOverlapProperty.setNative](value) {
+        if (typeof value === 'function') {
+            if (!this.decorator) {
+                this.decoratorListener = new com.nativescript.collectionview.OverlapDecoration.OverlapDecorationListener({
+                    getItemOverlap: this.nativeGetItemOverlap.bind(this)
+                });
+                this.decorator = new com.nativescript.collectionview.OverlapDecoration(this.decoratorListener);
+                this.nativeViewProtected.addItemDecoration(this.decorator);
+            }
+            if (!this.decoratorBuffer) {
+                this.decoratorBuffer = createArrayBuffer(4, false, true);
+            }
+        } else {
+            if (this.decorator) {
+                this.nativeViewProtected.removeItemDecoration(this.decorator);
+                this.decorator = null;
+            }
+            this.decoratorListener = null;
+        }
     }
 
     private attachScrollListenerIfNecessary() {
@@ -560,25 +597,6 @@ export class CollectionView extends CollectionViewBase {
     [paddingLeftProperty.setNative](value: CoreTypes.LengthType) {
         this._setPadding({ left: this.effectivePaddingLeft });
     }
-    decorator: com.nativescript.collectionview.OverlapDecoration;
-    [itemOverlapProperty.setNative](value: CoreTypes.LengthType[]) {
-        if (!value) {
-            if (this.decorator) {
-                this.nativeViewProtected.removeItemDecoration(this.decorator);
-                this.decorator = null;
-            }
-        } else {
-            if (!this.decorator) {
-                this.decorator = new com.nativescript.collectionview.OverlapDecoration();
-                this.nativeViewProtected.addItemDecoration(this.decorator);
-            }
-            this.decorator.top = Length.toDevicePixels(value[0], 0);
-            this.decorator.right = Length.toDevicePixels(value[1], 0);
-            this.decorator.bottom = Length.toDevicePixels(value[2], 0);
-            this.decorator.left = Length.toDevicePixels(value[3], 0);
-        }
-    }
-
     public [orientationProperty.getDefault](): Orientation {
         return 'vertical';
     }

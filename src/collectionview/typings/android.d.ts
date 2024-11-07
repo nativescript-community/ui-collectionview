@@ -80,10 +80,13 @@ declare namespace com {
 
             export class SmoothScroller extends androidx.recyclerview.widget.LinearSmoothScroller {}
             export class OverlapDecoration extends androidx.recyclerview.widget.RecyclerView.ItemDecoration {
-                public top: number;
-                public right: number;
-                public bottom: number;
-                public left: number;
+                constructor(listener: OverlapDecorationListener);
+            }
+            export namespace OverlapDecoration {
+                export class OverlapDecorationListener {
+                    constructor(implementation: { getItemOverlap(position: number): java.nio.FloatBuffer });
+                    getItemOverlap(position: number): java.nio.FloatBuffer;
+                }
             }
         }
     }
