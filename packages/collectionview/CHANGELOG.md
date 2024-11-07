@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.0](https://github.com/nativescript-community/ui-collectionview/compare/v5.3.46...v6.0.0) (2024-11-07)
+
+### ⚠ BREAKING CHANGES
+
+* `itemOverlap` is now a function returning [top,right,bottom,left]. So you need to change your code. This allows per item overlap.
+
+### Bug Fixes
+
+* `itemOverlap` is now a function returning [top,right,bottom,left] ([2a17115](https://github.com/nativescript-community/ui-collectionview/commit/2a17115a7117e74f2573c1dce6138102c8745daa))
+
 ## [5.3.46](https://github.com/nativescript-community/ui-collectionview/compare/v5.3.45...v5.3.46) (2024-10-25)
 
 **Note:** Version bump only for package @nativescript-community/ui-collectionview
