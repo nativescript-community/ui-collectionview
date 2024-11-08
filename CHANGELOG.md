@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.1](https://github.com/@nativescript-community/ui-collectionview/compare/v6.0.0...v6.0.1) (2024-11-08)
+
+### Bug Fixes
+
+* **ios:** itemOverlap zIndex fix ([289f1b9](https://github.com/@nativescript-community/ui-collectionview/commit/289f1b9326de9906c76142b20ad379513e1dc509))
+* **laignedflowlayout:** ios support for itemOverlap ([a6ddfa8](https://github.com/@nativescript-community/ui-collectionview/commit/a6ddfa8ff37728eec04e4f157acf874e4298cb5a))
+
 ## [6.0.0](https://github.com/@nativescript-community/ui-collectionview/compare/v5.3.46...v6.0.0) (2024-11-07)
 
 ### ⚠ BREAKING CHANGES
