@@ -492,6 +492,25 @@ export class CollectionView extends CollectionViewBase {
             indexes.forEach((index) => sizes.replaceObjectAtIndexWithObject(index, NSValue.valueWithCGSize(CGSizeZero)));
         }
     }
+    public layoutAttributesForElementsInRect(attributesArray: NSArray<UICollectionViewLayoutAttributes>, rect: CGRect) {
+        if (this.itemOverlap) {
+            let currentDeltaX = 0;
+            let currentDeltaY = 0;
+            for (let index = 0; index < attributesArray.count; index++) {
+                const attributes = attributesArray.objectAtIndex(index);
+                if (attributes.representedElementCategory === UICollectionElementCategory.Cell) {
+                    const row = attributes.indexPath.row;
+                    if (this.itemOverlap) {
+                        attributes.zIndex = row;
+                    }
+                    const itemOverlap = this.itemOverlap(this.getItemAtIndex(row), row);
+                    currentDeltaX += Utils.layout.toDeviceIndependentPixels(Length.toDevicePixels(itemOverlap[1], 0) + Length.toDevicePixels(itemOverlap[3], 0));
+                    currentDeltaY += Utils.layout.toDeviceIndependentPixels(Length.toDevicePixels(itemOverlap[0], 0) + Length.toDevicePixels(itemOverlap[2], 0));
+                    attributes.center = CGPointMake(attributes.center.x + currentDeltaX, attributes.center.y + currentDeltaY);
+                }
+            }
+        }
+    }
 
     public onSourceCollectionChanged(event: ChangedData<any>) {
         const view = this.nativeViewProtected;
@@ -1237,22 +1256,7 @@ class UICollectionViewFlowLayoutImpl extends UICollectionViewFlowLayout {
     layoutAttributesForElementsInRect(rect: CGRect) {
         const attributesArray = super.layoutAttributesForElementsInRect(rect);
         const owner = this._owner?.get();
-        if (owner?.itemOverlap) {
-            for (let index = 0; index < attributesArray.count; index++) {
-                const attributes = attributesArray.objectAtIndex(index);
-                if (attributes.representedElementCategory === UICollectionElementCategory.Cell) {
-                    const row = attributes.indexPath.row;
-                    if (owner.itemOverlap) {
-                        attributes.zIndex = row;
-                    }
-                    const itemOverlap = owner.itemOverlap(owner.getItemAtIndex(row), row);
-                    const xPosition = attributes.center.x + Utils.layout.toDeviceIndependentPixels(Length.toDevicePixels(itemOverlap[1], 0) + Length.toDevicePixels(itemOverlap[2], 0)) * row;
-                    const yPosition = attributes.center.y + Utils.layout.toDeviceIndependentPixels(Length.toDevicePixels(itemOverlap[0], 0) + Length.toDevicePixels(itemOverlap[2], 0)) * row;
-                    attributes.center = CGPointMake(xPosition, yPosition);
-                }
-            }
-        }
-
+        owner?.layoutAttributesForElementsInRect(attributesArray, rect);
         return attributesArray;
     }
     shouldInvalidateLayoutForBoundsChange(newBounds: CGRect) {

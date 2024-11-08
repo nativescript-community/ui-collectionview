@@ -3,6 +3,7 @@ import { CollectionView } from '@nativescript-community/ui-collectionview';
 
 interface IOSCollectionView extends CollectionView {
     clearCachedSize(...indexes: number[]);
+    layoutAttributesForElementsInRect(attributesArray: NSArray<UICollectionViewLayoutAttributes>, rect: CGRect);
 }
 
 @NativeClass
@@ -29,20 +30,7 @@ class AlignedCollectionViewFlowLayoutImpl extends AlignedCollectionViewFlowLayou
     layoutAttributesForElementsInRect(rect: CGRect) {
         const attributesArray = super.layoutAttributesForElementsInRect(rect);
         const owner = this._owner?.get();
-        if (owner?.itemOverlap) {
-            const itemOverlap = owner.itemOverlap;
-            for (let index = 0; index < attributesArray.count; index++) {
-                const attributes = attributesArray.objectAtIndex(index);
-                if (attributes.representedElementCategory === UICollectionElementCategory.Cell) {
-                    const xPosition =
-                        attributes.center.x + Utils.layout.toDeviceIndependentPixels(Length.toDevicePixels(itemOverlap[1], 0) + Length.toDevicePixels(itemOverlap[2], 0)) * attributes.indexPath.row;
-                    const yPosition =
-                        attributes.center.y + Utils.layout.toDeviceIndependentPixels(Length.toDevicePixels(itemOverlap[0], 0) + Length.toDevicePixels(itemOverlap[2], 0)) * attributes.indexPath.row;
-                    attributes.center = CGPointMake(xPosition, yPosition);
-                }
-            }
-        }
-
+        owner?.layoutAttributesForElementsInRect(attributesArray, rect);
         return attributesArray;
     }
     shouldInvalidateLayoutForBoundsChange(newBounds: CGRect) {
@@ -56,8 +44,8 @@ class AlignedCollectionViewFlowLayoutImpl extends AlignedCollectionViewFlowLayou
 
 export default function install() {
     CollectionView.registerLayoutStyle('align', {
-        createLayout: (collectionview: CollectionView) => {
-            const layout = AlignedCollectionViewFlowLayoutImpl.new();
+        createLayout: (collectionview: IOSCollectionView) => {
+            const layout = AlignedCollectionViewFlowLayoutImpl.initWithOwner(collectionview);
             switch (collectionview['layoutHorizontalAlignment']) {
                 case 'left':
                     layout.horizontalAlignment = HorizontalAlignment.Left;
