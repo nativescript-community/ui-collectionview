@@ -3,13 +3,10 @@
     "compilerOptions": {
        "composite": true,
        "paths": {
-        "nativescript-vue": ["./node_modules/nativescript-vue3"]
+            "nativescript-vue": ["./node_modules/nativescript-vue3"]
        }
     },
     "include": [
-        "./src/collectionview/vue3", 
-        "./src/swipemenu", 
-        "./src/swipemenu/vue3", 
         "./demo-snippets/vue3"
     ]
 }
