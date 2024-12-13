@@ -311,13 +311,29 @@ export class CollectionView extends CollectionViewBase {
             return;
         }
         switch (gesture.state) {
-            case UIGestureRecognizerState.Began:
-                const selectedIndexPath = collectionView.indexPathForItemAtPoint(gesture.locationInView(collectionView));
+            case UIGestureRecognizerState.Began: {
+                let point = gesture.locationInView(collectionView);
+                const selectedIndexPath = collectionView.indexPathForItemAtPoint(point);
+                const view = this.getViewForItemAtIndex(selectedIndexPath.row);
+                if (view) {
+                    const size = view.nativeViewProtected.bounds.size;
+                    point = gesture.locationInView(view.nativeViewProtected);
+                    this.draggingStartDelta = [point.x - size.width / 2, point.y - size.height / 2];
+                }
                 collectionView.beginInteractiveMovementForItemAtIndexPath(selectedIndexPath);
                 break;
-            case UIGestureRecognizerState.Changed:
-                collectionView.updateInteractiveMovementTargetPosition(gesture.locationInView(collectionView));
+            }
+            case UIGestureRecognizerState.Changed: {
+                const point = gesture.locationInView(collectionView);
+                let x = point.x;
+                let y = point.y;
+                if (this.draggingStartDelta) {
+                    x -= this.draggingStartDelta[0];
+                    y -= this.draggingStartDelta[1];
+                }
+                collectionView.updateInteractiveMovementTargetPosition(CGPointMake(x, y));
                 break;
+            }
             case UIGestureRecognizerState.Ended:
                 collectionView.endInteractiveMovement();
                 this.handleReorderEnd();
