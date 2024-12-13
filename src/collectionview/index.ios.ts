@@ -73,20 +73,28 @@ export const estimatedItemSizeProperty = new Property<CollectionView, boolean>({
     valueConverter: booleanConverter
 });
 
+export const autoSizeProperty = new Property<CollectionView, boolean>({
+    name: 'autoSize',
+    defaultValue: false,
+    valueConverter: booleanConverter
+});
+
 export enum SnapPosition {
     START = -1, // = androidx.recyclerview.widget.LinearSmoothScroller.SNAP_TO_START,
     END = 1 // = androidx.recyclerview.widget.LinearSmoothScroller.SNAP_TO_END
 }
 
 export class CollectionView extends CollectionViewBase {
-    private _layout: UICollectionViewLayout;
-    private _dataSource: CollectionViewDataSource;
-    private _delegate: UICollectionViewDelegateImpl | UICollectionViewDelegateFixedSizeImpl;
+    _layout: UICollectionViewLayout;
+    _dataSource: CollectionViewDataSource;
+    _delegate: UICollectionViewDelegateImpl | UICollectionViewDelegateFixedSizeImpl;
     private _preparingCell: boolean = false;
     // private _sizes: number[][];
     private _map: Map<CollectionViewCell, ItemView>;
     _measureCellMap: Map<string, { cell: CollectionViewCell; view: View }>;
     _lastLayoutKey: string;
+
+    autoSize = false;
 
     reorderLongPressGesture: UILongPressGestureRecognizer;
     reorderLongPressHandler: ReorderLongPressImpl;
@@ -120,7 +128,9 @@ export class CollectionView extends CollectionViewBase {
             layout.minimumLineSpacing = 0;
             layout.minimumInteritemSpacing = 0;
         }
-        const view = UICollectionView.alloc().initWithFrameCollectionViewLayout(CGRectMake(0, 0, 0, 0), layout);
+        // const view = UICollectionViewImpl.initWithFrameCollectionViewLayout(CGRectMake(0, 0, 0, 0), layout) as UICollectionViewImpl;
+
+        const view = UICollectionViewImpl.initWithOwner(this, layout);
         view.backgroundColor = UIColor.clearColor;
         this._itemTemplatesInternal.forEach((t) => {
             view.registerClassForCellWithReuseIdentifier(CollectionViewCell.class(), t.key.toLowerCase());
@@ -159,6 +169,9 @@ export class CollectionView extends CollectionViewBase {
         const layoutStyle = CollectionViewBase.layoutStyles[this.layoutStyle];
         if (layoutStyle && layoutStyle.createDelegate) {
             this._delegate = layoutStyle.createDelegate(this);
+            this.nativeViewProtected.delegate = this._delegate;
+        } else if (this.autoSize) {
+            this._delegate = UICollectionViewDelegateImpl.initWithOwner(this);
             this.nativeViewProtected.delegate = this._delegate;
         }
 
@@ -482,7 +495,7 @@ export class CollectionView extends CollectionViewBase {
         if (layoutView instanceof UICollectionViewFlowLayout) {
             if (this._effectiveRowHeight && this._effectiveColWidth) {
                 layoutView.itemSize = CGSizeMake(Utils.layout.toDeviceIndependentPixels(this._effectiveColWidth), Utils.layout.toDeviceIndependentPixels(this._effectiveRowHeight));
-            } else if (this.estimatedItemSize) {
+            } else if (this.estimatedItemSize && !this.autoSize) {
                 layoutView.estimatedItemSize = CGSizeMake(Utils.layout.toDeviceIndependentPixels(this._effectiveColWidth), Utils.layout.toDeviceIndependentPixels(this._effectiveRowHeight));
             }
             layoutView.invalidateLayout();
@@ -1218,6 +1231,7 @@ export class CollectionView extends CollectionViewBase {
 }
 contentInsetAdjustmentBehaviorProperty.register(CollectionView);
 estimatedItemSizeProperty.register(CollectionView);
+autoSizeProperty.register(CollectionView);
 
 interface ViewItemIndex {}
 
@@ -1249,9 +1263,48 @@ class CollectionViewCell extends UICollectionViewCell {
 }
 
 @NativeClass
+class UICollectionViewImpl extends UICollectionView {
+    _owner: WeakRef<CollectionView>;
+    sizeThatFits(size: CGSize): CGSize {
+        const owner = this._owner?.get();
+        if (owner?.autoSize) {
+            if (this.superview) {
+                this.superview?.layoutIfNeeded();
+            }
+            const horizontal = owner.orientation === 'horizontal';
+            // Calculate the total size based on the cells' sizes
+            let width = 0;
+            let height = 0;
+            const dataSource = owner._dataSource;
+            const delegate = owner._delegate as UICollectionViewDelegateFlowLayout;
+            if (dataSource && delegate) {
+                const numberOfItems = dataSource.collectionViewNumberOfItemsInSection(this, 0);
+                for (let index = 0; index < numberOfItems; index++) {
+                    const indexPath = NSIndexPath.indexPathForItemInSection(index, 0);
+                    const estimatedSize = delegate.collectionViewLayoutSizeForItemAtIndexPath(this, owner._layout, indexPath) ?? CGSizeZero;
+                    if (horizontal) {
+                        width = Math.max(width, estimatedSize.width);
+                        height += estimatedSize.height;
+                    } else {
+                        height = Math.max(height, estimatedSize.height);
+                        width += estimatedSize.width;
+                    }
+                }
+                return CGSizeMake(width, height);
+            }
+        }
+        return super.sizeThatFits(size);
+    }
+    static initWithOwner(owner: CollectionView, layout) {
+        const view = UICollectionViewImpl.alloc().initWithFrameCollectionViewLayout(CGRectMake(0, 0, 0, 0), layout) as UICollectionViewImpl;
+        view._owner = new WeakRef(owner);
+        return view;
+    }
+}
+
+@NativeClass
 class UICollectionViewFlowLayoutImpl extends UICollectionViewFlowLayout {
     _owner: WeakRef<CollectionView>;
-
     static initWithOwner(owner: CollectionView) {
         const layout = UICollectionViewFlowLayoutImpl.new() as UICollectionViewFlowLayoutImpl;
         layout._owner = new WeakRef(owner);

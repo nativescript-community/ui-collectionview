@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.2](https://github.com/@nativescript-community/ui-collectionview/compare/v6.0.1...v6.0.2) (2024-11-25)
+
+### Features
+
+* **collectionview:** ios `autoSize` property to say the collectionview should auto size itself. Use only when really needed ([b5a92ed](https://github.com/@nativescript-community/ui-collectionview/commit/b5a92ed6db91edad8b23bfbba1c4532917945581))
+
 ## [6.0.1](https://github.com/@nativescript-community/ui-collectionview/compare/v6.0.0...v6.0.1) (2024-11-08)
 
 ### Bug Fixes

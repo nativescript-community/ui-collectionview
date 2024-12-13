@@ -3562,14 +3562,14 @@ __metadata:
 
 "@nativescript-community/template-snippet@file:demo-snippets::locator=root-workspace-0b6124%40workspace%3A.":
   version: 0.0.1
-  resolution: "@nativescript-community/template-snippet@file:demo-snippets#demo-snippets::hash=00eb30&locator=root-workspace-0b6124%40workspace%3A."
+  resolution: "@nativescript-community/template-snippet@file:demo-snippets#demo-snippets::hash=649604&locator=root-workspace-0b6124%40workspace%3A."
   dependencies:
     "@nativescript-community/ui-collectionview": "npm:*"
     "@nativescript-community/ui-collectionview-alignedflowlayout": "npm:*"
     "@nativescript-community/ui-collectionview-swipemenu": "npm:*"
     "@nativescript-community/ui-collectionview-waterfall": "npm:*"
     "@nativescript-community/ui-pulltorefresh": "npm:*"
-  checksum: a972ae94d2a09dca2cc2988f5b65a0b22faba3540093efea88216ce31cd77303c96a273cae66f66e3ddbe5bf2dccdcf7e2fa941ce4db1b94812fa5368e7048d5
+  checksum: b65ced01455a416677a664639f39c5effd37198f418f941e55489293063299bf756b0944d3acb4a494f3e3de2373b3037c88cb3b14452e989050a8f5b69e05a4
   languageName: node
   linkType: hard
 
@@ -3589,7 +3589,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@nativescript-community/ui-collectionview-alignedflowlayout@workspace:packages/alignedflowlayout"
   dependencies:
-    "@nativescript-community/ui-collectionview": "npm:^6.0.0"
+    "@nativescript-community/ui-collectionview": "npm:^6.0.2"
   languageName: unknown
   linkType: soft
 
@@ -3598,7 +3598,7 @@ __metadata:
   resolution: "@nativescript-community/ui-collectionview-swipemenu@workspace:packages/swipemenu"
   dependencies:
     "@nativescript-community/class-mixins": "npm:^1.0.0"
-    "@nativescript-community/ui-collectionview": "npm:^6.0.0"
+    "@nativescript-community/ui-collectionview": "npm:^6.0.2"
     "@nativescript-community/ui-drawer": "npm:^0.1.27"
   languageName: unknown
   linkType: soft
@@ -3607,11 +3607,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@nativescript-community/ui-collectionview-waterfall@workspace:packages/waterfall"
   dependencies:
-    "@nativescript-community/ui-collectionview": "npm:^6.0.0"
+    "@nativescript-community/ui-collectionview": "npm:^6.0.2"
   languageName: unknown
   linkType: soft
 
-"@nativescript-community/ui-collectionview@npm:*, @nativescript-community/ui-collectionview@npm:^6.0.0, @nativescript-community/ui-collectionview@workspace:packages/collectionview":
+"@nativescript-community/ui-collectionview@npm:*, @nativescript-community/ui-collectionview@npm:^6.0.2, @nativescript-community/ui-collectionview@workspace:packages/collectionview":
   version: 0.0.0-use.local
   resolution: "@nativescript-community/ui-collectionview@workspace:packages/collectionview"
   dependencies:
@@ -19573,11 +19573,11 @@ __metadata:
 
 "typescript@patch:typescript@npm%3A5.3.3#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A~5.3.3#optional!builtin<compat/typescript>":
   version: 5.3.3
-  resolution: "typescript@patch:typescript@npm%3A5.3.3#optional!builtin<compat/typescript>::version=5.3.3&hash=e012d7"
+  resolution: "typescript@patch:typescript@npm%3A5.3.3#optional!builtin<compat/typescript>::version=5.3.3&hash=29ae49"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: c93786fcc9a70718ba1e3819bab56064ead5817004d1b8186f8ca66165f3a2d0100fee91fa64c840dcd45f994ca5d615d8e1f566d39a7470fc1e014dbb4cf15d
+  checksum: 57bf073a0b88f9bf76e5a24be3df864a8f9d0e70f8316969f4992ae26e30cb8d078708922da2ade1f2c8d1faee13b28bcb69876ebb1e37910e31c54aa9126aa2
   languageName: node
   linkType: hard
 
@@ -19603,7 +19603,7 @@ __metadata:
 
 "typescript@patch:typescript@npm%3A~5.4.5#optional!builtin<compat/typescript>":
   version: 5.4.5
-  resolution: "typescript@patch:typescript@npm%3A5.4.5#optional!builtin<compat/typescript>::version=5.4.5&hash=e012d7"
+  resolution: "typescript@patch:typescript@npm%3A5.4.5#optional!builtin<compat/typescript>::version=5.4.5&hash=29ae49"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
