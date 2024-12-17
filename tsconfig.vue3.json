@@ -1,5 +1,5 @@
 {    
-    "extends": "./tsconfig.json",
+    "extends": "./tools/tsconfig.json",
     "compilerOptions": {
        "composite": true,
        "paths": {
@@ -7,6 +7,9 @@
        }
     },
     "include": [
+        "./src/collectionview/vue3", 
+        "./src/swipemenu", 
+        "./src/swipemenu/vue3", 
         "./demo-snippets/vue3"
     ]
 }

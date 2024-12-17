@@ -1,6 +1,6 @@
 {
     "name": "@nativescript-community/ui-collectionview-swipemenu",
-    "version": "6.0.2",
+    "version": "6.0.3",
     "description": "A NativeScript CollectionView SwipeMenu Plugin.",
     "main": "./index",
     "funding": "https://github.com/sponsors/farfromrefug",
@@ -41,7 +41,7 @@
     "homepage": "https://github.com/nativescript-community/ui-collectionview#readme",
     "dependencies": {
         "@nativescript-community/class-mixins": "^1.0.0",
-        "@nativescript-community/ui-collectionview": "^6.0.2",
+        "@nativescript-community/ui-collectionview": "^6.0.3",
         "@nativescript-community/ui-drawer": "^0.1.27"
     }
 }

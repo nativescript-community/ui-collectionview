@@ -554,9 +554,9 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     }
 
     shouldMoveItemAtIndex(index: number) {
-        if (!this.reorderEnabled) {
-            return false;
-        }
+        // if (!this.reorderEnabled) {
+        //     return false;
+        // }
         const item = this.getItemAtIndex(index);
         const view = (this.draggingView = this.getViewForItemAtIndex(index));
         let args = {
