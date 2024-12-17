@@ -502,7 +502,11 @@ export class CollectionView extends CollectionViewBase {
     public clearCachedSize(...indexes: number[]) {
         const sizes: NSMutableArray<NSValue> = this._delegate instanceof UICollectionViewDelegateImpl ? this._delegate.cachedSizes : null;
         if (sizes) {
-            indexes.forEach((index) => sizes.replaceObjectAtIndexWithObject(index, NSValue.valueWithCGSize(CGSizeZero)));
+            indexes.forEach((index) => {
+                if (index < sizes.count) {
+                    sizes.replaceObjectAtIndexWithObject(index, NSValue.valueWithCGSize(CGSizeZero));
+                }
+            });
         }
     }
     public layoutAttributesForElementsInRect(attributesArray: NSArray<UICollectionViewLayoutAttributes>, rect: CGRect) {
@@ -570,7 +574,7 @@ export class CollectionView extends CollectionViewBase {
             case ChangeType.Update: {
                 const indexes = NSMutableArray.new<NSIndexPath>();
                 indexes.addObject(NSIndexPath.indexPathForRowInSection(event.index, 0));
-                if (sizes && event.index < sizes.count - 1) {
+                if (sizes && event.index < sizes.count) {
                     sizes.replaceObjectAtIndexWithObject(event.index, NSValue.valueWithCGSize(CGSizeZero));
                 }
                 // this._sizes[event.index] = null;
@@ -608,7 +612,7 @@ export class CollectionView extends CollectionViewBase {
                         const indexes = NSMutableArray.new<NSIndexPath>();
                         for (let index = 0; index < added; index++) {
                             indexes.addObject(NSIndexPath.indexPathForRowInSection(event.index + index, 0));
-                            if (sizes) {
+                            if (sizes && event.index + index < sizes.count) {
                                 sizes.replaceObjectAtIndexWithObject(event.index + index, NSValue.valueWithCGSize(CGSizeZero));
                             }
                             // this._sizes[event.index + index] = null;
@@ -687,7 +691,9 @@ export class CollectionView extends CollectionViewBase {
         if (sizes) {
             const indexes: NSIndexPath[] = Array.from(visibles);
             indexes.forEach((value) => {
-                sizes.replaceObjectAtIndexWithObject(value.row, NSValue.valueWithCGSize(CGSizeZero));
+                if (value.row < sizes.count) {
+                    sizes.replaceObjectAtIndexWithObject(value.row, NSValue.valueWithCGSize(CGSizeZero));
+                }
             });
         }
 
@@ -887,7 +893,7 @@ export class CollectionView extends CollectionViewBase {
                             const index = cell.currentIndex;
                             const nativeView = this.nativeViewProtected;
                             const sizes: NSMutableArray<NSValue> = this._delegate instanceof UICollectionViewDelegateImpl ? this._delegate.cachedSizes : null;
-                            if (sizes) {
+                            if (sizes && index < sizes.count) {
                                 sizes.replaceObjectAtIndexWithObject(index, NSValue.valueWithCGSize(CGSizeZero));
                             }
 
