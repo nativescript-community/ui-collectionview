@@ -223,6 +223,12 @@ export class CollectionView extends CollectionViewBase {
                 }
             }
         });
+        // we need to call on measure cells too
+        // otherwise they would not get notified of some css changes
+        // like fontScale change
+        this._measureCellMap?.forEach((view) => {
+            callback(view.view);
+        });
     }
 
     async eachChildAsync(callback) {
