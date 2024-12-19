@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.4](https://github.com/@nativescript-community/ui-collectionview/compare/v6.0.3...v6.0.4) (2024-12-19)
+
+### Bug Fixes
+
+* **collectionview:** ios fix for cells not resizing after system font change ([d8a2699](https://github.com/@nativescript-community/ui-collectionview/commit/d8a2699c1653204897670eb04c83ed43b56fa4e5))
+* **collectionview:** ios fix in some extreme cases ([40328ae](https://github.com/@nativescript-community/ui-collectionview/commit/40328aeb85e7f4b0df69c1eb59c9c419b8017eb0))
+
 ## [6.0.3](https://github.com/@nativescript-community/ui-collectionview/compare/v6.0.2...v6.0.3) (2024-12-13)
 
 **Note:** Version bump only for package ui-collectionview
