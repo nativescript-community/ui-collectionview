@@ -15,16 +15,18 @@ import Reorder from './Reorder.vue';
 import SwipeMenu from './SwipeMenu.vue';
 import ResizeCell from './ResizeCell.vue';
 import AlignedGrid from './AlignedGrid.vue';
+import FontSizeChangeTest from './FontSizeChangeTest.vue';
 
 export function installPlugin() {
     Vue.use(CollectionView);
     Vue.use(SwipeMenuPlugin);
+
     installWaterfall();
     installAlignedLayout();
 }
 
-Trace.addCategories(CollectionViewTraceCategory)
-Trace.enable()
+// Trace.addCategories(CollectionViewTraceCategory)
+// Trace.enable()
 
 export const demos = [
     { name: 'Simple Grid', path: 'simple-grid', component: SimpleGrid },
@@ -34,5 +36,6 @@ export const demos = [
     { name: 'Reorder', path: 'reorder', component: Reorder },
     { name: 'SwipeMenu', path: 'swipe-menu', component: SwipeMenu },
     { name: 'ResizeCell', path: 'resize-cell', component: ResizeCell },
-    { name: 'AlignedGrid', path: 'AlignedGrid', component: AlignedGrid }
+    { name: 'AlignedGrid', path: 'AlignedGrid', component: AlignedGrid },
+    { name: 'FontSizeChangeTest', path: 'FontSizeChangeTest', component: FontSizeChangeTest }
 ];

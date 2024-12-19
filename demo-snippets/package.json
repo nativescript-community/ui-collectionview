@@ -7,6 +7,7 @@
         "@nativescript-community/ui-collectionview-alignedflowlayout": "*",
         "@nativescript-community/ui-collectionview-swipemenu": "*",
         "@nativescript-community/ui-collectionview-waterfall": "*",
+        "@nativescript-community/ui-label": "1.3.33",
         "@nativescript-community/ui-pulltorefresh": "*"
     }
 }
