@@ -709,6 +709,9 @@ export class CollectionView extends CollectionViewBase {
         const sizes: NSMutableArray<NSValue> = this._delegate instanceof UICollectionViewDelegateImpl ? this._delegate.cachedSizes : null;
 
         const visibles = view.indexPathsForVisibleItems;
+        if (visibles.count <= 0) {
+            return;
+        }
 
         if (sizes) {
             const indexes: NSIndexPath[] = Array.from(visibles);
