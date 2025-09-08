@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.5](https://github.com/@nativescript-community/ui-collectionview/compare/v6.0.4...v6.0.5) (2025-09-08)
+
+### Bug Fixes
+
+* **android:** `refreshVisibleItems` not always working ([ae13b93](https://github.com/@nativescript-community/ui-collectionview/commit/ae13b93376f555237250e07f4b404b8ed05f41f6))
+* **collectionview:** ios: try to prevent error `refreshVisibleItems` when no visible items ([87f3fd3](https://github.com/@nativescript-community/ui-collectionview/commit/87f3fd32f057254360dfc6a97b183f96ac84ee39))
+
 ## [6.0.4](https://github.com/@nativescript-community/ui-collectionview/compare/v6.0.3...v6.0.4) (2024-12-19)
 
 ### Bug Fixes
