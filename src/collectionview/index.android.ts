@@ -970,8 +970,15 @@ export class CollectionView extends CollectionViewBase {
         if (!view) {
             return;
         }
-        const ids = Array.from(this.bindedViewHolders).sort((a, b) => a - b);
-        this._listViewAdapter.notifyItemRangeChanged(ids[0], ids[ids.length - 1] - ids[0] + 1);
+        const layoutManager = this.layoutManager as androidx.recyclerview.widget.LinearLayoutManager;
+        if (layoutManager['findFirstVisibleItemPosition']) {
+            const first = layoutManager.findFirstVisibleItemPosition();
+            const last = layoutManager.findLastVisibleItemPosition();
+            this._listViewAdapter.notifyItemRangeChanged(first, last + 1);
+        } else {
+            const ids = Array.from(this.bindedViewHolders).sort((a, b) => a - b);
+            this._listViewAdapter.notifyItemRangeChanged(ids[0], ids[ids.length - 1] - ids[0] + 1);
+        }
     }
     public isItemAtIndexVisible(index: number): boolean {
         const view = this.nativeViewProtected;
