@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.7](https://github.com/nativescript-community/ui-collectionview/compare/v6.0.5...v6.0.7) (2025-09-30)
+
+### Bug Fixes
+
+* **ios:** edge case crash on collection view refresh ([be26e36](https://github.com/nativescript-community/ui-collectionview/commit/be26e3640cdaf6aaa3a56933e1abeadf19a44231))
+
 ## [6.0.5](https://github.com/nativescript-community/ui-collectionview/compare/v6.0.4...v6.0.5) (2025-09-08)
 
 **Note:** Version bump only for package @nativescript-community/ui-collectionview
