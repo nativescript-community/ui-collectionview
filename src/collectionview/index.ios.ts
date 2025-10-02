@@ -313,6 +313,9 @@ export class CollectionView extends CollectionViewBase {
         }
     }
     handleReorderEnd() {
+        if (!this.draggingStartDelta) {
+            return;
+        }
         // we call all events from here because the delegate
         // does not handle the case start dragging => cancel or
         // start dragging => end over the same item
@@ -323,6 +326,7 @@ export class CollectionView extends CollectionViewBase {
         this._callItemReorderedEvent(this.reorderStartingRow, this.reorderEndingRow, item);
         this.reorderEndingRow = -1;
         this.reorderEndingRow = -1;
+        this.draggingStartDelta = null;
     }
     onReorderLongPress(gesture: UILongPressGestureRecognizer) {
         const collectionView = this.nativeViewProtected;
