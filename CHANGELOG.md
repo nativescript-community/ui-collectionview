@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.8](https://github.com/@nativescript-community/ui-collectionview/compare/v6.0.7...v6.0.8) (2025-10-02)
+
+### Bug Fixes
+
+* **ios:** crash when reorder long press on collectionview location without cell ([d59fec1](https://github.com/@nativescript-community/ui-collectionview/commit/d59fec149ee06c55f0b33164510208199109e1c3))
+
 ## [6.0.7](https://github.com/@nativescript-community/ui-collectionview/compare/v6.0.5...v6.0.7) (2025-09-30)
 
 ### Bug Fixes
