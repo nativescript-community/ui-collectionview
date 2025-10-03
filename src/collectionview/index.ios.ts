@@ -860,7 +860,11 @@ export class CollectionView extends CollectionViewBase {
         if (selector) {
             type = selector.call(this, this.getItemAtIndex(indexPath.item), indexPath.item, this.items);
         }
-        return type.toLowerCase();
+        const result = type.toLowerCase();
+        if (this._itemTemplatesInternal.has(result)) {
+            return result;
+        }
+        return 'default';
     }
     getItemTemplateContent(index, templateType) {
         return this.getViewForViewType(ListViewViewTypes.ItemView, templateType);
