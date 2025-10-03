@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.9](https://github.com/@nativescript-community/ui-collectionview/compare/v6.0.8...v6.0.9) (2025-10-03)
+
+### Bug Fixes
+
+* **collectionview:** iOS fix to prevent error when itemTemplateSelector ([ab838b6](https://github.com/@nativescript-community/ui-collectionview/commit/ab838b65ca61eb75eaf59947b89814bd5200b0f6))
+
 ## [6.0.8](https://github.com/@nativescript-community/ui-collectionview/compare/v6.0.7...v6.0.8) (2025-10-02)
 
 ### Bug Fixes
