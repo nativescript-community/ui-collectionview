@@ -5,7 +5,7 @@
         "outDir": "./",
     },
     "include": ["../../src/swipemenu/**/*.ts", "../../references.d.ts", "../../tools/references.d.ts", "../../src/references.d.ts"],
-    "exclude": ["../../src/swipemenu/angular/**"],
+    "exclude": ["../../src/swipemenu/angular/**", "../../src/swipemenu/vue3/**"],
     "references": [
         {
             //Need for tsc

@@ -52,6 +52,8 @@ export const CLog = (type: CLogTypes, ...args) => {
 const autoEffectiveRowHeight = 0;
 const autoEffectiveColWidth = 0;
 
+type CoreTypesLength = CoreTypes.dip | CoreTypes.LengthDipUnit | CoreTypes.LengthPxUnit | 'auto' | CoreTypes.LengthPercentUnit;
+
 // export * from 'ui/core/view';
 
 export enum ListViewViewTypes {
@@ -71,9 +73,8 @@ export interface Plugin {
     onMeasure?: Function;
 }
 
-function toDevicePixels(length: CoreTypes.PercentLengthType, auto: number = Number.NaN, parentAvailableWidth: number = Number.NaN): number {
+function toDevicePixels(length: CoreTypesLength, auto: number = Number.NaN, parentAvailableWidth: number = Number.NaN): number {
     if (length === 'auto') {
-        // tslint:disable-line
         return auto;
     }
     if (typeof length === 'number') {
@@ -119,8 +120,8 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     public itemTemplate: string | Template;
     public itemTemplates: string | KeyedTemplate[];
     public isItemsSourceIn: boolean;
-    public rowHeight: CoreTypes.PercentLengthType;
-    public colWidth: CoreTypes.PercentLengthType;
+    public rowHeight: CoreTypesLength;
+    public colWidth: CoreTypesLength;
     public verticalSpacing: CoreTypes.LengthType;
     public horizontalSpacing: CoreTypes.LengthType;
 

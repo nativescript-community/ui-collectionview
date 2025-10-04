@@ -5,7 +5,7 @@
         "outDir": "./"
     },
     "include": ["../../src/collectionview/**/*.ts", "../../references.d.ts", "../../tools/references.d.ts", "../../src/references.d.ts"],
-    "exclude": ["../../src/collectionview/angular/**"],
+    "exclude": ["../../src/collectionview/angular/**", "../../src/collectionview/vue3/**"],
     "references": [
         {
             //Need for tsc

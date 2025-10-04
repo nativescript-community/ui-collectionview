@@ -58,9 +58,9 @@
     "dependencies": {
         "@nativescript-community/arraybuffers": "^1.1.5",
         "@nativescript-community/class-mixins": "^1.0.0",
-        "@nativescript-community/plugin-seed-tools": "file:tools",
+        "@nativescript-community/plugin-seed-tools": "portal:tools",
         "@nativescript-community/template-snippet": "file:demo-snippets",
-        "@nativescript-community/ui-drawer": "^0.1.28"
+        "@nativescript-community/ui-drawer": "^0.1.31"
     },
     "ntl": {
         "descriptions": {
@@ -88,5 +88,6 @@
     "workspaces": [
         "packages/*",
         "demo*"
-    ]
+    ],
+    "packageManager": "yarn@4.10.2"
 }
