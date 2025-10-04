@@ -89,6 +89,7 @@ export class CollectionView extends CollectionViewBase {
     _dataSource: CollectionViewDataSource;
     _delegate: UICollectionViewDelegateImpl | UICollectionViewDelegateFixedSizeImpl;
     private _preparingCell: boolean = false;
+    private _refreshingVisible: boolean = false;
     // private _sizes: number[][];
     private _map: Map<CollectionViewCell, ItemView>;
     _measureCellMap: Map<string, { cell: CollectionViewCell; view: View }>;
@@ -710,6 +711,7 @@ export class CollectionView extends CollectionViewBase {
         if (!view) {
             return;
         }
+        this._refreshingVisible = true;
         const sizes: NSMutableArray<NSValue> = this._delegate instanceof UICollectionViewDelegateImpl ? this._delegate.cachedSizes : null;
 
         const visibles = view.indexPathsForVisibleItems;
@@ -727,9 +729,14 @@ export class CollectionView extends CollectionViewBase {
         }
 
         UIView.performWithoutAnimation(() => {
-            view.performBatchUpdatesCompletion(() => {
-                view.reloadItemsAtIndexPaths(visibles);
-            }, null);
+            view.performBatchUpdatesCompletion(
+                () => {
+                    view.reloadItemsAtIndexPaths(visibles);
+                },
+                () => {
+                    this._refreshingVisible = false;
+                }
+            );
         });
     }
     public isItemAtIndexVisible(itemIndex: number): boolean {
@@ -921,7 +928,7 @@ export class CollectionView extends CollectionViewBase {
                     // for a cell to update correctly on cell layout change we need
                     // to do it ourself instead of "propagating it"
                     view['performLayout'] = () => {
-                        if (!this._preparingCell && !view['inPerformLayout']) {
+                        if (!this._preparingCell && !this._refreshingVisible && !view['inPerformLayout']) {
                             view['inPerformLayout'] = true;
                             const index = cell.currentIndex;
                             const nativeView = this.nativeViewProtected;
