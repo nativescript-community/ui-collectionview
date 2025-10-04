@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.10](https://github.com/@nativescript-community/ui-collectionview/compare/v6.0.9...v6.0.10) (2025-10-04)
+
+### Bug Fixes
+
+* **ios:** prevent performLayout to redraw items during refreshVisibleItems or refreh ([01e15fe](https://github.com/@nativescript-community/ui-collectionview/commit/01e15fef027bb1a92bfa6eec482ab9065c0a8482))
+
 ## [6.0.9](https://github.com/@nativescript-community/ui-collectionview/compare/v6.0.8...v6.0.9) (2025-10-03)
 
 ### Bug Fixes

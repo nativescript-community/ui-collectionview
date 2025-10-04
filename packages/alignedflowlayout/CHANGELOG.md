@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.10](https://github.com/nativescript-community/ui-collectionview/compare/v6.0.9...v6.0.10) (2025-10-04)
+
+**Note:** Version bump only for package @nativescript-community/ui-collectionview-alignedflowlayout
+
 ## [6.0.9](https://github.com/nativescript-community/ui-collectionview/compare/v6.0.8...v6.0.9) (2025-10-03)
 
 **Note:** Version bump only for package @nativescript-community/ui-collectionview-alignedflowlayout
