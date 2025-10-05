@@ -1,9 +1,13 @@
-import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
+import { Component, NO_ERRORS_SCHEMA, OnInit } from '@angular/core';
+import { SwipeMenuModule } from '@nativescript-community/ui-collectionview-swipemenu/angular';
+import { CollectionViewModule } from '@nativescript-community/ui-collectionview/angular';
 import { RouterExtensions } from '@nativescript/angular';
 
 @Component({
     selector: 'ns-collectionview-horizontal-grid',
-    templateUrl: './horizontal-grid.component.html'
+    imports: [CollectionViewModule, SwipeMenuModule],
+    templateUrl: './horizontal-grid.component.html',
+    schemas: [NO_ERRORS_SCHEMA]
 })
 export class HorizontalGridComponent implements OnInit {
     constructor(private router: RouterExtensions) {}
@@ -31,9 +35,7 @@ export class HorizontalGridComponent implements OnInit {
         { index: 19, name: 'ASBESTOS', color: '#7f8c8d' }
     ];
 
-    ngOnInit(): void {
-
-    }
+    ngOnInit(): void {}
 
     goBack(): void {
         this.router.back();
