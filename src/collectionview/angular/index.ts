@@ -5,7 +5,7 @@ import { CollectionViewComponent, TemplateKeyDirective } from './collectionview-
 export { CollectionViewComponent, TemplateKeyDirective } from './collectionview-comp';
 
 @NgModule({
-    declarations: [CollectionViewComponent, TemplateKeyDirective],
+    imports: [CollectionViewComponent, TemplateKeyDirective],
     exports: [CollectionViewComponent, TemplateKeyDirective],
     schemas: [NO_ERRORS_SCHEMA]
 })

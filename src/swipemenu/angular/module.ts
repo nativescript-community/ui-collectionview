@@ -30,7 +30,10 @@ export class SwipeMenuComponent {
 
     private _gestureEnabled: boolean;
 
-    constructor(@Inject(ElementRef) public elementRef: ElementRef, @Inject(ViewContainerRef) private viewContainer: ViewContainerRef) {
+    constructor(
+        @Inject(ElementRef) public elementRef: ElementRef,
+        @Inject(ViewContainerRef) private viewContainer: ViewContainerRef
+    ) {
         this.swipemenu = this.elementRef.nativeElement;
     }
 
@@ -163,7 +166,7 @@ registerElement('SwipeMenu', () => SwipeMenu, sideSwipeMenuMeta);
  * NgModule containing all of the RadSideSwipeMenu directives.
  */
 @NgModule({
-    declarations: [SwipeMenuComponent, SIDEDRAWER_DIRECTIVES],
+    imports: [SwipeMenuComponent, SIDEDRAWER_DIRECTIVES],
     exports: [SwipeMenuComponent, SIDEDRAWER_DIRECTIVES]
 })
 export class SwipeMenuModule {}
