@@ -15,7 +15,7 @@
         "build.all": "npm run build && npm run build.angular",
         "build.angular": "ng-packagr -p ../../src/swipemenu/angular/ng-package.json -c ../../src/swipemenu/angular/tsconfig.json && rm angular/.npmignore",
         "readme": "readme generate -c ../../tools/readme/blueprint.json",
-        "tsc": "cpy '**/*.d.ts' '../../packages/swipemenu' --parents --cwd=../../src/swipemenu && tsc -skipLibCheck -d",
+        "tsc": "cpy '**/*.d.ts' '../../packages/swipemenu' --parents --cwd=../../src/swipemenu && tsc --build",
         "clean": "rimraf ./*.d.ts ./*.js ./*.js.map"
     },
     "nativescript": {

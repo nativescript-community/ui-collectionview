@@ -1,5 +1,4 @@
-import { SwipeMenuComp } from './component';
-import { install } from '..';
+import { install } from '@nativescript-community/ui-collectionview-swipemenu';
 
 const SwipeMenuPlugin = {
     install(app: any) {

@@ -5,11 +5,11 @@
         "outDir": "./"
     },
     "include": ["../../src/collectionview/**/*.ts", "../../references.d.ts", "../../tools/references.d.ts", "../../src/references.d.ts"],
-    "exclude": ["../../src/collectionview/angular/**", "../../src/collectionview/vue3/**"],
+    "exclude": ["../../src/collectionview/angular/**"],
     "references": [
         {
             //Need for tsc
-            "path": "../../tsconfig.vue3.json"
+            "path": "./tsconfig.vue3.json",
         }
     ]
 }

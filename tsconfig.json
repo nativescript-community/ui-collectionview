@@ -14,6 +14,10 @@
         {
             //Need for IDE
             "path": "./tsconfig.vue3.json"
+        },
+        {
+            //Need for IDE
+            "path": "./tools/tsconfig.vue3.json"
         }
     ]
 }
