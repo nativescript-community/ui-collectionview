@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.11](https://github.com/nativescript-community/ui-collectionview/compare/v6.0.10...v6.0.11) (2025-10-07)
+
+### Bug Fixes
+
+* vue3 build fix ([b2287cf](https://github.com/nativescript-community/ui-collectionview/commit/b2287cf70870706d8a58e3d38e1a5bee78be24e9))
+
 ## [6.0.10](https://github.com/nativescript-community/ui-collectionview/compare/v6.0.9...v6.0.10) (2025-10-04)
 
 **Note:** Version bump only for package @nativescript-community/ui-collectionview
