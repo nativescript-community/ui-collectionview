@@ -2,7 +2,7 @@
     "extends": "../../tsconfig.json",
     "compilerOptions": {
         "rootDir": "../../src/swipemenu",
-        "outDir": "./",
+        "outDir": "./"
     },
     "include": ["../../src/swipemenu/**/*.ts", "../../references.d.ts", "../../tools/references.d.ts", "../../src/references.d.ts"],
     "exclude": ["../../src/swipemenu/angular/**"],

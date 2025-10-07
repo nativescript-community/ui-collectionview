@@ -3,10 +3,12 @@
     "compilerOptions": {
        "composite": true,
        "paths": {
+            "@nativescript-community/ui-collectionview-swipemenu": ["src/swipemenu"],
             "nativescript-vue": ["./node_modules/nativescript-vue3"]
        }
     },
     "include": [
+        "../../src/swipemenu/index.ts",
         "../../src/swipemenu/vue3/**/*"
     ]
 }
