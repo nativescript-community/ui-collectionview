@@ -1,5 +1,3 @@
-
-
 import CollectionView from '@nativescript-community/ui-collectionview/vue3';
 import install from '@nativescript-community/ui-collectionview-waterfall';
 import SwipeMenuPlugin from '@nativescript-community/ui-collectionview-swipemenu/vue3';

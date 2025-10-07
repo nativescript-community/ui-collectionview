@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { ref, $navigateTo, $showModal } from 'nativescript-vue';
-import { HEIGH_CARD, dataCards } from './carddata';
-import { isAndroid, ObservableArray, PageTransition, SharedTransition, View, ModalTransition, Screen } from '@nativescript/core';
-import { animateView, configHomeSharedTransition } from './animation';
+import { ObservableArray, Screen, View } from '@nativescript/core';
+import { ref } from 'nativescript-vue';
+import { animateView } from './animation';
 import Card from './Card.vue';
+import { HEIGH_CARD, dataCards } from './carddata';
 // import Details from "./Details.vue";
 
 const isOpen = ref(false);
@@ -31,7 +31,7 @@ function toggleStatus() {
     const textHeader: View = refTextHeader.value.nativeView;
 
     if (isOpen.value) {
-        viewCards.forEach((cardView, index) => index == 0 || close(cardView, index));
+        viewCards.forEach((cardView, index) => index === 0 || close(cardView, index));
         animateView(addBtn, { translate: { y: 0, x: 0 }, alpha: 1, rotation: 0 });
         animateView(addWalletBtn, { rotation: 0 });
         animateView(showBtn, { rotation: 90, alpha: 0 });
@@ -92,13 +92,22 @@ function toggleItemHeight(item) {
         <GridLayout rows="auto,*,auto">
             <GridLayout height="50" android:marginop="3">
                 <Label ref="refTextHeader" text="Wallet" class="text-3xl font-bold text-black" horizontalAlignment="center"></Label>
-                <Label ref="refShowBtn" text="close" style="font-size: 24;" height="45" width="45" rotate="90" class="m-icon-round bg-[#0666eb] rounded-full text-white text-center opacity-0 mr-2" horizontalAlignment="right" @tap="toggleStatus"></Label>
+                <Label
+                    ref="refShowBtn"
+                    text="close"
+                    style="font-size: 24"
+                    height="45"
+                    width="45"
+                    rotate="90"
+                    class="m-icon-round bg-[#0666eb] rounded-full text-white text-center opacity-0 mr-2"
+                    horizontalAlignment="right"
+                    @tap="toggleStatus"
+                ></Label>
             </GridLayout>
             <CollectionView row="1" height="100%" :items="items" itemIdGenerator="index">
                 <template #default="{ item }">
-                    <AbsoluteLayout :height="item.expanded ? HEIGH_CARD: 60">
-                        <Card :height="HEIGH_CARD" :data="item" :sharedTransitionTag="`card_${item.id}`" @tap="toggleItemHeight(item)" verticalAlignment="top" width="100%">
-                        </Card>
+                    <AbsoluteLayout :height="item.expanded ? HEIGH_CARD : 60">
+                        <Card :height="HEIGH_CARD" :data="item" :sharedTransitionTag="`card_${item.id}`" @tap="toggleItemHeight(item)" verticalAlignment="top" width="100%"> </Card>
                     </AbsoluteLayout>
                 </template>
             </CollectionView>
