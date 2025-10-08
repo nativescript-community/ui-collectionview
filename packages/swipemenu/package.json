@@ -13,10 +13,10 @@
     "scripts": {
         "build": "npm run tsc && npm run readme",
         "build.all": "npm run build && npm run build.angular",
-        "build.angular": "ng-packagr -p ../../src/swipemenu/angular/ng-package.json -c ../../src/swipemenu/angular/tsconfig.json && rm angular/.npmignore",
-        "readme": "readme generate -c ../../tools/readme/blueprint.json",
-        "tsc": "cpy '**/*.d.ts' '../../packages/swipemenu' --parents --cwd=../../src/swipemenu && tsc --build",
-        "clean": "rimraf ./*.d.ts ./*.js ./*.js.map"
+        "readme": "../../node_modules/.bin/readme generate -c ../../tools/readme/blueprint.json",
+        "tsc": "../../node_modules/.bin/copyfiles '../../src/swipemenu/**/*.d.ts' '../../packages/swipemenu' && ../../node_modules/.bin/tsc -skipLibCheck -d",
+        "clean": "../../node_modules/.bin/rimraf ./*.d.ts ./*.js ./*.js.map ./*.tsbuildinfo ./*.mjs ./*.mjs.map ./angular ./svelte ./vue* ./react",
+        "build.angular": "../../node_modules/.bin/ng-packagr -p ../../src/swipemenu/angular/ng-package.json -c ../../src/swipemenu/angular/tsconfig.json && rm angular/.npmignore"
     },
     "nativescript": {
         "platforms": {
