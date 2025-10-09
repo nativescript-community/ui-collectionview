@@ -58,8 +58,8 @@
         "@nativescript-community/arraybuffers": "^1.1.5",
         "@nativescript-community/class-mixins": "^1.0.0",
         "@nativescript-community/plugin-seed-tools": "portal:tools",
-        "@nativescript-community/template-snippet": "file:demo-snippets",
-        "@nativescript-community/ui-drawer": "^0.1.31"
+        "@nativescript-community/template-snippet": "portal:demo-snippets",
+        "@nativescript-community/ui-drawer": "0.1.31"
     },
     "ntl": {
         "descriptions": {
