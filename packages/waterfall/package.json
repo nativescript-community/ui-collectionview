@@ -14,7 +14,7 @@
         "build": "npm run tsc && npm run readme",
         "build.all": "npm run build",
         "readme": "../../node_modules/.bin/readme generate -c ../../tools/readme/blueprint.json",
-        "tsc": "../../node_modules/.bin/copyfiles '../../src/waterfall/**/*.d.ts' '../../packages/waterfall' && ../../node_modules/.bin/tsc  --build",
+        "tsc": "cpy '**/*.d.ts' '../../packages/waterfall' --parents --cwd=../../src/waterfall && ../../node_modules/.bin/tsc  --build",
         "clean": "../../node_modules/.bin/rimraf ./*.d.ts ./*.js ./*.js.map ./*.tsbuildinfo ./*.mjs ./*.mjs.map ./angular ./svelte ./vue* ./react"
     },
     "nativescript": {

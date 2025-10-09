@@ -1,14 +1,14 @@
-{    
-    "extends": "./tsconfig.json",
+{
+    "extends": "../../tsconfig.json",
     "compilerOptions": {
-       "composite": true,
-       "paths": {
+        "composite": true,
+        "rootDir": "../../src/swipemenu",
+        "outDir": "./",
+        "paths": {
+            "@nativescript-community/ui-collectionview": ["src/collectionview"],
             "@nativescript-community/ui-collectionview-swipemenu": ["src/swipemenu"],
             "nativescript-vue": ["./node_modules/nativescript-vue3"]
-       }
+        }
     },
-    "include": [
-        "../../src/swipemenu/index.ts",
-        "../../src/swipemenu/vue3/**/*"
-    ]
+    "include": ["../../src/swipemenu/vue3/**/*", "../../src/swipemenu/index.ts"],
 }

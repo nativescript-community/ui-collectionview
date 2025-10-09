@@ -1,15 +1,14 @@
 {
     "extends": "../../tsconfig.json",
     "compilerOptions": {
+        "composite": true,
         "rootDir": "../../src/swipemenu",
-        "outDir": "./"
+        "outDir": "./",
+        "paths": {
+            "@nativescript-community/ui-collectionview": ["src/collectionview"],
+        },
     },
     "include": ["../../src/swipemenu/**/*.ts", "../../references.d.ts", "../../tools/references.d.ts", "../../src/references.d.ts"],
-    "exclude": ["../../src/swipemenu/angular/**"],
-    "references": [
-        {
-            //Need for tsc
-            "path": "./tsconfig.vue3.json"
-        }
-    ]
+    "exclude": ["../../src/swipemenu/vue3/**/*.ts", "../../src/swipemenu/angular/**"],
+    "references": [{ "path": "./tsconfig.vue3.json" }, { "path": "../collectionview" }]
 }

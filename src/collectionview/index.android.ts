@@ -1,5 +1,4 @@
-﻿/* eslint-disable no-redeclare */
-import {
+﻿import {
     ChangeType,
     ChangedData,
     ContentView,
@@ -141,6 +140,9 @@ export enum SnapPosition {
 }
 
 export class CollectionView extends CollectionViewBase {
+    //TODO: remove as it needs to be added after TS 5.7 change https://github.com/microsoft/TypeScript/pull/59860
+    [key: symbol]: (...args: any[]) => any | void;
+
     public static layoutCompletedEvent = 'layoutCompleted';
     public static DEFAULT_TEMPLATE_VIEW_TYPE = 0;
     public static CUSTOM_TEMPLATE_ITEM_TYPE = 1;
@@ -247,7 +249,6 @@ export class CollectionView extends CollectionViewBase {
                         view.callUnloaded();
                     }
                     view._isAddedToNativeVisualTree = false;
-                    //@ts-ignore
                     view.parent = null;
                     view._tearDownUI();
                 }
@@ -386,7 +387,7 @@ export class CollectionView extends CollectionViewBase {
         return this.decoratorBuffer;
     }
 
-    [itemOverlapProperty.setNative](value) {
+    [itemOverlapProperty.setNative](value: Function | string) {
         if (typeof value === 'function') {
             if (!this.decorator) {
                 this.decoratorListener = new com.nativescript.collectionview.OverlapDecoration.OverlapDecorationListener({
@@ -1258,6 +1259,7 @@ export class CollectionView extends CollectionViewBase {
 
         const holder = new CollectionViewCellHolder(view.nativeView);
 
+        // eslint-disable-next-line @typescript-eslint/no-this-alias
         const collectionView = this;
         const clickListener = new android.view.View.OnClickListener({
             onClick: () => {

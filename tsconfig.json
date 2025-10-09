@@ -1,4 +1,4 @@
-{    
+{
     "extends": "./tools/tsconfig",
     "compilerOptions": {
         "paths": {
@@ -7,17 +7,16 @@
             "@nativescript-community/ui-collectionview-swipemenu": ["src/swipemenu"],
             "@nativescript-community/ui-collectionview-swipemenu/*": ["src/swipemenu/*"],
             "@nativescript-community/ui-collectionview-waterfall": ["src/waterfall"],
-            "@nativescript-community/ui-collectionview-waterfall/*": ["src/waterfall/*"],
-       },
+            "@nativescript-community/ui-collectionview-waterfall/*": ["src/waterfall/*"]
+        }
     },
     "references": [
-        {
-            //Need for IDE
-            "path": "./tsconfig.vue3.json"
-        },
-        {
-            //Need for IDE
-            "path": "./tools/tsconfig.vue3.json"
-        }
+        { "path": "./packages/collectionview/tsconfig.vue3.json" },
+        { "path": "./packages/swipemenu/tsconfig.vue3.json" },
+        { "path": "./packages/collectionview" },
+        { "path": "./packages/swipemenu" },
+        { "path": "./packages/waterfall" },
+        { "path": "./packages/alignedflowlayout" },
+        { "path": "./tools/tsconfig.vue3.json" }
     ]
 }
