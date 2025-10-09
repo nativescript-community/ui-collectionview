@@ -1,9 +1,7 @@
 {
     "dest": "../../../packages/swipemenu/angular",
     "lib": {
-      "entryFile": "index.ts"
+        "entryFile": "index.ts"
     },
-    "allowedNonPeerDependencies": [
-      "."
-    ]
+    "allowedNonPeerDependencies": ["."]
 }
