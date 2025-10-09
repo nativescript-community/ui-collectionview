@@ -57,8 +57,6 @@ packages/**/angular
 packages/**/*.ngsummary.json
 packages/**/*.metadata.json
 
-.vscode/settings.json
-
 /blueprint.md
 
 *.tsbuildinfo
