@@ -14,7 +14,7 @@
         "build": "npm run tsc && npm run readme",
         "build.all": "npm run build",
         "readme": "../../node_modules/.bin/readme generate -c ../../tools/readme/blueprint.json",
-        "tsc": "../../node_modules/.bin/copyfiles '../../src/alignedflowlayout/**/*.d.ts' '../../packages/alignedflowlayout' && ../../node_modules/.bin/tsc -skipLibCheck -d",
+        "tsc": "../../node_modules/.bin/copyfiles '../../src/alignedflowlayout/**/*.d.ts' '../../packages/alignedflowlayout' && ../../node_modules/.bin/tsc  --build",
         "clean": "../../node_modules/.bin/rimraf ./*.d.ts ./*.js ./*.js.map ./*.tsbuildinfo ./*.mjs ./*.mjs.map ./angular ./svelte ./vue* ./react"
     },
     "nativescript": {
