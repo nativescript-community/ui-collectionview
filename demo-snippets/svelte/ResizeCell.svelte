@@ -1,9 +1,27 @@
+<style>
+    ActionBar {
+        background-color: #ed3e04;
+        color: white;
+    }
+    .item {
+        padding: 10;
+        color: white;
+    }
+    .title {
+        font-size: 17;
+        font-weight: bold;
+    }
+    .subtitle {
+        font-size: 14;
+    }
+</style>
+
 <script lang="ts">
     import { ObservableArray, View } from '@nativescript/core';
     import { Template } from 'svelte-native/components';
     import ResizeView from './ResizeView.svelte';
 
-    let items = new ObservableArray([
+    const items = new ObservableArray([
         { index: 0, name: 'TURQUOISE', color: '#1abc9c' },
         { index: 1, name: 'EMERALD', color: '#2ecc71' },
         { index: 2, name: 'PETER RIVER', color: '#3498db' },
@@ -29,21 +47,21 @@
     async function resizeCell(item, event) {
         try {
             const actualItem = item;
-                actualItem.showMenu = !actualItem.showMenu;
-                console.log('resizeCell', actualItem.showMenu)
-                async function animate(options = {}) {
-                    const newHeight = actualItem.showMenu ? 200 : 100;
-                    return (event.object as View).animate({ height: newHeight, ...options, duration: 300 });
-                }
+            actualItem.showMenu = !actualItem.showMenu;
+            console.log('resizeCell', actualItem.showMenu);
+            async function animate(options = {}) {
+                const newHeight = actualItem.showMenu ? 200 : 100;
+                return (event.object as View).animate({ height: newHeight, ...options, duration: 300 });
+            }
 
-                const updateItem = () => {
-                    if (item) {
-                        const index = this.items.findIndex((i) => i === item);
-                        // console.log('updateItem', index, item);
-                        this.items.setItem(index, item);
-                    }
-                };
-                await animate();
+            const updateItem = () => {
+                if (item) {
+                    const index = this.items.findIndex((i) => i === item);
+                    // console.log('updateItem', index, item);
+                    this.items.setItem(index, item);
+                }
+            };
+            await animate();
         } catch (error) {
             console.error(error);
         }
@@ -53,41 +71,23 @@
 <page>
     <actionBar title="Resize Cell" />
     <gridLayout rows="auto,*">
-        <collectionView {items} row="1" autoReloadItemOnLayout={true}>
+        <collectionView autoReloadItemOnLayout={true} {items} row="1">
             <Template let:item>
                 <!-- it is important to use a custom component
                 the reason is that for this to work in collectionview
                 upon resize animation the Svelte component needs to update its "height" property
                 otherwise Collectionview bind will report wrong height on cell reuse -->
-                <gridlayout id="resizeHolder" rows="101,100" on:tap={e=>resizeCell(item,e)} height={item.showMenu === true ? 200 : 100} verticalAlignment="top">
-                    <stacklayout row="0" class="item" backgroundColor={item.color}>
-                        <label row="1" text={item.name} class="title" />
-                        <label row="1" text={item.color} class="subtitle" />
+                <gridlayout id="resizeHolder" height={item.showMenu === true ? 200 : 100} rows="101,100" verticalAlignment="top" on:tap={(e) => resizeCell(item, e)}>
+                    <stacklayout class="item" backgroundColor={item.color} row="0">
+                        <label class="title" row="1" text={item.name} />
+                        <label class="subtitle" row="1" text={item.color} />
                     </stacklayout>
-                    <stacklayout row="1" orientation="horizontal" height="100">
-                        <label text="a" width="100" height="100%" backgroundColor="red" textAlignment="center" />
-                        <label text="b" width="100" height="100%" backgroundColor="blue" textAlignment="center" />
+                    <stacklayout height="100" orientation="horizontal" row="1">
+                        <label backgroundColor="red" height="100%" text="a" textAlignment="center" width="100" />
+                        <label backgroundColor="blue" height="100%" text="b" textAlignment="center" width="100" />
                     </stacklayout>
                 </gridlayout>
             </Template>
         </collectionView>
     </gridLayout>
 </page>
-
-<style>
-    ActionBar {
-        background-color: #ed3e04;
-        color: white;
-    }
-    .item {
-        padding: 10;
-        color: white;
-    }
-    .title {
-        font-size: 17;
-        font-weight: bold;
-    }
-    .subtitle {
-        font-size: 14;
-    }
-</style>

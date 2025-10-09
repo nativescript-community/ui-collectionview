@@ -1,15 +1,13 @@
-import CollectionViewElement from '@nativescript-community/ui-collectionview/svelte';
-import {CollectionViewTraceCategory} from '@nativescript-community/ui-collectionview';
-import install from '@nativescript-community/ui-collectionview-waterfall';
 import SwipeMenuElement from '@nativescript-community/ui-collectionview-swipemenu/svelte';
-import {Trace} from '@nativescript/core';
+import install from '@nativescript-community/ui-collectionview-waterfall';
+import CollectionViewElement from '@nativescript-community/ui-collectionview/svelte';
 
-import SimpleGrid from './SimpleGrid.svelte';
 import HorizontalGrid from './HorizontalGrid.svelte';
-import SimpleWaterfall from './SimpleWaterfall.svelte';
-import SimpleTemplates from './SimpleTemplates.svelte';
-import SwipeMenu from './SwipeMenu.svelte';
 import ResizeCell from './ResizeCell.svelte';
+import SimpleGrid from './SimpleGrid.svelte';
+import SimpleTemplates from './SimpleTemplates.svelte';
+import SimpleWaterfall from './SimpleWaterfall.svelte';
+import SwipeMenu from './SwipeMenu.svelte';
 
 export function installPlugin() {
     CollectionViewElement.register();
