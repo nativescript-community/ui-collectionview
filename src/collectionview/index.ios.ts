@@ -342,13 +342,20 @@ export class CollectionView extends CollectionViewBase {
             case UIGestureRecognizerState.Began: {
                 let point = gesture.locationInView(collectionView);
                 const selectedIndexPath = collectionView.indexPathForItemAtPoint(point);
-                const view = this.getViewForItemAtIndex(selectedIndexPath.row);
-                if (view) {
-                    const size = view.nativeViewProtected.bounds.size;
-                    point = gesture.locationInView(view.nativeViewProtected);
-                    this.draggingStartDelta = [point.x - size.width / 2, point.y - size.height / 2];
+                if (selectedIndexPath) {
+                    const view = this.getViewForItemAtIndex(selectedIndexPath.row);
+                    if (view) {
+                        const size = view.nativeViewProtected.bounds.size;
+                        point = gesture.locationInView(view.nativeViewProtected);
+                        this.draggingStartDelta = [point.x - size.width / 2, point.y - size.height / 2];
+                    }
+                    collectionView.beginInteractiveMovementForItemAtIndexPath(selectedIndexPath);
+                } else {
+                    // disable and enable to cancel the current gesture
+                    gesture.enabled = false;
+                    gesture.enabled = true;
                 }
-                collectionView.beginInteractiveMovementForItemAtIndexPath(selectedIndexPath);
+                
                 break;
             }
             case UIGestureRecognizerState.Changed: {
