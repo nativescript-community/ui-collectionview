@@ -113,6 +113,7 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     public static dataPopulatedEvent = 'dataPopulated';
     public static knownFunctions = ['itemTemplateSelector', 'itemIdGenerator', 'spanSize']; // See component-builder.ts isKnownFunction
 
+    public allowCssPropagation: boolean;
     public isBounceEnabled: boolean;
     public isScrollEnabled: boolean;
     public reverseLayout: boolean;
@@ -735,6 +736,13 @@ export const autoReloadItemOnLayoutProperty = new Property<CollectionViewBase, b
     valueConverter: booleanConverter
 });
 autoReloadItemOnLayoutProperty.register(CollectionViewBase);
+
+export const allowCssPropagationProperty = new Property<CollectionViewBase, boolean>({
+    name: 'allowCssPropagation',
+    defaultValue: false,
+    valueConverter: booleanConverter
+});
+allowCssPropagationProperty.register(CollectionViewBase);
 
 export const itemOverlapProperty = new Property<CollectionViewBase, Function>({
     name: 'itemOverlap',

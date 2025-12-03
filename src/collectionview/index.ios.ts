@@ -84,7 +84,6 @@ export enum SnapPosition {
     END = 1 // = androidx.recyclerview.widget.LinearSmoothScroller.SNAP_TO_END
 }
 
-
 export class CollectionView extends CollectionViewBase {
     //TODO: remove as it needs to be added after TS 5.7 change https://github.com/microsoft/TypeScript/pull/59860
     [key: symbol]: (...args: any[]) => any | void;
@@ -837,7 +836,7 @@ export class CollectionView extends CollectionViewBase {
     scrollToOffset(value, animated) {
         const view = this.nativeViewProtected;
         if (view && this.isScrollEnabled) {
-            const { width, height } = view.bounds.size;
+            const { height, width } = view.bounds.size;
             let rect: CGRect;
             if (this.orientation === 'vertical') {
                 rect = CGRectMake(0, value, width, height);
@@ -924,7 +923,14 @@ export class CollectionView extends CollectionViewBase {
             }
 
             if (view && !view.parent) {
-                this._addView(view);
+                if (this.allowCssPropagation) {
+                    this._addView(view);
+                } else {
+                    view.parent = this;
+                    view._setupAsRootView(this._context);
+                    view._isAddedToNativeVisualTree = true;
+                    view.callLoaded();
+                }
                 const innerView = NSCellView.new() as NSCellView;
                 innerView.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight;
                 innerView.view = new WeakRef(view);

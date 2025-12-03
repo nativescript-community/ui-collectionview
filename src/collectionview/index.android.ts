@@ -1248,11 +1248,15 @@ export class CollectionView extends CollectionViewBase {
             parentView.id = 'collectionViewHolder';
             view = parentView;
         }
-        //@ts-ignore
-        view.parent = this;
-        view._setupAsRootView(this._context);
-        view._isAddedToNativeVisualTree = true;
-        view.callLoaded();
+
+        if (this.allowCssPropagation) {
+            this._addView(view);
+        } else {
+            view.parent = this;
+            view._setupAsRootView(this._context);
+            view._isAddedToNativeVisualTree = true;
+            view.callLoaded();
+        }
         if (!CollectionViewCellHolder) {
             CollectionViewCellHolder = com.nativescript.collectionview.CollectionViewCellHolder as any;
         }
