@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.13](https://github.com/@nativescript-community/ui-collectionview/compare/v6.0.12...v6.0.13) (2025-10-10)
+
+### Bug Fixes
+
+* **ios:** another crash while long pressing to reorder ([57d8ad4](https://github.com/@nativescript-community/ui-collectionview/commit/57d8ad4fabe1e9c34c8a3cbb1fc224ffa6b8ecb8))
+
 ## [6.0.12](https://github.com/@nativescript-community/ui-collectionview/compare/v6.0.11...v6.0.12) (2025-10-09)
 
 **Note:** Version bump only for package ui-collectionview

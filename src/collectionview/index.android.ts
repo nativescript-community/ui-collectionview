@@ -1295,7 +1295,7 @@ export class CollectionView extends CollectionViewBase {
 
     @profile
     notifyForItemAtIndex(eventName: string, view: View, index: number, bindingContext?, native?: any) {
-        const args = { eventName, object: this, index, view, ios: native, bindingContext };
+        const args = { eventName, object: this, index, view, android: native, bindingContext };
         this.notify(args);
         return args as any;
     }
@@ -1321,10 +1321,15 @@ export class CollectionView extends CollectionViewBase {
 
         if (isNonSync && args.view !== view) {
             view = args.view;
+
+            // Set binding context before adding view to parent to ensure it's available during view loaded event
+            view.bindingContext = bindingContext;
+
             // the view has been changed on the event handler
-            (holder.view as ContentView).content = args.view;
+            (holder.view as ContentView).content = view;
+        } else {
+            view.bindingContext = bindingContext;
         }
-        view.bindingContext = bindingContext;
         view.notify({ eventName: CollectionViewBase.bindedEvent });
         let width = this._effectiveColWidth;
         let height = this._effectiveRowHeight;
