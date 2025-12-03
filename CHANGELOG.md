@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.14](https://github.com/@nativescript-community/ui-collectionview/compare/v6.0.13...v6.0.14) (2025-12-03)
+
+### Bug Fixes
+
+* new `allowCssPropagation` property (false by default) ([4ae97fa](https://github.com/@nativescript-community/ui-collectionview/commit/4ae97fa3a8be0c9d72e7de51d84f2b7adcbc5380))
+* **ui-collectionview:** Ensure cell view binding context during loaded event ([63dfb92](https://github.com/@nativescript-community/ui-collectionview/commit/63dfb92475ef98a6ac738d35088fbda40ca1bbb7))
+
 ## [6.0.13](https://github.com/@nativescript-community/ui-collectionview/compare/v6.0.12...v6.0.13) (2025-10-10)
 
 ### Bug Fixes
