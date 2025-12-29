@@ -11,6 +11,7 @@ import SwipeMenu from './SwipeMenu.vue';
 import ResizeCell from './ResizeCell.vue';
 import SimpleGridsScrollToIndex from './SimpleGridsScrollToIndex.vue';
 import CardHome from './CardHome.vue';
+import SelectionDragDrop from './SelectionDragDrop.vue';
 
 export function installPlugin(app: any) {
     app.use(CollectionView);
@@ -26,5 +27,6 @@ export const demos = [
     { name: 'Scroll to Index', path: 'scroll-to-index', component: SimpleGridsScrollToIndex },
     { name: 'Reorder', path: 'reorder', component: Reorder },
     { name: 'SwipeMenu', path: 'swipe-menu', component: SwipeMenu },
-    { name: 'ResizeCell', path: 'resize-cell', component: ResizeCell }
+    { name: 'ResizeCell', path: 'resize-cell', component: ResizeCell },
+    { name: 'Selection + Drag/Drop', path: 'selection-dragdrop', component: SelectionDragDrop }
 ];
