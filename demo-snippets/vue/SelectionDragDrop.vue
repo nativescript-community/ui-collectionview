@@ -1,3 +1,23 @@
+<!--
+    Selection + Drag/Drop Demo
+    
+    This demo demonstrates how to mix selection mode (using long press) with drag-and-drop
+    functionality without using reorderLongPressEnabled property.
+    
+    Features:
+    - Long press on an item waits briefly to detect if a drag gesture starts
+    - If no drag movement is detected within 200ms → starts selection mode
+    - If drag movement is detected → starts CollectionView drag/reorder mode
+    - In selection mode, tapping items toggles their selection
+    - Exiting selection mode when no items are selected
+    - Visual feedback with opacity changes for selected items
+    
+    Implementation approach:
+    - Uses @longPress and @touch events to detect gestures
+    - Uses a timer to wait for drag movement after long press
+    - Manually calls startDragging() to initiate CollectionView reorder
+    - Maintains state for selectedItems, selectionMode, and drag tracking
+-->
 <template>
     <Page>
         <ActionBar>
@@ -98,7 +118,7 @@ export default {
             }
         },
         onLongPress(item, event) {
-            console.log('onLongPress', item.name);
+            console.log('onLongPress detected for', item.name);
             
             // Clear any existing timer
             if (this.longPressTimer) {
@@ -108,11 +128,13 @@ export default {
             this.currentLongPressItem = item;
             this.dragStarted = false;
             
-            // Wait a bit to see if drag starts
+            // Wait a bit (200ms) to see if drag movement starts
+            // This implements the logic: "if longpress is detected wait a bit"
             this.longPressTimer = setTimeout(() => {
                 if (!this.dragStarted && this.currentLongPressItem) {
                     // No drag detected, start selection mode
-                    console.log('Starting selection mode for', item.name);
+                    // This implements: "if no drag => start selection"
+                    console.log('No drag detected - starting selection mode for', item.name);
                     this.selectionMode = true;
                     this.toggleSelection(item);
                 }
@@ -122,17 +144,18 @@ export default {
         onTouch(item, event) {
             if (event.action === 'move') {
                 // If we're in a long press state and movement is detected, start dragging
+                // This implements: "if drag was started => start collection view drag mode"
                 if (this.currentLongPressItem && !this.dragStarted) {
-                    console.log('Drag detected, starting drag mode for', item.name);
+                    console.log('Drag movement detected - starting drag mode for', item.name);
                     this.dragStarted = true;
                     
-                    // Clear the timer to prevent selection mode
+                    // Clear the timer to prevent selection mode from starting
                     if (this.longPressTimer) {
                         clearTimeout(this.longPressTimer);
                         this.longPressTimer = null;
                     }
                     
-                    // Start drag mode
+                    // Start collection view drag/reorder mode
                     const pointer = event.getActivePointers()[0];
                     const index = this.itemList.indexOf(item);
                     this.$refs.collectionView.nativeView.startDragging(index, pointer);
