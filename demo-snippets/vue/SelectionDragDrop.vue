@@ -1,9 +1,9 @@
 <!--
     Selection + Drag/Drop Demo
-    
+
     This demo demonstrates how to mix selection mode (using long press) with drag-and-drop
     functionality without using reorderLongPressEnabled property.
-    
+
     Features:
     - Long press on an item waits briefly to detect if a drag gesture starts
     - If no drag movement is detected within 200ms → starts selection mode
@@ -11,7 +11,7 @@
     - In selection mode, tapping items toggles their selection
     - Exiting selection mode when no items are selected
     - Visual feedback with opacity changes for selected items
-    
+
     Implementation approach:
     - Uses @longPress event to detect initial long press
     - Uses @pan event to detect drag movement (more efficient than @touch)
@@ -22,9 +22,8 @@
 -->
 <template>
     <Page>
-        <ActionBar>
-            <Label text="Selection + Drag/Drop" />
-            <ActionItem v-if="selectionMode" @tap="exitSelectionMode" ios.systemIcon="3" ios.position="right" text="Clear" />
+        <ActionBar :title="selectionMode ? selectedItems.length + ' items selected' : 'Selection + Drag/Drop'">
+            <ActionItem v-if="selectionMode" ios.systemIcon="3" ios.position="right" text="Clear" @tap="exitSelectionMode" />
         </ActionBar>
 
         <GridLayout>
@@ -37,17 +36,9 @@
                 :reorderLongPressEnabled="false"
                 @itemReorderStarting="onItemReorderStarting"
                 @itemReordered="onItemReordered"
-                @itemTap="onItemTap"
             >
                 <v-template>
-                    <GridLayout
-                        id="itemContainer"
-                        rows="*, auto"
-                        :backgroundColor="item.color"
-                        :opacity="isSelected(item) ? 0.7 : 1"
-                        @longPress="onLongPress(item, $event)"
-                        @pan="onPan(item, $event)"
-                    >
+                    <GridLayout id="itemContainer" rows="*, auto" :backgroundColor="item.color" :opacity="isSelected(item) ? 0.7 : 1" @longPress="onLongPress(item, $event)" @pan="onPan(item, $event)" @tap="onItemTap(item, $event)">
                         <StackLayout row="1" class="item">
                             <Label row="1" :text="item.name" class="title" />
                             <Label row="1" :text="item.color" class="subtitle" />
@@ -94,16 +85,16 @@ export default {
     },
     methods: {
         isSelected(item) {
-            return this.selectedItems.some(selected => selected.color === item.color);
+            return this.selectedItems.some((selected) => selected.color === item.color);
         },
         toggleSelection(item) {
-            const index = this.selectedItems.findIndex(selected => selected.color === item.color);
+            const index = this.selectedItems.findIndex((selected) => selected.color === item.color);
             if (index >= 0) {
                 this.selectedItems.splice(index, 1);
             } else {
                 this.selectedItems.push(item);
             }
-            
+
             // Exit selection mode if no items are selected
             if (this.selectedItems.length === 0) {
                 this.exitSelectionMode();
@@ -113,7 +104,7 @@ export default {
             this.selectionMode = false;
             this.selectedItems = [];
         },
-        onItemTap({ item }) {
+        onItemTap(item, event) {
             if (this.selectionMode) {
                 // In selection mode, tapping toggles selection
                 this.toggleSelection(item);
@@ -121,15 +112,19 @@ export default {
         },
         onLongPress(item, event) {
             console.log('onLongPress detected for', item.name);
-            
+            if (this.selectionMode) {
+                this.toggleSelection(item);
+                return;
+            }
+
             // Clear any existing timer
             if (this.longPressTimer) {
                 clearTimeout(this.longPressTimer);
             }
-            
+
             this.currentLongPressItem = item;
             this.dragStarted = false;
-            
+
             // Wait a bit (200ms) to see if drag movement starts
             // This implements the logic: "if longpress is detected wait a bit"
             this.longPressTimer = setTimeout(() => {
@@ -148,32 +143,34 @@ export default {
             if (!this.currentLongPressItem) {
                 return;
             }
-            
+
             // Pan gesture states: 0=began, 1=changed(panning), 2=ended, 3=cancelled
             // If we detect panning movement during long press, start dragging
             // This implements: "if drag was started => start collection view drag mode"
-            if (event.state === 1 && !this.dragStarted) { // State 1: changed/panning
+            if (event.state === 1 && !this.dragStarted) {
+                // State 1: changed/panning
                 console.log('Pan movement detected - starting drag mode for', item.name);
                 this.dragStarted = true;
-                
+
                 // Clear the timer to prevent selection mode from starting
                 if (this.longPressTimer) {
                     clearTimeout(this.longPressTimer);
                     this.longPressTimer = null;
                 }
-                
+
                 // Start collection view drag/reorder mode
                 // Get the touch point from the pan gesture
-                const pointer = { 
-                    getX: () => event.ios ? event.ios.locationInView(null).x : (event.android ? event.android.getX() : 0),
-                    getY: () => event.ios ? event.ios.locationInView(null).y : (event.android ? event.android.getY() : 0),
+                const pointer = {
+                    getX: () => (event.ios ? event.ios.locationInView(null).x : event.android ? event.android.getX() : 0),
+                    getY: () => (event.ios ? event.ios.locationInView(null).y : event.android ? event.android.getY() : 0),
                     id: 0
                 };
                 const index = this.itemList.indexOf(item);
                 this.$refs.collectionView.nativeView.startDragging(index, pointer);
-                
+
                 this.currentLongPressItem = null;
-            } else if (event.state === 2 || event.state === 3) { // State 2: ended, State 3: cancelled
+            } else if (event.state === 2 || event.state === 3) {
+                // State 2: ended, State 3: cancelled
                 // Reset state on pan end
                 if (this.longPressTimer) {
                     clearTimeout(this.longPressTimer);

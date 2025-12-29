@@ -1,9 +1,31 @@
+<style>
+    ActionBar {
+        background-color: #ff3e00;
+    }
+    .item {
+        padding: 10;
+        color: white;
+    }
+    .title {
+        font-size: 17;
+        font-weight: bold;
+    }
+    .subtitle {
+        font-size: 14;
+    }
+    .selected-indicator {
+        font-size: 12;
+        font-weight: bold;
+        margin-top: 5;
+    }
+</style>
+
 <!--
     Selection + Drag/Drop Demo (Svelte)
-    
+
     This demo demonstrates how to mix selection mode (using long press) with drag-and-drop
     functionality without using reorderLongPressEnabled property.
-    
+
     Features:
     - Long press on an item waits briefly to detect if a drag gesture starts
     - If no drag movement is detected within 200ms → starts selection mode
@@ -11,7 +33,7 @@
     - In selection mode, tapping items toggles their selection
     - Exiting selection mode when no items are selected
     - Visual feedback with opacity changes for selected items
-    
+
     Implementation approach:
     - Uses on:longPress event to detect initial long press
     - Uses on:pan event to detect drag movement (more efficient than on:touch)
@@ -22,8 +44,7 @@
 -->
 <script lang="ts">
     import { ContentView, ObservableArray } from '@nativescript/core';
-    import { Template } from 'svelte-native/components';
-    import { onMount } from 'svelte';
+    import { Template } from '@nativescript-community/svelte-native/components';
 
     let collectionView;
     const itemList = new ObservableArray([
@@ -52,18 +73,18 @@
     let currentLongPressItem = null;
 
     function isSelected(item) {
-        return selectedItems.some(selected => selected.color === item.color);
+        return selectedItems.some((selected) => selected.color === item.color);
     }
 
     function toggleSelection(item) {
-        const index = selectedItems.findIndex(selected => selected.color === item.color);
+        const index = selectedItems.findIndex((selected) => selected.color === item.color);
         if (index >= 0) {
             selectedItems.splice(index, 1);
         } else {
             selectedItems.push(item);
         }
         selectedItems = selectedItems; // Trigger reactivity
-        
+
         // Exit selection mode if no items are selected
         if (selectedItems.length === 0) {
             exitSelectionMode();
@@ -75,7 +96,7 @@
         selectedItems = [];
     }
 
-    function onItemTap({ item }) {
+    function onItemTap(item, event) {
         if (selectionMode) {
             // In selection mode, tapping toggles selection
             toggleSelection(item);
@@ -84,15 +105,15 @@
 
     function onLongPress(item, event) {
         console.log('onLongPress detected for', item.name);
-        
+
         // Clear any existing timer
         if (longPressTimer) {
             clearTimeout(longPressTimer);
         }
-        
+
         currentLongPressItem = item;
         dragStarted = false;
-        
+
         // Wait a bit (200ms) to see if drag movement starts
         // This implements the logic: "if longpress is detected wait a bit"
         longPressTimer = setTimeout(() => {
@@ -112,32 +133,34 @@
         if (!currentLongPressItem) {
             return;
         }
-        
+
         // Pan gesture states: 0=began, 1=changed(panning), 2=ended, 3=cancelled
         // If we detect panning movement during long press, start dragging
         // This implements: "if drag was started => start collection view drag mode"
-        if (event.state === 1 && !dragStarted) { // State 1: changed/panning
+        if (event.state === 1 && !dragStarted) {
+            // State 1: changed/panning
             console.log('Pan movement detected - starting drag mode for', item.name);
             dragStarted = true;
-            
+
             // Clear the timer to prevent selection mode from starting
             if (longPressTimer) {
                 clearTimeout(longPressTimer);
                 longPressTimer = null;
             }
-            
+
             // Start collection view drag/reorder mode
             // Get the touch point from the pan gesture
-            const pointer = { 
-                getX: () => event.ios ? event.ios.locationInView(null).x : (event.android ? event.android.getX() : 0),
-                getY: () => event.ios ? event.ios.locationInView(null).y : (event.android ? event.android.getY() : 0),
+            const pointer = {
+                getX: () => (event.ios ? event.ios.locationInView(null).x : event.android ? event.android.getX() : 0),
+                getY: () => (event.ios ? event.ios.locationInView(null).y : event.android ? event.android.getY() : 0),
                 id: 0
             };
             const index = itemList.indexOf(item);
             collectionView.startDragging(index, pointer);
-            
+
             currentLongPressItem = null;
-        } else if (event.state === 2 || event.state === 3) { // State 2: ended, State 3: cancelled
+        } else if (event.state === 2 || event.state === 3) {
+            // State 2: ended, State 3: cancelled
             // Reset state on pan end
             if (longPressTimer) {
                 clearTimeout(longPressTimer);
@@ -160,39 +183,36 @@
 </script>
 
 <page>
-    <actionBar>
-        <label text="Selection + Drag/Drop" />
+    <actionBar title={selectionMode ? selectedItems.length + ' items selected' : 'Selection + Drag/Drop'}>
         {#if selectionMode}
-            <actionItem on:tap={exitSelectionMode} ios.systemIcon="3" ios.position="right" text="Clear" />
+            <actionItem ios.position="right" ios.systemIcon="3" text="Clear" on:tap={exitSelectionMode} />
         {/if}
     </actionBar>
 
     <gridLayout>
         <collectionView
             bind:this={collectionView}
-            items={itemList}
             itemIdGenerator="color"
-            rowHeight="100"
+            items={itemList}
             reorderEnabled={true}
             reorderLongPressEnabled={false}
+            rowHeight="100"
             on:itemReorderStarting={onItemReorderStarting}
-            on:itemReordered={onItemReordered}
-            on:itemTap={onItemTap}
-        >
+            on:itemReordered={onItemReordered}>
             <Template let:item>
                 <gridLayout
                     id="itemContainer"
-                    rows="*, auto"
                     backgroundColor={item.color}
                     opacity={isSelected(item) ? 0.7 : 1}
+                    rows="*, auto"
                     on:longPress={(event) => onLongPress(item, event)}
-                    on:pan={(event) => onPan(item, event)}
-                >
-                    <stackLayout row="1" class="item">
-                        <label row="1" text={item.name} class="title" />
-                        <label row="1" text={item.color} class="subtitle" />
+                    on:tap={(event) => onItemTap(item, event)}
+                    on:pan={(event) => onPan(item, event)}>
+                    <stackLayout class="item" row="1">
+                        <label class="title" row="1" text={item.name} />
+                        <label class="subtitle" row="1" text={item.color} />
                         {#if isSelected(item)}
-                            <label text="✓ SELECTED" class="selected-indicator" />
+                            <label class="selected-indicator" text="✓ SELECTED" />
                         {/if}
                     </stackLayout>
                 </gridLayout>
@@ -200,25 +220,3 @@
         </collectionView>
     </gridLayout>
 </page>
-
-<style>
-    ActionBar {
-        background-color: #ff3e00;
-    }
-    .item {
-        padding: 10;
-        color: white;
-    }
-    .title {
-        font-size: 17;
-        font-weight: bold;
-    }
-    .subtitle {
-        font-size: 14;
-    }
-    .selected-indicator {
-        font-size: 12;
-        font-weight: bold;
-        margin-top: 5;
-    }
-</style>
