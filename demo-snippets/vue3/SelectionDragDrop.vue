@@ -179,12 +179,12 @@ function onTouch(item, event) {
 
 function onItemReordered(e) {
     console.log('onItemReordered', e.index);
-    (e.view as ContentView).opacity = 1;
+    (e.view as ContentView).content.opacity = 1;
 }
 
 function onItemReorderStarting(e) {
     console.log('onItemReorderStarting', e.index);
-    (e.view as ContentView).opacity = 0.7;
+    (e.view as ContentView).content.opacity = 0.7;
 }
 </script>
 
