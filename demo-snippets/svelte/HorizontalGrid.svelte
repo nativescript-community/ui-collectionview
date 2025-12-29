@@ -17,7 +17,7 @@
 </style>
 
 <script lang="ts">
-    import { Template } from 'svelte-native/components';
+    import { Template } from '@nativescript-community/svelte-native/components';
     const items = [
         { index: 0, name: 'TURQUOISE', color: '#1abc9c' },
         { index: 1, name: 'EMERALD', color: '#2ecc71' },

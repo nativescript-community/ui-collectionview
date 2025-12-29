@@ -386,7 +386,7 @@ CollectionViewElement.register();
 In you component, add the following to import Svelte `Templates` and to create a simple array of objects.
 
 ```typescript
-import { Template } from 'svelte-native/components';
+import { Template } from '@nativescript-community/svelte-native/components';
 
 const items = [
     { index: 0, name: 'TURQUOISE', color: '#1abc9c' },
