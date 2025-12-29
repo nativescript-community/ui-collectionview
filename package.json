@@ -61,6 +61,9 @@
         "@nativescript-community/template-snippet": "portal:demo-snippets",
         "@nativescript-community/ui-drawer": "0.1.31"
     },
+    "resolutions": {
+        "@vue/devtools": "npm:empty-npm-package@*"
+    },
     "ntl": {
         "descriptions": {
             "build": "Build the plugin",
