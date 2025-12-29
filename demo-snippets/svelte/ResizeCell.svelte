@@ -18,7 +18,7 @@
 
 <script lang="ts">
     import { ObservableArray, View } from '@nativescript/core';
-    import { Template } from 'svelte-native/components';
+    import { Template } from '@nativescript-community/svelte-native/components';
     import ResizeView from './ResizeView.svelte';
 
     const items = new ObservableArray([

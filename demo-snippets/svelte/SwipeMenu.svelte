@@ -1,6 +1,24 @@
+<style>
+    ActionBar {
+        background-color: #ed3e04;
+        color: white;
+    }
+    .item {
+        padding: 10;
+        color: white;
+    }
+    .title {
+        font-size: 17;
+        font-weight: bold;
+    }
+    .subtitle {
+        font-size: 14;
+    }
+</style>
+
 <script lang="ts">
     import { ObservableArray } from '@nativescript/core';
-    import { Template } from 'svelte-native/components';
+    import { Template } from '@nativescript-community/svelte-native/components';
 
     let items = new ObservableArray([
         { index: 0, name: 'TURQUOISE', color: '#1abc9c' },
@@ -70,42 +88,24 @@
 
 <page>
     <actionBar title="Simple Grid">
-        <actionItem on:tap={refresh} ios.systemIcon="16" ios.position="right" text="refresh" android.position="popup" />
+        <actionItem android.position="popup" ios.position="right" ios.systemIcon="16" text="refresh" on:tap={refresh} />
     </actionBar>
     <gridLayout rows="auto,*">
-        <collectionView {items} row="1" rowHeight="100" automationText="collectionView" autoReloadItemOnLayout={true}>
+        <collectionView autoReloadItemOnLayout={true} automationText="collectionView" {items} row="1" rowHeight="100">
             <Template let:item>
-                <swipemenu id={item.name} leftSwipeDistance="300" translationFunction={drawerTranslationFunction} startingSide={item.startingSide}>
-                    <gridlayout rows="*, auto" backgroundColor={item.color} class="item" prop:mainContent width="100%">
+                <swipemenu id={item.name} leftSwipeDistance="300" startingSide={item.startingSide} translationFunction={drawerTranslationFunction}>
+                    <gridlayout class="item" backgroundColor={item.color} rows="*, auto" prop:mainContent width="100%">
                         <stacklayout row="1">
-                            <label row="1" text={item.name} class="title" />
-                            <label row="1" text={item.color} class="subtitle" />
+                            <label class="title" row="1" text={item.name} />
+                            <label class="subtitle" row="1" text={item.color} />
                         </stacklayout>
                     </gridlayout>
                     <stacklayout prop:leftDrawer orientation="horizontal" width="200">
-                        <label text={item.menuOpened ? 'opened' : 'a'} width="100" height="100%" backgroundColor="red" textAlignment="center" />
-                        <label text="b" width="100" height="100%" backgroundColor="blue" textAlignment="center" />
+                        <label backgroundColor="red" height="100%" text={item.menuOpened ? 'opened' : 'a'} textAlignment="center" width="100" />
+                        <label backgroundColor="blue" height="100%" text="b" textAlignment="center" width="100" />
                     </stacklayout>
                 </swipemenu>
             </Template>
         </collectionView>
     </gridLayout>
 </page>
-
-<style>
-    ActionBar {
-        background-color: #ed3e04;
-        color: white;
-    }
-    .item {
-        padding: 10;
-        color: white;
-    }
-    .title {
-        font-size: 17;
-        font-weight: bold;
-    }
-    .subtitle {
-        font-size: 14;
-    }
-</style>
