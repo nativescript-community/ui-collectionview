@@ -13,7 +13,9 @@
     - Visual feedback with opacity changes for selected items
     
     Implementation approach:
-    - Uses on:longPress and on:touch events to detect gestures
+    - Uses on:longPress event to detect initial long press
+    - Uses on:pan event to detect drag movement (more efficient than on:touch)
+    - Pan events are only processed when a long press is active
     - Uses a timer to wait for drag movement after long press
     - Manually calls startDragging() to initiate CollectionView reorder
     - Maintains state for selectedItems, selectionMode, and drag tracking
@@ -105,29 +107,37 @@
         }, 200);
     }
 
-    function onTouch(item, event) {
-        if (event.action === 'move') {
-            // If we're in a long press state and movement is detected, start dragging
-            // This implements: "if drag was started => start collection view drag mode"
-            if (currentLongPressItem && !dragStarted) {
-                console.log('Drag movement detected - starting drag mode for', item.name);
-                dragStarted = true;
-                
-                // Clear the timer to prevent selection mode from starting
-                if (longPressTimer) {
-                    clearTimeout(longPressTimer);
-                    longPressTimer = null;
-                }
-                
-                // Start collection view drag/reorder mode
-                const pointer = event.getActivePointers()[0];
-                const index = itemList.indexOf(item);
-                collectionView.startDragging(index, pointer);
-                
-                currentLongPressItem = null;
+    function onPan(item, event) {
+        // Only process pan events if we're tracking a long press
+        if (!currentLongPressItem) {
+            return;
+        }
+        
+        // If we detect panning movement during long press, start dragging
+        // This implements: "if drag was started => start collection view drag mode"
+        if (event.state === 1 && !dragStarted) { // State 1 is panning
+            console.log('Pan movement detected - starting drag mode for', item.name);
+            dragStarted = true;
+            
+            // Clear the timer to prevent selection mode from starting
+            if (longPressTimer) {
+                clearTimeout(longPressTimer);
+                longPressTimer = null;
             }
-        } else if (event.action === 'up' || event.action === 'cancel') {
-            // Reset state on touch end
+            
+            // Start collection view drag/reorder mode
+            // Get the touch point from the pan gesture
+            const pointer = { 
+                getX: () => event.ios ? event.ios.locationInView(null).x : event.android.getX(),
+                getY: () => event.ios ? event.ios.locationInView(null).y : event.android.getY(),
+                id: 0
+            };
+            const index = itemList.indexOf(item);
+            collectionView.startDragging(index, pointer);
+            
+            currentLongPressItem = null;
+        } else if (event.state === 2 || event.state === 3) { // State 2/3 is ended/cancelled
+            // Reset state on pan end
             if (longPressTimer) {
                 clearTimeout(longPressTimer);
                 longPressTimer = null;
@@ -174,8 +184,8 @@
                     rows="*, auto"
                     backgroundColor={item.color}
                     opacity={isSelected(item) ? 0.7 : 1}
-                    on:touch={(event) => onTouch(item, event)}
                     on:longPress={(event) => onLongPress(item, event)}
+                    on:pan={(event) => onPan(item, event)}
                 >
                     <stackLayout row="1" class="item">
                         <label row="1" text={item.name} class="title" />
