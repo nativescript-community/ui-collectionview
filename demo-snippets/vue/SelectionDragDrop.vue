@@ -149,9 +149,10 @@ export default {
                 return;
             }
             
+            // Pan gesture states: 0=began, 1=changed(panning), 2=ended, 3=cancelled
             // If we detect panning movement during long press, start dragging
             // This implements: "if drag was started => start collection view drag mode"
-            if (event.state === 1 && !this.dragStarted) { // State 1 is panning
+            if (event.state === 1 && !this.dragStarted) { // State 1: changed/panning
                 console.log('Pan movement detected - starting drag mode for', item.name);
                 this.dragStarted = true;
                 
@@ -164,15 +165,15 @@ export default {
                 // Start collection view drag/reorder mode
                 // Get the touch point from the pan gesture
                 const pointer = { 
-                    getX: () => event.ios ? event.ios.locationInView(null).x : event.android.getX(),
-                    getY: () => event.ios ? event.ios.locationInView(null).y : event.android.getY(),
+                    getX: () => event.ios ? event.ios.locationInView(null).x : (event.android ? event.android.getX() : 0),
+                    getY: () => event.ios ? event.ios.locationInView(null).y : (event.android ? event.android.getY() : 0),
                     id: 0
                 };
                 const index = this.itemList.indexOf(item);
                 this.$refs.collectionView.nativeView.startDragging(index, pointer);
                 
                 this.currentLongPressItem = null;
-            } else if (event.state === 2 || event.state === 3) { // State 2/3 is ended/cancelled
+            } else if (event.state === 2 || event.state === 3) { // State 2: ended, State 3: cancelled
                 // Reset state on pan end
                 if (this.longPressTimer) {
                     clearTimeout(this.longPressTimer);
