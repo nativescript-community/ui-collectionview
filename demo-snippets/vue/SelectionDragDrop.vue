@@ -38,7 +38,26 @@
                 @itemReordered="onItemReordered"
             >
                 <v-template>
-                    <GridLayout id="itemContainer" rows="*, auto" :backgroundColor="item.color" :opacity="isSelected(item) ? 0.7 : 1" @longPress="onLongPress(item, $event)" @pan="onPan(item, $event)" @tap="onItemTap(item, $event)">
+                    <GridLayout
+                        id="itemContainer"
+                        rows="*, auto"
+                        :backgroundColor="item.color"
+                        :opacity="isSelected(item) ? 0.7 : 1"
+                        :panGestureOptions="
+                            (view, tag, rootTag) => ({
+                                minDist: 20
+                            })
+                        "
+                        :longPressGestureOptions="
+                            (view, tag, rootTag) => ({
+                                // minDuration: 300,
+                                simultaneousHandlers: [rootTag, view['PAN_HANDLER_TAG']]
+                            })
+                        "
+                        @longPress="onLongPress(item, $event)"
+                        @pan="onPan(item, $event)"
+                        @tap="onItemTap(item, $event)"
+                    >
                         <StackLayout row="1" class="item">
                             <Label row="1" :text="item.name" class="title" />
                             <Label row="1" :text="item.color" class="subtitle" />
@@ -116,6 +135,7 @@ export default {
                 this.toggleSelection(item);
                 return;
             }
+            // event.object.getGestureHandler(GestureTypes.pan)[0].enabled = true;
 
             // Clear any existing timer
             if (this.longPressTimer) {
@@ -139,6 +159,7 @@ export default {
             }, 200);
         },
         onPan(item, event) {
+            console.log('onPan', event.state);
             // Only process pan events if we're tracking a long press
             if (!this.currentLongPressItem) {
                 return;
@@ -147,7 +168,7 @@ export default {
             // Pan gesture states: 0=began, 1=changed(panning), 2=ended, 3=cancelled
             // If we detect panning movement during long press, start dragging
             // This implements: "if drag was started => start collection view drag mode"
-            if (event.state === 1 && !this.dragStarted) {
+            if (event.state === 2 && !this.dragStarted) {
                 // State 1: changed/panning
                 console.log('Pan movement detected - starting drag mode for', item.name);
                 this.dragStarted = true;
@@ -169,7 +190,7 @@ export default {
                 this.$refs.collectionView.nativeView.startDragging(index, pointer);
 
                 this.currentLongPressItem = null;
-            } else if (event.state === 2 || event.state === 3) {
+            } else if (event.state === 5 || event.state === 3) {
                 // State 2: ended, State 3: cancelled
                 // Reset state on pan end
                 if (this.longPressTimer) {

@@ -3,6 +3,7 @@
     "version": "0.0.1",
     "private": true,
     "dependencies": {
+        "@nativescript-community/gesturehandler": "2.0.39",
         "@nativescript-community/ui-collectionview": "*",
         "@nativescript-community/ui-collectionview-alignedflowlayout": "*",
         "@nativescript-community/ui-collectionview-swipemenu": "*",

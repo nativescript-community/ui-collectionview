@@ -1,11 +1,12 @@
 import Vue from 'nativescript-vue';
-import {Trace} from '@nativescript/core';
+import { Trace } from '@nativescript/core';
 
 import CollectionView from '@nativescript-community/ui-collectionview/vue';
 import SwipeMenuPlugin from '@nativescript-community/ui-collectionview-swipemenu/vue';
 import installWaterfall from '@nativescript-community/ui-collectionview-waterfall';
 import installAlignedLayout from '@nativescript-community/ui-collectionview-alignedflowlayout';
 import { CollectionViewTraceCategory } from '@nativescript-community/ui-collectionview';
+import { install } from '@nativescript-community/gesturehandler';
 
 import SimpleGrid from './SimpleGrid.vue';
 import HorizontalGrid from './HorizontalGrid.vue';
@@ -21,6 +22,8 @@ import SelectionDragDrop from './SelectionDragDrop.vue';
 export function installPlugin() {
     Vue.use(CollectionView);
     Vue.use(SwipeMenuPlugin);
+
+    install(true);
 
     installWaterfall();
     installAlignedLayout();

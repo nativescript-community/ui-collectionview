@@ -43,6 +43,17 @@
                         rows="*, auto"
                         :backgroundColor="item.color"
                         :opacity="isSelected(item) ? 0.7 : 1"
+                        :panGestureOptions="
+                            (view, tag, rootTag) => ({
+                                // minDist: 100,
+                                // enabled: true
+                            })
+                        "
+                        :longPressGestureOptions="
+                            (view, tag, rootTag) => ({
+                                simultaneousHandlers: [rootTag, view['PAN_HANDLER_TAG']]
+                            })
+                        "
                         @longPress="onLongPress(item, $event)"
                         @pan="onPan(item, $event)"
                         @tap="onItemTap(item, $event)"
@@ -60,7 +71,7 @@
 </template>
 
 <script setup lang="ts">
-import { ContentView, ObservableArray } from '@nativescript/core';
+import { ContentView, GestureTypes, ObservableArray } from '@nativescript/core';
 import { ref } from 'nativescript-vue';
 
 const collectionView = ref();
@@ -134,10 +145,12 @@ function onLongPress(item, event) {
 
     currentLongPressItem.value = item;
     dragStarted.value = false;
+    // event.object.getGestureHandler(GestureTypes.pan)[0].enabled = true;
 
     // Wait a bit (200ms) to see if drag movement starts
     // This implements the logic: "if longpress is detected wait a bit"
     longPressTimer.value = setTimeout(() => {
+        // event.object.getGestureHandler(GestureTypes.pan)[0].enabled = false;
         if (!dragStarted.value && currentLongPressItem.value) {
             // No drag detected, start selection mode
             // This implements: "if no drag => start selection"

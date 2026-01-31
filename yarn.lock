@@ -3339,6 +3339,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nativescript-community/gesturehandler@npm:2.0.39":
+  version: 2.0.39
+  resolution: "@nativescript-community/gesturehandler@npm:2.0.39"
+  dependencies:
+    "@nativescript-community/observable": "npm:^2.0.10"
+  checksum: 10/d5bb73a8d48a039b4c1426cbc39045dd828cf0a700569a5b7c2d6954081dcc0d1e519605bd7e98cee56c930ca661b8b810dcbde3a1d38e1eaaacb33cea955323
+  languageName: node
+  linkType: hard
+
 "@nativescript-community/gesturehandler@npm:^2.0.8":
   version: 2.0.37
   resolution: "@nativescript-community/gesturehandler@npm:2.0.37"
@@ -3450,6 +3459,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@nativescript-community/template-snippet@workspace:demo-snippets"
   dependencies:
+    "@nativescript-community/gesturehandler": "npm:2.0.39"
     "@nativescript-community/ui-collectionview": "npm:*"
     "@nativescript-community/ui-collectionview-alignedflowlayout": "npm:*"
     "@nativescript-community/ui-collectionview-swipemenu": "npm:*"
@@ -3463,6 +3473,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@nativescript-community/template-snippet@portal:demo-snippets::locator=root-workspace-0b6124%40workspace%3A."
   dependencies:
+    "@nativescript-community/gesturehandler": "npm:2.0.39"
     "@nativescript-community/ui-collectionview": "npm:*"
     "@nativescript-community/ui-collectionview-alignedflowlayout": "npm:*"
     "@nativescript-community/ui-collectionview-swipemenu": "npm:*"
