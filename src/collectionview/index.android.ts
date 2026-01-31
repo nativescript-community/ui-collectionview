@@ -1,4 +1,4 @@
-﻿import {
+import {
     ChangeType,
     ChangedData,
     ContentView,
@@ -1332,14 +1332,14 @@ export class CollectionView extends CollectionViewBase {
         }
         view.notify({ eventName: CollectionViewBase.bindedEvent });
         let width = this._effectiveColWidth;
-        let height = this._effectiveRowHeight;
+        let height = this.getEffectiveRowHeightForIndex(position);
         if (this._getSpanSize) {
             const spanSize = this._getSpanSize(bindingContext, position);
             const horizontal = this.isHorizontal();
             if (horizontal) {
-                height *= spanSize;
-            } else {
                 width *= spanSize;
+            } else {
+                height *= spanSize;
             }
         }
         if (width || !view.width) {

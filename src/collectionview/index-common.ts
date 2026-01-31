@@ -159,9 +159,11 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
 
     protected _itemTemplatesInternal: Map<string, KeyedTemplate>;
     protected _defaultTemplate: KeyedTemplate;
+    protected _templateRowHeights: Map<string, CoreTypes.PercentLengthType>;
 
     constructor() {
         super();
+        this._templateRowHeights = new Map();
         this._defaultTemplate = {
             key: 'default',
             createView: () => {
@@ -173,6 +175,28 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
         };
         this._itemTemplatesInternal = new Map();
         this._itemTemplatesInternal.set(this._defaultTemplate.key, this._defaultTemplate);
+    }
+
+    public setTemplateRowHeight(key: string, value: any) {
+        const templateKey = (key || this._defaultTemplate.key).toLowerCase();
+        if (value === undefined || value === null || value === '') {
+            this._templateRowHeights.delete(templateKey);
+        } else {
+            this._templateRowHeights.set(templateKey, PercentLength.parse(value));
+        }
+    }
+
+    public getEffectiveRowHeightForIndex(index: number) {
+        const selector = this._itemTemplateSelector;
+        let templateKey = this._defaultTemplate.key;
+        if (selector) {
+            templateKey = selector.call(this, this.getItemAtIndex(index), index, this.items);
+        }
+        const perTemplate = this._templateRowHeights.get((templateKey || this._defaultTemplate.key).toLowerCase());
+        if (perTemplate) {
+            return toDevicePixels(perTemplate as any, autoEffectiveRowHeight, this._innerHeight);
+        }
+        return this._effectiveRowHeight;
     }
     notifyForItemAtIndex(eventName: string, view: View, index: number, bindingContext?: any, native?: any) {
         throw new Error('Method not implemented.');

@@ -414,8 +414,10 @@ export function getItemViewRoot(viewRef: ComponentView, rootLocator: RootLocator
     return rootView;
 }
 
-@Directive({ selector: '[cvTemplateKey]' })
+@Directive({ selector: '[cvTemplateKey],[cvRowHeight]' })
 export class TemplateKeyDirective {
+    private _templateKey: string;
+    private _rowHeight: any;
     constructor(
         private templateRef: TemplateRef<any>,
         @Host() private collectionView: CollectionViewComponent
@@ -426,8 +428,19 @@ export class TemplateKeyDirective {
         if (Trace.isEnabled()) {
             CLog(CLogTypes.info, 'cvTemplateKey: ' + value);
         }
+        this._templateKey = value;
         if (this.collectionView && this.templateRef) {
             this.collectionView.registerTemplate(value.toLowerCase(), this.templateRef);
+            if (this._rowHeight !== undefined) {
+                this.collectionView.nativeElement?.setTemplateRowHeight(value, this._rowHeight);
+            }
         }
+    }
+
+    @Input()
+    set cvRowHeight(value: any) {
+        this._rowHeight = value;
+        const key = this._templateKey || 'default';
+        this.collectionView?.nativeElement?.setTemplateRowHeight(key, value);
     }
 }
