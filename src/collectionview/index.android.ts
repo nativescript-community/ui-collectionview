@@ -137,7 +137,7 @@ const nestedScrollingEnabledProperty = new Property<CollectionViewBase, boolean>
 });
 
 export enum SnapPosition {
-    START = 0,
+    START = -1,
     END = 1
 }
 
