@@ -928,7 +928,9 @@ export class CollectionView extends CollectionViewBase {
                     // for a cell to update correctly on cell layout change we need
                     // to do it ourself instead of "propagating it"
                     view['performLayout'] = () => {
-                        if (!this._preparingCell && !this._refreshingVisible && !view['inPerformLayout']) {
+                        // for now we dont check _refreshingVisible as in some cases it prevents correct rendering
+                        // like image needing layout after load
+                        if (!this._preparingCell /*  && !this._refreshingVisible */ && !view['inPerformLayout']) {
                             view['inPerformLayout'] = true;
                             const index = cell.currentIndex;
                             const nativeView = this.nativeViewProtected;
