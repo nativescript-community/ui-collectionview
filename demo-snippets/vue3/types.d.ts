@@ -4,6 +4,8 @@ export interface Card {
     number: string;
     bg: string;
     imgType: string;
+    backgroundColor: string;
+    expanded?: boolean;
 }
 
 export interface Transaction {

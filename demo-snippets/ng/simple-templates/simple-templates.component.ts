@@ -1,20 +1,24 @@
-import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
+import { Component, NO_ERRORS_SCHEMA, OnInit } from '@angular/core';
+import { SwipeMenuModule } from '@nativescript-community/ui-collectionview-swipemenu/angular';
+import { CollectionViewModule } from '@nativescript-community/ui-collectionview/angular';
 import { RouterExtensions } from '@nativescript/angular';
 
 @Component({
     selector: 'ns-collectionview-simple-templates',
-    templateUrl: './simple-templates.component.html'
+    imports: [CollectionViewModule, SwipeMenuModule],
+    templateUrl: './simple-templates.component.html',
+    schemas: [NO_ERRORS_SCHEMA]
 })
 export class SimpleTemplatesComponent implements OnInit {
     constructor(private router: RouterExtensions) {}
 
     items = [
-        { type: 'heading', name: 'Heading #1', color: '#bdc3c7'},
+        { type: 'heading', name: 'Heading #1', color: '#bdc3c7' },
         { type: 'item', name: 'TURQUOISE', color: '#1abc9c' },
         { type: 'item', name: 'EMERALD', color: '#2ecc71' },
         { type: 'item', name: 'PETER RIVER', color: '#3498db' },
         { type: 'item', name: 'AMETHYST', color: '#9b59b6' },
-        { type: 'heading', name: 'Heading #2', color: '#34495e'},
+        { type: 'heading', name: 'Heading #2', color: '#34495e' },
         { type: 'item', name: 'GREEN SEA', color: '#16a085' },
         { type: 'item', name: 'NEPHRITIS', color: '#27ae60' },
         { type: 'item', name: 'BELIZE HOLE', color: '#2980b9' },
@@ -28,12 +32,10 @@ export class SimpleTemplatesComponent implements OnInit {
         { type: 'item', name: 'CLOUDS', color: '#ecf0f1' },
         { type: 'item', name: 'CONCRETE', color: '#95a5a6' },
         { type: 'item', name: 'ORANGE', color: '#f39c12' },
-        { type: 'item', name: 'PUMPKIN', color: '#d35400' },
+        { type: 'item', name: 'PUMPKIN', color: '#d35400' }
     ];
 
-    ngOnInit(): void {
-
-    }
+    ngOnInit(): void {}
 
     goBack(): void {
         this.router.back();
@@ -47,16 +49,12 @@ export class SimpleTemplatesComponent implements OnInit {
         console.log('EVENT TRIGGERED: onLoadMoreItems()');
     }
 
-    templateSelector(
-        item: any,
-        _index: number,
-        _items: any[]
-    ): string {
+    templateSelector(item: any, _index: number, _items: any[]): string {
         return item.type;
     }
 
     spanSizeSelector(item: any, _index: number): number {
-        if (item.type === "heading") return 2;
+        if (item.type === 'heading') return 2;
         return 1;
     }
 }

@@ -1,7 +1,6 @@
-
 import { CollectionView as NSCollectionView } from '..';
 import { ItemEventData, Observable, ObservableArray } from '@nativescript/core';
-import { NSVRoot, PropType, VNode, defineComponent, getCurrentInstance, AppContext, h, ref, render, toRaw, watch } from 'nativescript-vue';
+import { AppContext, NSVRoot, PropType, VNode, defineComponent, getCurrentInstance, h, ref, render, toRaw, watch } from 'nativescript-vue';
 
 interface ListItem {
     [key: string]: any;
@@ -101,7 +100,7 @@ export const CollectionView = defineComponent({
 
             // find the vnode rendering this cell
             const container = event.view?.[LIST_CELL_CONTAINER] ?? new NSVRoot();
-            const vnode = ctx.slots[slotName]?.(itemCtx)[0] as VNode;
+            const vnode = ctx.slots[slotName]?.(itemCtx)[0];
             propagateAppContext(vnode, vm?.appContext);
 
             if (event.view) {

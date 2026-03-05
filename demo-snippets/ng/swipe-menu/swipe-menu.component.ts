@@ -1,11 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, NO_ERRORS_SCHEMA, OnInit } from '@angular/core';
+import { SwipeMenuModule } from '@nativescript-community/ui-collectionview-swipemenu/angular';
+import { CollectionViewModule } from '@nativescript-community/ui-collectionview/angular';
 import { RouterExtensions } from '@nativescript/angular';
 import { ObservableArray, Screen } from '@nativescript/core';
 
 @Component({
     selector: 'ns-collectionview-swipe-menu',
+    imports: [CollectionViewModule, SwipeMenuModule],
     templateUrl: './swipe-menu.component.html',
-    styleUrls: ['../styles.scss']
+    styleUrls: ['../styles.scss'],
+    schemas: [NO_ERRORS_SCHEMA]
 })
 export class SwipeMenuComponent {
     constructor(private router: RouterExtensions) {}

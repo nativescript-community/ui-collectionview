@@ -16,6 +16,7 @@ import SwipeMenu from './SwipeMenu.vue';
 import ResizeCell from './ResizeCell.vue';
 import AlignedGrid from './AlignedGrid.vue';
 import FontSizeChangeTest from './FontSizeChangeTest.vue';
+import SelectionDragDrop from './SelectionDragDrop.vue';
 
 export function installPlugin() {
     Vue.use(CollectionView);
@@ -37,5 +38,6 @@ export const demos = [
     { name: 'SwipeMenu', path: 'swipe-menu', component: SwipeMenu },
     { name: 'ResizeCell', path: 'resize-cell', component: ResizeCell },
     { name: 'AlignedGrid', path: 'AlignedGrid', component: AlignedGrid },
-    { name: 'FontSizeChangeTest', path: 'FontSizeChangeTest', component: FontSizeChangeTest }
+    { name: 'FontSizeChangeTest', path: 'FontSizeChangeTest', component: FontSizeChangeTest },
+    { name: 'Selection + Drag/Drop', path: 'selection-dragdrop', component: SelectionDragDrop }
 ];

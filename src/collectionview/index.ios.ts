@@ -85,6 +85,9 @@ export enum SnapPosition {
 }
 
 export class CollectionView extends CollectionViewBase {
+    //TODO: remove as it needs to be added after TS 5.7 change https://github.com/microsoft/TypeScript/pull/59860
+    [key: symbol]: (...args: any[]) => any | void;
+
     _layout: UICollectionViewLayout;
     _dataSource: CollectionViewDataSource;
     _delegate: UICollectionViewDelegateImpl | UICollectionViewDelegateFixedSizeImpl;
@@ -338,13 +341,20 @@ export class CollectionView extends CollectionViewBase {
             case UIGestureRecognizerState.Began: {
                 let point = gesture.locationInView(collectionView);
                 const selectedIndexPath = collectionView.indexPathForItemAtPoint(point);
-                const view = this.getViewForItemAtIndex(selectedIndexPath.row);
-                if (view) {
-                    const size = view.nativeViewProtected.bounds.size;
-                    point = gesture.locationInView(view.nativeViewProtected);
-                    this.draggingStartDelta = [point.x - size.width / 2, point.y - size.height / 2];
+                if (selectedIndexPath) {
+                    const view = this.getViewForItemAtIndex(selectedIndexPath.row);
+                    if (view) {
+                        const size = view.nativeViewProtected.bounds.size;
+                        point = gesture.locationInView(view.nativeViewProtected);
+                        this.draggingStartDelta = [point.x - size.width / 2, point.y - size.height / 2];
+                    }
+                    collectionView.beginInteractiveMovementForItemAtIndexPath(selectedIndexPath);
+                } else {
+                    // disable and enable to cancel the current gesture
+                    gesture.enabled = false;
+                    gesture.enabled = true;
                 }
-                collectionView.beginInteractiveMovementForItemAtIndexPath(selectedIndexPath);
+                
                 break;
             }
             case UIGestureRecognizerState.Changed: {
@@ -482,7 +492,7 @@ export class CollectionView extends CollectionViewBase {
                 // if we use fixed col and row size we want a delegate
                 // without collectionViewLayoutSizeForItemAtIndexPath
                 // because it is not needed and faster
-                if (this._effectiveColWidth && this._effectiveRowHeight) {
+                if (this._effectiveColWidth && this._effectiveRowHeight && (!this._templateRowHeights || this._templateRowHeights.size === 0)) {
                     this._delegate = UICollectionViewDelegateFixedSizeImpl.initWithOwner(this);
                 } else {
                     this._delegate = UICollectionViewDelegateImpl.initWithOwner(this);
@@ -504,7 +514,7 @@ export class CollectionView extends CollectionViewBase {
     updateRowColSize() {
         const layoutView = this.nativeViewProtected?.collectionViewLayout;
         if (layoutView instanceof UICollectionViewFlowLayout) {
-            if (this._effectiveRowHeight && this._effectiveColWidth) {
+            if (this._effectiveRowHeight && this._effectiveColWidth && (!this._templateRowHeights || this._templateRowHeights.size === 0)) {
                 layoutView.itemSize = CGSizeMake(Utils.layout.toDeviceIndependentPixels(this._effectiveColWidth), Utils.layout.toDeviceIndependentPixels(this._effectiveRowHeight));
             } else if (this.estimatedItemSize && !this.autoSize) {
                 layoutView.estimatedItemSize = CGSizeMake(Utils.layout.toDeviceIndependentPixels(this._effectiveColWidth), Utils.layout.toDeviceIndependentPixels(this._effectiveRowHeight));
@@ -833,7 +843,7 @@ export class CollectionView extends CollectionViewBase {
     scrollToOffset(value, animated) {
         const view = this.nativeViewProtected;
         if (view && this.isScrollEnabled) {
-            const { width, height } = view.bounds.size;
+            const { height, width } = view.bounds.size;
             let rect: CGRect;
             if (this.orientation === 'vertical') {
                 rect = CGRectMake(0, value, width, height);
@@ -920,7 +930,14 @@ export class CollectionView extends CollectionViewBase {
             }
 
             if (view && !view.parent) {
-                this._addView(view);
+                if (this.allowCssPropagation) {
+                    this._addView(view);
+                } else {
+                    view.parent = this;
+                    view._setupAsRootView(this._context);
+                    view._isAddedToNativeVisualTree = true;
+                    view.callLoaded();
+                }
                 const innerView = NSCellView.new() as NSCellView;
                 innerView.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight;
                 innerView.view = new WeakRef(view);
@@ -972,7 +989,7 @@ export class CollectionView extends CollectionViewBase {
         // CLog(CLogTypes.log, 'getCellSize', index, result, this._effectiveColWidth, this._effectiveRowHeight, this.getMeasuredWidth(), this.getMeasuredHeight());
         if (!result) {
             let width = this._effectiveColWidth;
-            let height = this._effectiveRowHeight;
+            let height = this.getEffectiveRowHeightForIndex(index);
             if (this.spanSize) {
                 const dataItem = this.getItemAtIndex(index);
                 const spanSize = this.spanSize(dataItem, index);
@@ -1004,7 +1021,7 @@ export class CollectionView extends CollectionViewBase {
     private measureCell(cell: CollectionViewCell, cellView: View, position: number): [number, number] {
         if (cellView) {
             let width = this._effectiveColWidth;
-            let height = this._effectiveRowHeight;
+            let height = this.getEffectiveRowHeightForIndex(position);
             const horizontal = this.isHorizontal();
             if (this.spanSize) {
                 const dataItem = this.getItemAtIndex(position);

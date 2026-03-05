@@ -10,7 +10,6 @@ import { SimpleWaterfallComponent } from './simple-waterfall/simple-waterfall.co
 import { SimpleTemplatesComponent } from './simple-templates/simple-templates.component';
 import { SwipeMenuComponent } from './swipe-menu/swipe-menu.component';
 
-export const COMPONENTS = [SimpleGridComponent, HorizontalGridComponent, SimpleWaterfallComponent, SimpleTemplatesComponent, SwipeMenuComponent];
 @NgModule({
     imports: [CollectionViewModule, SwipeMenuModule],
     exports: [CollectionViewModule, SwipeMenuModule],

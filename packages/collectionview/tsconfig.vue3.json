@@ -1,0 +1,12 @@
+{
+    "extends": "../../tsconfig.json",
+    "compilerOptions": {
+        "composite": true,
+        "rootDir": "../../src/collectionview",
+        "outDir": "./",
+        "paths": {
+            "nativescript-vue": ["./node_modules/nativescript-vue3"]
+        }
+    },
+    "include": ["../../src/collectionview/vue3/**/*"]
+}

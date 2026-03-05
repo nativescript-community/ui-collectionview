@@ -7,8 +7,7 @@
        }
     },
     "include": [
-        "./src/collectionview/vue3", 
-        "./src/swipemenu/vue3", 
-        "./demo-snippets/vue3"
+        "./src/collectionview/vue3/**/*", 
+        "./src/swipemenu/vue3/**/*"
     ]
 }

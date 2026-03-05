@@ -15,6 +15,7 @@ import {
     Input,
     IterableDiffer,
     IterableDiffers,
+    NO_ERRORS_SCHEMA,
     NgZone,
     OnDestroy,
     Output,
@@ -31,7 +32,13 @@ registerElement('CollectionView', () => CollectionView);
 const NG_VIEW = '_ngViewRef';
 
 export class ItemContext {
-    constructor(public $implicit?: any, public item?: any, public index?: number, public even?: boolean, public odd?: boolean) {}
+    constructor(
+        public $implicit?: any,
+        public item?: any,
+        public index?: number,
+        public even?: boolean,
+        public odd?: boolean
+    ) {}
 }
 
 export interface SetupItemViewArgs {
@@ -48,7 +55,8 @@ export interface SetupItemViewArgs {
             <Placeholder #loader></Placeholder>
         </DetachedContainer>
     `,
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    schemas: [NO_ERRORS_SCHEMA]
 })
 export class CollectionViewComponent implements DoCheck, OnDestroy, AfterContentInit {
     public get nativeElement(): any {
@@ -197,7 +205,7 @@ export class CollectionViewComponent implements DoCheck, OnDestroy, AfterContent
         }
         if (!this.items) return;
         const index = args.index;
-        const items = (args.object as any).items;
+        const items = args.object.items;
         const currentItem = typeof items.getItem === 'function' ? items.getItem(index) : items[index];
         let viewRef: EmbeddedViewRef<ItemContext>;
 
@@ -406,17 +414,33 @@ export function getItemViewRoot(viewRef: ComponentView, rootLocator: RootLocator
     return rootView;
 }
 
-@Directive({ selector: '[cvTemplateKey]' })
+@Directive({ selector: '[cvTemplateKey],[cvRowHeight]' })
 export class TemplateKeyDirective {
-    constructor(private templateRef: TemplateRef<any>, @Host() private collectionView: CollectionViewComponent) {}
+    private _templateKey: string;
+    private _rowHeight: any;
+    constructor(
+        private templateRef: TemplateRef<any>,
+        @Host() private collectionView: CollectionViewComponent
+    ) {}
 
     @Input()
     set cvTemplateKey(value: any) {
         if (Trace.isEnabled()) {
             CLog(CLogTypes.info, 'cvTemplateKey: ' + value);
         }
+        this._templateKey = value;
         if (this.collectionView && this.templateRef) {
             this.collectionView.registerTemplate(value.toLowerCase(), this.templateRef);
+            if (this._rowHeight !== undefined) {
+                this.collectionView.nativeElement?.setTemplateRowHeight(value, this._rowHeight);
+            }
         }
+    }
+
+    @Input()
+    set cvRowHeight(value: any) {
+        this._rowHeight = value;
+        const key = this._templateKey || 'default';
+        this.collectionView?.nativeElement?.setTemplateRowHeight(key, value);
     }
 }

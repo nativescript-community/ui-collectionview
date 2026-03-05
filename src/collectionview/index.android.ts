@@ -1,9 +1,10 @@
-﻿/* eslint-disable no-redeclare */
 import {
     ChangeType,
     ChangedData,
     ContentView,
     CoreTypes,
+    GestureEventData,
+    GestureTypes,
     Length,
     Property,
     ProxyViewContainer,
@@ -136,11 +137,14 @@ const nestedScrollingEnabledProperty = new Property<CollectionViewBase, boolean>
 });
 
 export enum SnapPosition {
-    START = 0,
+    START = -1,
     END = 1
 }
 
 export class CollectionView extends CollectionViewBase {
+    //TODO: remove as it needs to be added after TS 5.7 change https://github.com/microsoft/TypeScript/pull/59860
+    [key: symbol]: (...args: any[]) => any | void;
+
     public static layoutCompletedEvent = 'layoutCompleted';
     public static DEFAULT_TEMPLATE_VIEW_TYPE = 0;
     public static CUSTOM_TEMPLATE_ITEM_TYPE = 1;
@@ -163,6 +167,7 @@ export class CollectionView extends CollectionViewBase {
     private _viewHolders = new Set<CollectionViewCellHolder>();
 
     private _scrollOrLoadMoreChangeCount = 0;
+    private _touchEventsCount = 0;
     private _nScrollListener: com.nativescript.collectionview.OnScrollListener.Listener;
     scrolling = false;
     needsScrollStartEvent = false;
@@ -247,7 +252,6 @@ export class CollectionView extends CollectionViewBase {
                         view.callUnloaded();
                     }
                     view._isAddedToNativeVisualTree = false;
-                    //@ts-ignore
                     view.parent = null;
                     view._tearDownUI();
                 }
@@ -292,6 +296,9 @@ export class CollectionView extends CollectionViewBase {
             onMeasure: (widthMeasureSpec, heightMeasureSpec) => this.onMeasure(widthMeasureSpec, heightMeasureSpec)
         });
         this.spanSize = this._getSpanSize;
+        if (this.hasListeners('touch')) {
+            this._initItemTouchListerner();
+        }
 
         // const animator = new jp.wasabeef.recyclerview.animators.FadeInAnimator();
         // // animator.setInterpolator(new android.view.animation.OvershootInterpolator());
@@ -324,8 +331,13 @@ export class CollectionView extends CollectionViewBase {
         this._listViewAdapter = null;
         this._itemTouchHelper = null;
         this._simpleItemTouchCallback = null;
+        this._longPressGesture = null;
         this.disposeViewHolderViews();
         this.clearTemplateTypes();
+        if (this._itemTouchListerner) {
+            nativeView.removeOnItemTouchListener(this._itemTouchListerner);
+            this._itemTouchListerner = null;
+        }
 
         super.disposeNativeView();
     }
@@ -386,7 +398,7 @@ export class CollectionView extends CollectionViewBase {
         return this.decoratorBuffer;
     }
 
-    [itemOverlapProperty.setNative](value) {
+    [itemOverlapProperty.setNative](value: Function | string) {
         if (typeof value === 'function') {
             if (!this.decorator) {
                 this.decoratorListener = new com.nativescript.collectionview.OverlapDecoration.OverlapDecorationListener({
@@ -506,6 +518,10 @@ export class CollectionView extends CollectionViewBase {
             this._scrollOrLoadMoreChangeCount++;
             this.attachScrollListenerIfNecessary();
         }
+        if (arg === 'touch') {
+            this._touchEventsCount++;
+            this._initItemTouchListerner();
+        }
     }
 
     public removeEventListener(arg: string, callback: any, thisArg?: any) {
@@ -514,6 +530,14 @@ export class CollectionView extends CollectionViewBase {
         if (arg === CollectionViewBase.scrollEvent || arg === CollectionViewBase.scrollStartEvent || arg === CollectionViewBase.scrollEndEvent || arg === CollectionViewBase.loadMoreItemsEvent) {
             this._scrollOrLoadMoreChangeCount--;
             this.detachScrollListenerIfNecessary();
+        }
+
+        if (arg === 'touch') {
+            this._touchEventsCount--;
+            if (this._touchEventsCount === 0 && !this._longPressGesture && this._itemTouchListerner) {
+                this.nativeViewProtected.removeOnItemTouchListener(this._itemTouchListerner);
+                this._itemTouchListerner = null;
+            }
         }
     }
 
@@ -717,6 +741,27 @@ export class CollectionView extends CollectionViewBase {
         super._reorderItemInSource(oldPosition, newPosition, false);
     }
 
+    _initItemTouchListerner() {
+        if (!this._itemTouchListerner) {
+            this._itemTouchListerner = new androidx.recyclerview.widget.RecyclerView.OnItemTouchListener({
+                onInterceptTouchEvent: (view: android.view.View, event: android.view.MotionEvent) => {
+                    const action = event.getAction();
+                    if (action === 0 /* android.view.MotionEvent.ACTION_DOWN */ || action === 1 /* android.view.MotionEvent.ACTION_UP */) {
+                        // this event is always ignored and not "transmitted" to the view
+                        this.handleGestureTouch(event);
+                    }
+                    if (this.reorderEnabled && this._longPressGesture) {
+                        this._longPressGesture.onTouchEvent(event);
+                    }
+                    return false;
+                },
+                onTouchEvent: (param0: androidx.recyclerview.widget.RecyclerView, param1: globalAndroid.view.MotionEvent) => {},
+                onRequestDisallowInterceptTouchEvent: (disallowIntercept: boolean) => {}
+            });
+            this.nativeViewProtected.addOnItemTouchListener(this._itemTouchListerner);
+        }
+    }
+
     _longPressGesture: androidx.core.view.GestureDetectorCompat;
     _itemTouchListerner: androidx.recyclerview.widget.RecyclerView.OnItemTouchListener;
     @profile
@@ -724,20 +769,10 @@ export class CollectionView extends CollectionViewBase {
         if (value) {
             if (!this._longPressGesture) {
                 this._longPressGesture = new androidx.core.view.GestureDetectorCompat(this._context, new LongPressGestureListenerImpl(new WeakRef(this)));
-                this._itemTouchListerner = new androidx.recyclerview.widget.RecyclerView.OnItemTouchListener({
-                    onInterceptTouchEvent: (view: android.view.View, event: android.view.MotionEvent) => {
-                        if (this.reorderEnabled && this._longPressGesture) {
-                            this._longPressGesture.onTouchEvent(event);
-                        }
-                        return false;
-                    },
-                    onTouchEvent: (param0: androidx.recyclerview.widget.RecyclerView, param1: globalAndroid.view.MotionEvent) => {},
-                    onRequestDisallowInterceptTouchEvent: (disallowIntercept: boolean) => {}
-                });
             }
-            this.nativeViewProtected.addOnItemTouchListener(this._itemTouchListerner);
+            this._initItemTouchListerner();
         } else {
-            if (this._itemTouchListerner) {
+            if (this._itemTouchListerner && !this.hasListeners('touch')) {
                 this.nativeViewProtected.removeOnItemTouchListener(this._itemTouchListerner);
             }
         }
@@ -1247,17 +1282,22 @@ export class CollectionView extends CollectionViewBase {
             parentView.id = 'collectionViewHolder';
             view = parentView;
         }
-        //@ts-ignore
-        view.parent = this;
-        view._setupAsRootView(this._context);
-        view._isAddedToNativeVisualTree = true;
-        view.callLoaded();
+
+        if (this.allowCssPropagation) {
+            this._addView(view);
+        } else {
+            view.parent = this;
+            view._setupAsRootView(this._context);
+            view._isAddedToNativeVisualTree = true;
+            view.callLoaded();
+        }
         if (!CollectionViewCellHolder) {
             CollectionViewCellHolder = com.nativescript.collectionview.CollectionViewCellHolder as any;
         }
 
         const holder = new CollectionViewCellHolder(view.nativeView);
 
+        // eslint-disable-next-line @typescript-eslint/no-this-alias
         const collectionView = this;
         const clickListener = new android.view.View.OnClickListener({
             onClick: () => {
@@ -1289,7 +1329,7 @@ export class CollectionView extends CollectionViewBase {
 
     @profile
     notifyForItemAtIndex(eventName: string, view: View, index: number, bindingContext?, native?: any) {
-        const args = { eventName, object: this, index, view, ios: native, bindingContext };
+        const args = { eventName, object: this, index, view, android: native, bindingContext };
         this.notify(args);
         return args as any;
     }
@@ -1315,20 +1355,25 @@ export class CollectionView extends CollectionViewBase {
 
         if (isNonSync && args.view !== view) {
             view = args.view;
+
+            // Set binding context before adding view to parent to ensure it's available during view loaded event
+            view.bindingContext = bindingContext;
+
             // the view has been changed on the event handler
-            (holder.view as ContentView).content = args.view;
+            (holder.view as ContentView).content = view;
+        } else {
+            view.bindingContext = bindingContext;
         }
-        view.bindingContext = bindingContext;
         view.notify({ eventName: CollectionViewBase.bindedEvent });
         let width = this._effectiveColWidth;
-        let height = this._effectiveRowHeight;
+        let height = this.getEffectiveRowHeightForIndex(position);
         if (this._getSpanSize) {
             const spanSize = this._getSpanSize(bindingContext, position);
             const horizontal = this.isHorizontal();
             if (horizontal) {
-                height *= spanSize;
-            } else {
                 width *= spanSize;
+            } else {
+                height *= spanSize;
             }
         }
         if (width || !view.width) {

@@ -1,5 +1,5 @@
 import { ContentView, ItemEventData, View, profile } from '@nativescript/core';
-import { NativeViewElementNode, TemplateElement, ViewNode, createElement, registerElement } from 'svelte-native/dom';
+import { NativeViewElementNode, TemplateElement, ViewNode, createElement, registerElement } from '@nativescript-community/svelte-native/dom';
 //@ts-ignore
 import { flush } from 'svelte/internal';
 import { CollectionView } from '..';

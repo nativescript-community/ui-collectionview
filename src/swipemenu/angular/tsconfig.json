@@ -4,8 +4,7 @@
         "rootDir": "./",
         "plugins": [],
         "paths": {
-            "@nativescript-community/ui-swipemenu": ["packages/ui-collectionview-swipemenu"],
-            "@nativescript-community/ui-swipemenu/*": ["packages/ui-collectionview-swipemenu/*"]
+            "@nativescript-community/ui-collectionview-swipemenu": ["packages/swipemenu"]
         }
     },
     "include": ["./**/*.ts", "../../../references.d.ts", "../references.d.ts"],

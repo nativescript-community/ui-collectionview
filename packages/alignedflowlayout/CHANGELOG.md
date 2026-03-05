@@ -3,6 +3,36 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.16](https://github.com/nativescript-community/ui-collectionview/compare/v6.0.15...v6.0.16) (2026-02-11)
+
+**Note:** Version bump only for package @nativescript-community/ui-collectionview-alignedflowlayout
+
+## [6.0.15](https://github.com/nativescript-community/ui-collectionview/compare/v6.0.14...v6.0.15) (2026-02-06)
+
+**Note:** Version bump only for package @nativescript-community/ui-collectionview-alignedflowlayout
+
+## [6.0.14](https://github.com/nativescript-community/ui-collectionview/compare/v6.0.13...v6.0.14) (2025-12-03)
+
+**Note:** Version bump only for package @nativescript-community/ui-collectionview-alignedflowlayout
+
+## [6.0.13](https://github.com/nativescript-community/ui-collectionview/compare/v6.0.12...v6.0.13) (2025-10-10)
+
+**Note:** Version bump only for package @nativescript-community/ui-collectionview-alignedflowlayout
+
+## [6.0.12](https://github.com/nativescript-community/ui-collectionview/compare/v6.0.11...v6.0.12) (2025-10-09)
+
+**Note:** Version bump only for package @nativescript-community/ui-collectionview-alignedflowlayout
+
+## [6.0.11](https://github.com/nativescript-community/ui-collectionview/compare/v6.0.10...v6.0.11) (2025-10-07)
+
+### Bug Fixes
+
+* vue3 build fix ([b2287cf](https://github.com/nativescript-community/ui-collectionview/commit/b2287cf70870706d8a58e3d38e1a5bee78be24e9))
+
+## [6.0.10](https://github.com/nativescript-community/ui-collectionview/compare/v6.0.9...v6.0.10) (2025-10-04)
+
+**Note:** Version bump only for package @nativescript-community/ui-collectionview-alignedflowlayout
+
 ## [6.0.9](https://github.com/nativescript-community/ui-collectionview/compare/v6.0.8...v6.0.9) (2025-10-03)
 
 **Note:** Version bump only for package @nativescript-community/ui-collectionview-alignedflowlayout
