@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.17](https://github.com/@nativescript-community/ui-collectionview/compare/v6.0.16...v6.0.17) (2026-03-05)
+
+### Bug Fixes
+
+* **ui-collectionview:** ios fix for image not getting layed out after remote loading ([ebfd0cb](https://github.com/@nativescript-community/ui-collectionview/commit/ebfd0cb644264a6f92f6df501a163b6cb6a8253d))
+
 ## [6.0.16](https://github.com/@nativescript-community/ui-collectionview/compare/v6.0.15...v6.0.16) (2026-02-11)
 
 ### Bug Fixes
