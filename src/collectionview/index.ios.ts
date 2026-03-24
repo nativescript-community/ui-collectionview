@@ -568,6 +568,10 @@ export class CollectionView extends CollectionViewBase {
 
     public onSourceCollectionChanged(event: ChangedData<any>) {
         const view = this.nativeViewProtected;
+        if (!this.isLoaded) {
+            this._isDataDirty = true;
+            return;
+        }
         if (!view || this._dataUpdatesSuspended || !this._lastLayoutKey) {
             return;
         }
@@ -947,7 +951,7 @@ export class CollectionView extends CollectionViewBase {
                     view['performLayout'] = () => {
                         // for now we dont check _refreshingVisible as in some cases it prevents correct rendering
                         // like image needing layout after load
-                        if (!this._preparingCell /*  && !this._refreshingVisible */ && !view['inPerformLayout']) {
+                        if (this.isLoaded && !this._preparingCell /*  && !this._refreshingVisible */ && !view['inPerformLayout']) {
                             view['inPerformLayout'] = true;
                             const index = cell.currentIndex;
                             const nativeView = this.nativeViewProtected;
