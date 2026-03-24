@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.18](https://github.com/@nativescript-community/ui-collectionview/compare/v6.0.17...v6.0.18) (2026-03-24)
+
+### Bug Fixes
+
+* **collectionview:** ios fix for when the collectionview update while the view is not loaded ([afb8086](https://github.com/@nativescript-community/ui-collectionview/commit/afb80865ae0845b0a3381d58b9f760defa45b2de))
+* **ios:** guard against detached view in _removeContainer ([9451ac5](https://github.com/@nativescript-community/ui-collectionview/commit/9451ac5e8fe80ac87b4ca98a513fb24555ad198f))
+
 ## [6.0.17](https://github.com/@nativescript-community/ui-collectionview/compare/v6.0.16...v6.0.17) (2026-03-05)
 
 ### Bug Fixes
