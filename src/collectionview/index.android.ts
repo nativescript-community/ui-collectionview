@@ -1371,9 +1371,9 @@ export class CollectionView extends CollectionViewBase {
             const spanSize = this._getSpanSize(bindingContext, position);
             const horizontal = this.isHorizontal();
             if (horizontal) {
-                width *= spanSize;
-            } else {
                 height *= spanSize;
+            } else {
+                width *= spanSize;
             }
         }
         if (width || !view.width) {
