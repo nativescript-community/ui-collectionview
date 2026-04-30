@@ -632,7 +632,7 @@ export class CollectionView extends CollectionViewBase {
                 const indexes = NSMutableArray.new<NSIndexPath>();
                 for (let index = 0; index < event.addedCount; index++) {
                     indexes.addObject(NSIndexPath.indexPathForRowInSection(event.index + index, 0));
-                    if (sizes) {
+                    if (sizes && event.index < sizes.count) {
                         sizes.insertObjectAtIndex(NSValue.valueWithCGSize(CGSizeZero), event.index);
                     }
                     // this._sizes.splice(index, 0, null);
@@ -664,7 +664,7 @@ export class CollectionView extends CollectionViewBase {
                             const indexes = NSMutableArray.new<NSIndexPath>();
                             for (let index = 0; index < event.removed.length; index++) {
                                 indexes.addObject(NSIndexPath.indexPathForItemInSection(event.index + index, 0));
-                                if (sizes) {
+                                if (sizes && event.index < sizes.count) {
                                     sizes.removeObjectAtIndex(event.index);
                                 }
                             }
@@ -679,7 +679,7 @@ export class CollectionView extends CollectionViewBase {
                             const indexes = NSMutableArray.alloc<NSIndexPath>().init();
                             for (let index = 0; index < event.addedCount; index++) {
                                 indexes.addObject(NSIndexPath.indexPathForItemInSection(event.index + index, 0));
-                                if (sizes) {
+                                if (sizes && event.index < sizes.count) {
                                     sizes.insertObjectAtIndex(NSValue.valueWithCGSize(CGSizeZero), event.index);
                                 }
                                 // this._sizes.splice(event.index, 0, null);
