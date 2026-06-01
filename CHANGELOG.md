@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.21](https://github.com/@nativescript-community/ui-collectionview/compare/v6.0.20...v6.0.21) (2026-06-01)
+
+### Bug Fixes
+
+* **ui-collectionview:** android for when updating item while in layout ([c7583f5](https://github.com/@nativescript-community/ui-collectionview/commit/c7583f58994f83c55dc4bb304dac1789ce39b3fc))
+
 ## [6.0.20](https://github.com/@nativescript-community/ui-collectionview/compare/v6.0.19...v6.0.20) (2026-04-30)
 
 ### Bug Fixes
