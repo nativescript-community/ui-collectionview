@@ -905,7 +905,7 @@ export class CollectionView extends CollectionViewBase {
         });
     }
     public onSourceCollectionChanged(event: ChangedData<any>) {
-        if (!this._listViewAdapter || this._dataUpdatesSuspended) {
+        if (!this._listViewAdapter || this._dataUpdatesSuspended || this.nativeViewProtected.isComputingLayout()) {
             return;
         }
         if (Trace.isEnabled()) {
