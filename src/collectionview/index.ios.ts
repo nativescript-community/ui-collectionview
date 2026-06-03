@@ -1215,8 +1215,12 @@ export class CollectionView extends CollectionViewBase {
                     cell.owner = new WeakRef(measureData.view);
                     needsSet = true;
                 }
+
                 measuredSize = this._prepareCell(cell, indexPath, templateType, false);
-                if (needsSet) {
+
+                // Cell preparation may have replaced the view with a new one if collection view listens to itemLoading event
+                // so check if cell view changed and update measure cell cache
+                if (needsSet || measureData && measureData.view != cell.view) {
                     this._measureCellMap.set(templateType, { cell, view: cell.view });
                 }
             }
