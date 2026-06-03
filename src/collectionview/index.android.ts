@@ -742,7 +742,7 @@ export class CollectionView extends CollectionViewBase {
     }
 
     _initItemTouchListerner() {
-        if (!this._itemTouchListerner) {
+        if (this.nativeViewProtected && !this._itemTouchListerner) {
             this._itemTouchListerner = new androidx.recyclerview.widget.RecyclerView.OnItemTouchListener({
                 onInterceptTouchEvent: (view: android.view.View, event: android.view.MotionEvent) => {
                     const action = event.getAction();
