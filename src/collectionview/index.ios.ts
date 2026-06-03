@@ -1220,7 +1220,7 @@ export class CollectionView extends CollectionViewBase {
 
                 // Cell preparation may have replaced the view with a new one if collection view listens to itemLoading event
                 // so check if cell view changed and update measure cell cache
-                if (needsSet || measureData && measureData.view != cell.view) {
+                if (needsSet || measureData && cell && measureData.view != cell.view) {
                     this._measureCellMap.set(templateType, { cell, view: cell.view });
                 }
             }
