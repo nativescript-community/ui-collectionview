@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.22](https://github.com/@nativescript-community/ui-collectionview/compare/v6.0.21...v6.0.22) (2026-06-03)
+
+### Bug Fixes
+
+* **ui-collectionview:** android fix for collectionview touch event ([15fd3c1](https://github.com/@nativescript-community/ui-collectionview/commit/15fd3c171d45cae4475874e465a4fab703f6103e))
+
 ## [6.0.21](https://github.com/@nativescript-community/ui-collectionview/compare/v6.0.20...v6.0.21) (2026-06-01)
 
 ### Bug Fixes
