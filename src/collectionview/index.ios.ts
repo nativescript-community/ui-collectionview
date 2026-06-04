@@ -881,7 +881,7 @@ export class CollectionView extends CollectionViewBase {
         if (selector) {
             type = selector.call(this, this.getItemAtIndex(indexPath.item), indexPath.item, this.items);
         }
-        const result = type.toLowerCase();
+        const result = typeof type === 'string' ? type.toLowerCase() : type;
         if (this._itemTemplatesInternal.has(result)) {
             return result;
         }
