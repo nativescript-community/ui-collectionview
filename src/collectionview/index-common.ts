@@ -459,7 +459,7 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
                     t.key = t._key;
                     delete t._key;
                 }
-                this._itemTemplatesInternal.set(t.key, t);
+                this._itemTemplatesInternal.set(t.key.toLowerCase(), t);
             });
         }
         if (!this._itemTemplatesInternal.has(this._defaultTemplate.key)) {
