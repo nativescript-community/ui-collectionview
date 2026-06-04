@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.24](https://github.com/@nativescript-community/ui-collectionview/compare/v6.0.23...v6.0.24) (2026-06-04)
+
+### Bug Fixes
+
+* **ui-collectionview:** Added missing template key lowercase formatting ([8c6e49d](https://github.com/@nativescript-community/ui-collectionview/commit/8c6e49d303a9dc9fb4dfdecd343bc87d5499ff59))
+
 ## [6.0.23](https://github.com/@nativescript-community/ui-collectionview/compare/v6.0.22...v6.0.23) (2026-06-04)
 
 ### Bug Fixes
