@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.23](https://github.com/@nativescript-community/ui-collectionview/compare/v6.0.22...v6.0.23) (2026-06-04)
+
+### Bug Fixes
+
+* check for cell truthy value ([25a5e04](https://github.com/@nativescript-community/ui-collectionview/commit/25a5e04cc5b588e0fe1d3cf5249d5914c1e8715f))
+* **ui-collectionview:** New cell views are not added to measuring cache ([eb445cb](https://github.com/@nativescript-community/ui-collectionview/commit/eb445cb345bb2a976943b7ed7f02838ea3b6ec46))
+
 ## [6.0.22](https://github.com/@nativescript-community/ui-collectionview/compare/v6.0.21...v6.0.22) (2026-06-03)
 
 ### Bug Fixes
