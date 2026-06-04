@@ -120,6 +120,7 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     public orientation: Orientation;
     public itemTemplate: string | Template;
     public itemTemplates: string | KeyedTemplate[];
+    public itemTemplateSelector: string | ((item: any, index: number, items: any) => string);
     public isItemsSourceIn: boolean;
     public rowHeight: CoreTypesLength;
     public colWidth: CoreTypesLength;
@@ -674,7 +675,7 @@ export const itemTemplatesProperty = new Property<CollectionViewBase, KeyedTempl
 });
 itemTemplatesProperty.register(CollectionViewBase);
 
-export const itemTemplateSelectorProperty = new Property<CollectionViewBase, Function>({
+export const itemTemplateSelectorProperty = new Property<CollectionViewBase, string | ((item: any, index: number, items: any) => string)>({
     name: 'itemTemplateSelector',
     defaultValue: undefined,
     valueChanged(target, oldValue, newValue) {
