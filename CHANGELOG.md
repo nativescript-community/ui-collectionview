@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.25](https://github.com/@nativescript-community/ui-collectionview/compare/v6.0.24...v6.0.25) (2026-06-20)
+
+### Bug Fixes
+
+* **ui-collectionview:** Remove view holder from binded cache in case of recycle ([2897d76](https://github.com/@nativescript-community/ui-collectionview/commit/2897d76689ab79ac092423fb056b2b9db379c0d2))
+
 ## [6.0.24](https://github.com/@nativescript-community/ui-collectionview/compare/v6.0.23...v6.0.24) (2026-06-04)
 
 ### Bug Fixes
