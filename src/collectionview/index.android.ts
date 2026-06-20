@@ -166,6 +166,8 @@ export class CollectionView extends CollectionViewBase {
     // used to "destroy" cells when possible
     private _viewHolders = new Set<CollectionViewCellHolder>();
 
+    private _bindedViewHolders = new Set<number>();
+
     private _scrollOrLoadMoreChangeCount = 0;
     private _touchEventsCount = 0;
     private _nScrollListener: com.nativescript.collectionview.OnScrollListener.Listener;
@@ -1011,7 +1013,7 @@ export class CollectionView extends CollectionViewBase {
             const last = layoutManager.findLastVisibleItemPosition();
             this._listViewAdapter.notifyItemRangeChanged(first, last + 1);
         } else {
-            const ids = Array.from(this.bindedViewHolders).sort((a, b) => a - b);
+            const ids = Array.from(this._bindedViewHolders).sort((a, b) => a - b);
             this._listViewAdapter.notifyItemRangeChanged(ids[0], ids[ids.length - 1] - ids[0] + 1);
         }
     }
@@ -1334,7 +1336,6 @@ export class CollectionView extends CollectionViewBase {
         return args as any;
     }
 
-    bindedViewHolders: Set<number> = new Set();
     @profile
     public onBindViewHolder(holder: CollectionViewCellHolder, position: number) {
         const start = Date.now();
@@ -1346,10 +1347,10 @@ export class CollectionView extends CollectionViewBase {
         view = isNonSync ? (view as ContentView).content : view;
         const bindingContext = this._prepareItem(view, position);
         if (holder['position'] !== undefined) {
-            this.bindedViewHolders.delete(holder['position']);
+            this._bindedViewHolders.delete(holder['position']);
         }
         holder['position'] = position;
-        this.bindedViewHolders.add(holder['position']);
+        this._bindedViewHolders.add(holder['position']);
 
         const args = this.notifyForItemAtIndex(CollectionViewBase.itemLoadingEvent, view, position, bindingContext, holder);
 
@@ -1396,7 +1397,7 @@ export class CollectionView extends CollectionViewBase {
     }
 
     onViewRecycled(holder) {
-        delete this.bindedViewHolders[holder['position']];
+        this._bindedViewHolders.delete(holder['position']);
         holder['position'] = undefined;
     }
 }
