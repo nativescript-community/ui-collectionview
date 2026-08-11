@@ -581,9 +581,15 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     }
 
     shouldMoveItemAtIndex(index: number) {
-        // if (!this.reorderEnabled) {
-        //     return false;
-        // }
+        // On iOS this also answers `collectionView:canMoveItemAtIndexPath:`. Answering yes
+        // unconditionally lets UIKit install its own drag-to-reorder interaction wherever
+        // `dragInteractionEnabled` is on — the default for the iPad idiom, and therefore for
+        // Mac Catalyst: cells of lists that never opted into reordering lift under the pointer
+        // and get reordered on drop. Both flags are checked so that enabling only
+        // `reorderLongPressEnabled` keeps working (see 0fc0e91).
+        if (!this.reorderEnabled && !this.reorderLongPressEnabled) {
+            return false;
+        }
         const item = this.getItemAtIndex(index);
         const view = (this.draggingView = this.getViewForItemAtIndex(index));
         let args = {
