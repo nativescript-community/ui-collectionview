@@ -159,6 +159,7 @@ export class CollectionView extends CollectionViewBase {
     private templateTypeNumberString = new Map<string, number>();
     private templateStringTypeNumber = new Map<number, string>();
     private _currentNativeItemType = 0;
+    private _pendingRefresh = false;
 
     private currentSpanCount = 1;
 
@@ -908,6 +909,19 @@ export class CollectionView extends CollectionViewBase {
     }
     public onSourceCollectionChanged(event: ChangedData<any>) {
         if (!this._listViewAdapter || this._dataUpdatesSuspended || this.nativeViewProtected.isComputingLayout()) {
+            // The change cannot be applied right now (no adapter yet, updates suspended or the
+            // RecyclerView is computing its layout). It used to be dropped silently, leaving
+            // the list out of sync with `items` until some unrelated refresh happened: for
+            // example, data pushed into the ObservableArray before the adapter exists showed
+            // an empty list. Schedule a full refresh instead (the array already holds the new
+            // data). While updates are suspended, `resumeUpdates(true)` is the caller's job.
+            if (!this._dataUpdatesSuspended && !this._pendingRefresh) {
+                this._pendingRefresh = true;
+                setTimeout(() => {
+                    this._pendingRefresh = false;
+                    this.refresh();
+                }, 0);
+            }
             return;
         }
         if (Trace.isEnabled()) {
@@ -1219,24 +1233,21 @@ export class CollectionView extends CollectionViewBase {
     }
     @profile
     public templateKeyToNativeItem(key: string): number {
-        if (!this.templateTypeNumberString) {
-            this.templateTypeNumberString = new Map<string, number>();
-            this._currentNativeItemType = 0;
-            this._itemTemplatesInternal.forEach((v, i) => {
-                this.templateTypeNumberString.set(v.key, this._currentNativeItemType);
-                this.templateStringTypeNumber.set(this._currentNativeItemType, v.key);
-                this.setNativePoolSize(v.key, this._currentNativeItemType);
-                this._currentNativeItemType++;
-            });
-            this._currentNativeItemType = Math.max(this._itemTemplatesInternal.size, 100);
-            // templates will be numbered 0,1,2,3... for named templates
-            // default/unnamed templates will be numbered 100, 101, 102, 103...
-        }
         if (!this.templateTypeNumberString.has(key)) {
-            this.templateTypeNumberString.set(key, this._currentNativeItemType);
-            this.templateStringTypeNumber.set(this._currentNativeItemType, key);
-            this.setNativePoolSize(key, this._currentNativeItemType);
-            this._currentNativeItemType++;
+            // Named templates get a stable view type: their index in `itemTemplates`.
+            // Numbering in request order broke after `clearTemplateTypes()` (called when the
+            // template selector changes): the RecyclerView keeps reusing the holders created
+            // with the previous numbering, so the same view type could now mean a different
+            // template and cells got rendered with the wrong one. Unknown keys start at 100.
+            const templateKeys = this._itemTemplatesInternal ? Array.from(this._itemTemplatesInternal.keys()) : [];
+            let type = templateKeys.indexOf(key.toLowerCase());
+            if (type < 0) {
+                type = Math.max(100, this._currentNativeItemType);
+                this._currentNativeItemType = type + 1;
+            }
+            this.templateTypeNumberString.set(key, type);
+            this.templateStringTypeNumber.set(type, key);
+            this.setNativePoolSize(key, type);
         }
         return this.templateTypeNumberString.get(key);
     }
@@ -1270,7 +1281,13 @@ export class CollectionView extends CollectionViewBase {
     }
 
     getKeyByValue(viewType: number) {
-        return this.templateStringTypeNumber.get(viewType);
+        const key = this.templateStringTypeNumber.get(viewType);
+        if (key !== undefined) {
+            return key;
+        }
+        // After `clearTemplateTypes()` the reverse map is empty until each key is requested
+        // again, but the view type of a named template is its index in `itemTemplates`.
+        return this._itemTemplatesInternal ? Array.from(this._itemTemplatesInternal.keys())[viewType] : undefined;
     }
 
     @profile
