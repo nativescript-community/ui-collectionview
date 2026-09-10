@@ -63,6 +63,13 @@ export const CollectionView = defineComponent({
         }));
 
         const getSlotName = (item: any, index: number, items: ListItem[]) => props.itemTemplateSelector?.(item, index, items) ?? 'default';
+        const createItemTemplateSelector = () => (item: any, index: number, items: ListItem[]) => getSlotName(item, index, items);
+        // Keep ONE stable selector function. Passing a new arrow function on every render
+        // changes the `itemTemplateSelector` property of the native view, which on Android
+        // clears the template type map and triggers a full `notifyDataSetChanged()` on every
+        // re-render of this component (e.g. whenever any bound attribute of the
+        // CollectionView changes).
+        const itemTemplateSelector = ref(createItemTemplateSelector());
 
         const collectionView = ref<any & { nativeView: NSCollectionView }>(null);
 
@@ -73,6 +80,15 @@ export const CollectionView = defineComponent({
             (oldVal, newVal) => {
                 if (!(oldVal instanceof Observable)) {
                     collectionView.value.setAttribute('items', newVal);
+                }
+            }
+        );
+        watch(
+            () => props.itemTemplateSelector,
+            (newValue, oldValue) => {
+                if (newValue !== oldValue) {
+                    itemTemplateSelector.value = createItemTemplateSelector();
+                    collectionView.value?.setAttribute('itemTemplateSelector', itemTemplateSelector.value);
                 }
             }
         );
@@ -125,7 +141,7 @@ export const CollectionView = defineComponent({
                 items: props.items,
                 itemTemplates,
                 onItemLoading,
-                itemTemplateSelector: (item: any, index: number, items: ListItem[]) => getSlotName(item, index, items)
+                itemTemplateSelector: itemTemplateSelector.value
             });
     }
 });
