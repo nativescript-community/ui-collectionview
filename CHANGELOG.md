@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.26](https://github.com/@nativescript-community/ui-collectionview/compare/v6.0.25...v6.0.26) (2026-09-10)
+
+### Bug Fixes
+
+* **ios:** only allow drag reorder when reordering is enabled ([806fef2](https://github.com/@nativescript-community/ui-collectionview/commit/806fef20ecce6be6374d32bd966cc066f956f18c))
+
 ## [6.0.25](https://github.com/@nativescript-community/ui-collectionview/compare/v6.0.24...v6.0.25) (2026-06-20)
 
 ### Bug Fixes
