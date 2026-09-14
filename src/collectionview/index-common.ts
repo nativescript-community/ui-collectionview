@@ -272,9 +272,16 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
         this.notify(args);
     }
 
+    // a refresh deferred to the end of a layout pass keeps the data that pass started with,
+    // or it would be asked for items the new value does not have anymore
+    _frozenItems: any;
+    _replacedItems: any;
+    get currentItems() {
+        return this._frozenItems || this.items;
+    }
     public getItemAtIndex(index: number): any {
         // will be overriden in onItemsChangedInternal
-        const thisItems = this.items as ItemsSource;
+        const thisItems = this.currentItems as ItemsSource;
         return thisItems.getItem ? thisItems.getItem(index) : thisItems[index];
     }
     public isHorizontal() {
@@ -472,10 +479,10 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
     // }
 
     getItemSourceAtIndex(index: number) {
-        return (this.items as ItemsSource).getItem(index);
+        return (this.currentItems as ItemsSource).getItem(index);
     }
     getItemArrayAtIndex(index: number) {
-        return this.items[index];
+        return this.currentItems[index];
     }
     @profile
     onItemsChanged(oldValue, newValue) {
@@ -490,7 +497,10 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
         if (newValue instanceof Observable) {
             addWeakEventListener(newValue, ObservableArray.changeEvent, this.onSourceCollectionChangedInternal, this);
         }
+        // refresh can defer itself: it then freezes `oldValue` until it actually runs
+        this._replacedItems = oldValue;
         this.refresh();
+        this._replacedItems = null;
     }
     onSpanSizeChanged = (oldValue, newValue) => {
         this.spanSize = newValue;
