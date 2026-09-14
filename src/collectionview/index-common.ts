@@ -670,7 +670,7 @@ export const itemTemplatesProperty = new Property<CollectionViewBase, KeyedTempl
     name: 'itemTemplates',
     valueConverter: (value) => {
         if (typeof value === 'string') {
-            return Builder.parseMultipleTemplates(value);
+            return Builder.parseMultipleTemplates(value, undefined);
         }
 
         return value;
