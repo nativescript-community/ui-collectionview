@@ -177,6 +177,8 @@ export class CollectionView extends CollectionViewBase {
     private _hlayoutParams: android.view.ViewGroup.LayoutParams;
     private _vlayoutParams: android.view.ViewGroup.LayoutParams;
     private _lastLayoutKey: string;
+    private _pendingRefresh: { forceRefresh: boolean; updateSpanCountRequestsLayout: boolean };
+    private _pendingRefreshListener: android.view.ViewTreeObserver.OnPreDrawListener;
 
     private _listViewAdapter: com.nativescript.collectionview.Adapter;
 
@@ -294,7 +296,13 @@ export class CollectionView extends CollectionViewBase {
         nativeView.layoutManager = layoutManager;
 
         nativeView.sizeChangedListener = new com.nativescript.collectionview.SizeChangedListener({
-            onLayout: (changed, left, top, right, bottom) => changed && this.onLayout(left, top, right, bottom),
+            onLayout: (changed, left, top, right, bottom) => {
+                if (changed) {
+                    this.onLayout(left, top, right, bottom);
+                }
+                // fired after super.onLayout: the RecyclerView is done computing its layout
+                this.runPendingRefresh();
+            },
             onMeasure: (widthMeasureSpec, heightMeasureSpec) => this.onMeasure(widthMeasureSpec, heightMeasureSpec)
         });
         this.spanSize = this._getSpanSize;
@@ -328,6 +336,9 @@ export class CollectionView extends CollectionViewBase {
         this.recycledViewPoolDisposeListener = null;
         this.recycledViewPool = null;
         this.detachScrollListenerIfNecessary(true);
+        this.removePendingRefreshListener();
+        this._pendingRefresh = null;
+        this._frozenItems = null;
         nativeView.sizeChangedListener = null;
         nativeView.layoutManager = null;
         this._listViewAdapter = null;
@@ -1054,6 +1065,36 @@ export class CollectionView extends CollectionViewBase {
     }
 
     _layedOut = false;
+    public runPendingRefresh() {
+        const pending = this._pendingRefresh;
+        if (!pending) {
+            return;
+        }
+        this._pendingRefresh = null;
+        this._frozenItems = null;
+        this.removePendingRefreshListener();
+        this.refresh(pending.forceRefresh, pending.updateSpanCountRequestsLayout);
+    }
+    private removePendingRefreshListener() {
+        if (!this._pendingRefreshListener) {
+            return;
+        }
+        this.nativeViewProtected?.getViewTreeObserver().removeOnPreDrawListener(this._pendingRefreshListener);
+        this._pendingRefreshListener = null;
+    }
+    // a bind can also replace `items` while scrolling, and a scroll is not followed by a layout
+    private addPendingRefreshListener() {
+        if (this._pendingRefreshListener) {
+            return;
+        }
+        this._pendingRefreshListener = new android.view.ViewTreeObserver.OnPreDrawListener({
+            onPreDraw: () => {
+                this.runPendingRefresh();
+                return true;
+            }
+        });
+        this.nativeViewProtected.getViewTreeObserver().addOnPreDrawListener(this._pendingRefreshListener);
+    }
     @profile
     public refresh(forceRefresh = false, updateSpanCountRequestsLayout = false) {
         if (this.mInPropertiesSet) {
@@ -1071,6 +1112,21 @@ export class CollectionView extends CollectionViewBase {
             this._isDataDirty = true;
             return;
         }
+        // notifyDataSetChanged throws while the RecyclerView computes its layout, which happens
+        // when a binding replaces `items` from onBindViewHolder. Run it once the pass is over.
+        if (view.isComputingLayout()) {
+            this._isDataDirty = true;
+            this._pendingRefresh = { forceRefresh, updateSpanCountRequestsLayout };
+            // the running pass keeps asking for the positions it started with
+            if (!this._frozenItems && this._replacedItems) {
+                this._frozenItems = this._replacedItems;
+            }
+            this.addPendingRefreshListener();
+            return;
+        }
+        this._pendingRefresh = null;
+        this._frozenItems = null;
+        this.removePendingRefreshListener();
         this._isDataDirty = false;
         this._lastLayoutKey = this._innerWidth + '_' + this._innerHeight;
         let adapter = this._listViewAdapter;
@@ -1164,11 +1220,13 @@ export class CollectionView extends CollectionViewBase {
     }
 
     public getItemCount() {
-        return this.items ? this.items.length : 0;
+        const items = this.currentItems;
+        return items ? items.length : 0;
     }
 
     public getItem(i: number) {
-        if (this.items && i < this.items.length) {
+        const items = this.currentItems;
+        if (items && i < items.length) {
             return this.getItemAtIndex(i);
         }
         return null;

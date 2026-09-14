@@ -4,6 +4,7 @@
         "android.view:View.OnClickListener",
         "android.view:View.OnLayoutChangeListener",
         "android.view:ViewGroup.LayoutParams",
+        "android.view:ViewTreeObserver.OnPreDrawListener",
         "androidx.core.view:GestureDetectorCompat",
         "androidx.recyclerview.widget:GridLayoutManager",
         "androidx.recyclerview.widget:GridLayoutManager.SpanSizeLookup",
