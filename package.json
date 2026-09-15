@@ -62,7 +62,8 @@
         "@nativescript-community/ui-drawer": "0.1.31"
     },
     "resolutions": {
-        "@vue/devtools": "npm:empty-npm-package@*"
+        "@vue/devtools": "npm:empty-npm-package@*",
+        "nativescript-vue3": "npm:nativescript-vue@3.1.2"
     },
     "ntl": {
         "descriptions": {
