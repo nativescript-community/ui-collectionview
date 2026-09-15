@@ -1,5 +1,5 @@
 import { CollectionView as NSCollectionView } from '..';
-import { ItemEventData, Observable, ObservableArray } from '@nativescript/core';
+import { ItemEventData, ObservableArray } from '@nativescript/core';
 import { ItemContext, PropType, createItemContext, defineComponent, h, ref, useItemTemplates, watch } from 'nativescript-vue';
 
 export const CollectionView = defineComponent({
@@ -29,14 +29,17 @@ export const CollectionView = defineComponent({
 
         const collectionView = ref<any & { nativeView: NSCollectionView }>(null);
 
-        watch(
-            () => props.items,
-            (oldVal, newVal) => {
-                if (!(oldVal instanceof Observable)) {
-                    collectionView.value.setAttribute('items', newVal);
-                }
+        function refresh() {
+            // ObservableArray notifies the native view of changes itself
+            if (props.items instanceof ObservableArray) {
+                return;
             }
-        );
+            collectionView.value?.nativeView?.refresh();
+        }
+
+        // depth 1 tracks the array's length without walking into the items
+        // themselves; cells re-render on their own when item fields change
+        watch(() => props.items, refresh, { deep: 1 });
 
         function onItemLoading(event: ItemEventData & { bindingContext: any }) {
             const itemCtx = createItemContext(event.bindingContext, event.index, { alias: props.alias, indexAlias: props.itemIdGenerator });
