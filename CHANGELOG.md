@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.28](https://github.com/@nativescript-community/ui-collectionview/compare/v6.0.27...v6.0.28) (2026-09-20)
+
+### Bug Fixes
+
+* **vue3:** refresh on in-place array mutations ([00d56e3](https://github.com/@nativescript-community/ui-collectionview/commit/00d56e38f6e21760b394c53ec97fb345a1fdf60e))
+
 ## [6.0.27](https://github.com/@nativescript-community/ui-collectionview/compare/v6.0.26...v6.0.27) (2026-09-14)
 
 ### Bug Fixes
