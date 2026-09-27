@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.29](https://github.com/@nativescript-community/ui-collectionview/compare/v6.0.28...v6.0.29) (2026-09-27)
+
+### Features
+
+* **ios:** scroll horizontal collectionview with mouse wheel on Mac Catalyst ([9d5775f](https://github.com/@nativescript-community/ui-collectionview/commit/9d5775f2c76b689a833270bd723bd4e495b2549c))
+
 ## [6.0.28](https://github.com/@nativescript-community/ui-collectionview/compare/v6.0.27...v6.0.28) (2026-09-20)
 
 ### Bug Fixes
