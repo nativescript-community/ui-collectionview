@@ -36,6 +36,7 @@ import { CLog, CLogTypes, CollectionViewBase, ListViewViewTypes, isBounceEnabled
 export * from './index-common';
 
 const infinity = Utils.layout.makeMeasureSpec(0, Utils.layout.UNSPECIFIED);
+const isMacCatalyst = !!NSProcessInfo.processInfo.macCatalystApp;
 
 export enum ContentInsetAdjustmentBehavior {
     Always = UIScrollViewContentInsetAdjustmentBehavior.Always,
@@ -102,6 +103,8 @@ export class CollectionView extends CollectionViewBase {
 
     reorderLongPressGesture: UILongPressGestureRecognizer;
     reorderLongPressHandler: ReorderLongPressImpl;
+    wheelScrollGesture: UIPanGestureRecognizer;
+    wheelScrollHandler: WheelScrollImpl;
     reorderStartingRow = -1;
     reorderEndingRow = -1;
 
@@ -196,6 +199,8 @@ export class CollectionView extends CollectionViewBase {
         this._layout = null;
         this.reorderLongPressHandler = null;
         this.reorderLongPressGesture = null;
+        this.wheelScrollHandler = null;
+        this.wheelScrollGesture = null;
         this.clearRealizedCells();
         super.disposeNativeView();
     }
@@ -409,6 +414,36 @@ export class CollectionView extends CollectionViewBase {
             }
         }
         this.updateScrollBarVisibility(this.scrollBarIndicatorVisible);
+        this.updateWheelScroll(value === 'horizontal');
+    }
+    // a mouse wheel only sends vertical deltas, which a horizontal scroll view ignores on Mac Catalyst
+    protected updateWheelScroll(horizontal: boolean) {
+        if (!isMacCatalyst) {
+            return;
+        }
+        if (horizontal && !this.wheelScrollGesture) {
+            this.wheelScrollHandler = WheelScrollImpl.initWithOwner(new WeakRef(this));
+            const gesture = UIPanGestureRecognizer.alloc().initWithTargetAction(this.wheelScrollHandler, 'scroll');
+            gesture.delegate = this.wheelScrollHandler;
+            gesture.allowedScrollTypesMask = UIScrollTypeMask.All;
+            // scroll events only, touches keep the native pan
+            gesture.maximumNumberOfTouches = 0;
+            this.nativeViewProtected.addGestureRecognizer(gesture);
+            this.wheelScrollGesture = gesture;
+        }
+        if (this.wheelScrollGesture) {
+            this.wheelScrollGesture.enabled = horizontal;
+        }
+    }
+    onWheelScroll(recognizer: UIPanGestureRecognizer) {
+        const view = this.nativeViewProtected;
+        const translation = recognizer.translationInView(view);
+        recognizer.setTranslationInView(CGPointZero, view);
+        const inset = view.adjustedContentInset;
+        const minX = -inset.left;
+        const maxX = Math.max(view.contentSize.width + inset.right - view.bounds.size.width, minX);
+        const offsetX = Math.min(Math.max(view.contentOffset.x - translation.y, minX), maxX);
+        view.contentOffset = CGPointMake(offsetX, view.contentOffset.y);
     }
     [isScrollEnabledProperty.setNative](value: boolean) {
         this.nativeViewProtected.scrollEnabled = value;
@@ -1724,6 +1759,32 @@ class UICollectionViewDelegateFixedSizeImpl extends NSObject implements UICollec
 
         return proposedIndexPath;
     }
+}
+
+@NativeClass
+class WheelScrollImpl extends NSObject implements UIGestureRecognizerDelegate {
+    private _owner: WeakRef<CollectionView>;
+
+    public static initWithOwner(owner: WeakRef<CollectionView>): WheelScrollImpl {
+        const handler = WheelScrollImpl.new() as WheelScrollImpl;
+        handler._owner = owner;
+        return handler;
+    }
+
+    // only take over vertical wheel scrolls
+    gestureRecognizerShouldBegin(recognizer: UIPanGestureRecognizer) {
+        const translation = recognizer.translationInView(recognizer.view);
+        return Math.abs(translation.y) > Math.abs(translation.x);
+    }
+
+    public scroll(recognizer: UIPanGestureRecognizer): void {
+        this._owner?.get()?.onWheelScroll(recognizer);
+    }
+
+    public static ObjCProtocols = [UIGestureRecognizerDelegate];
+    public static ObjCExposedMethods = {
+        scroll: { returns: interop.types.void, params: [interop.types.id] }
+    };
 }
 
 @NativeClass
