@@ -144,6 +144,13 @@ export abstract class CollectionViewBase extends View implements CollectionViewD
      */
     public autoReloadItemOnLayout: boolean;
     public reorderLongPressEnabled: boolean;
+    /** Mac Catalyst only. What a horizontal collectionview does with the vertical mouse wheel:
+     * 'always' scrolls horizontally, 'never' leaves it to the parent, 'auto' (default) scrolls horizontally
+     * unless an ancestor scroll view can scroll vertically.
+     */
+    public wheelScroll: WheelScrollMode;
+    /** Mac Catalyst only. Scroll with click+drag, like a touch screen. True by default. */
+    public mouseDragScroll: boolean;
     protected _dataUpdatesSuspended = false;
     public scrollBarIndicatorVisible: boolean;
 
@@ -763,6 +770,19 @@ export const reorderLongPressEnabledProperty = new Property<CollectionViewBase, 
     valueConverter: booleanConverter
 });
 reorderLongPressEnabledProperty.register(CollectionViewBase);
+
+export type WheelScrollMode = 'auto' | 'always' | 'never';
+export const wheelScrollProperty = new Property<CollectionViewBase, WheelScrollMode>({
+    name: 'wheelScroll',
+    defaultValue: 'auto'
+});
+wheelScrollProperty.register(CollectionViewBase);
+export const mouseDragScrollProperty = new Property<CollectionViewBase, boolean>({
+    name: 'mouseDragScroll',
+    defaultValue: true,
+    valueConverter: booleanConverter
+});
+mouseDragScrollProperty.register(CollectionViewBase);
 
 export const scrollBarIndicatorVisibleProperty = new Property<CollectionViewBase, boolean>({
     name: 'scrollBarIndicatorVisible',
