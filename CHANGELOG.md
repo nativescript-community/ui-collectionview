@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.30](https://github.com/@nativescript-community/ui-collectionview/compare/v6.0.29...v6.0.30) (2026-10-19)
+
+### Bug Fixes
+
+* **svelte:** measure recycled cells again after updating them ([089640e](https://github.com/@nativescript-community/ui-collectionview/commit/089640e8010688d33f8f439f7dac2aef90e490b7))
+
 ## [6.0.29](https://github.com/@nativescript-community/ui-collectionview/compare/v6.0.28...v6.0.29) (2026-09-27)
 
 ### Features
