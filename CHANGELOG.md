@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.31](https://github.com/@nativescript-community/ui-collectionview/compare/v6.0.30...v6.0.31) (2026-10-19)
+
+### Features
+
+* **ios:** wheelScroll auto mode and click+drag scrolling on Mac Catalyst ([2ed2712](https://github.com/@nativescript-community/ui-collectionview/commit/2ed27128bc309d2cedf03e6d9081c4b00d202174))
+
 ## [6.0.30](https://github.com/@nativescript-community/ui-collectionview/compare/v6.0.29...v6.0.30) (2026-10-19)
 
 ### Bug Fixes
