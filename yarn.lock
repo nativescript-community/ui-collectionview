@@ -3446,6 +3446,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nativescript-community/gesturehandler@npm:*":
+  version: 2.0.45
+  resolution: "@nativescript-community/gesturehandler@npm:2.0.45"
+  dependencies:
+    "@nativescript-community/observable": "npm:^2.0.10"
+  checksum: 10/e45f984d59f73d30494287a4ffa282335ac0685d3f56aee7beecb5a664109fbcfb6f165c0adb3fa4f4ee5b1076e4cae5154b6db47427ed2df1e361b0d89433df
+  languageName: node
+  linkType: hard
+
 "@nativescript-community/gesturehandler@npm:^2.0.8":
   version: 2.0.37
   resolution: "@nativescript-community/gesturehandler@npm:2.0.37"
@@ -3547,6 +3556,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@nativescript-community/template-snippet@workspace:demo-snippets"
   dependencies:
+    "@nativescript-community/gesturehandler": "npm:*"
     "@nativescript-community/ui-collectionview": "npm:*"
     "@nativescript-community/ui-collectionview-alignedflowlayout": "npm:*"
     "@nativescript-community/ui-collectionview-swipemenu": "npm:*"
@@ -3560,6 +3570,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@nativescript-community/template-snippet@portal:demo-snippets::locator=root-workspace-0b6124%40workspace%3A."
   dependencies:
+    "@nativescript-community/gesturehandler": "npm:*"
     "@nativescript-community/ui-collectionview": "npm:*"
     "@nativescript-community/ui-collectionview-alignedflowlayout": "npm:*"
     "@nativescript-community/ui-collectionview-swipemenu": "npm:*"
@@ -3580,7 +3591,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@nativescript-community/ui-collectionview-alignedflowlayout@workspace:packages/alignedflowlayout"
   dependencies:
-    "@nativescript-community/ui-collectionview": "npm:^6.0.27"
+    "@nativescript-community/ui-collectionview": "npm:^6.0.29"
   languageName: unknown
   linkType: soft
 
@@ -3589,7 +3600,7 @@ __metadata:
   resolution: "@nativescript-community/ui-collectionview-swipemenu@workspace:packages/swipemenu"
   dependencies:
     "@nativescript-community/class-mixins": "npm:^1.0.0"
-    "@nativescript-community/ui-collectionview": "npm:^6.0.27"
+    "@nativescript-community/ui-collectionview": "npm:^6.0.29"
     "@nativescript-community/ui-drawer": "npm:^0.1.31"
   languageName: unknown
   linkType: soft
@@ -3598,11 +3609,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@nativescript-community/ui-collectionview-waterfall@workspace:packages/waterfall"
   dependencies:
-    "@nativescript-community/ui-collectionview": "npm:^6.0.27"
+    "@nativescript-community/ui-collectionview": "npm:^6.0.29"
   languageName: unknown
   linkType: soft
 
-"@nativescript-community/ui-collectionview@npm:*, @nativescript-community/ui-collectionview@npm:^6.0.27, @nativescript-community/ui-collectionview@workspace:packages/collectionview":
+"@nativescript-community/ui-collectionview@npm:*, @nativescript-community/ui-collectionview@npm:^6.0.29, @nativescript-community/ui-collectionview@workspace:packages/collectionview":
   version: 0.0.0-use.local
   resolution: "@nativescript-community/ui-collectionview@workspace:packages/collectionview"
   dependencies:
@@ -3629,9 +3640,9 @@ __metadata:
   linkType: hard
 
 "@nativescript-community/ui-material-core@npm:^7.3.2":
-  version: 7.3.2
-  resolution: "@nativescript-community/ui-material-core@npm:7.3.2"
-  checksum: 10/83b734b779054599a92489aad89fa29a4dbb7954e3119e1995829237a4696d7316eb86d6d958be8583e2c91bb07bef005cee69b228d92b7e05af3ea7a5aa60b9
+  version: 7.3.3
+  resolution: "@nativescript-community/ui-material-core@npm:7.3.3"
+  checksum: 10/64b35cb8dade1e6c44e251738e90a8b355731798d99f4e742f15ed115bf5c706ce5abac497cdc03daf9dab60b4d5efd9d166d1f4eab90667ec6f82b35957168f
   languageName: node
   linkType: hard
 
