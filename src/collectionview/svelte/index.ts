@@ -148,8 +148,9 @@ export default class CollectionViewViewElement extends NativeViewElementNode<Col
                 componentInstance.$set(props);
                 flush(); // we need to flush to make sure update is applied right away
             });
+            // resuming replays the layout requests made during the update, once, so that the cell is measured again
             //@ts-ignore
-            _view._resumeNativeUpdates(0, true, true, true);
+            _view._resumeNativeUpdates(0, true, true);
         }
     }
 

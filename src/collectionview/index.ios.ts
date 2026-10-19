@@ -31,7 +31,7 @@ import {
     reverseLayoutProperty,
     scrollBarIndicatorVisibleProperty
 } from '.';
-import { CLog, CLogTypes, CollectionViewBase, ListViewViewTypes, isBounceEnabledProperty, isScrollEnabledProperty, itemTemplatesProperty, orientationProperty } from './index-common';
+import { CLog, CLogTypes, CollectionViewBase, ListViewViewTypes, isBounceEnabledProperty, isScrollEnabledProperty, itemTemplatesProperty, mouseDragScrollProperty, orientationProperty, wheelScrollProperty } from './index-common';
 
 export * from './index-common';
 
@@ -105,6 +105,8 @@ export class CollectionView extends CollectionViewBase {
     reorderLongPressHandler: ReorderLongPressImpl;
     wheelScrollGesture: UIPanGestureRecognizer;
     wheelScrollHandler: WheelScrollImpl;
+    mouseDragGesture: UIPanGestureRecognizer;
+    mouseDragHandler: MouseDragScrollImpl;
     reorderStartingRow = -1;
     reorderEndingRow = -1;
 
@@ -183,6 +185,8 @@ export class CollectionView extends CollectionViewBase {
         }
 
         this._setNativeClipToBounds();
+        // property defaults never go through setNative
+        this.updateMouseDragScroll(this.mouseDragScroll);
     }
 
     public disposeNativeView() {
@@ -201,6 +205,8 @@ export class CollectionView extends CollectionViewBase {
         this.reorderLongPressGesture = null;
         this.wheelScrollHandler = null;
         this.wheelScrollGesture = null;
+        this.mouseDragHandler = null;
+        this.mouseDragGesture = null;
         this.clearRealizedCells();
         super.disposeNativeView();
     }
@@ -417,11 +423,12 @@ export class CollectionView extends CollectionViewBase {
         this.updateWheelScroll(value === 'horizontal');
     }
     // a mouse wheel only sends vertical deltas, which a horizontal scroll view ignores on Mac Catalyst
-    protected updateWheelScroll(horizontal: boolean) {
+    protected updateWheelScroll(horizontal: boolean = this.orientation === 'horizontal') {
         if (!isMacCatalyst) {
             return;
         }
-        if (horizontal && !this.wheelScrollGesture) {
+        const enabled = horizontal && this.wheelScroll !== 'never';
+        if (enabled && !this.wheelScrollGesture) {
             this.wheelScrollHandler = WheelScrollImpl.initWithOwner(new WeakRef(this));
             const gesture = UIPanGestureRecognizer.alloc().initWithTargetAction(this.wheelScrollHandler, 'scroll');
             gesture.delegate = this.wheelScrollHandler;
@@ -432,18 +439,71 @@ export class CollectionView extends CollectionViewBase {
             this.wheelScrollGesture = gesture;
         }
         if (this.wheelScrollGesture) {
-            this.wheelScrollGesture.enabled = horizontal;
+            this.wheelScrollGesture.enabled = enabled;
         }
+    }
+    [wheelScrollProperty.setNative]() {
+        this.updateWheelScroll();
+    }
+    // the native pan of a scroll view ignores the mouse on Mac Catalyst: click+drag needs its own recognizer
+    protected updateMouseDragScroll(enabled: boolean) {
+        if (!isMacCatalyst) {
+            return;
+        }
+        if (enabled && !this.mouseDragGesture) {
+            this.mouseDragHandler = MouseDragScrollImpl.initWithOwner(new WeakRef(this));
+            const gesture = UIPanGestureRecognizer.alloc().initWithTargetAction(this.mouseDragHandler, 'drag');
+            gesture.delegate = this.mouseDragHandler;
+            gesture.maximumNumberOfTouches = 1;
+            this.nativeViewProtected.addGestureRecognizer(gesture);
+            this.mouseDragGesture = gesture;
+        }
+        if (this.mouseDragGesture) {
+            this.mouseDragGesture.enabled = enabled;
+        }
+    }
+    [mouseDragScrollProperty.setNative](value: boolean) {
+        this.updateMouseDragScroll(value);
+    }
+    // true when a parent scroll view could use a vertical wheel scroll
+    hasVerticalScrollableAncestor() {
+        let ancestor = this.nativeViewProtected.superview;
+        while (ancestor) {
+            if (ancestor instanceof UIScrollView && ancestor.scrollEnabled) {
+                const inset = ancestor.adjustedContentInset;
+                if (ancestor.contentSize.height + inset.top + inset.bottom > ancestor.bounds.size.height) {
+                    return true;
+                }
+            }
+            ancestor = ancestor.superview;
+        }
+        return false;
     }
     onWheelScroll(recognizer: UIPanGestureRecognizer) {
         const view = this.nativeViewProtected;
         const translation = recognizer.translationInView(view);
         recognizer.setTranslationInView(CGPointZero, view);
+        this.scrollBy(-translation.y);
+    }
+    onMouseDragScroll(recognizer: UIPanGestureRecognizer) {
+        const view = this.nativeViewProtected;
+        const translation = recognizer.translationInView(view);
+        recognizer.setTranslationInView(CGPointZero, view);
+        this.scrollBy(-(this.isHorizontal() ? translation.x : translation.y));
+    }
+    // scrolls along the scroll direction, without going past the content
+    protected scrollBy(delta: number) {
+        const view = this.nativeViewProtected;
         const inset = view.adjustedContentInset;
-        const minX = -inset.left;
-        const maxX = Math.max(view.contentSize.width + inset.right - view.bounds.size.width, minX);
-        const offsetX = Math.min(Math.max(view.contentOffset.x - translation.y, minX), maxX);
-        view.contentOffset = CGPointMake(offsetX, view.contentOffset.y);
+        if (this.isHorizontal()) {
+            const minX = -inset.left;
+            const maxX = Math.max(view.contentSize.width + inset.right - view.bounds.size.width, minX);
+            view.contentOffset = CGPointMake(Math.min(Math.max(view.contentOffset.x + delta, minX), maxX), view.contentOffset.y);
+        } else {
+            const minY = -inset.top;
+            const maxY = Math.max(view.contentSize.height + inset.bottom - view.bounds.size.height, minY);
+            view.contentOffset = CGPointMake(view.contentOffset.x, Math.min(Math.max(view.contentOffset.y + delta, minY), maxY));
+        }
     }
     [isScrollEnabledProperty.setNative](value: boolean) {
         this.nativeViewProtected.scrollEnabled = value;
@@ -1771,10 +1831,14 @@ class WheelScrollImpl extends NSObject implements UIGestureRecognizerDelegate {
         return handler;
     }
 
-    // only take over vertical wheel scrolls
+    // only take over vertical wheel scrolls, and leave them to a scrollable parent in 'auto' mode
     gestureRecognizerShouldBegin(recognizer: UIPanGestureRecognizer) {
+        const owner = this._owner?.get();
         const translation = recognizer.translationInView(recognizer.view);
-        return Math.abs(translation.y) > Math.abs(translation.x);
+        if (!owner || Math.abs(translation.y) <= Math.abs(translation.x)) {
+            return false;
+        }
+        return owner.wheelScroll === 'always' || !owner.hasVerticalScrollableAncestor();
     }
 
     public scroll(recognizer: UIPanGestureRecognizer): void {
@@ -1784,6 +1848,40 @@ class WheelScrollImpl extends NSObject implements UIGestureRecognizerDelegate {
     public static ObjCProtocols = [UIGestureRecognizerDelegate];
     public static ObjCExposedMethods = {
         scroll: { returns: interop.types.void, params: [interop.types.id] }
+    };
+}
+
+@NativeClass
+class MouseDragScrollImpl extends NSObject implements UIGestureRecognizerDelegate {
+    private _owner: WeakRef<CollectionView>;
+
+    public static initWithOwner(owner: WeakRef<CollectionView>): MouseDragScrollImpl {
+        const handler = MouseDragScrollImpl.new() as MouseDragScrollImpl;
+        handler._owner = owner;
+        return handler;
+    }
+
+    // only drags along the scroll direction, not while an item is being reordered
+    gestureRecognizerShouldBegin(recognizer: UIPanGestureRecognizer) {
+        const owner = this._owner?.get();
+        if (!owner || owner.manualDragging) {
+            return false;
+        }
+        // the first event can have a null velocity
+        const velocity = recognizer.velocityInView(recognizer.view);
+        const translation = recognizer.translationInView(recognizer.view);
+        const deltaX = Math.abs(velocity.x) || Math.abs(translation.x);
+        const deltaY = Math.abs(velocity.y) || Math.abs(translation.y);
+        return owner.isHorizontal() ? deltaX >= deltaY : deltaY >= deltaX;
+    }
+
+    public drag(recognizer: UIPanGestureRecognizer): void {
+        this._owner?.get()?.onMouseDragScroll(recognizer);
+    }
+
+    public static ObjCProtocols = [UIGestureRecognizerDelegate];
+    public static ObjCExposedMethods = {
+        drag: { returns: interop.types.void, params: [interop.types.id] }
     };
 }
 
