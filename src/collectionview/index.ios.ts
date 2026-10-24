@@ -1065,12 +1065,24 @@ export class CollectionView extends CollectionViewBase {
                             view['inPerformLayout'] = false;
                         }
                     };
+                } else if (notForCellSizeComp) {
+                    // layout requests from the cell content (css or property changes) end on the collection view, which ignores them:
+                    // forward them to the native cell container, whose layoutSubviews lays the content out
+                    const defaultPerformLayout = view.performLayout.bind(view);
+                    view['performLayout'] = (...args) => {
+                        if (!this._preparingCell) {
+                            innerView.setNeedsLayout();
+                        }
+                        defaultPerformLayout(...args);
+                    };
                 }
                 innerView.addSubview(view.nativeViewProtected);
                 cell.contentView.addSubview(innerView);
             }
             cellSize = this.measureCell(cell, view, indexPath.row);
             if (notForCellSizeComp) {
+                // a re-bound cell can keep its size: UIKit then skips layoutSubviews
+                cell.contentView.subviews.objectAtIndex(0)?.setNeedsLayout();
                 view.notify({ eventName: CollectionViewBase.bindedEvent });
             }
 
@@ -1404,7 +1416,13 @@ class NSCellView extends UIView {
         }
         this.frame = this.superview.bounds;
         const size = this.bounds.size;
-        View.layoutChild(null, view, 0, 0, Utils.layout.toDevicePixels(size.width), Utils.layout.toDevicePixels(size.height));
+        const width = Utils.layout.toDevicePixels(size.width);
+        const height = Utils.layout.toDevicePixels(size.height);
+        if (view.isLayoutRequested) {
+            // a view only lays out its children when it was measured since its layout was requested
+            view.measure(Utils.layout.makeMeasureSpec(width, Utils.layout.EXACTLY), Utils.layout.makeMeasureSpec(height, Utils.layout.EXACTLY));
+        }
+        View.layoutChild(null, view, 0, 0, width, height);
     }
 }
 
