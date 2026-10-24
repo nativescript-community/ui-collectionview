@@ -1056,7 +1056,7 @@ export class CollectionView extends CollectionViewBase {
                             }
 
                             nativeView.performBatchUpdatesCompletion(() => {
-                                this.notifyForItemAtIndex(CollectionViewBase.itemLoadingEvent, view, indexPath.row, view.bindingContext, cell);
+                                this.notifyForItemAtIndex(CollectionViewBase.itemLoadingEvent, view, index, view.bindingContext, cell);
                                 // the order is important because measureCell will set layout as requested and notifyForItemAtIndex would call requestLayout => endless loop
                                 this.measureCell(cell, view, index);
                                 cell.contentView.subviews.objectAtIndex(0)?.layoutSubviews();
