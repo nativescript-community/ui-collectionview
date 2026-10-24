@@ -1065,12 +1065,25 @@ export class CollectionView extends CollectionViewBase {
                             view['inPerformLayout'] = false;
                         }
                     };
+                } else if (notForCellSizeComp) {
+                    // a layout request from the cell content (css change, property change...) must reach the native cell container:
+                    // its layoutSubviews lays out the flagged views, and a view only redraws its background after being laid out
+                    const defaultPerformLayout = view.performLayout.bind(view);
+                    view['performLayout'] = (...args) => {
+                        if (!this._preparingCell) {
+                            innerView.setNeedsLayout();
+                        }
+                        defaultPerformLayout(...args);
+                    };
                 }
                 innerView.addSubview(view.nativeViewProtected);
                 cell.contentView.addSubview(innerView);
             }
             cellSize = this.measureCell(cell, view, indexPath.row);
             if (notForCellSizeComp) {
+                // a re-bound cell can keep its size: UIKit then skips layoutSubviews and the content (flagged for layout by
+                // bindings and css changes) never gets its layout pass, where a view redraws its background
+                cell.contentView.subviews.objectAtIndex(0)?.setNeedsLayout();
                 view.notify({ eventName: CollectionViewBase.bindedEvent });
             }
 
