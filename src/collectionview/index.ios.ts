@@ -31,9 +31,25 @@ import {
     reverseLayoutProperty,
     scrollBarIndicatorVisibleProperty
 } from '.';
-import { CLog, CLogTypes, CollectionViewBase, ListViewViewTypes, isBounceEnabledProperty, isScrollEnabledProperty, itemTemplatesProperty, mouseDragScrollProperty, orientationProperty, wheelScrollProperty } from './index-common';
+import {
+    CLog,
+    CLogTypes,
+    CollectionViewBase,
+    ListViewViewTypes,
+    isBounceEnabledProperty,
+    isScrollEnabledProperty,
+    itemTemplatesProperty,
+    mouseDragScrollProperty,
+    orientationProperty,
+    wheelScrollProperty
+} from './index-common';
 
 export * from './index-common';
+declare module '@nativescript/core/ui/core/view' {
+    interface ViewCommon {
+        isLayoutRequested: boolean;
+    }
+}
 
 const infinity = Utils.layout.makeMeasureSpec(0, Utils.layout.UNSPECIFIED);
 const isMacCatalyst = !!NSProcessInfo.processInfo.macCatalystApp;
@@ -365,7 +381,7 @@ export class CollectionView extends CollectionViewBase {
                     gesture.enabled = false;
                     gesture.enabled = true;
                 }
-                
+
                 break;
             }
             case UIGestureRecognizerState.Changed: {
@@ -1068,7 +1084,7 @@ export class CollectionView extends CollectionViewBase {
                 } else if (notForCellSizeComp) {
                     // layout requests from the cell content (css or property changes) end on the collection view, which ignores them:
                     // forward them to the native cell container, whose layoutSubviews lays the content out
-                    const defaultPerformLayout = view.performLayout.bind(view);
+                    const defaultPerformLayout = view['inPerformLayout'].bind(view);
                     view['performLayout'] = (...args) => {
                         if (!this._preparingCell) {
                             innerView.setNeedsLayout();
@@ -1327,7 +1343,7 @@ export class CollectionView extends CollectionViewBase {
 
                 // Cell preparation may have replaced the view with a new one if collection view listens to itemLoading event
                 // so check if cell view changed and update measure cell cache
-                if (needsSet || measureData && cell && measureData.view != cell.view) {
+                if (needsSet || (measureData && cell && measureData.view !== cell.view)) {
                     this._measureCellMap.set(templateType, { cell, view: cell.view });
                 }
             }
