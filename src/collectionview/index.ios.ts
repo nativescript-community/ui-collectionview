@@ -1084,7 +1084,7 @@ export class CollectionView extends CollectionViewBase {
                 } else if (notForCellSizeComp) {
                     // layout requests from the cell content (css or property changes) end on the collection view, which ignores them:
                     // forward them to the native cell container, whose layoutSubviews lays the content out
-                    const defaultPerformLayout = view['inPerformLayout'].bind(view);
+                    const defaultPerformLayout = view['performLayout'].bind(view);
                     view['performLayout'] = (...args) => {
                         if (!this._preparingCell) {
                             innerView.setNeedsLayout();
