@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.32](https://github.com/@nativescript-community/ui-collectionview/compare/v6.0.31...v6.0.32) (2026-10-25)
+
+### Bug Fixes
+
+* **ios:** measure and lay out cell content after a layout request ([91e6ad1](https://github.com/@nativescript-community/ui-collectionview/commit/91e6ad115c05234eb209e392e536726b2b5d02f7))
+
 ## [6.0.31](https://github.com/@nativescript-community/ui-collectionview/compare/v6.0.30...v6.0.31) (2026-10-19)
 
 ### Features
