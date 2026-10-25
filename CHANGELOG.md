@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.33](https://github.com/@nativescript-community/ui-collectionview/compare/v6.0.32...v6.0.33) (2026-10-25)
+
+### Bug Fixes
+
+* **ios:** bind the cell performLayout hook, not the inPerformLayout flag ([c5ae98d](https://github.com/@nativescript-community/ui-collectionview/commit/c5ae98da527e10dc8f9bd55088a5f673988a3aba))
+
 ## [6.0.32](https://github.com/@nativescript-community/ui-collectionview/compare/v6.0.31...v6.0.32) (2026-10-25)
 
 ### Bug Fixes
