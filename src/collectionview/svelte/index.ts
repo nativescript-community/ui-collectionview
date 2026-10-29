@@ -1,4 +1,4 @@
-import { ContentView, ItemEventData, View, profile } from '@nativescript/core';
+import { ContentView, ItemEventData, View, ViewBase, profile } from '@nativescript/core';
 import { NativeViewElementNode, TemplateElement, ViewNode, createElement, registerElement } from '@nativescript-community/svelte-native/dom';
 //@ts-ignore
 import { flush } from 'svelte/internal';
@@ -12,6 +12,18 @@ declare module '@nativescript/core/ui/core/view-base' {
         __SvelteComponentBuilder__?: any;
         __CollectionViewCurrentIndex__?: number;
     }
+}
+
+// views created by the update (a changed {#if} block) are not suspended: resuming them too would
+// decrement their load flags and leave them suspended forever, so we only resume what we suspended
+function suspendNativeUpdates(view: ViewBase, suspended: ViewBase[]) {
+    //@ts-ignore
+    view._suspendNativeUpdates(0, false, true);
+    suspended.push(view);
+    view.eachChild((child) => {
+        suspendNativeUpdates(child, suspended);
+        return true;
+    });
 }
 
 class SvelteKeyedTemplate {
@@ -142,15 +154,20 @@ export default class CollectionViewViewElement extends NativeViewElementNode<Col
             // console.log('updateListItem', args.index,  _view.__CollectionViewCurrentIndex__);
             _view.__CollectionViewCurrentIndex__ = args.index;
             // _suspendNativeUpdates with special parameters for Akylas fork to preven requestLayout
-            //@ts-ignore
-            _view._suspendNativeUpdates(0, true, true);
-            _view._batchUpdate(() => {
-                componentInstance.$set(props);
-                flush(); // we need to flush to make sure update is applied right away
-            });
-            // resuming replays the layout requests made during the update, once, so that the cell is measured again
-            //@ts-ignore
-            _view._resumeNativeUpdates(0, true, true);
+            const suspended: ViewBase[] = [];
+            suspendNativeUpdates(_view, suspended);
+            try {
+                _view._batchUpdate(() => {
+                    componentInstance.$set(props);
+                    flush(); // we need to flush to make sure update is applied right away
+                });
+            } finally {
+                // resuming replays the layout requests made during the update, once, so that the cell is measured again
+                for (let index = suspended.length - 1; index >= 0; index--) {
+                    //@ts-ignore
+                    suspended[index]._resumeNativeUpdates(0, false, true);
+                }
+            }
         }
     }
 
