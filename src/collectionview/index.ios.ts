@@ -628,7 +628,10 @@ export class CollectionView extends CollectionViewBase {
             if (this._effectiveRowHeight && this._effectiveColWidth && (!this._templateRowHeights || this._templateRowHeights.size === 0)) {
                 layoutView.itemSize = CGSizeMake(Utils.layout.toDeviceIndependentPixels(this._effectiveColWidth), Utils.layout.toDeviceIndependentPixels(this._effectiveRowHeight));
             } else if (this.estimatedItemSize && !this.autoSize) {
-                layoutView.estimatedItemSize = CGSizeMake(Utils.layout.toDeviceIndependentPixels(this._effectiveColWidth), Utils.layout.toDeviceIndependentPixels(this._effectiveRowHeight));
+                // an estimate with a zero side (no fixed row height) makes UIKit center a lone cell: the delegate gives the sizes anyway
+                const width = Utils.layout.toDeviceIndependentPixels(this._effectiveColWidth);
+                const height = Utils.layout.toDeviceIndependentPixels(this._effectiveRowHeight);
+                layoutView.estimatedItemSize = width && height ? CGSizeMake(width, height) : CGSizeZero;
             }
             layoutView.invalidateLayout();
         }
