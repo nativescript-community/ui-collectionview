@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.35](https://github.com/@nativescript-community/ui-collectionview/compare/v6.0.34...v6.0.35) (2026-10-30)
+
+### Features
+
+* **ios:** add animateItemUpdate to redraw an updated item without cross-fade ([d28005f](https://github.com/@nativescript-community/ui-collectionview/commit/d28005f019211ad0c7f07097e9faaf5055d77258))
+
+### Bug Fixes
+
+* **ios:** do not center a lone cell when the row height is not fixed ([b45f36b](https://github.com/@nativescript-community/ui-collectionview/commit/b45f36bf5d6180e20069f16a953e19c97a9a163a))
+* **ios:** lay out the cells of itemOverlap from their shifted position ([b6ca12d](https://github.com/@nativescript-community/ui-collectionview/commit/b6ca12d7fd59b523ec79dce8adc3b4d4b44aef1c))
+
 ## [6.0.34](https://github.com/@nativescript-community/ui-collectionview/compare/v6.0.33...v6.0.34) (2026-10-29)
 
 ### Bug Fixes
