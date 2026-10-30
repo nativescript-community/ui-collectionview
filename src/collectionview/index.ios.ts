@@ -90,6 +90,13 @@ export const estimatedItemSizeProperty = new Property<CollectionView, boolean>({
     valueConverter: booleanConverter
 });
 
+// false: the cell of an updated item is redrawn in place instead of cross-fading
+export const animateItemUpdateProperty = new Property<CollectionView, boolean>({
+    name: 'animateItemUpdate',
+    defaultValue: true,
+    valueConverter: booleanConverter
+});
+
 export const autoSizeProperty = new Property<CollectionView, boolean>({
     name: 'autoSize',
     defaultValue: false,
@@ -129,6 +136,7 @@ export class CollectionView extends CollectionViewBase {
     manualDragging = false;
     scrollEnabledBeforeDragging = true;
     estimatedItemSize = true;
+    animateItemUpdate = true;
     draggingStartDelta: [number, number];
 
     nativeViewProtected: UICollectionView;
@@ -734,9 +742,15 @@ export class CollectionView extends CollectionViewBase {
                     CLog(CLogTypes.info, 'reloadItemsAtIndexPaths', event.index, indexes.count);
                 }
 
-                performBatchUpdatesCompletion(() => {
-                    view.reloadItemsAtIndexPaths(indexes);
-                });
+                const reload = () =>
+                    performBatchUpdatesCompletion(() => {
+                        view.reloadItemsAtIndexPaths(indexes);
+                    });
+                if (this.animateItemUpdate) {
+                    reload();
+                } else {
+                    UIView.performWithoutAnimation(reload);
+                }
                 return;
             }
             case ChangeType.Add: {
@@ -769,7 +783,11 @@ export class CollectionView extends CollectionViewBase {
                             }
                             // this._sizes[event.index + index] = null;
                         }
-                        view.reloadItemsAtIndexPaths(indexes);
+                        if (this.animateItemUpdate) {
+                            view.reloadItemsAtIndexPaths(indexes);
+                        } else {
+                            UIView.performWithoutAnimation(() => view.reloadItemsAtIndexPaths(indexes));
+                        }
                     } else {
                         if (event.removed && event.removed.length > 0) {
                             const indexes = NSMutableArray.new<NSIndexPath>();
@@ -1415,6 +1433,7 @@ export class CollectionView extends CollectionViewBase {
 }
 contentInsetAdjustmentBehaviorProperty.register(CollectionView);
 estimatedItemSizeProperty.register(CollectionView);
+animateItemUpdateProperty.register(CollectionView);
 autoSizeProperty.register(CollectionView);
 
 interface ViewItemIndex {}
