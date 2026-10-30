@@ -668,24 +668,18 @@ export class CollectionView extends CollectionViewBase {
             });
         }
     }
-    public layoutAttributesForElementsInRect(attributesArray: NSArray<UICollectionViewLayoutAttributes>, rect: CGRect) {
-        if (this.itemOverlap) {
-            let currentDeltaX = 0;
-            let currentDeltaY = 0;
-            for (let index = 0; index < attributesArray.count; index++) {
-                const attributes = attributesArray.objectAtIndex(index);
-                if (attributes.representedElementCategory === UICollectionElementCategory.Cell) {
-                    const row = attributes.indexPath.row;
-                    if (this.itemOverlap) {
-                        attributes.zIndex = row;
-                    }
-                    const itemOverlap = this.itemOverlap(this.getItemAtIndex(row), row);
-                    currentDeltaX += Utils.layout.toDeviceIndependentPixels(Length.toDevicePixels(itemOverlap[1], 0) + Length.toDevicePixels(itemOverlap[3], 0));
-                    currentDeltaY += Utils.layout.toDeviceIndependentPixels(Length.toDevicePixels(itemOverlap[0], 0) + Length.toDevicePixels(itemOverlap[2], 0));
-                    attributes.center = CGPointMake(attributes.center.x + currentDeltaX, attributes.center.y + currentDeltaY);
-                }
-            }
+    public getItemOverlapOffsets() {
+        const count = this.items?.length || 0;
+        const offsets: { x: number; y: number }[] = [];
+        let currentDeltaX = 0;
+        let currentDeltaY = 0;
+        for (let row = 0; row < count; row++) {
+            const itemOverlap = this.itemOverlap(this.getItemAtIndex(row), row);
+            currentDeltaX += Utils.layout.toDeviceIndependentPixels(Length.toDevicePixels(itemOverlap[1], 0) + Length.toDevicePixels(itemOverlap[3], 0));
+            currentDeltaY += Utils.layout.toDeviceIndependentPixels(Length.toDevicePixels(itemOverlap[0], 0) + Length.toDevicePixels(itemOverlap[2], 0));
+            offsets.push({ x: currentDeltaX, y: currentDeltaY });
         }
+        return offsets;
     }
 
     public onSourceCollectionChanged(event: ChangedData<any>) {
@@ -1534,11 +1528,77 @@ class UICollectionViewFlowLayoutImpl extends UICollectionViewFlowLayout {
         }
         return super.invalidationContextForInteractivelyMovingItemsWithTargetPositionPreviousIndexPathsPreviousPosition(targetIndexPaths, targetPosition, previousIndexPaths, previousPosition);
     }
-    layoutAttributesForElementsInRect(rect: CGRect) {
-        const attributesArray = super.layoutAttributesForElementsInRect(rect);
+    _overlapOffsets: { x: number; y: number }[];
+    getOverlapOffsets(owner: CollectionView) {
+        if (!this._overlapOffsets) {
+            this._overlapOffsets = owner.getItemOverlapOffsets();
+        }
+        return this._overlapOffsets;
+    }
+    private overlapAttributes(attributes: UICollectionViewLayoutAttributes, offsets: { x: number; y: number }[]) {
+        // the layout hands out its cached attributes: shift a copy, never the original
+        const shifted: UICollectionViewLayoutAttributes = attributes.copy();
+        const row = attributes.indexPath.row;
+        shifted.zIndex = row;
+        shifted.center = CGPointMake(attributes.center.x + offsets[row].x, attributes.center.y + offsets[row].y);
+        return shifted;
+    }
+    prepareLayout() {
+        this._overlapOffsets = null;
+        super.prepareLayout();
+    }
+    // @ts-ignore a native property is overridden with an accessor, which has no super: the native getter is called from its descriptor
+    get collectionViewContentSize(): CGSize {
+        const size: CGSize = Object.getOwnPropertyDescriptor(UICollectionViewLayout.prototype, 'collectionViewContentSize').get.call(this);
         const owner = this._owner?.get();
-        owner?.layoutAttributesForElementsInRect(attributesArray, rect);
-        return attributesArray;
+        const last = owner?.itemOverlap ? this.getOverlapOffsets(owner).at(-1) : null;
+        return last ? CGSizeMake(Math.max(size.width + last.x, 0), Math.max(size.height + last.y, 0)) : size;
+    }
+    layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) {
+        const attributes = super.layoutAttributesForItemAtIndexPath(indexPath);
+        const owner = this._owner?.get();
+        if (!attributes || !owner?.itemOverlap) {
+            return attributes;
+        }
+        const offsets = this.getOverlapOffsets(owner);
+        return offsets[indexPath.row] ? this.overlapAttributes(attributes, offsets) : attributes;
+    }
+    layoutAttributesForElementsInRect(rect: CGRect) {
+        const owner = this._owner?.get();
+        if (!owner?.itemOverlap) {
+            return super.layoutAttributesForElementsInRect(rect);
+        }
+        // UIKit asks for the rect of the cells without their overlap: look the visible rows up from their shifted position
+        const offsets = this.getOverlapOffsets(owner);
+        const horizontal = this.scrollDirection === UICollectionViewScrollDirection.Horizontal;
+        const rectStart = horizontal ? rect.origin.x : rect.origin.y;
+        const rectEnd = rectStart + (horizontal ? rect.size.width : rect.size.height);
+        const shiftedRange = (row: number) => {
+            const frame = super.layoutAttributesForItemAtIndexPath(NSIndexPath.indexPathForItemInSection(row, 0)).frame;
+            const start = horizontal ? frame.origin.x + offsets[row].x : frame.origin.y + offsets[row].y;
+            return { start, end: start + (horizontal ? frame.size.width : frame.size.height) };
+        };
+        // the shifted rows keep their order: the first visible one ends after the rect start, the last one starts before the rect end
+        const findRow = (isBefore: (row: number) => boolean) => {
+            let low = 0;
+            let high = offsets.length;
+            while (low < high) {
+                const middle = (low + high) >> 1;
+                if (isBefore(middle)) {
+                    low = middle + 1;
+                } else {
+                    high = middle;
+                }
+            }
+            return low;
+        };
+        const firstRow = findRow((row) => shiftedRange(row).end < rectStart);
+        const endRow = findRow((row) => shiftedRange(row).start <= rectEnd);
+        const result = NSMutableArray.new<UICollectionViewLayoutAttributes>();
+        for (let row = firstRow; row < endRow; row++) {
+            result.addObject(this.overlapAttributes(super.layoutAttributesForItemAtIndexPath(NSIndexPath.indexPathForItemInSection(row, 0)), offsets));
+        }
+        return result;
     }
     shouldInvalidateLayoutForBoundsChange(newBounds: CGRect) {
         const owner = this._owner?.get();
