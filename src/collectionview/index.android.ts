@@ -239,19 +239,21 @@ export class CollectionView extends CollectionViewBase {
     public initNativeView() {
         super.initNativeView();
         const nativeView = this.nativeViewProtected;
+        // listeners given to native code keep their closure alive as long as the native object lives:
+        // they must not hold this view (and through it its holders and views) strongly
+        const owner = new WeakRef(this);
         if (!this.recycledViewPool) {
             this.recycledViewPool = new com.nativescript.collectionview.RecycledViewPool();
             this.recycledViewPoolDisposeListener = new com.nativescript.collectionview.RecycledViewPool.ViewPoolListener({
                 onViewHolderDisposed: (holder: CollectionViewCellHolder) => {
+                    const collectionView = owner.deref();
                     if (Trace.isEnabled()) {
                         CLog(CLogTypes.log, 'onViewHolderDisposed', holder);
                     }
-                    if (this._viewHolders) {
-                        this._viewHolders.delete(holder);
-                    }
+                    collectionView?._viewHolders?.delete(holder);
                     const isNonSync = holder['defaultItemView'] === true;
                     const view = isNonSync ? (holder.view as ContentView).content : holder.view;
-                    this.notifyForItemAtIndex(CollectionViewBase.itemDisposingEvent, view, holder.getAdapterPosition(), view.bindingContext, holder);
+                    collectionView?.notifyForItemAtIndex(CollectionViewBase.itemDisposingEvent, view, holder.getAdapterPosition(), view.bindingContext, holder);
                     if (view && view.isLoaded) {
                         view.callUnloaded();
                     }
@@ -265,12 +267,13 @@ export class CollectionView extends CollectionViewBase {
         if (Trace.isEnabled() || this.hasListeners(CollectionViewBase.itemRecyclingEvent)) {
             const recyclerListener = (this.recyclerListener = new androidx.recyclerview.widget.RecyclerView.RecyclerListener({
                 onViewRecycled: (holder: CollectionViewCellHolder) => {
+                    const collectionView = owner.deref();
                     if (Trace.isEnabled()) {
-                        CLog(CLogTypes.log, 'onViewRecycled', this, nativeView, holder);
+                        CLog(CLogTypes.log, 'onViewRecycled', collectionView, nativeView, holder);
                     }
                     const isNonSync = holder['defaultItemView'] === true;
                     const view = isNonSync ? (holder.view as ContentView).content : holder.view;
-                    this.notifyForItemAtIndex(CollectionViewBase.itemRecyclingEvent, view, holder.getAdapterPosition(), view.bindingContext, holder);
+                    collectionView?.notifyForItemAtIndex(CollectionViewBase.itemRecyclingEvent, view, holder.getAdapterPosition(), view.bindingContext, holder);
                 }
             }));
             nativeView.setRecyclerListener(recyclerListener);
@@ -284,7 +287,7 @@ export class CollectionView extends CollectionViewBase {
             if (this.hasListeners(CollectionView.layoutCompletedEvent)) {
                 (layoutManager as com.nativescript.collectionview.GridLayoutManager).layoutCompletedListener = new com.nativescript.collectionview.GridLayoutManager.LayoutCompletedListener({
                     onLayoutCompleted: () => {
-                        this.notify({ eventName: CollectionView.layoutCompletedEvent });
+                        owner.deref()?.notify({ eventName: CollectionView.layoutCompletedEvent });
                     }
                 });
             }
@@ -297,13 +300,14 @@ export class CollectionView extends CollectionViewBase {
 
         nativeView.sizeChangedListener = new com.nativescript.collectionview.SizeChangedListener({
             onLayout: (changed, left, top, right, bottom) => {
+                const collectionView = owner.deref();
                 if (changed) {
-                    this.onLayout(left, top, right, bottom);
+                    collectionView?.onLayout(left, top, right, bottom);
                 }
                 // fired after super.onLayout: the RecyclerView is done computing its layout
-                this.runPendingRefresh();
+                collectionView?.runPendingRefresh();
             },
-            onMeasure: (widthMeasureSpec, heightMeasureSpec) => this.onMeasure(widthMeasureSpec, heightMeasureSpec)
+            onMeasure: (widthMeasureSpec, heightMeasureSpec) => owner.deref()?.onMeasure(widthMeasureSpec, heightMeasureSpec)
         });
         this.spanSize = this._getSpanSize;
         if (this.hasListeners('touch')) {
@@ -414,8 +418,9 @@ export class CollectionView extends CollectionViewBase {
     [itemOverlapProperty.setNative](value: Function | string) {
         if (typeof value === 'function') {
             if (!this.decorator) {
+                const owner = new WeakRef(this);
                 this.decoratorListener = new com.nativescript.collectionview.OverlapDecoration.OverlapDecorationListener({
-                    getItemOverlap: this.nativeGetItemOverlap.bind(this)
+                    getItemOverlap: (position: number): any => owner.deref()?.nativeGetItemOverlap(position)
                 });
                 this.decorator = new com.nativescript.collectionview.OverlapDecoration(this.decoratorListener);
                 this.nativeViewProtected.addItemDecoration(this.decorator);
@@ -435,9 +440,10 @@ export class CollectionView extends CollectionViewBase {
     private attachScrollListenerIfNecessary() {
         const nativeView = this.nativeViewProtected;
         if (this._scrollOrLoadMoreChangeCount > 0 && nativeView && !nativeView.scrollListener) {
+            const owner = new WeakRef(this);
             this._nScrollListener = new com.nativescript.collectionview.OnScrollListener.Listener({
-                onScrollStateChanged: this.onScrollStateChanged.bind(this),
-                onScrolled: this.onScrolled.bind(this)
+                onScrollStateChanged: (view: androidx.recyclerview.widget.RecyclerView, newState: number) => owner.deref()?.onScrollStateChanged(view, newState),
+                onScrolled: (view: androidx.recyclerview.widget.RecyclerView, dx: number, dy: number) => owner.deref()?.onScrolled(view, dx, dy)
             });
             const scrollListener = new com.nativescript.collectionview.OnScrollListener(this._nScrollListener);
             nativeView.addOnScrollListener(scrollListener);
@@ -756,15 +762,20 @@ export class CollectionView extends CollectionViewBase {
 
     _initItemTouchListerner() {
         if (this.nativeViewProtected && !this._itemTouchListerner) {
+            const owner = new WeakRef(this);
             this._itemTouchListerner = new androidx.recyclerview.widget.RecyclerView.OnItemTouchListener({
                 onInterceptTouchEvent: (view: android.view.View, event: android.view.MotionEvent) => {
+                    const collectionView = owner.deref();
+                    if (!collectionView) {
+                        return false;
+                    }
                     const action = event.getAction();
                     if (action === 0 /* android.view.MotionEvent.ACTION_DOWN */ || action === 1 /* android.view.MotionEvent.ACTION_UP */) {
                         // this event is always ignored and not "transmitted" to the view
-                        this.handleGestureTouch(event);
+                        collectionView.handleGestureTouch(event);
                     }
-                    if (this.reorderEnabled && this._longPressGesture) {
-                        this._longPressGesture.onTouchEvent(event);
+                    if (collectionView.reorderEnabled && collectionView._longPressGesture) {
+                        collectionView._longPressGesture.onTouchEvent(event);
                     }
                     return false;
                 },
@@ -1087,9 +1098,10 @@ export class CollectionView extends CollectionViewBase {
         if (this._pendingRefreshListener) {
             return;
         }
+        const owner = new WeakRef(this);
         this._pendingRefreshListener = new android.view.ViewTreeObserver.OnPreDrawListener({
             onPreDraw: () => {
-                this.runPendingRefresh();
+                owner.deref()?.runPendingRefresh();
                 return true;
             }
         });
@@ -1206,13 +1218,14 @@ export class CollectionView extends CollectionViewBase {
     @profile
     private createComposedAdapter(recyclerView: CollectionViewRecyclerView) {
         const adapter = new com.nativescript.collectionview.Adapter();
+        const owner = new WeakRef(this);
         adapter.adapterInterface = new com.nativescript.collectionview.AdapterInterface({
-            getItemId: this.getItemId.bind(this),
-            getItemViewType: this.getItemViewType.bind(this),
-            getItemCount: this.getItemCount.bind(this),
-            onCreateViewHolder: this.onCreateViewHolder.bind(this),
-            onBindViewHolder: this.onBindViewHolder.bind(this),
-            onViewRecycled: this.onViewRecycled.bind(this)
+            getItemId: (position: number) => owner.deref()?.getItemId(position) ?? -1,
+            getItemViewType: (position: number) => owner.deref()?.getItemViewType(position) ?? 0,
+            getItemCount: () => owner.deref()?.getItemCount() ?? 0,
+            onCreateViewHolder: (parent: android.view.ViewGroup, viewType: number) => owner.deref()?.onCreateViewHolder(parent, viewType),
+            onBindViewHolder: (holder: CollectionViewCellHolder, position: number) => owner.deref()?.onBindViewHolder(holder, position),
+            onViewRecycled: (holder: CollectionViewCellHolder) => owner.deref()?.onViewRecycled(holder)
         });
         // const composedAdapter = new com.h6ah4i.android.widget.advrecyclerview.composedadapter.ComposedAdapter();
         // composedAdapter.addAdapter(new CollectionViewAdapter(new WeakRef(this)));
@@ -1357,17 +1370,22 @@ export class CollectionView extends CollectionViewBase {
 
         const holder = new CollectionViewCellHolder(view.nativeView);
 
-        // eslint-disable-next-line @typescript-eslint/no-this-alias
-        const collectionView = this;
+        const holderRef = new WeakRef(holder);
+        const owner = new WeakRef(this);
         const clickListener = new android.view.View.OnClickListener({
             onClick: () => {
-                const position = holder.getAdapterPosition();
+                const tappedHolder = holderRef.deref();
+                const collectionView = owner.deref();
+                if (!tappedHolder || !collectionView) {
+                    return;
+                }
+                const position = tappedHolder.getAdapterPosition();
                 collectionView.notify<CollectionViewItemEventData>({
                     eventName: CollectionViewBase.itemTapEvent,
                     object: collectionView,
                     index: position,
                     item: collectionView.getItem(position),
-                    view: holder.view
+                    view: tappedHolder.view
                 });
             }
         });
