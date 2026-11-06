@@ -47,6 +47,7 @@ declare namespace com {
                 static inflate(context): RecyclerView;
                 sizeChangedListener?: SizeChangedListener;
                 smoothScrollToPosition(position: number, snapPosition?: number);
+                scrollToPositionSnapped(position: number, snapPosition: number);
             }
             export class SizeChangedListener {
                 constructor(impl?: { onLayout(changed:boolean, l: number, t: number, r: number, b: number); onMeasure(widthMeasureSpec: number, heightMeasureSpec: number) });
