@@ -105,7 +105,8 @@ export const autoSizeProperty = new Property<CollectionView, boolean>({
 
 export enum SnapPosition {
     START = -1, // = androidx.recyclerview.widget.LinearSmoothScroller.SNAP_TO_START,
-    END = 1 // = androidx.recyclerview.widget.LinearSmoothScroller.SNAP_TO_END
+    END = 1, // = androidx.recyclerview.widget.LinearSmoothScroller.SNAP_TO_END
+    CENTER = 2
 }
 
 export class CollectionView extends CollectionViewBase {
@@ -962,9 +963,9 @@ export class CollectionView extends CollectionViewBase {
         if (nbItems > 0 && index < nbItems) {
             let scrollPosition = UICollectionViewScrollPosition.Top;
             if (this.orientation === 'vertical') {
-                scrollPosition = snap === SnapPosition.START ? UICollectionViewScrollPosition.Top : UICollectionViewScrollPosition.Bottom;
+                scrollPosition = snap === SnapPosition.CENTER ? UICollectionViewScrollPosition.CenteredVertically : snap === SnapPosition.START ? UICollectionViewScrollPosition.Top : UICollectionViewScrollPosition.Bottom;
             } else {
-                scrollPosition = snap === SnapPosition.START ? UICollectionViewScrollPosition.Left : UICollectionViewScrollPosition.Right;
+                scrollPosition = snap === SnapPosition.CENTER ? UICollectionViewScrollPosition.CenteredHorizontally : snap === SnapPosition.START ? UICollectionViewScrollPosition.Left : UICollectionViewScrollPosition.Right;
             }
             nativeView.scrollToItemAtIndexPathAtScrollPositionAnimated(NSIndexPath.indexPathForItemInSection(index, 0), scrollPosition, animated);
         }

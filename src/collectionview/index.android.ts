@@ -138,7 +138,8 @@ const nestedScrollingEnabledProperty = new Property<CollectionViewBase, boolean>
 
 export enum SnapPosition {
     START = -1,
-    END = 1
+    END = 1,
+    CENTER = 2
 }
 
 export class CollectionView extends CollectionViewBase {
@@ -1210,7 +1211,7 @@ export class CollectionView extends CollectionViewBase {
         if (animated) {
             view.smoothScrollToPosition(index, snap);
         } else {
-            view.scrollToPosition(index);
+            view.scrollToPositionSnapped(index, snap);
         }
     }
 

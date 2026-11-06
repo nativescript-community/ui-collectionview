@@ -6,7 +6,8 @@ export * from './index-common';
 export type Orientation = 'horizontal' | 'vertical';
 export enum SnapPosition {
     START = 0,
-    END = 1
+    END = 1,
+    CENTER = 2
 }
 
 export class CollectionView extends CollectionViewBase {

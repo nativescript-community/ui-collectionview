@@ -74,8 +74,21 @@ public class RecyclerView extends androidx.recyclerview.widget.RecyclerView {
         this.smoothScrollToPosition(position, LinearSmoothScroller.SNAP_TO_START);
     }
     public void smoothScrollToPosition(int position, int snapPosition) {
+        scrollToPosition(position, snapPosition, false);
+    }
+    // not animated: scrollToPosition keeps the side the list was scrolled from, the item ends at the end when going forward.
+    // The smooth scroller snaps as asked, and instantly
+    public void scrollToPositionSnapped(int position, int snapPosition) {
+        scrollToPosition(position, snapPosition, true);
+    }
+    private void scrollToPosition(int position, int snapPosition, boolean instant) {
+        LayoutManager layoutManager = getLayoutManager();
+        if (layoutManager == null) {
+            return;
+        }
         smoothScroller.snapPreference = snapPosition;
+        smoothScroller.instant = instant;
         smoothScroller.setTargetPosition(position);
-        getLayoutManager().startSmoothScroll(smoothScroller);
+        layoutManager.startSmoothScroll(smoothScroller);
     }
 }
