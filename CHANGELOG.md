@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.37](https://github.com/@nativescript-community/ui-collectionview/compare/v6.0.36...v6.0.37) (2026-11-06)
+
+### Bug Fixes
+
+* **android:** send scroll events for programmatic smooth scrolls ([5740087](https://github.com/@nativescript-community/ui-collectionview/commit/5740087161dc07f8a3c9c9f060ee7fd7c0413b5a))
+
 ## [6.0.36](https://github.com/@nativescript-community/ui-collectionview/compare/v6.0.35...v6.0.36) (2026-11-05)
 
 ### Bug Fixes
