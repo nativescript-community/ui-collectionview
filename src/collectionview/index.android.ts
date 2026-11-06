@@ -173,6 +173,7 @@ export class CollectionView extends CollectionViewBase {
     private _nScrollListener: com.nativescript.collectionview.OnScrollListener.Listener;
     scrolling = false;
     needsScrollStartEvent = false;
+    private _lastScrollOffset = 0;
 
     private _hlayoutParams: android.view.ViewGroup.LayoutParams;
     private _vlayoutParams: android.view.ViewGroup.LayoutParams;
@@ -477,7 +478,29 @@ export class CollectionView extends CollectionViewBase {
     }
 
     public onScrolled(view: androidx.recyclerview.widget.RecyclerView, dx: number, dy: number) {
-        if (!this || !this.scrolling) {
+        if (!this) {
+            return;
+        }
+        if (!this.scrolling) {
+            // not dragging/settling: layout-driven (offset clamped after items removed...) or instant programmatic scroll.
+            // RecyclerView also reports (0, 0) after layouts, so only notify when the offset really changed.
+            // such a scroll is a single jump with no state change, so start/scroll/end are sent together
+            if (!this.hasListeners(CollectionViewBase.scrollEvent) && !this.hasListeners(CollectionViewBase.scrollStartEvent) && !this.hasListeners(CollectionViewBase.scrollEndEvent)) {
+                return;
+            }
+            const data = this.computeScrollEventData(view, CollectionViewBase.scrollEvent, dx, dy);
+            if (data.scrollOffset !== this._lastScrollOffset) {
+                this._lastScrollOffset = data.scrollOffset;
+                if (this.hasListeners(CollectionViewBase.scrollStartEvent)) {
+                    this.notify({ ...data, eventName: CollectionViewBase.scrollStartEvent });
+                }
+                if (this.hasListeners(CollectionViewBase.scrollEvent)) {
+                    this.notify(data);
+                }
+                if (this.hasListeners(CollectionViewBase.scrollEndEvent)) {
+                    this.notify(this.computeScrollEventData(view, CollectionViewBase.scrollEndEvent));
+                }
+            }
             return;
         }
         if (this.needsScrollStartEvent) {
@@ -488,7 +511,9 @@ export class CollectionView extends CollectionViewBase {
         }
 
         if (this.hasListeners(CollectionViewBase.scrollEvent)) {
-            this.notify(this.computeScrollEventData(view, CollectionViewBase.scrollEvent, dx, dy));
+            const data = this.computeScrollEventData(view, CollectionViewBase.scrollEvent, dx, dy);
+            this._lastScrollOffset = data.scrollOffset;
+            this.notify(data);
         }
 
         if (this.hasListeners(CollectionViewBase.loadMoreItemsEvent) && this.items) {
