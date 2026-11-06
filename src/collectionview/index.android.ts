@@ -524,8 +524,9 @@ export class CollectionView extends CollectionViewBase {
             if (this.hasListeners(CollectionViewBase.scrollEndEvent)) {
                 this.notify(this.computeScrollEventData(view, CollectionViewBase.scrollEndEvent));
             }
-        } else if (!this.scrolling && newState === 1) {
-            //SCROLL_STATE_DRAGGING
+        } else if (!this.scrolling && (newState === 1 || newState === 2)) {
+            // SCROLL_STATE_DRAGGING or SCROLL_STATE_SETTLING
+            // programmatic smooth scrolls go IDLE -> SETTLING -> IDLE, never DRAGGING
             this.needsScrollStartEvent = true;
             this.scrolling = true;
         }
