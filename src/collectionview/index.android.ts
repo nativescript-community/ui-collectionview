@@ -174,6 +174,10 @@ export class CollectionView extends CollectionViewBase {
     scrolling = false;
     needsScrollStartEvent = false;
     private _lastScrollOffset = 0;
+    private _lastScrollAnimating = false;
+    // true while the item animator moves rows: the offset RecyclerView reports is then already the final one
+    private _itemAnimating = false;
+    private _itemAnimationPreDrawListener: android.view.ViewTreeObserver.OnPreDrawListener;
 
     private _hlayoutParams: android.view.ViewGroup.LayoutParams;
     private _vlayoutParams: android.view.ViewGroup.LayoutParams;
@@ -341,6 +345,7 @@ export class CollectionView extends CollectionViewBase {
         this.recycledViewPoolDisposeListener = null;
         this.recycledViewPool = null;
         this.detachScrollListenerIfNecessary(true);
+        this.stopItemAnimationTracking();
         this.removePendingRefreshListener();
         this._pendingRefresh = null;
         this._frozenItems = null;
@@ -461,25 +466,114 @@ export class CollectionView extends CollectionViewBase {
             this._nScrollListener = null;
         }
     }
+    /**
+     * Translation (dp) the item animator currently applies to the first laid out item.
+     * RecyclerView does not move its scroll offset for it, but the item is drawn that far from where it was laid out.
+     */
+    private getFirstItemTranslation(view: androidx.recyclerview.widget.RecyclerView) {
+        let first: android.view.View;
+        let firstPosition = -1;
+        for (let i = 0, count = view.getChildCount(); i < count; i++) {
+            const child = view.getChildAt(i);
+            // items being removed are still children until their animation ends
+            if ((child.getLayoutParams() as androidx.recyclerview.widget.RecyclerView.LayoutParams).isItemRemoved()) {
+                continue;
+            }
+            const position = view.getChildAdapterPosition(child);
+            if (position >= 0 && (firstPosition < 0 || position < firstPosition)) {
+                first = child;
+                firstPosition = position;
+            }
+        }
+        if (!first) {
+            return 0;
+        }
+        return (this.isHorizontal() ? first.getTranslationX() : first.getTranslationY()) / Utils.layout.getDisplayDensity();
+    }
     private computeScrollEventData(view: androidx.recyclerview.widget.RecyclerView, eventName: string, dx?: number, dy?: number) {
         const horizontal = this.isHorizontal();
+        const density = Utils.layout.getDisplayDensity();
         const offset = horizontal ? view.computeHorizontalScrollOffset() : view.computeVerticalScrollOffset();
         const range = horizontal ? view.computeHorizontalScrollRange() : view.computeVerticalScrollRange();
         const extent = horizontal ? view.computeHorizontalScrollExtent() : view.computeVerticalScrollExtent();
+        const animating = this._itemAnimating;
+        // while items animate, scrollOffset is where the content is drawn (layout offset minus the translation of the first item).
+        // it is the layout offset when no item is translated
+        const scrollOffset = offset / density - (animating ? this.getFirstItemTranslation(view) : 0);
         return {
             object: this,
             eventName,
-            scrollOffset: offset / Utils.layout.getDisplayDensity(),
-            scrollSize: (range - extent) / Utils.layout.getDisplayDensity(),
-            scrollOffsetPercentage: offset / (range - extent),
+            scrollOffset,
+            scrollSize: (range - extent) / density,
+            scrollOffsetPercentage: scrollOffset / ((range - extent) / density),
+            animating,
             dx,
             dy
         };
     }
 
+    /** true (and remembered) if the scroll event would differ from the last one sent */
+    private isNewScrollData(data: { scrollOffset: number; animating: boolean }) {
+        if (data.scrollOffset === this._lastScrollOffset && data.animating === this._lastScrollAnimating) {
+            return false;
+        }
+        this._lastScrollOffset = data.scrollOffset;
+        this._lastScrollAnimating = data.animating;
+        return true;
+    }
+
+    /**
+     * The item animator moves rows with translations: no onScrolled for it.
+     * While it runs, send a scroll event on each frame where the drawn offset changed
+     */
+    private startItemAnimationTracking(view: androidx.recyclerview.widget.RecyclerView) {
+        if (this._itemAnimationPreDrawListener || !view.getItemAnimator()?.isRunning()) {
+            return;
+        }
+        const owner = new WeakRef(this);
+        this._itemAnimating = true;
+        this._itemAnimationPreDrawListener = new android.view.ViewTreeObserver.OnPreDrawListener({
+            onPreDraw: () => {
+                owner.deref()?.onItemAnimationFrame();
+                return true;
+            }
+        });
+        view.getViewTreeObserver().addOnPreDrawListener(this._itemAnimationPreDrawListener);
+    }
+    private stopItemAnimationTracking() {
+        const listener = this._itemAnimationPreDrawListener;
+        this._itemAnimationPreDrawListener = null;
+        this._itemAnimating = false;
+        const observer = this.nativeViewProtected?.getViewTreeObserver();
+        if (listener && observer?.isAlive()) {
+            observer.removeOnPreDrawListener(listener);
+        }
+    }
+    private onItemAnimationFrame() {
+        const view = this.nativeViewProtected;
+        if (!view) {
+            this.stopItemAnimationTracking();
+            return;
+        }
+        if (!view.getItemAnimator()?.isRunning()) {
+            this.stopItemAnimationTracking();
+        }
+        if (!this.hasListeners(CollectionViewBase.scrollEvent)) {
+            return;
+        }
+        // when done this sends the final (layout) offset
+        const data = this.computeScrollEventData(view, CollectionViewBase.scrollEvent, 0, 0);
+        if (this.isNewScrollData(data)) {
+            this.notify(data);
+        }
+    }
+
     public onScrolled(view: androidx.recyclerview.widget.RecyclerView, dx: number, dy: number) {
         if (!this) {
             return;
+        }
+        if (this.hasListeners(CollectionViewBase.scrollEvent)) {
+            this.startItemAnimationTracking(view);
         }
         if (!this.scrolling) {
             // not dragging/settling: layout-driven (offset clamped after items removed...) or instant programmatic scroll.
@@ -489,15 +583,16 @@ export class CollectionView extends CollectionViewBase {
                 return;
             }
             const data = this.computeScrollEventData(view, CollectionViewBase.scrollEvent, dx, dy);
-            if (data.scrollOffset !== this._lastScrollOffset) {
-                this._lastScrollOffset = data.scrollOffset;
-                if (this.hasListeners(CollectionViewBase.scrollStartEvent)) {
+            if (this.isNewScrollData(data)) {
+                // an item animation is not a user scroll nor a jump: only scroll events, sent each frame
+                const jump = !data.animating;
+                if (jump && this.hasListeners(CollectionViewBase.scrollStartEvent)) {
                     this.notify({ ...data, eventName: CollectionViewBase.scrollStartEvent });
                 }
                 if (this.hasListeners(CollectionViewBase.scrollEvent)) {
                     this.notify(data);
                 }
-                if (this.hasListeners(CollectionViewBase.scrollEndEvent)) {
+                if (jump && this.hasListeners(CollectionViewBase.scrollEndEvent)) {
                     this.notify(this.computeScrollEventData(view, CollectionViewBase.scrollEndEvent));
                 }
             }
@@ -513,6 +608,7 @@ export class CollectionView extends CollectionViewBase {
         if (this.hasListeners(CollectionViewBase.scrollEvent)) {
             const data = this.computeScrollEventData(view, CollectionViewBase.scrollEvent, dx, dy);
             this._lastScrollOffset = data.scrollOffset;
+            this._lastScrollAnimating = data.animating;
             this.notify(data);
         }
 
