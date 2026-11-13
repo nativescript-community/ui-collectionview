@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.1.0](https://github.com/@nativescript-community/ui-collectionview/compare/v6.0.38...v6.1.0) (2026-11-06)
+
+### Features
+
+* add SnapPosition.CENTER and honor snap in non-animated scrollToIndex ([b1e7e74](https://github.com/@nativescript-community/ui-collectionview/commit/b1e7e74310b01c43ed444c00df649815fcfff514))
+
 ## [6.0.38](https://github.com/@nativescript-community/ui-collectionview/compare/v6.0.37...v6.0.38) (2026-11-06)
 
 ### Bug Fixes
