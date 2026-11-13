@@ -59,10 +59,11 @@
         "@nativescript-community/class-mixins": "^1.0.0",
         "@nativescript-community/plugin-seed-tools": "portal:tools",
         "@nativescript-community/template-snippet": "portal:demo-snippets",
-        "@nativescript-community/ui-drawer": "0.1.31"
+        "@nativescript-community/ui-drawer": "0.1.32"
     },
     "resolutions": {
-        "@vue/devtools": "npm:empty-npm-package@*"
+        "@vue/devtools": "npm:empty-npm-package@*",
+        "@nativescript/webpack@npm:5.0.41/vue-loader": "15.9.8"
     },
     "ntl": {
         "descriptions": {

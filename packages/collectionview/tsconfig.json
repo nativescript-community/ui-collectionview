@@ -5,7 +5,7 @@
         "rootDir": "../../src/collectionview",
         "outDir": "./"
     },
-    "include": ["../../src/collectionview/**/*.ts", "../../references.d.ts", "../../tools/references.d.ts", "../../src/references.d.ts"],
+    "include": ["../../src/collectionview/**/*.ts", "../../src/collectionview/**/*.tsx", "../../references.d.ts", "../../tools/references.d.ts", "../../src/references.d.ts"],
     "exclude": ["../../src/collectionview/vue3/**/*", "../../src/collectionview/angular/**"],
     "references": [{ "path": "./tsconfig.vue3.json" }]
 
