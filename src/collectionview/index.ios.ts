@@ -936,11 +936,7 @@ export class CollectionView extends CollectionViewBase {
             }
         });
 
-        // TODO: this is ugly look here: https://github.com/nativescript-vue/nativescript-vue/issues/525
-        // this.clearRealizedCells();
-        // dispatch_async(main_queue, () => {
         this.nativeViewProtected.reloadData();
-        // });
         this.notify({ eventName: CollectionViewBase.dataPopulatedEvent });
     }
     //@ts-ignore
