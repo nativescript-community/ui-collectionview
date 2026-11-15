@@ -1094,9 +1094,16 @@ export class CollectionView extends CollectionViewBase {
                             }
 
                             nativeView.performBatchUpdatesCompletion(() => {
-                                this.notifyForItemAtIndex(CollectionViewBase.itemLoadingEvent, view, indexPath.row, view.bindingContext, cell);
+                                // a reload clears the binding context of the realized cells and prepares them again: there is nothing to update before that.
+                                // Notifying a null item makes templates throw, which aborts the flush of the framework and leaves their cells stale
+                                if (!view.bindingContext) {
+                                    return;
+                                }
+                                // the cell can have been reused for another row since this view was first prepared
+                                const currentIndex = cell.currentIndex;
+                                this.notifyForItemAtIndex(CollectionViewBase.itemLoadingEvent, view, currentIndex, view.bindingContext, cell);
                                 // the order is important because measureCell will set layout as requested and notifyForItemAtIndex would call requestLayout => endless loop
-                                this.measureCell(cell, view, index);
+                                this.measureCell(cell, view, currentIndex);
                                 cell.contentView.subviews.objectAtIndex(0)?.layoutSubviews();
                                 // nativeView.collectionViewLayout.invalidateLayout();
                             }, null);

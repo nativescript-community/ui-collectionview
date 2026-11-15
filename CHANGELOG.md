@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.1.1](https://github.com/@nativescript-community/ui-collectionview/compare/v6.1.0...v6.1.1) (2026-11-14)
+
+### Bug Fixes
+
+* **ios:** skip the cell layout update of a cell whose item was cleared by a reload ([2b07da9](https://github.com/@nativescript-community/ui-collectionview/commit/2b07da962a4409319affdf81eb6a621325d48697))
+
 ## [6.1.0](https://github.com/@nativescript-community/ui-collectionview/compare/v6.0.38...v6.1.0) (2026-11-06)
 
 ### Features
