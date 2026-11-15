@@ -1451,10 +1451,6 @@ class NSCellView extends UIView {
         const size = this.bounds.size;
         const width = Utils.layout.toDevicePixels(size.width);
         const height = Utils.layout.toDevicePixels(size.height);
-        if (view.isLayoutRequested) {
-            // a view only lays out its children when it was measured since its layout was requested
-            view.measure(Utils.layout.makeMeasureSpec(width, Utils.layout.EXACTLY), Utils.layout.makeMeasureSpec(height, Utils.layout.EXACTLY));
-        }
         View.layoutChild(null, view, 0, 0, width, height);
     }
 }
