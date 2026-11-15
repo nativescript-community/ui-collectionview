@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.1.2](https://github.com/nativescript-community/ui-collectionview/compare/v6.1.1...v6.1.2) (2026-11-15)
+
+**Note:** Version bump only for package @nativescript-community/ui-collectionview-swipemenu
+
 ## [6.1.1](https://github.com/nativescript-community/ui-collectionview/compare/v6.1.0...v6.1.1) (2026-11-14)
 
 **Note:** Version bump only for package @nativescript-community/ui-collectionview-swipemenu

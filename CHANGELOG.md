@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.1.2](https://github.com/@nativescript-community/ui-collectionview/compare/v6.1.1...v6.1.2) (2026-11-15)
+
+### Bug Fixes
+
+* **ui-collectionview:** ios regression fix for items not being layed out correctly ([3ab7db4](https://github.com/@nativescript-community/ui-collectionview/commit/3ab7db44715ab23b2a384c6f7245aa23cf4044df))
+
 ## [6.1.1](https://github.com/@nativescript-community/ui-collectionview/compare/v6.1.0...v6.1.1) (2026-11-14)
 
 ### Bug Fixes
