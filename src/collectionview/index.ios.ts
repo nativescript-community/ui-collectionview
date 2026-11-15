@@ -959,9 +959,19 @@ export class CollectionView extends CollectionViewBase {
         if (nbItems > 0 && index < nbItems) {
             let scrollPosition = UICollectionViewScrollPosition.Top;
             if (this.orientation === 'vertical') {
-                scrollPosition = snap === SnapPosition.CENTER ? UICollectionViewScrollPosition.CenteredVertically : snap === SnapPosition.START ? UICollectionViewScrollPosition.Top : UICollectionViewScrollPosition.Bottom;
+                scrollPosition =
+                    snap === SnapPosition.CENTER
+                        ? UICollectionViewScrollPosition.CenteredVertically
+                        : snap === SnapPosition.START
+                          ? UICollectionViewScrollPosition.Top
+                          : UICollectionViewScrollPosition.Bottom;
             } else {
-                scrollPosition = snap === SnapPosition.CENTER ? UICollectionViewScrollPosition.CenteredHorizontally : snap === SnapPosition.START ? UICollectionViewScrollPosition.Left : UICollectionViewScrollPosition.Right;
+                scrollPosition =
+                    snap === SnapPosition.CENTER
+                        ? UICollectionViewScrollPosition.CenteredHorizontally
+                        : snap === SnapPosition.START
+                          ? UICollectionViewScrollPosition.Left
+                          : UICollectionViewScrollPosition.Right;
             }
             nativeView.scrollToItemAtIndexPathAtScrollPositionAnimated(NSIndexPath.indexPathForItemInSection(index, 0), scrollPosition, animated);
         }
