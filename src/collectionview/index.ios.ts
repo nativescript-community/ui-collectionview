@@ -48,6 +48,7 @@ export * from './index-common';
 declare module '@nativescript/core/ui/core/view' {
     interface ViewCommon {
         isLayoutRequested: boolean;
+        isLayoutRequired: boolean;
     }
 }
 
@@ -1078,6 +1079,7 @@ export class CollectionView extends CollectionViewBase {
                 const innerView = NSCellView.new() as NSCellView;
                 innerView.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight;
                 innerView.view = new WeakRef(view);
+                innerView.owner = new WeakRef(this);
                 if (notForCellSizeComp && this.autoReloadItemOnLayout) {
                     // for a cell to update correctly on cell layout change we need
                     // to do it ourself instead of "propagating it"
@@ -1115,9 +1117,9 @@ export class CollectionView extends CollectionViewBase {
                     // forward them to the native cell container, whose layoutSubviews lays the content out
                     const defaultPerformLayout = view['performLayout'].bind(view);
                     view['performLayout'] = (...args) => {
-                        if (!this._preparingCell) {
-                            innerView.setNeedsLayout();
-                        }
+                        // not guarded by _preparingCell: it is set for any cell being prepared, and a framework flush
+                        // run by that preparation updates the other cells too, whose requests would be lost
+                        innerView.setNeedsLayout();
                         defaultPerformLayout(...args);
                     };
                 }
@@ -1174,7 +1176,7 @@ export class CollectionView extends CollectionViewBase {
     // public clearCellSize() {
     //     this._sizes = new Array<number[]>();
     // }
-    private measureCell(cell: CollectionViewCell, cellView: View, position: number): [number, number] {
+    measureCell(cell: CollectionViewCell, cellView: View, position: number): [number, number] {
         if (cellView) {
             let width = this._effectiveColWidth;
             let height = this.getEffectiveRowHeightForIndex(position);
@@ -1454,6 +1456,7 @@ type ItemView = View & ViewItemIndex;
 @NativeClass
 class NSCellView extends UIView {
     view: WeakRef<View>;
+    owner: WeakRef<CollectionView>;
     layoutSubviews() {
         super.layoutSubviews();
         const view = this.view && this.view.get();
@@ -1464,6 +1467,15 @@ class NSCellView extends UIView {
         const size = this.bounds.size;
         const width = Utils.layout.toDevicePixels(size.width);
         const height = Utils.layout.toDevicePixels(size.height);
+        if (view.isLayoutRequested && !view.isLayoutRequired) {
+            // a view only lays out its children (and redraws their backgrounds) when it was measured since its layout was requested.
+            // Measure with the specs of the cell preparation: our bounds can be stale and would break the children measures
+            const owner = this.owner?.get();
+            const cell = this.superview?.superview as CollectionViewCell;
+            if (owner && cell) {
+                owner.measureCell(cell, view, cell.currentIndex);
+            }
+        }
         View.layoutChild(null, view, 0, 0, width, height);
     }
 }
