@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.1.3](https://github.com/@nativescript-community/ui-collectionview/compare/v6.1.2...v6.1.3) (2026-11-16)
+
+### Bug Fixes
+
+* **ios:** lay out cell content after a css change in another row ([f75a97f](https://github.com/@nativescript-community/ui-collectionview/commit/f75a97f3727b6e1daafa3e69ef6037df2f73a2c6))
+
 ## [6.1.2](https://github.com/@nativescript-community/ui-collectionview/compare/v6.1.1...v6.1.2) (2026-11-15)
 
 ### Bug Fixes
