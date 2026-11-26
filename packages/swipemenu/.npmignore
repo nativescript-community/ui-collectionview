@@ -6,5 +6,7 @@ hooks/
 *.old
 tsconfig.json
 !*.d.ts
-.smooth-releaserc
+*.aar
+*.jar
 blueprint.md
+!nativescript.config.ts
