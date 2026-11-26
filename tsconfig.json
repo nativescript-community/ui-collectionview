@@ -12,6 +12,7 @@
     },
     "references": [
         { "path": "./packages/collectionview/tsconfig.vue3.json" },
+        { "path": "./packages/collectionview/tsconfig.svelte5.json" },
         { "path": "./packages/swipemenu/tsconfig.vue3.json" },
         { "path": "./packages/collectionview" },
         { "path": "./packages/swipemenu" },
