@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.2.0](https://github.com/@nativescript-community/ui-collectionview/compare/v6.1.3...v6.2.0) (2026-11-26)
+
+### Features
+
+* **svelte:** add a Svelte 5 binding in svelte5/ ([33e9ac7](https://github.com/@nativescript-community/ui-collectionview/commit/33e9ac7f7a06aafc1f3da3ebcb3fb80942cd3521))
+
+### Bug Fixes
+
+* **svelte:** build the svelte5/ binding against svelte-native 5 ([883d572](https://github.com/@nativescript-community/ui-collectionview/commit/883d57202e3b2ac73cee7198d0f1a04f62296296)), references [#125](https://github.com/@nativescript-community/ui-collectionview/issues/125)
+
 ## [6.1.3](https://github.com/@nativescript-community/ui-collectionview/compare/v6.1.2...v6.1.3) (2026-11-16)
 
 ### Bug Fixes
